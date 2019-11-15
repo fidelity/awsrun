@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>awsrun.commands.aws.list_iam_roles API documentation</title>
+<meta name="description" content="Display the IAM roles in an account and its trust relationships …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<style>
+body {
+/* Probably too small for most ...
+font-size: .9em;
+*/
+}
+code {
+font-size: .9em;
+}
+pre code {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.commands.aws.list_iam_roles</code></h1>
+</header>
+<section id="section-intro">
+<p>Display the IAM roles in an account and its trust relationships.</p>
+<h2 id="overview">Overview</h2>
+<p>The list_iam_roles command will display the IAM roles in an account. By
+default, all roles in an account are displayed:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_roles
+100200300400: arn=arn:aws:iam::100200300400:role/viewer
+100200300400: arn=arn:aws:iam::100200300400:role/logger
+...
+</code></pre>
+<p>The <code>--role</code> flag will limit the output to the specified role name.
+Matching is
+done on the name portion of the role ARN. For example:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_roles --role logger
+100200300400: arn=arn:aws:iam::100200300400:role/logger
+</code></pre>
+<p>Multiple roles can be filtered by specifying multiple <code>--role</code> flags:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_roles --role viewer --role logger
+100200300400: arn=arn:aws:iam::100200300400:role/viewer
+100200300400: arn=arn:aws:iam::100200300400:role/logger
+</code></pre>
+<p>The <code>--trust</code> flag will also include the trust relationships contained within
+the assume role policy document attached to the role:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_roles --trust
+100200300400: arn=arn:aws:iam::100200300400:role/viewer trusted=arn:aws:iam::100200300400:saml-provider/prodsaml
+100200300400: arn=arn:aws:iam::100200300400:role/logger trusted=lambda.amazonaws.com
+</code></pre>
+<h2 id="reference">Reference</h2>
+<h3 id="synopsis">Synopsis</h3>
+<pre><code>$ awsrun [options] list_iam_roles [command options]
+</code></pre>
+<h3 id="configuration">Configuration</h3>
+<p>The following is the syntax for the options that can be specified in the user
+configuration file:</p>
+<pre><code>Commands:
+  list_iam_roles:
+    role:
+      - STRING
+    trust: BOOLEAN
+</code></pre>
+<h3 id="command-options">Command Options</h3>
+<p>Some options can be overridden on the awsrun CLI via command line flags. In
+those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>role</code>, <code>--role</code></dt>
+<dd>Limit output to roles matching the specified role names. When specifying
+multiple values on the command line, use multiple flags for each value.</dd>
+<dt><code>trust</code>, <code>--trust</code></dt>
+<dd>Display the trust relationships along with each role.</dd>
+</dl>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;Display the IAM roles in an account and its trust relationships.
+
+## Overview
+
+The list_iam_roles command will display the IAM roles in an account. By
+default, all roles in an account are displayed:
+
+    $ awsrun --account 100200300400 list_iam_roles
+    100200300400: arn=arn:aws:iam::100200300400:role/viewer
+    100200300400: arn=arn:aws:iam::100200300400:role/logger
+    ...
+
+The `--role` flag will limit the output to the specified role name.  Matching is
+done on the name portion of the role ARN. For example:
+
+    $ awsrun --account 100200300400 list_iam_roles --role logger
+    100200300400: arn=arn:aws:iam::100200300400:role/logger
+
+Multiple roles can be filtered by specifying multiple `--role` flags:
+
+    $ awsrun --account 100200300400 list_iam_roles --role viewer --role logger
+    100200300400: arn=arn:aws:iam::100200300400:role/viewer
+    100200300400: arn=arn:aws:iam::100200300400:role/logger
+
+The `--trust` flag will also include the trust relationships contained within
+the assume role policy document attached to the role:
+
+    $ awsrun --account 100200300400 list_iam_roles --trust
+    100200300400: arn=arn:aws:iam::100200300400:role/viewer trusted=arn:aws:iam::100200300400:saml-provider/prodsaml
+    100200300400: arn=arn:aws:iam::100200300400:role/logger trusted=lambda.amazonaws.com
+
+## Reference
+
+### Synopsis
+
+    $ awsrun [options] list_iam_roles [command options]
+
+### Configuration
+
+The following is the syntax for the options that can be specified in the user
+configuration file:
+
+    Commands:
+      list_iam_roles:
+        role:
+          - STRING
+        trust: BOOLEAN
+
+### Command Options
+
+Some options can be overridden on the awsrun CLI via command line flags. In
+those cases, the CLI flags are specified next to the option name below:
+
+`role`, `--role`
+:  Limit output to roles matching the specified role names. When specifying
+multiple values on the command line, use multiple flags for each value.
+
+`trust`, `--trust`
+:  Display the trust relationships along with each role.
+&#34;&#34;&#34;
+
+import io
+
+from awsrun.config import Bool, List, Str
+from awsrun.runner import Command
+
+
+class CLICommand(Command):
+    &#34;&#34;&#34;Display the IAM roles in an account and its trust relationships.&#34;&#34;&#34;
+
+    @classmethod
+    def from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            &#39;--role&#39;, &#39;-r&#39;,
+            action=&#39;append&#39;,
+            help=&#39;Limit results to role name&#39;,
+            default=cfg(&#39;role&#39;, type=List(Str), default=[]))
+        parser.add_argument(
+            &#39;--trust&#39;, &#39;-t&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;List trust relationships for each role&#39;,
+            default=cfg(&#39;trust&#39;, type=Bool))
+
+        args = parser.parse_args(argv)
+        return cls(**vars(args))
+
+    def __init__(self, role, trust):
+        self.role_filter = role
+        self.trust = trust
+
+    def execute(self, session, acct):
+        out = io.StringIO()
+        iam = session.resource(&#39;iam&#39;)
+
+        for role in iam.roles.all():
+            if self.role_filter and role.name not in self.role_filter:
+                continue
+
+            output = f&#39;{acct}: arn={role.arn}&#39;
+            if self.trust:
+                arns = _trusted_arns(role.assume_role_policy_document)
+                output += &#39; trusted=&#39; + &#34;, &#34;.join(arns)
+            print(output, file=out)
+
+        return out.getvalue()
+
+
+# Return a list of trusted principal ARNs
+def _trusted_arns(policy):
+    if not policy:
+        return []
+
+    arns = []
+    for statement in policy.get(&#39;Statement&#39;, []):
+        if not statement.get(&#39;Effect&#39;, &#39;&#39;) == &#39;Allow&#39;:
+            continue
+        for arn in statement.get(&#39;Principal&#39;, {}).values():
+            if isinstance(arn, list):
+                arns.extend(arn)
+            else:
+                arns.append(arn)
+
+    return arns</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.commands.aws.list_iam_roles.CLICommand"><code class="flex name class">
+<span>class <span class="ident">CLICommand</span></span>
+<span>(</span><span>role, trust)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Display the IAM roles in an account and its trust relationships.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CLICommand(Command):
+    &#34;&#34;&#34;Display the IAM roles in an account and its trust relationships.&#34;&#34;&#34;
+
+    @classmethod
+    def from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            &#39;--role&#39;, &#39;-r&#39;,
+            action=&#39;append&#39;,
+            help=&#39;Limit results to role name&#39;,
+            default=cfg(&#39;role&#39;, type=List(Str), default=[]))
+        parser.add_argument(
+            &#39;--trust&#39;, &#39;-t&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;List trust relationships for each role&#39;,
+            default=cfg(&#39;trust&#39;, type=Bool))
+
+        args = parser.parse_args(argv)
+        return cls(**vars(args))
+
+    def __init__(self, role, trust):
+        self.role_filter = role
+        self.trust = trust
+
+    def execute(self, session, acct):
+        out = io.StringIO()
+        iam = session.resource(&#39;iam&#39;)
+
+        for role in iam.roles.all():
+            if self.role_filter and role.name not in self.role_filter:
+                continue
+
+            output = f&#39;{acct}: arn={role.arn}&#39;
+            if self.trust:
+                arns = _trusted_arns(role.assume_role_policy_document)
+                output += &#39; trusted=&#39; + &#34;, &#34;.join(arns)
+            print(output, file=out)
+
+        return out.getvalue()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.Command.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.Command.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.Command.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.Command.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#reference">Reference</a><ul>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#command-options">Command Options</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun.commands.aws" href="index.html">awsrun.commands.aws</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.commands.aws.list_iam_roles.CLICommand" href="#awsrun.commands.aws.list_iam_roles.CLICommand">CLICommand</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

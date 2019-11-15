@@ -1,0 +1,1377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>awsrun.commands.aws.aws API documentation</title>
+<meta name="description" content="Adapter for the AWS Command Line Interface (CLI) …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<style>
+body {
+/* Probably too small for most ...
+font-size: .9em;
+*/
+}
+code {
+font-size: .9em;
+}
+pre code {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.commands.aws.aws</code></h1>
+</header>
+<section id="section-intro">
+<p>Adapter for the AWS Command Line Interface (CLI).</p>
+<h2 id="overview">Overview</h2>
+<p>The <code>aws</code> command plug-in is a thin wrapper around the standard <a href="https://docs.aws.amazon.com/cli/latest/reference/index.html">AWS
+CLI</a> provided by
+AWS. This allows AWS CLI commands to be executed across multiple accounts in a
+concurrent manner. By creating an adapter, awsrun eliminates the need for the
+user to download credentials to their ~/.aws/credentials file and simplifies
+account selection through awsrun's advanced filtering capabilities.</p>
+<p>For example, to list all of the SNS topics in two AWS accounts using the
+standard AWS CLI tool, a user would need to obtain the credentials for those two
+accounts and update their local credentials file, and then run the following two
+commands sequentially:</p>
+<pre><code>$ aws --profile 100200300400 --region us-west-2 --output text sns list-topics
+TOPICS  arn:aws:sns:us-west-2:100200300400:topic-a
+TOPICS  arn:aws:sns:us-west-2:100200300400:topic-b
+
+$ aws --profile 400300200100 --region us-west-2 --output text sns list-topics
+TOPICS  arn:aws:sns:us-west-2:400300200100:topic-x
+TOPICS  arn:aws:sns:us-west-2:400300200100:topic-y
+TOPICS  arn:aws:sns:us-west-2:400300200100:topic-z
+</code></pre>
+<p>By using the awsrun <code>aws</code> command, the results can be fetched concurrently for
+both accounts with a single command, and without the need for the user to
+install credentials for each account in their ~/.aws/credentials file. The
+default output is the concatenation of the results from the individual AWS CLI
+invocations:</p>
+<pre><code>$ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --output text sns list-topics
+TOPICS  arn:aws:sns:us-west-2:100200300400:topic-a
+TOPICS  arn:aws:sns:us-west-2:100200300400:topic-b
+TOPICS  arn:aws:sns:us-west-2:400300200100:topic-x
+TOPICS  arn:aws:sns:us-west-2:400300200100:topic-y
+TOPICS  arn:aws:sns:us-west-2:400300200100:topic-z
+</code></pre>
+<h2 id="reference">Reference</h2>
+<h3 id="synopsis">Synopsis</h3>
+<pre><code>$ awsrun [options] aws [command options]
+</code></pre>
+<p>The command options can be any of the options used with the standard AWS CLI
+command with two minor differences. The user does not have to provide the
+<code>--profile</code> flags. Why? awsrun provides the credentials for each account
+selected using the one of the <a title="awsrun.plugins.creds.aws" href="../../plugins/creds/aws.html"><code>awsrun.plugins.creds.aws</code></a> plug-ins. The second
+difference is that users can specify more than one <code>--region</code> argument to run
+the command across multiple regions.</p>
+<h3 id="configuration">Configuration</h3>
+<p>The following is the syntax for the options that can be specified in the user
+configuration file:</p>
+<pre><code>Commands:
+  aws:
+    awsrun_output_dir: STRING
+    awsrun_annotate: ("json" | "table" | "text")
+    region:
+      - STRING
+</code></pre>
+<h3 id="command-options">Command Options</h3>
+<p>Some options can be overridden on the awsrun CLI via command line flags. In
+those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>awsrun_output_dir</code>, <code>--awsrun-output-dir</code></dt>
+<dd>Save both the standard output and standard error for each account and
+region processed in the specified directory. The files called will be called
+<code>ACCOUNT-REGION.stdout.log</code> and <code>ACCOUNT-REGION.stderr.log</code>. If the directory
+does not exist, it is created.</dd>
+<dt><code>awsrun_annotate</code>, <code>--awsrun-annotate</code></dt>
+<dd>Specifies the output format for the AWS CLI command and annotates that
+format appropriately with account and region information. Must be one of
+"json", "table", or "text". See use guide for more information.</dd>
+<dt><code>region</code>, <code>--region</code></dt>
+<dd>Run the AWS CLI command in the specified regions. When specifying multiple
+values on the command line, use multiple flags for each value.</dd>
+</dl>
+<h2 id="user-guide">User Guide</h2>
+<p>The follow section is a user guide on how to use the <code>aws</code> command effectively.</p>
+<h3 id="output-formats">Output Formats</h3>
+<p>As stated before, the output from the awsrun <code>aws</code> command is the same as that
+from the AWS CLI tool with the exception that results are concatenated together.
+Most AWS CLI commands provide three different output formats: <code>text</code>, <code>table</code>,
+and <code>json</code>, which are specified by the <code>--output</code> option. These can be used with
+this plug-in as well.</p>
+<p>JSON results:</p>
+<pre><code>$ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --output json sns list-topics
+{
+    "Topics": [
+        {
+            "TopicArn": "arn:aws:sns:us-west-2:100200300400:topic-name-a"
+        },
+        {
+            "TopicArn": "arn:aws:sns:us-west-2:100200300400:topic-name-b"
+        }
+    ]
+}
+{
+    "Topics": [
+        {
+            "TopicArn": "arn:aws:sns:us-west-2:400300200100:topic-name-x"
+        },
+        {
+            "TopicArn": "arn:aws:sns:us-west-2:400300200100:topic-name-y"
+        },
+        {
+            "TopicArn": "arn:aws:sns:us-west-2:400300200100:topic-name-z"
+        }
+    ]
+}
+</code></pre>
+<p>Table results:</p>
+<pre><code>$ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --output table sns list-topics
+--------------------------------------------------------------
+|                         ListTopics                         |
++------------------------------------------------------------+
+||                          Topics                          ||
+|+----------------------------------------------------------+|
+||                         TopicArn                         ||
+|+----------------------------------------------------------+|
+||  arn:aws:sns:us-west-2:100200300400:topic-name-a         ||
+||  arn:aws:sns:us-west-2:100200300400:topic-name-b         ||
+|+----------------------------------------------------------+|
+--------------------------------------------------------------
+|                         ListTopics                         |
++------------------------------------------------------------+
+||                          Topics                          ||
+|+----------------------------------------------------------+|
+||                         TopicArn                         ||
+|+----------------------------------------------------------+|
+||  arn:aws:sns:us-west-2:400300200100:topic-name-x         ||
+||  arn:aws:sns:us-west-2:400300200100:topic-name-y         ||
+||  arn:aws:sns:us-west-2:400300200100:topic-name-z         ||
+|+----------------------------------------------------------+|
+</code></pre>
+<h3 id="annotating-the-output">Annotating the Output</h3>
+<p>In some cases, the output from an AWS CLI command does not contain enough
+information to identify the account it came from. When using the standard AWS
+CLI tool, this is not a problem because it only operates on a single account.
+The awsrun command, however, operates on multiple accounts simultaneously
+displaying the output as each account is processed. How is one supposed to
+discern one result from another?</p>
+<p>To solve that problem, this awsrun command plug-in can annotate the output by
+using the <code>--awsrun-annotate</code> flag.
+This flag takes one parameter, which is the
+output format to be annotated: <code>text</code>, <code>table</code>, or <code>json</code>. When using this flag,
+it is redundant and unnecessary to provide the <code>--output</code> option. By using the
+annotation feature, it is trivial to identify which account and region the
+output came from.</p>
+<p>When annotating text and table output, each line is prefixed with the account
+and region of where the result came from. Here are the text and table examples
+from above with annotations enabled:</p>
+<pre><code>$ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate text sns list-topics
+100200300400/us-west-2: TOPICS  arn:aws:sns:us-west-2:100200300400:topic-a
+100200300400/us-west-2: TOPICS  arn:aws:sns:us-west-2:100200300400:topic-b
+400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-x
+400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-y
+400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-z
+
+$ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate table sns list-topics
+100200300400/us-west-2: --------------------------------------------------------------
+100200300400/us-west-2: |                         ListTopics                         |
+100200300400/us-west-2: +------------------------------------------------------------+
+100200300400/us-west-2: ||                          Topics                          ||
+100200300400/us-west-2: |+----------------------------------------------------------+|
+100200300400/us-west-2: ||                         TopicArn                         ||
+100200300400/us-west-2: |+----------------------------------------------------------+|
+100200300400/us-west-2: ||  arn:aws:sns:us-west-2:100200300400:topic-name-a         ||
+100200300400/us-west-2: ||  arn:aws:sns:us-west-2:100200300400:topic-name-b         ||
+100200300400/us-west-2: |+----------------------------------------------------------+|
+400300200100/us-west-2: --------------------------------------------------------------
+400300200100/us-west-2: |                         ListTopics                         |
+400300200100/us-west-2: +------------------------------------------------------------+
+400300200100/us-west-2: ||                          Topics                          ||
+400300200100/us-west-2: |+----------------------------------------------------------+|
+400300200100/us-west-2: ||                         TopicArn                         ||
+400300200100/us-west-2: |+----------------------------------------------------------+|
+400300200100/us-west-2: ||  arn:aws:sns:us-west-2:400300200100:topic-name-x         ||
+400300200100/us-west-2: ||  arn:aws:sns:us-west-2:400300200100:topic-name-y         ||
+400300200100/us-west-2: ||  arn:aws:sns:us-west-2:400300200100:topic-name-z         ||
+400300200100/us-west-2: |+----------------------------------------------------------+|
+</code></pre>
+<p>JSON output is annotated by wrapping embedding the JSON output from AWS CLI in a
+new JSON object with three keys: <code>Account</code>, <code>Region</code>, and <code>Results</code>, where
+<code>Results</code> contains the output from the AWS CLI.</p>
+<pre><code>$ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate json sns list-topics
+{
+    "Account": "100200300400",
+    "Region": "us-west-2",
+    "Results": {
+        "Topics": [
+            {
+                "TopicArn": "arn:aws:sns:us-west-2:100200300400:topic-name-a"
+            },
+            {
+                "TopicArn": "arn:aws:sns:us-west-2:100200300400:topic-name-b"
+            }
+        ]
+    }
+}
+{
+    "Account": "400300200100",
+    "Region": "us-west-2",
+    "Results": {
+        "Topics": [
+            {
+                "TopicArn": "arn:aws:sns:us-west-2:400300200100:topic-name-x"
+            },
+            {
+                "TopicArn": "arn:aws:sns:us-west-2:400300200100:topic-name-y"
+            },
+            {
+                "TopicArn": "arn:aws:sns:us-west-2:400300200100:topic-name-z"
+            }
+        ]
+    }
+}
+</code></pre>
+<h3 id="output-to-a-directory">Output to a Directory</h3>
+<p>In addition to the output that is sent to the console, the standard output and
+error of each AWS CLI command can be saved to a directory by specifying the
+<code>--awsrun-output-dir DIR</code> option. If <code>DIR</code> does not exist, it will be created.
+The standard output will be saved in a file named <code>ACCOUNT-REGION.stdout.log</code>. If
+there was output sent to standard error, it is saved in <code>ACCOUNT-REGION.stderr.log</code>.</p>
+<pre><code>$ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-output-dir /tmp/aws --awsrun-annotate text sns list-topics
+100200300400/us-west-2: TOPICS  arn:aws:sns:us-west-2:100200300400:topic-a
+100200300400/us-west-2: TOPICS  arn:aws:sns:us-west-2:100200300400:topic-b
+400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-x
+400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-y
+400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-z
+
+$ ls -l /tmp/aws
+-rw-r--r--  1 me  wheel  122 Jul 28 11:13 100200300400-us-west-2.stdout
+-rw-r--r--  1 me  wheel  180 Jul 28 11:13 400300200100-us-west-2.stdout
+</code></pre>
+<p>Annotations are not added to the output sent to the files. The files contain the
+raw output that came direct from the AWS CLI invocation:</p>
+<pre><code>$ cat /tmp/aws/100200300400-us-west-2.stdout
+TOPICS  arn:aws:sns:us-west-2:100200300400:topic-a
+TOPICS  arn:aws:sns:us-west-2:100200300400:topic-b
+</code></pre>
+<h3 id="note-about-option-names">Note about Option Names</h3>
+<p>In most cases, awsrun command plug-ins do not prefix their option names with
+<code>--awsrun-</code> because the command options must come after the command on the
+command line, so there is a clear distinction between awsrun options and command
+options:</p>
+<pre><code>$ awsrun --account 400300200100 command --region us-west-2 --flag --option value
+         ^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    |              |              |
+              awsrun options    command    command options
+</code></pre>
+<p>As a result, there is no namespace collision with core awsrun options and
+command options. However, in the case of this <code>aws</code> command, the two option
+names are prefixed with <code>--awsrun-</code> because they are specified alongside AWS CLI
+options and arguments. This is to avoid naming collisions with AWS CLI options:</p>
+<pre><code>$ awsrun --account 100200300400 aws --region us-west-2 --awsrun-annotate text sns list-topics
+         ^^^^^^^^^^^^^^^^^^^^^^ ^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    |            |                     |
+              awsrun options  command    AWS CLI args and Plug-in options
+</code></pre>
+<h3 id="tips-on-parsing-json-output">Tips on Parsing JSON Output</h3>
+<p>When collecting output across many accounts, it can be very helpful to limit the
+output from AWS CLI to the elements you are seeking using the builtin AWS CLI
+<code>--query</code> option. Usage of this feature is beyond the scope of this document,
+but details can be found in the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-output.html#cli-usage-output-filter">AWS CLI
+Documentation</a>.
+For example, here is the truncated output of the <code>ec2 describe-vpcs</code> AWS CLI
+command as executed by awsrun aws command:</p>
+<pre><code>$ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate json ec2 describe-vpcs
+{
+    "Account": "100200300400",
+    "Region": "us-west-2",
+    "Results": {
+        "Vpcs": [
+            {
+                "CidrBlock": "10.10.124.0/23",
+                "DhcpOptionsId": "dopt-dcf20ed3942e77d9",
+                "State": "available",
+                "VpcId": "vpc-0ff9d61630c8bac7",
+                ...
+            }
+        ]
+    }
+}
+{
+    "Account": "400300200100",
+    "Region": "us-west-2",
+    "Results": {
+        "Vpcs": [
+            {
+                "CidrBlock": "10.10.224.0/24",
+                "DhcpOptionsId": "dopt-aaea912755d7c81c",
+                "State": "available",
+                "VpcId": "vpc-b1bb4c799a70d523",
+                ...
+            }
+        ]
+    }
+}
+</code></pre>
+<p>Using the AWS CLI <code>--query</code> option allows one to filter the output. To list only
+the primary <code>CidrBlock</code> associated with each VPC, use the filter
+<code>'Vpcs[].CidrBlock'</code>:</p>
+<pre><code>$ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate json ec2 describe-vpcs --query 'Vpcs[].CidrBlock'
+{
+    "Account": "100200300400",
+    "Region": "us-west-2",
+    "Results": [
+        "10.10.124.0/23"
+    ]
+}
+{
+    "Account": "400300200100",
+    "Region": "us-west-2",
+    "Results": [
+        "10.10.224.0/24"
+    ]
+}
+</code></pre>
+<p>The same could be accomplished with other tools such as
+<a href="https://stedolan.github.io/jq/">jq</a>. These tools can be invaluable when parsing
+the aggregated JSON output. Using <code>jq</code> to parse the full output of <code>ec2
+describe-vpcs</code>, the list of CIDR blocks can be extracted by:</p>
+<pre><code>$ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate json ec2 describe-vpcs | jq '{acct: .Account, region: .Region, cidrs: [.Results.Vpcs[].CidrBlock]}'
+{
+    "acct": "100200300400",
+    "region": "us-west-2",
+    "cidrs": [
+        "10.10.124.0/23"
+    ]
+}
+{
+    "acct": "400300200100",
+    "region": "us-west-2",
+    "cidrs": [
+        "10.10.224.0/24"
+    ]
+}
+</code></pre>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;Adapter for the AWS Command Line Interface (CLI).
+
+## Overview
+
+The `aws` command plug-in is a thin wrapper around the standard [AWS
+CLI](https://docs.aws.amazon.com/cli/latest/reference/index.html) provided by
+AWS. This allows AWS CLI commands to be executed across multiple accounts in a
+concurrent manner. By creating an adapter, awsrun eliminates the need for the
+user to download credentials to their ~/.aws/credentials file and simplifies
+account selection through awsrun&#39;s advanced filtering capabilities.
+
+For example, to list all of the SNS topics in two AWS accounts using the
+standard AWS CLI tool, a user would need to obtain the credentials for those two
+accounts and update their local credentials file, and then run the following two
+commands sequentially:
+
+    $ aws --profile 100200300400 --region us-west-2 --output text sns list-topics
+    TOPICS  arn:aws:sns:us-west-2:100200300400:topic-a
+    TOPICS  arn:aws:sns:us-west-2:100200300400:topic-b
+
+    $ aws --profile 400300200100 --region us-west-2 --output text sns list-topics
+    TOPICS  arn:aws:sns:us-west-2:400300200100:topic-x
+    TOPICS  arn:aws:sns:us-west-2:400300200100:topic-y
+    TOPICS  arn:aws:sns:us-west-2:400300200100:topic-z
+
+By using the awsrun `aws` command, the results can be fetched concurrently for
+both accounts with a single command, and without the need for the user to
+install credentials for each account in their ~/.aws/credentials file. The
+default output is the concatenation of the results from the individual AWS CLI
+invocations:
+
+    $ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --output text sns list-topics
+    TOPICS  arn:aws:sns:us-west-2:100200300400:topic-a
+    TOPICS  arn:aws:sns:us-west-2:100200300400:topic-b
+    TOPICS  arn:aws:sns:us-west-2:400300200100:topic-x
+    TOPICS  arn:aws:sns:us-west-2:400300200100:topic-y
+    TOPICS  arn:aws:sns:us-west-2:400300200100:topic-z
+
+## Reference
+
+### Synopsis
+
+    $ awsrun [options] aws [command options]
+
+The command options can be any of the options used with the standard AWS CLI
+command with two minor differences. The user does not have to provide the
+`--profile` flags. Why? awsrun provides the credentials for each account
+selected using the one of the `awsrun.plugins.creds.aws` plug-ins. The second
+difference is that users can specify more than one `--region` argument to run
+the command across multiple regions.
+
+### Configuration
+
+The following is the syntax for the options that can be specified in the user
+configuration file:
+
+    Commands:
+      aws:
+        awsrun_output_dir: STRING
+        awsrun_annotate: (&#34;json&#34; | &#34;table&#34; | &#34;text&#34;)
+        region:
+          - STRING
+
+### Command Options
+
+Some options can be overridden on the awsrun CLI via command line flags. In
+those cases, the CLI flags are specified next to the option name below:
+
+`awsrun_output_dir`, `--awsrun-output-dir`
+:  Save both the standard output and standard error for each account and
+region processed in the specified directory. The files called will be called
+`ACCOUNT-REGION.stdout.log` and `ACCOUNT-REGION.stderr.log`. If the directory
+does not exist, it is created.
+
+`awsrun_annotate`, `--awsrun-annotate`
+:  Specifies the output format for the AWS CLI command and annotates that
+format appropriately with account and region information. Must be one of
+&#34;json&#34;, &#34;table&#34;, or &#34;text&#34;. See use guide for more information.
+
+`region`, `--region`
+:  Run the AWS CLI command in the specified regions. When specifying multiple
+values on the command line, use multiple flags for each value.
+
+## User Guide
+
+The follow section is a user guide on how to use the `aws` command effectively.
+
+### Output Formats
+
+As stated before, the output from the awsrun `aws` command is the same as that
+from the AWS CLI tool with the exception that results are concatenated together.
+Most AWS CLI commands provide three different output formats: `text`, `table`,
+and `json`, which are specified by the `--output` option. These can be used with
+this plug-in as well.
+
+JSON results:
+
+    $ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --output json sns list-topics
+    {
+        &#34;Topics&#34;: [
+            {
+                &#34;TopicArn&#34;: &#34;arn:aws:sns:us-west-2:100200300400:topic-name-a&#34;
+            },
+            {
+                &#34;TopicArn&#34;: &#34;arn:aws:sns:us-west-2:100200300400:topic-name-b&#34;
+            }
+        ]
+    }
+    {
+        &#34;Topics&#34;: [
+            {
+                &#34;TopicArn&#34;: &#34;arn:aws:sns:us-west-2:400300200100:topic-name-x&#34;
+            },
+            {
+                &#34;TopicArn&#34;: &#34;arn:aws:sns:us-west-2:400300200100:topic-name-y&#34;
+            },
+            {
+                &#34;TopicArn&#34;: &#34;arn:aws:sns:us-west-2:400300200100:topic-name-z&#34;
+            }
+        ]
+    }
+
+Table results:
+
+    $ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --output table sns list-topics
+    --------------------------------------------------------------
+    |                         ListTopics                         |
+    +------------------------------------------------------------+
+    ||                          Topics                          ||
+    |+----------------------------------------------------------+|
+    ||                         TopicArn                         ||
+    |+----------------------------------------------------------+|
+    ||  arn:aws:sns:us-west-2:100200300400:topic-name-a         ||
+    ||  arn:aws:sns:us-west-2:100200300400:topic-name-b         ||
+    |+----------------------------------------------------------+|
+    --------------------------------------------------------------
+    |                         ListTopics                         |
+    +------------------------------------------------------------+
+    ||                          Topics                          ||
+    |+----------------------------------------------------------+|
+    ||                         TopicArn                         ||
+    |+----------------------------------------------------------+|
+    ||  arn:aws:sns:us-west-2:400300200100:topic-name-x         ||
+    ||  arn:aws:sns:us-west-2:400300200100:topic-name-y         ||
+    ||  arn:aws:sns:us-west-2:400300200100:topic-name-z         ||
+    |+----------------------------------------------------------+|
+
+
+### Annotating the Output
+
+In some cases, the output from an AWS CLI command does not contain enough
+information to identify the account it came from. When using the standard AWS
+CLI tool, this is not a problem because it only operates on a single account.
+The awsrun command, however, operates on multiple accounts simultaneously
+displaying the output as each account is processed. How is one supposed to
+discern one result from another?
+
+To solve that problem, this awsrun command plug-in can annotate the output by
+using the `--awsrun-annotate` flag.  This flag takes one parameter, which is the
+output format to be annotated: `text`, `table`, or `json`. When using this flag,
+it is redundant and unnecessary to provide the `--output` option. By using the
+annotation feature, it is trivial to identify which account and region the
+output came from.
+
+When annotating text and table output, each line is prefixed with the account
+and region of where the result came from. Here are the text and table examples
+from above with annotations enabled:
+
+    $ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate text sns list-topics
+    100200300400/us-west-2: TOPICS  arn:aws:sns:us-west-2:100200300400:topic-a
+    100200300400/us-west-2: TOPICS  arn:aws:sns:us-west-2:100200300400:topic-b
+    400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-x
+    400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-y
+    400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-z
+
+    $ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate table sns list-topics
+    100200300400/us-west-2: --------------------------------------------------------------
+    100200300400/us-west-2: |                         ListTopics                         |
+    100200300400/us-west-2: +------------------------------------------------------------+
+    100200300400/us-west-2: ||                          Topics                          ||
+    100200300400/us-west-2: |+----------------------------------------------------------+|
+    100200300400/us-west-2: ||                         TopicArn                         ||
+    100200300400/us-west-2: |+----------------------------------------------------------+|
+    100200300400/us-west-2: ||  arn:aws:sns:us-west-2:100200300400:topic-name-a         ||
+    100200300400/us-west-2: ||  arn:aws:sns:us-west-2:100200300400:topic-name-b         ||
+    100200300400/us-west-2: |+----------------------------------------------------------+|
+    400300200100/us-west-2: --------------------------------------------------------------
+    400300200100/us-west-2: |                         ListTopics                         |
+    400300200100/us-west-2: +------------------------------------------------------------+
+    400300200100/us-west-2: ||                          Topics                          ||
+    400300200100/us-west-2: |+----------------------------------------------------------+|
+    400300200100/us-west-2: ||                         TopicArn                         ||
+    400300200100/us-west-2: |+----------------------------------------------------------+|
+    400300200100/us-west-2: ||  arn:aws:sns:us-west-2:400300200100:topic-name-x         ||
+    400300200100/us-west-2: ||  arn:aws:sns:us-west-2:400300200100:topic-name-y         ||
+    400300200100/us-west-2: ||  arn:aws:sns:us-west-2:400300200100:topic-name-z         ||
+    400300200100/us-west-2: |+----------------------------------------------------------+|
+
+JSON output is annotated by wrapping embedding the JSON output from AWS CLI in a
+new JSON object with three keys: `Account`, `Region`, and `Results`, where
+`Results` contains the output from the AWS CLI.
+
+    $ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate json sns list-topics
+    {
+        &#34;Account&#34;: &#34;100200300400&#34;,
+        &#34;Region&#34;: &#34;us-west-2&#34;,
+        &#34;Results&#34;: {
+            &#34;Topics&#34;: [
+                {
+                    &#34;TopicArn&#34;: &#34;arn:aws:sns:us-west-2:100200300400:topic-name-a&#34;
+                },
+                {
+                    &#34;TopicArn&#34;: &#34;arn:aws:sns:us-west-2:100200300400:topic-name-b&#34;
+                }
+            ]
+        }
+    }
+    {
+        &#34;Account&#34;: &#34;400300200100&#34;,
+        &#34;Region&#34;: &#34;us-west-2&#34;,
+        &#34;Results&#34;: {
+            &#34;Topics&#34;: [
+                {
+                    &#34;TopicArn&#34;: &#34;arn:aws:sns:us-west-2:400300200100:topic-name-x&#34;
+                },
+                {
+                    &#34;TopicArn&#34;: &#34;arn:aws:sns:us-west-2:400300200100:topic-name-y&#34;
+                },
+                {
+                    &#34;TopicArn&#34;: &#34;arn:aws:sns:us-west-2:400300200100:topic-name-z&#34;
+                }
+            ]
+        }
+    }
+
+### Output to a Directory
+
+In addition to the output that is sent to the console, the standard output and
+error of each AWS CLI command can be saved to a directory by specifying the
+`--awsrun-output-dir DIR` option. If `DIR` does not exist, it will be created.
+The standard output will be saved in a file named `ACCOUNT-REGION.stdout.log`. If
+there was output sent to standard error, it is saved in `ACCOUNT-REGION.stderr.log`.
+
+    $ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-output-dir /tmp/aws --awsrun-annotate text sns list-topics
+    100200300400/us-west-2: TOPICS  arn:aws:sns:us-west-2:100200300400:topic-a
+    100200300400/us-west-2: TOPICS  arn:aws:sns:us-west-2:100200300400:topic-b
+    400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-x
+    400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-y
+    400300200100/us-west-2: TOPICS  arn:aws:sns:us-west-2:400300200100:topic-z
+
+    $ ls -l /tmp/aws
+    -rw-r--r--  1 me  wheel  122 Jul 28 11:13 100200300400-us-west-2.stdout
+    -rw-r--r--  1 me  wheel  180 Jul 28 11:13 400300200100-us-west-2.stdout
+
+Annotations are not added to the output sent to the files. The files contain the
+raw output that came direct from the AWS CLI invocation:
+
+    $ cat /tmp/aws/100200300400-us-west-2.stdout
+    TOPICS  arn:aws:sns:us-west-2:100200300400:topic-a
+    TOPICS  arn:aws:sns:us-west-2:100200300400:topic-b
+
+### Note about Option Names
+
+In most cases, awsrun command plug-ins do not prefix their option names with
+`--awsrun-` because the command options must come after the command on the
+command line, so there is a clear distinction between awsrun options and command
+options:
+
+    $ awsrun --account 400300200100 command --region us-west-2 --flag --option value
+             ^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        |              |              |
+                  awsrun options    command    command options
+
+As a result, there is no namespace collision with core awsrun options and
+command options. However, in the case of this `aws` command, the two option
+names are prefixed with `--awsrun-` because they are specified alongside AWS CLI
+options and arguments. This is to avoid naming collisions with AWS CLI options:
+
+    $ awsrun --account 100200300400 aws --region us-west-2 --awsrun-annotate text sns list-topics
+             ^^^^^^^^^^^^^^^^^^^^^^ ^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        |            |                     |
+                  awsrun options  command    AWS CLI args and Plug-in options
+
+### Tips on Parsing JSON Output
+
+When collecting output across many accounts, it can be very helpful to limit the
+output from AWS CLI to the elements you are seeking using the builtin AWS CLI
+`--query` option. Usage of this feature is beyond the scope of this document,
+but details can be found in the [AWS CLI
+Documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-output.html#cli-usage-output-filter).
+For example, here is the truncated output of the `ec2 describe-vpcs` AWS CLI
+command as executed by awsrun aws command:
+
+    $ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate json ec2 describe-vpcs
+    {
+        &#34;Account&#34;: &#34;100200300400&#34;,
+        &#34;Region&#34;: &#34;us-west-2&#34;,
+        &#34;Results&#34;: {
+            &#34;Vpcs&#34;: [
+                {
+                    &#34;CidrBlock&#34;: &#34;10.10.124.0/23&#34;,
+                    &#34;DhcpOptionsId&#34;: &#34;dopt-dcf20ed3942e77d9&#34;,
+                    &#34;State&#34;: &#34;available&#34;,
+                    &#34;VpcId&#34;: &#34;vpc-0ff9d61630c8bac7&#34;,
+                    ...
+                }
+            ]
+        }
+    }
+    {
+        &#34;Account&#34;: &#34;400300200100&#34;,
+        &#34;Region&#34;: &#34;us-west-2&#34;,
+        &#34;Results&#34;: {
+            &#34;Vpcs&#34;: [
+                {
+                    &#34;CidrBlock&#34;: &#34;10.10.224.0/24&#34;,
+                    &#34;DhcpOptionsId&#34;: &#34;dopt-aaea912755d7c81c&#34;,
+                    &#34;State&#34;: &#34;available&#34;,
+                    &#34;VpcId&#34;: &#34;vpc-b1bb4c799a70d523&#34;,
+                    ...
+                }
+            ]
+        }
+    }
+
+Using the AWS CLI `--query` option allows one to filter the output. To list only
+the primary `CidrBlock` associated with each VPC, use the filter
+`&#39;Vpcs[].CidrBlock&#39;`:
+
+    $ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate json ec2 describe-vpcs --query &#39;Vpcs[].CidrBlock&#39;
+    {
+        &#34;Account&#34;: &#34;100200300400&#34;,
+        &#34;Region&#34;: &#34;us-west-2&#34;,
+        &#34;Results&#34;: [
+            &#34;10.10.124.0/23&#34;
+        ]
+    }
+    {
+        &#34;Account&#34;: &#34;400300200100&#34;,
+        &#34;Region&#34;: &#34;us-west-2&#34;,
+        &#34;Results&#34;: [
+            &#34;10.10.224.0/24&#34;
+        ]
+    }
+
+The same could be accomplished with other tools such as
+[jq](https://stedolan.github.io/jq/). These tools can be invaluable when parsing
+the aggregated JSON output. Using `jq` to parse the full output of `ec2
+describe-vpcs`, the list of CIDR blocks can be extracted by:
+
+    $ awsrun --account 100200300400 --account 400300200100 aws --region us-west-2 --awsrun-annotate json ec2 describe-vpcs | jq &#39;{acct: .Account, region: .Region, cidrs: [.Results.Vpcs[].CidrBlock]}&#39;
+    {
+        &#34;acct&#34;: &#34;100200300400&#34;,
+        &#34;region&#34;: &#34;us-west-2&#34;,
+        &#34;cidrs&#34;: [
+            &#34;10.10.124.0/23&#34;
+        ]
+    }
+    {
+        &#34;acct&#34;: &#34;400300200100&#34;,
+        &#34;region&#34;: &#34;us-west-2&#34;,
+        &#34;cidrs&#34;: [
+            &#34;10.10.224.0/24&#34;
+        ]
+    }
+&#34;&#34;&#34;
+
+import argparse
+import json
+import logging
+import os
+import re
+import shutil
+import subprocess
+import sys
+from collections import ChainMap
+from pathlib import Path
+
+from awsrun.config import StrMatch
+from awsrun.runner import RegionalCommand
+
+LOG = logging.getLogger(__name__)
+
+
+class CLICommand(RegionalCommand):
+    &#34;&#34;&#34;Execute aws cli commands concurrently.&#34;&#34;&#34;
+
+    @classmethod
+    def regional_from_cli(cls, parser, argv, cfg):
+        &#34;&#34;&#34;Parse command line arguments provided to this command.&#34;&#34;&#34;
+
+        # Note: normally one would not prefix an awsrun command&#39;s arguments with
+        # &#39;--awsrun-&#39;, but this is a special exception because there could be
+        # valid awscli args interspersed among the awsrun command flags. To
+        # avoid namespace collisions, the aws command args are prefixed.
+        parser.add_argument(
+            &#39;--awsrun-output-dir&#39;,
+            metavar=&#39;DIR&#39;,
+            default=cfg(&#39;awsrun_output_dir&#39;),
+            help=&#39;output directory to write results to separate files&#39;)
+
+        parser.add_argument(
+            &#39;--awsrun-annotate&#39;,
+            choices=[&#39;json&#39;, &#39;text&#39;, &#39;table&#39;],
+            default=cfg(&#39;awsrun_annotate&#39;, type=StrMatch(&#39;^(json|text|table)$&#39;)),
+            help=&#39;annotate each result with account / region&#39;)
+
+        # Let&#39;s gobble up any --profile or --output flags passed to the awscli
+        # command. We don&#39;t include these flags in the help message as they are
+        # really part of the awscli tool. We capture profile flags to remind
+        # users not to specify them. As for output flag, this is captured so we
+        # can make sure user does not try to specify a different output if they
+        # selected --awsrun-annotate. The types need to match.
+        parser.add_argument(&#39;--profile&#39;, help=argparse.SUPPRESS)
+        parser.add_argument(&#39;--output&#39;, help=argparse.SUPPRESS)
+
+        # We parse the known args and then collect the rest as those will be
+        # passed to the awscli command later.
+        args, remaining_args = parser.parse_known_args(argv)
+
+        if args.profile:
+            parser.error(&#34;Do not specify --profile aws CLI flag, it is supplied by awsrun&#34;)
+
+        if args.awsrun_annotate and args.output and args.awsrun_annotate != args.output:
+            parser.error(&#34;When specifying --awsrun-annotate, you do not need the --output flag&#34;)
+
+        return cls(
+            remaining_args,
+            regions=args.regions,
+            output=args.output,
+            output_dir=args.awsrun_output_dir,
+            annotate=args.awsrun_annotate)
+
+    def __init__(self, awscli_args, regions, output=None, output_dir=None, annotate=False):
+        super().__init__(regions)
+        self.awscli_args = awscli_args
+        self.output = output
+        self.annotate = annotate
+        self.output_dir = Path(output_dir) if output_dir else False
+
+        if self.output_dir:
+            self.output_dir.mkdir(parents=True, exist_ok=True)
+
+    def regional_execute(self, session, acct, region):
+        &#34;&#34;&#34;Invoke an AWS CLI command for an account and region.&#34;&#34;&#34;
+
+        # We need to assemble a valid AWS cli command line that can be executed
+        # by the operating system. The instance variable awscli_args contains
+        # all arguments that follow &#39;aws&#39;: awsrun -r us-east-1 aws ... We will
+        # provide the --region argument as we know the region we are processing.
+        # We will also provide --output if the user has asked us to annotate an
+        # output type. This ensures we override any user settings that the AWS
+        # cli tool may pick up from ~/.aws/config.
+        cmd = [shutil.which(&#39;aws&#39;), &#39;--region&#39;, region]
+        if self.annotate:
+            cmd += [&#39;--output&#39;, self.annotate]
+        elif self.output:
+            cmd += [&#39;--output&#39;, self.output]
+        cmd += self.awscli_args
+        LOG.info(&#34;%s-%s: AWS CLI command: %s&#34;, acct, region, cmd)
+
+        # Before we can execute the AWS cli tool, we need to set a few env vars
+        # with our creds. Normally, the AWS cli expects this file to exist in
+        # the user&#39;s home directory at ~/.aws/credentials.
+        creds = session.get_credentials()
+
+        new_vars = {
+            &#34;AWS_ACCESS_KEY_ID&#34;: creds.access_key,
+            &#34;AWS_SECRET_ACCESS_KEY&#34;: creds.secret_key,
+            &#34;AWS_SESSION_TOKEN&#34;: creds.token
+        }
+
+        env = ChainMap(new_vars, os.environ)
+
+        # We call run() and capture stdout and stderr from the command&#39;s
+        # output. Note: all the output is stored in memory, and then printed
+        # in collect_results. This means that if you run an AWS cli command
+        # that generates huge amounts of data, it&#39;ll all be stored in
+        # memory. Why don&#39;t we stream tho output from a pipe? We could use
+        # Popen directly, but if we returned from execute() before reading
+        # all of the results, then the worker will start another account, so
+        # in essence, all of the accounts will be &#34;executed&#34; immediately
+        # resulting in potentially many many AWS cli command processes
+        # running waiting for us to read the output.
+
+        result = subprocess.run(
+            cmd,
+            env=env,
+            universal_newlines=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+
+        # Lastly, we return the ProcessCompleted object from the run() method.
+        # Recall, an awsrun command can return anything if you provide your own
+        # collect_results method.
+        return result
+
+    def regional_collect_results(self, acct, region, get_result):
+        &#34;&#34;&#34;Print the results to the console and files if specified.&#34;&#34;&#34;
+
+        def annotate_lines(text, file=sys.stdout):
+            for line in filter(None, text.split(&#39;\n&#39;)):
+                print(f&#39;{acct}/{region}: {line}&#39;, file=file, flush=True)
+
+        def annotate_json(text):
+            try:
+                d = {&#39;Account&#39;: str(acct), &#39;Region&#39;: region, &#39;Results&#39;: json.loads(text)}
+                json.dump(d, sys.stdout, indent=4)
+                print()
+            except json.decoder.JSONDecodeError:
+                annotate_lines(&#39;Result of AWS CLI command is not valid JSON&#39;, file=sys.stderr)
+
+        try:
+            # Let&#39;s get the return value from the execute method, which is the
+            # ProcessCompleted object from the subprocess.run() method above ...
+            result = get_result()
+
+        except Exception as e:  # pylint: disable=broad-except
+            # ... unless there was an exception in which case it is raised by
+            # the call to get_result and we handle it here.
+            LOG.info(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
+            annotate_lines(f&#39;error: {e}&#39;, file=sys.stderr)
+            return
+
+        # Print stderr from AWS CLI always annotating the lines
+        annotate_lines(result.stderr, file=sys.stderr)
+
+        # Print stdout from AWS CLI annotating when appropriate
+        if not self.annotate:
+            print(result.stdout, end=&#39;&#39;, flush=True)
+        elif self.annotate == &#39;json&#39;:
+            annotate_json(result.stdout)
+        elif self.annotate in [&#39;text&#39;, &#39;table&#39;]:
+            annotate_lines(result.stdout)
+
+        # Save stdout and stderr from AWS CLI to disk if requested
+        if self.output_dir:
+            # Recall, the acct object passed to execute() can be anything. The
+            # str() method should provide us a unique means of identifying the
+            # account, but we need to escape any slashes if we use this as part
+            # of a filename so pathlib doesn&#39;t interpret as directories.
+            escaped = re.sub(r&#39;[\\/]&#39;, &#39;_&#39;, str(acct))
+            name = self.output_dir / f&#39;{escaped}-{region}&#39;
+
+            def save(suffix, text):
+                with name.with_suffix(suffix).open(&#39;w&#39;) as out:
+                    out.write(text)
+
+            save(&#39;.stdout.log&#39;, result.stdout)
+            if result.stderr:
+                save(&#39;.stderr.log&#39;, result.stderr)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.commands.aws.aws.CLICommand"><code class="flex name class">
+<span>class <span class="ident">CLICommand</span></span>
+<span>(</span><span>awscli_args, regions, output=None, output_dir=None, annotate=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Execute aws cli commands concurrently.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CLICommand(RegionalCommand):
+    &#34;&#34;&#34;Execute aws cli commands concurrently.&#34;&#34;&#34;
+
+    @classmethod
+    def regional_from_cli(cls, parser, argv, cfg):
+        &#34;&#34;&#34;Parse command line arguments provided to this command.&#34;&#34;&#34;
+
+        # Note: normally one would not prefix an awsrun command&#39;s arguments with
+        # &#39;--awsrun-&#39;, but this is a special exception because there could be
+        # valid awscli args interspersed among the awsrun command flags. To
+        # avoid namespace collisions, the aws command args are prefixed.
+        parser.add_argument(
+            &#39;--awsrun-output-dir&#39;,
+            metavar=&#39;DIR&#39;,
+            default=cfg(&#39;awsrun_output_dir&#39;),
+            help=&#39;output directory to write results to separate files&#39;)
+
+        parser.add_argument(
+            &#39;--awsrun-annotate&#39;,
+            choices=[&#39;json&#39;, &#39;text&#39;, &#39;table&#39;],
+            default=cfg(&#39;awsrun_annotate&#39;, type=StrMatch(&#39;^(json|text|table)$&#39;)),
+            help=&#39;annotate each result with account / region&#39;)
+
+        # Let&#39;s gobble up any --profile or --output flags passed to the awscli
+        # command. We don&#39;t include these flags in the help message as they are
+        # really part of the awscli tool. We capture profile flags to remind
+        # users not to specify them. As for output flag, this is captured so we
+        # can make sure user does not try to specify a different output if they
+        # selected --awsrun-annotate. The types need to match.
+        parser.add_argument(&#39;--profile&#39;, help=argparse.SUPPRESS)
+        parser.add_argument(&#39;--output&#39;, help=argparse.SUPPRESS)
+
+        # We parse the known args and then collect the rest as those will be
+        # passed to the awscli command later.
+        args, remaining_args = parser.parse_known_args(argv)
+
+        if args.profile:
+            parser.error(&#34;Do not specify --profile aws CLI flag, it is supplied by awsrun&#34;)
+
+        if args.awsrun_annotate and args.output and args.awsrun_annotate != args.output:
+            parser.error(&#34;When specifying --awsrun-annotate, you do not need the --output flag&#34;)
+
+        return cls(
+            remaining_args,
+            regions=args.regions,
+            output=args.output,
+            output_dir=args.awsrun_output_dir,
+            annotate=args.awsrun_annotate)
+
+    def __init__(self, awscli_args, regions, output=None, output_dir=None, annotate=False):
+        super().__init__(regions)
+        self.awscli_args = awscli_args
+        self.output = output
+        self.annotate = annotate
+        self.output_dir = Path(output_dir) if output_dir else False
+
+        if self.output_dir:
+            self.output_dir.mkdir(parents=True, exist_ok=True)
+
+    def regional_execute(self, session, acct, region):
+        &#34;&#34;&#34;Invoke an AWS CLI command for an account and region.&#34;&#34;&#34;
+
+        # We need to assemble a valid AWS cli command line that can be executed
+        # by the operating system. The instance variable awscli_args contains
+        # all arguments that follow &#39;aws&#39;: awsrun -r us-east-1 aws ... We will
+        # provide the --region argument as we know the region we are processing.
+        # We will also provide --output if the user has asked us to annotate an
+        # output type. This ensures we override any user settings that the AWS
+        # cli tool may pick up from ~/.aws/config.
+        cmd = [shutil.which(&#39;aws&#39;), &#39;--region&#39;, region]
+        if self.annotate:
+            cmd += [&#39;--output&#39;, self.annotate]
+        elif self.output:
+            cmd += [&#39;--output&#39;, self.output]
+        cmd += self.awscli_args
+        LOG.info(&#34;%s-%s: AWS CLI command: %s&#34;, acct, region, cmd)
+
+        # Before we can execute the AWS cli tool, we need to set a few env vars
+        # with our creds. Normally, the AWS cli expects this file to exist in
+        # the user&#39;s home directory at ~/.aws/credentials.
+        creds = session.get_credentials()
+
+        new_vars = {
+            &#34;AWS_ACCESS_KEY_ID&#34;: creds.access_key,
+            &#34;AWS_SECRET_ACCESS_KEY&#34;: creds.secret_key,
+            &#34;AWS_SESSION_TOKEN&#34;: creds.token
+        }
+
+        env = ChainMap(new_vars, os.environ)
+
+        # We call run() and capture stdout and stderr from the command&#39;s
+        # output. Note: all the output is stored in memory, and then printed
+        # in collect_results. This means that if you run an AWS cli command
+        # that generates huge amounts of data, it&#39;ll all be stored in
+        # memory. Why don&#39;t we stream tho output from a pipe? We could use
+        # Popen directly, but if we returned from execute() before reading
+        # all of the results, then the worker will start another account, so
+        # in essence, all of the accounts will be &#34;executed&#34; immediately
+        # resulting in potentially many many AWS cli command processes
+        # running waiting for us to read the output.
+
+        result = subprocess.run(
+            cmd,
+            env=env,
+            universal_newlines=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+
+        # Lastly, we return the ProcessCompleted object from the run() method.
+        # Recall, an awsrun command can return anything if you provide your own
+        # collect_results method.
+        return result
+
+    def regional_collect_results(self, acct, region, get_result):
+        &#34;&#34;&#34;Print the results to the console and files if specified.&#34;&#34;&#34;
+
+        def annotate_lines(text, file=sys.stdout):
+            for line in filter(None, text.split(&#39;\n&#39;)):
+                print(f&#39;{acct}/{region}: {line}&#39;, file=file, flush=True)
+
+        def annotate_json(text):
+            try:
+                d = {&#39;Account&#39;: str(acct), &#39;Region&#39;: region, &#39;Results&#39;: json.loads(text)}
+                json.dump(d, sys.stdout, indent=4)
+                print()
+            except json.decoder.JSONDecodeError:
+                annotate_lines(&#39;Result of AWS CLI command is not valid JSON&#39;, file=sys.stderr)
+
+        try:
+            # Let&#39;s get the return value from the execute method, which is the
+            # ProcessCompleted object from the subprocess.run() method above ...
+            result = get_result()
+
+        except Exception as e:  # pylint: disable=broad-except
+            # ... unless there was an exception in which case it is raised by
+            # the call to get_result and we handle it here.
+            LOG.info(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
+            annotate_lines(f&#39;error: {e}&#39;, file=sys.stderr)
+            return
+
+        # Print stderr from AWS CLI always annotating the lines
+        annotate_lines(result.stderr, file=sys.stderr)
+
+        # Print stdout from AWS CLI annotating when appropriate
+        if not self.annotate:
+            print(result.stdout, end=&#39;&#39;, flush=True)
+        elif self.annotate == &#39;json&#39;:
+            annotate_json(result.stdout)
+        elif self.annotate in [&#39;text&#39;, &#39;table&#39;]:
+            annotate_lines(result.stdout)
+
+        # Save stdout and stderr from AWS CLI to disk if requested
+        if self.output_dir:
+            # Recall, the acct object passed to execute() can be anything. The
+            # str() method should provide us a unique means of identifying the
+            # account, but we need to escape any slashes if we use this as part
+            # of a filename so pathlib doesn&#39;t interpret as directories.
+            escaped = re.sub(r&#39;[\\/]&#39;, &#39;_&#39;, str(acct))
+            name = self.output_dir / f&#39;{escaped}-{region}&#39;
+
+            def save(suffix, text):
+                with name.with_suffix(suffix).open(&#39;w&#39;) as out:
+                    out.write(text)
+
+            save(&#39;.stdout.log&#39;, result.stdout)
+            if result.stderr:
+                save(&#39;.stderr.log&#39;, result.stderr)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></li>
+<li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.aws.CLICommand.regional_from_cli"><code class="name flex">
+<span>def <span class="ident">regional_from_cli</span></span>(<span>parser, argv, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Parse command line arguments provided to this command.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def regional_from_cli(cls, parser, argv, cfg):
+    &#34;&#34;&#34;Parse command line arguments provided to this command.&#34;&#34;&#34;
+
+    # Note: normally one would not prefix an awsrun command&#39;s arguments with
+    # &#39;--awsrun-&#39;, but this is a special exception because there could be
+    # valid awscli args interspersed among the awsrun command flags. To
+    # avoid namespace collisions, the aws command args are prefixed.
+    parser.add_argument(
+        &#39;--awsrun-output-dir&#39;,
+        metavar=&#39;DIR&#39;,
+        default=cfg(&#39;awsrun_output_dir&#39;),
+        help=&#39;output directory to write results to separate files&#39;)
+
+    parser.add_argument(
+        &#39;--awsrun-annotate&#39;,
+        choices=[&#39;json&#39;, &#39;text&#39;, &#39;table&#39;],
+        default=cfg(&#39;awsrun_annotate&#39;, type=StrMatch(&#39;^(json|text|table)$&#39;)),
+        help=&#39;annotate each result with account / region&#39;)
+
+    # Let&#39;s gobble up any --profile or --output flags passed to the awscli
+    # command. We don&#39;t include these flags in the help message as they are
+    # really part of the awscli tool. We capture profile flags to remind
+    # users not to specify them. As for output flag, this is captured so we
+    # can make sure user does not try to specify a different output if they
+    # selected --awsrun-annotate. The types need to match.
+    parser.add_argument(&#39;--profile&#39;, help=argparse.SUPPRESS)
+    parser.add_argument(&#39;--output&#39;, help=argparse.SUPPRESS)
+
+    # We parse the known args and then collect the rest as those will be
+    # passed to the awscli command later.
+    args, remaining_args = parser.parse_known_args(argv)
+
+    if args.profile:
+        parser.error(&#34;Do not specify --profile aws CLI flag, it is supplied by awsrun&#34;)
+
+    if args.awsrun_annotate and args.output and args.awsrun_annotate != args.output:
+        parser.error(&#34;When specifying --awsrun-annotate, you do not need the --output flag&#34;)
+
+    return cls(
+        remaining_args,
+        regions=args.regions,
+        output=args.output,
+        output_dir=args.awsrun_output_dir,
+        annotate=args.awsrun_annotate)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.aws.CLICommand.regional_execute"><code class="name flex">
+<span>def <span class="ident">regional_execute</span></span>(<span>self, session, acct, region)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Invoke an AWS CLI command for an account and region.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def regional_execute(self, session, acct, region):
+    &#34;&#34;&#34;Invoke an AWS CLI command for an account and region.&#34;&#34;&#34;
+
+    # We need to assemble a valid AWS cli command line that can be executed
+    # by the operating system. The instance variable awscli_args contains
+    # all arguments that follow &#39;aws&#39;: awsrun -r us-east-1 aws ... We will
+    # provide the --region argument as we know the region we are processing.
+    # We will also provide --output if the user has asked us to annotate an
+    # output type. This ensures we override any user settings that the AWS
+    # cli tool may pick up from ~/.aws/config.
+    cmd = [shutil.which(&#39;aws&#39;), &#39;--region&#39;, region]
+    if self.annotate:
+        cmd += [&#39;--output&#39;, self.annotate]
+    elif self.output:
+        cmd += [&#39;--output&#39;, self.output]
+    cmd += self.awscli_args
+    LOG.info(&#34;%s-%s: AWS CLI command: %s&#34;, acct, region, cmd)
+
+    # Before we can execute the AWS cli tool, we need to set a few env vars
+    # with our creds. Normally, the AWS cli expects this file to exist in
+    # the user&#39;s home directory at ~/.aws/credentials.
+    creds = session.get_credentials()
+
+    new_vars = {
+        &#34;AWS_ACCESS_KEY_ID&#34;: creds.access_key,
+        &#34;AWS_SECRET_ACCESS_KEY&#34;: creds.secret_key,
+        &#34;AWS_SESSION_TOKEN&#34;: creds.token
+    }
+
+    env = ChainMap(new_vars, os.environ)
+
+    # We call run() and capture stdout and stderr from the command&#39;s
+    # output. Note: all the output is stored in memory, and then printed
+    # in collect_results. This means that if you run an AWS cli command
+    # that generates huge amounts of data, it&#39;ll all be stored in
+    # memory. Why don&#39;t we stream tho output from a pipe? We could use
+    # Popen directly, but if we returned from execute() before reading
+    # all of the results, then the worker will start another account, so
+    # in essence, all of the accounts will be &#34;executed&#34; immediately
+    # resulting in potentially many many AWS cli command processes
+    # running waiting for us to read the output.
+
+    result = subprocess.run(
+        cmd,
+        env=env,
+        universal_newlines=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+
+    # Lastly, we return the ProcessCompleted object from the run() method.
+    # Recall, an awsrun command can return anything if you provide your own
+    # collect_results method.
+    return result</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.aws.CLICommand.regional_collect_results"><code class="name flex">
+<span>def <span class="ident">regional_collect_results</span></span>(<span>self, acct, region, get_result)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Print the results to the console and files if specified.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def regional_collect_results(self, acct, region, get_result):
+    &#34;&#34;&#34;Print the results to the console and files if specified.&#34;&#34;&#34;
+
+    def annotate_lines(text, file=sys.stdout):
+        for line in filter(None, text.split(&#39;\n&#39;)):
+            print(f&#39;{acct}/{region}: {line}&#39;, file=file, flush=True)
+
+    def annotate_json(text):
+        try:
+            d = {&#39;Account&#39;: str(acct), &#39;Region&#39;: region, &#39;Results&#39;: json.loads(text)}
+            json.dump(d, sys.stdout, indent=4)
+            print()
+        except json.decoder.JSONDecodeError:
+            annotate_lines(&#39;Result of AWS CLI command is not valid JSON&#39;, file=sys.stderr)
+
+    try:
+        # Let&#39;s get the return value from the execute method, which is the
+        # ProcessCompleted object from the subprocess.run() method above ...
+        result = get_result()
+
+    except Exception as e:  # pylint: disable=broad-except
+        # ... unless there was an exception in which case it is raised by
+        # the call to get_result and we handle it here.
+        LOG.info(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
+        annotate_lines(f&#39;error: {e}&#39;, file=sys.stderr)
+        return
+
+    # Print stderr from AWS CLI always annotating the lines
+    annotate_lines(result.stderr, file=sys.stderr)
+
+    # Print stdout from AWS CLI annotating when appropriate
+    if not self.annotate:
+        print(result.stdout, end=&#39;&#39;, flush=True)
+    elif self.annotate == &#39;json&#39;:
+        annotate_json(result.stdout)
+    elif self.annotate in [&#39;text&#39;, &#39;table&#39;]:
+        annotate_lines(result.stdout)
+
+    # Save stdout and stderr from AWS CLI to disk if requested
+    if self.output_dir:
+        # Recall, the acct object passed to execute() can be anything. The
+        # str() method should provide us a unique means of identifying the
+        # account, but we need to escape any slashes if we use this as part
+        # of a filename so pathlib doesn&#39;t interpret as directories.
+        escaped = re.sub(r&#39;[\\/]&#39;, &#39;_&#39;, str(acct))
+        name = self.output_dir / f&#39;{escaped}-{region}&#39;
+
+        def save(suffix, text):
+            with name.with_suffix(suffix).open(&#39;w&#39;) as out:
+                out.write(text)
+
+        save(&#39;.stdout.log&#39;, result.stdout)
+        if result.stderr:
+            save(&#39;.stderr.log&#39;, result.stderr)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.RegionalCommand.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#reference">Reference</a><ul>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#command-options">Command Options</a></li>
+</ul>
+</li>
+<li><a href="#user-guide">User Guide</a><ul>
+<li><a href="#output-formats">Output Formats</a></li>
+<li><a href="#annotating-the-output">Annotating the Output</a></li>
+<li><a href="#output-to-a-directory">Output to a Directory</a></li>
+<li><a href="#note-about-option-names">Note about Option Names</a></li>
+<li><a href="#tips-on-parsing-json-output">Tips on Parsing JSON Output</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun.commands.aws" href="index.html">awsrun.commands.aws</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.commands.aws.aws.CLICommand" href="#awsrun.commands.aws.aws.CLICommand">CLICommand</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.aws.CLICommand.regional_from_cli" href="#awsrun.commands.aws.aws.CLICommand.regional_from_cli">regional_from_cli</a></code></li>
+<li><code><a title="awsrun.commands.aws.aws.CLICommand.regional_execute" href="#awsrun.commands.aws.aws.CLICommand.regional_execute">regional_execute</a></code></li>
+<li><code><a title="awsrun.commands.aws.aws.CLICommand.regional_collect_results" href="#awsrun.commands.aws.aws.CLICommand.regional_collect_results">regional_collect_results</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

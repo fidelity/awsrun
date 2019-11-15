@@ -1,0 +1,1699 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>awsrun.config API documentation</title>
+<meta name="description" content="Provides a YAML/JSON config file reader with type-checked values …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<style>
+body {
+/* Probably too small for most ...
+font-size: .9em;
+*/
+}
+code {
+font-size: .9em;
+}
+pre code {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.config</code></h1>
+</header>
+<section id="section-intro">
+<p>Provides a YAML/JSON config file reader with type-checked values.</p>
+<h2 id="overview">Overview</h2>
+<p><a title="awsrun.config.Config" href="#awsrun.config.Config"><code>Config</code></a> is a convenient representation of values stored within a dict, which
+may contain other dicts. It provides for default values, mandatory values, as
+well as the ability to type-check values using type specifications.
+<a title="awsrun.config.Config" href="#awsrun.config.Config"><code>Config</code></a>
+can be subclassed to provide parsers for various configuration file types. This
+module includes <a title="awsrun.config.JSONConfig" href="#awsrun.config.JSONConfig"><code>JSONConfig</code></a> and <a title="awsrun.config.YAMLConfig" href="#awsrun.config.YAMLConfig"><code>YAMLConfig</code></a> implementations. These file types
+are registered with the <a title="awsrun.config.Config" href="#awsrun.config.Config"><code>Config</code></a> class, so users can use the <a title="awsrun.config.Config.from_file" href="#awsrun.config.Config.from_file"><code>Config.from_file()</code></a>
+factory method, which takes a filename and loads the configuration using the
+appropriate implementation based on the file extension. Users can also register
+their own subclasses via <a title="awsrun.config.Config.register_filetype" href="#awsrun.config.Config.register_filetype"><code>Config.register_filetype()</code></a>.</p>
+<h2 id="type-checking">Type Checking</h2>
+<p>Type checking of values is done via a set of type objects and classes defined in
+this module. This provides a means to ensure that values in the configuration
+are of the correct type.
+Numerous simple types are provided by pre-defined type
+objects: <a title="awsrun.config.Str" href="#awsrun.config.Str"><code>Str</code></a>, <a title="awsrun.config.Int" href="#awsrun.config.Int"><code>Int</code></a>, <a title="awsrun.config.Bool" href="#awsrun.config.Bool"><code>Bool</code></a>, <a title="awsrun.config.Float" href="#awsrun.config.Float"><code>Float</code></a>, <a title="awsrun.config.File" href="#awsrun.config.File"><code>File</code></a>, <a title="awsrun.config.IP" href="#awsrun.config.IP"><code>IP</code></a>, and <a title="awsrun.config.Dotted" href="#awsrun.config.Dotted"><code>Dotted</code></a>. Several type
+classes are provided that can be instantiated to create more complex types:
+<a title="awsrun.config.StrMatch" href="#awsrun.config.StrMatch"><code>StrMatch</code></a>, <a title="awsrun.config.Any" href="#awsrun.config.Any"><code>Any</code></a>, <a title="awsrun.config.List" href="#awsrun.config.List"><code>List</code></a>, and <a title="awsrun.config.Dict" href="#awsrun.config.Dict"><code>Dict</code></a>. In addition, the combinators <a title="awsrun.config.Not" href="#awsrun.config.Not"><code>Not</code></a>,
+<a title="awsrun.config.And" href="#awsrun.config.And"><code>And</code></a>, and <a title="awsrun.config.Or" href="#awsrun.config.Or"><code>Or</code></a> can be used to combine any of these types.
+For example, the
+following type matches a dict with keys as strings and values as a list of ints
+or floats:</p>
+<pre><code>Dict(Str, List(Or(Int, Float)))
+</code></pre>
+<h2 id="reading-values">Reading Values</h2>
+<p>Assuming the file 'test.yaml' contains the following YAML:</p>
+<pre><code>verbose: true
+engine:
+    cpus: 4
+    threads: 10
+ip_addr: 10.0.0.1
+directories:
+    - /tmp
+    - /var/tmp
+</code></pre>
+<p><a title="awsrun.config.Config.get" href="#awsrun.config.Config.get"><code>Config.get()</code></a> is used to read values from the configuration. For example, to load
+the above file and read values from it:</p>
+<pre><code>c = Config.from_file('test.yaml')
+
+# Read top-level keys
+assert c.get('verbose', type=Bool) == True
+assert c.get('ip_addr', type=IP, must_exist=True) == '10.0.0.1'
+assert c.get('directories', type=List(Str), default=[]) == ['/tmp', '/var/tmp']
+
+# Read a hierarchical value by specifying multiple keys
+assert c.get('engine', 'threads', type=Int, default=5) == 10
+</code></pre>
+<p>If any of the values do not match the expected type, a <code>TypeError</code> is raised.
+Users can define their own custom types by subclassing <a title="awsrun.config.Type" href="#awsrun.config.Type"><code>Type</code></a>. Only two methods
+need to be implemented: <code>type_check</code> and <code>__str__</code>. Review the implementation of
+the included types if building your own.</p>
+<p>If multiple keys with the same name exist, the behavior is undefined when
+retrieving values. Depending on your Python version, you may get one or the
+other.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;Provides a YAML/JSON config file reader with type-checked values.
+
+## Overview
+
+`Config` is a convenient representation of values stored within a dict, which
+may contain other dicts. It provides for default values, mandatory values, as
+well as the ability to type-check values using type specifications.  `Config`
+can be subclassed to provide parsers for various configuration file types. This
+module includes `JSONConfig` and `YAMLConfig` implementations. These file types
+are registered with the `Config` class, so users can use the `Config.from_file`
+factory method, which takes a filename and loads the configuration using the
+appropriate implementation based on the file extension. Users can also register
+their own subclasses via `Config.register_filetype`.
+
+## Type Checking
+
+Type checking of values is done via a set of type objects and classes defined in
+this module. This provides a means to ensure that values in the configuration
+are of the correct type.  Numerous simple types are provided by pre-defined type
+objects: `Str`, `Int`, `Bool`, `Float`, `File`, `IP`, and `Dotted`. Several type
+classes are provided that can be instantiated to create more complex types:
+`StrMatch`, `Any`, `List`, and `Dict`. In addition, the combinators `Not`,
+`And`, and `Or` can be used to combine any of these types.  For example, the
+following type matches a dict with keys as strings and values as a list of ints
+or floats:
+
+    Dict(Str, List(Or(Int, Float)))
+
+## Reading Values
+
+Assuming the file &#39;test.yaml&#39; contains the following YAML:
+
+    verbose: true
+    engine:
+        cpus: 4
+        threads: 10
+    ip_addr: 10.0.0.1
+    directories:
+        - /tmp
+        - /var/tmp
+
+`Config.get` is used to read values from the configuration. For example, to load
+the above file and read values from it:
+
+    c = Config.from_file(&#39;test.yaml&#39;)
+
+    # Read top-level keys
+    assert c.get(&#39;verbose&#39;, type=Bool) == True
+    assert c.get(&#39;ip_addr&#39;, type=IP, must_exist=True) == &#39;10.0.0.1&#39;
+    assert c.get(&#39;directories&#39;, type=List(Str), default=[]) == [&#39;/tmp&#39;, &#39;/var/tmp&#39;]
+
+    # Read a hierarchical value by specifying multiple keys
+    assert c.get(&#39;engine&#39;, &#39;threads&#39;, type=Int, default=5) == 10
+
+If any of the values do not match the expected type, a `TypeError` is raised.
+Users can define their own custom types by subclassing `Type`. Only two methods
+need to be implemented: `type_check` and `__str__`. Review the implementation of
+the included types if building your own.
+
+If multiple keys with the same name exist, the behavior is undefined when
+retrieving values. Depending on your Python version, you may get one or the
+other.
+&#34;&#34;&#34;
+
+import ipaddress
+import logging
+import re
+from functools import reduce
+from pathlib import Path
+
+LOG = logging.getLogger(__name__)
+
+# pylint: disable=unidiomatic-typecheck
+#
+# Because isinstance(True, int) is true, we do not rely on isinstance for our
+# type checking in this module as we want to match exact types. We don&#39;t want to
+# consider subclasses and True should not type check successfully against an
+# int.
+
+
+class Config:
+    &#34;&#34;&#34;A `Config` can read type-checked values from a Python dictionary.
+
+    This class provides an interface to read values from a dictionary while
+    providing for default values, mandatory values, as well as the ability to
+    type-check values. In addition, it can be used to dynamically instantiate
+    classes specified in the configuration. Finally, the class also contains a
+    registry of configuration parsers based on file extensions, so users can
+    load configs from files.
+    &#34;&#34;&#34;
+    _filetypes = {}
+
+    @classmethod
+    def register_filetype(cls, config_class, *extensions):
+        &#34;&#34;&#34;Register a parser for files with one of the specified extensions.
+
+        The registry is used to find the appropriate config parser when a
+        user invokes the `Config.from_file` factory method. Extensions should be
+        specified as &#39;.ext&#39;. Subsequent registrations for the same extension
+        will override the prior registration.
+        &#34;&#34;&#34;
+        for ext in extensions:
+            cls._filetypes[ext] = config_class
+
+    @classmethod
+    def from_file(cls, filename, must_exist=False):
+        &#34;&#34;&#34;Factory method to Load a `Config` from a filename.
+
+        This method uses the extension of the filename to determine the
+        configuration parser that should be used to instantiate a `Config`
+        object. If `must_exist` is true, a `FileNotFoundError` is raised if the
+        filename does not exist, otherwise an empty `Config` is returned.
+        &#34;&#34;&#34;
+        path = Path(filename)
+
+        if not path.is_file():
+            if must_exist:
+                raise FileNotFoundError(f&#39;Config file not found: {filename}&#39;)
+            return Config({})
+
+        if path.suffix not in cls._filetypes:
+            raise ValueError(f&#39;Unregistered file type extension: {path.suffix}&#39;)
+
+        with path.open() as f:
+            return cls._filetypes[path.suffix](f)
+
+    def __init__(self, d):
+        self.conf = d
+
+    def get(self, *keys, default=None, type=None, must_exist=False):  # pylint: disable=redefined-builtin
+        &#34;&#34;&#34;Return the specified value from the `Config`.
+
+        Specify the value to read by providing the keys required to reach the
+        value in the configuration. If the value is not found at the specified
+        key path, `None` or the `default` value is returned unless the
+        `must_exist` flag is `True`, in which case a `ValueError` is raised.
+
+        Values can be optionally type-checked to ensure it matches the specified
+        type. If the `type` matches the value in the configuration, the value is
+        returned, otherwise a `TypeError` is raised. Types are specified by
+        passing a `Type` object. There are numerous type objects defined in this
+        module. For example:
+
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Int)
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Bool)
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Float)
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Str)
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=StrMatch(r&#39;^\\d+-\\d+$&#39;))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=IP)
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(IP))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(Str))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(Dict(Int, Str)))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Dict(Str, Int))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Or(Int, Float))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=And(StrMatch(r&#39;\\d+&#39;), StrMatch(r&#39;[A-Z]&#39;)))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Not(Or(Int, Float)))
+        &#34;&#34;&#34;
+
+        # This one-liner will recursively follow a list of keys into a
+        # dictionary and return the value. If a key does not exist, return an
+        # empty dict.
+        try:
+            value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
+        except AttributeError:
+            raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;)
+
+        # If value is {} that means the key doesn&#39;t exist. If the must_exist
+        # flag was passed, then we raise a descriptive ValueError, otherwise we
+        # set it to the default.
+        if value == {}:
+            if must_exist:
+                raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: must be set&#34;)
+            else:
+                value = default
+
+        # If no value has been set in the config and none has been provided as a
+        # default, then return None.
+        if value is None:
+            return value
+
+        # If no type has been specified, then return the value in the config or
+        # the default without doing any type checking.
+        if not type:
+            return value
+
+        # Only return the value if it type checks correctly.
+        if type.type_check(value):
+            return value
+
+        # Finally, all other cases indicate a type error.
+        raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: not a {type}: {repr(value)}&#34;)
+
+
+EmptyConfig = Config({})
+&#34;&#34;&#34;Singleton representing an empty `Config`.&#34;&#34;&#34;
+
+
+class YAMLConfig(Config):
+    &#34;&#34;&#34;Loads a YAML configuration from a stream.&#34;&#34;&#34;
+    def __init__(self, stream):
+        import yaml
+        super().__init__(yaml.safe_load(stream))
+
+
+class JSONConfig(Config):
+    &#34;&#34;&#34;Loads a JSON configuration from a stream.&#34;&#34;&#34;
+    def __init__(self, stream):
+        import json
+        super().__init__(json.load(stream))
+
+
+Config.register_filetype(JSONConfig, &#39;.json&#39;, &#39;.jsn&#39;)
+Config.register_filetype(YAMLConfig, &#39;.yaml&#39;, &#39;.yml&#39;)
+
+
+class Type:
+    &#34;&#34;&#34;Represents a type that can be used in type-check comparisons.&#34;&#34;&#34;
+
+    def type_check(self, obj):
+        &#34;&#34;&#34;Returns true if obj is a type matching this `Type`.&#34;&#34;&#34;
+        raise NotImplementedError
+
+    def __str__(self):
+        &#34;&#34;&#34;Returns a string representing this `Type`.&#34;&#34;&#34;
+        raise NotImplementedError
+
+
+class Not(Type):
+    &#34;&#34;&#34;Represents a type that is not a type of `config_type`.
+
+    `config_type` must be an instance of `Type`.  For example:
+
+        Not(Str)
+        Not(StrMatch(r&#39;\\d+&#39;))
+        Not(List(Int))
+    &#34;&#34;&#34;
+
+    def __init__(self, config_type):
+        self.config_type = config_type
+
+    def type_check(self, obj):
+        return not self.config_type.type_check(obj)
+
+    def __str__(self):
+        return &#39;not &#39; + str(self.config_type)
+
+
+class Or(Type):
+    &#34;&#34;&#34;Represents a type that is one of the `config_types`.
+
+    `config_type` must be an instance of `Type`.  For example:
+
+        Or(Int, Float)
+        Or(StrMatch(r&#39;^file:&#39;), StrMatch(r&#39;^https?:&#39;))
+    &#34;&#34;&#34;
+    def __init__(self, *config_types):
+        self.config_types = config_types
+
+    def type_check(self, obj):
+        return any(t.type_check(obj) for t in self.config_types)
+
+    def __str__(self):
+        s = &#39; or &#39;.join(str(t) for t in self.config_types)
+        return &#39;(&#39; + s + &#39;)&#39;
+
+
+class And(Type):
+    &#34;&#34;&#34;Represents a type that is all of the `config_types`.
+
+    `config_type` must be an instance of `Type`.  For example:
+
+        And(StrMatch(r&#39;\\d&#39;), StrMatch(r&#39;[!@#$%^&amp;*()]&#39;))
+    &#34;&#34;&#34;
+    def __init__(self, *config_types):
+        self.config_types = config_types
+
+    def type_check(self, obj):
+        return all(t.type_check(obj) for t in self.config_types)
+
+    def __str__(self):
+        s = &#39; and &#39;.join(str(t) for t in self.config_types)
+        return &#39;(&#39; + s + &#39;)&#39;
+
+
+class Const(Type):
+    &#34;&#34;&#34;Represents a constant value.&#34;&#34;&#34;
+
+    def __init__(self, const):
+        self.const = const
+
+    def type_check(self, obj):
+        # Why do we bother checking the types if we are just going to test
+        # equality of the objects afterwards? Because True == 1 in python, so if
+        # we did not check types, then this would report incorrect results.
+        # Likewise, we cannot use isinstance here either as a bool is a subclass
+        # of int, so it would also report incorrect results.
+        if type(obj) != type(self.const):  # noqa: E721
+            return False
+        return obj == self.const
+
+    def __str__(self):
+        return f&#34;constant &#39;{self.const}&#39;&#34;
+
+
+class Choice(Or):
+    &#34;&#34;&#34;Represents a choice of constants.&#34;&#34;&#34;
+
+    def __init__(self, *constants):
+        super().__init__(*[Const(c) for c in constants])
+
+
+class Scalar(Type):
+    &#34;&#34;&#34;Represents a type that is a scalar matching `type`.
+
+    `type` must be one of the builtin Python scalar types. For example:
+
+        Scalar(str)
+        Scalar(int)
+        Scalar(bool)
+    &#34;&#34;&#34;
+
+    def __init__(self, type):  # pylint: disable=redefined-builtin
+        self.type = type
+
+    def type_check(self, obj):
+        return type(obj) == self.type
+
+    def __str__(self):
+        return self.type.__name__
+
+
+class StrMatch(Type):
+    &#34;&#34;&#34;Represents a string matching `pattern`.
+
+    `pattern` is matched using `re.search` so anchors should be explicit.
+    &#34;&#34;&#34;
+
+    def __init__(self, pattern):
+        self.pattern = pattern
+
+    def type_check(self, obj):
+        if type(obj) != str:
+            return False
+        return True if re.search(self.pattern, obj) else False
+
+    def __str__(self):
+        return f&#34;str matching &#39;{self.pattern}&#39;&#34;
+
+
+class IpAddress(Type):
+    &#34;&#34;&#34;Represents a string matching an IP address (v4 or v6).&#34;&#34;&#34;
+
+    def type_check(self, obj):
+        if type(obj) != str:
+            return False
+        try:
+            ipaddress.ip_address(obj)
+            return True
+        except ValueError:
+            return False
+
+    def __str__(self):
+        return &#39;IPv4 or IPv6 address&#39;
+
+
+class IpNetwork(Type):
+    &#34;&#34;&#34;Represents a string matching an IP network (v4 or v6).&#34;&#34;&#34;
+
+    def type_check(self, obj):
+        if type(obj) != str:
+            return False
+        try:
+            ipaddress.ip_network(obj)
+            return True
+        except ValueError:
+            return False
+
+    def __str__(self):
+        return &#39;IPv4 or IPv6 network&#39;
+
+
+class FileType(Type):
+    &#34;&#34;&#34;Represents a string pointing to an existing file.&#34;&#34;&#34;
+
+    def type_check(self, obj):
+        if type(obj) != str:
+            return False
+        return Path(obj).exists()
+
+    def __str__(self):
+        return &#39;existing file&#39;
+
+
+class AnyType(Type):
+    &#34;&#34;&#34;Represents any type.&#34;&#34;&#34;
+
+    def type_check(self, obj):
+        return True
+
+    def __str__(self):
+        return &#39;any type&#39;
+
+
+Str = Scalar(str)
+&#34;&#34;&#34;Singleton representing a str.&#34;&#34;&#34;
+
+Int = Scalar(int)
+&#34;&#34;&#34;Singleton representing an int.&#34;&#34;&#34;
+
+Bool = Scalar(bool)
+&#34;&#34;&#34;Singleton representing a bool.&#34;&#34;&#34;
+
+Float = Scalar(float)
+&#34;&#34;&#34;Singleton representing a float.&#34;&#34;&#34;
+
+Any = AnyType()
+&#34;&#34;&#34;Singleton representing any type.&#34;&#34;&#34;
+
+File = FileType()
+&#34;&#34;&#34;Singleton representing an existing filename.&#34;&#34;&#34;
+
+IP = IpAddress()
+&#34;&#34;&#34;Singleton representing an IP address (v4 or v6).&#34;&#34;&#34;
+
+IPNet = IpNetwork()
+&#34;&#34;&#34;Singleton representing an IP network (v4 or v6).&#34;&#34;&#34;
+
+Dotted = StrMatch(r&#39;^[^.]+(\.[^.]+)*$&#39;)
+&#34;&#34;&#34;Singleton representing a dotted Python path.&#34;&#34;&#34;
+
+URL = StrMatch(r&#39;^[^:]+://&#39;)
+&#34;&#34;&#34;Singleton representing a URL in the form of xxxx://.&#34;&#34;&#34;
+
+
+class List(Type):
+    &#34;&#34;&#34;Represents a list containing elements of `element_type`.
+
+    `element_type` must be an instance of `Type`. For example:
+
+        List(Str)
+        List(Int)
+        List(Dict(Str, Int))
+        List(StrMatch(r&#39;^https?://&#39;))
+    &#34;&#34;&#34;
+    def __init__(self, element_type):
+        self.element_type = element_type
+
+    def type_check(self, obj):
+        if type(obj) != list:
+            return False
+        return all(self.element_type.type_check(e) for e in obj)
+
+    def __str__(self):
+        return f&#39;list of {self.element_type}&#39;
+
+
+class Dict(Type):
+    &#34;&#34;&#34;Represents a dict containing keys of `key_type` and values of `value_type`.
+
+    `key_type` and `value_type` must be instances of `Type`. For example:
+
+        Dict(Str, Str)
+        Dict(Str, List(IP))
+        Dict(Str, List(Or(Int, Float)))
+    &#34;&#34;&#34;
+    def __init__(self, key_type, value_type):
+        self.key_type = key_type
+        self.value_type = value_type
+
+    def type_check(self, obj):
+        if type(obj) != dict:
+            return False
+        return (all(self.key_type.type_check(k) for k in obj.keys())
+                and all(self.value_type.type_check(v) for v in obj.values()))
+
+    def __str__(self):
+        return f&#39;dict with {self.key_type} keys and {self.value_type} values&#39;</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="awsrun.config.EmptyConfig"><code class="name">var <span class="ident">EmptyConfig</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing an empty <a title="awsrun.config.Config" href="#awsrun.config.Config"><code>Config</code></a>.</p></section>
+</dd>
+<dt id="awsrun.config.Str"><code class="name">var <span class="ident">Str</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing a str.</p></section>
+</dd>
+<dt id="awsrun.config.Int"><code class="name">var <span class="ident">Int</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing an int.</p></section>
+</dd>
+<dt id="awsrun.config.Bool"><code class="name">var <span class="ident">Bool</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing a bool.</p></section>
+</dd>
+<dt id="awsrun.config.Float"><code class="name">var <span class="ident">Float</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing a float.</p></section>
+</dd>
+<dt id="awsrun.config.Any"><code class="name">var <span class="ident">Any</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing any type.</p></section>
+</dd>
+<dt id="awsrun.config.File"><code class="name">var <span class="ident">File</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing an existing filename.</p></section>
+</dd>
+<dt id="awsrun.config.IP"><code class="name">var <span class="ident">IP</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing an IP address (v4 or v6).</p></section>
+</dd>
+<dt id="awsrun.config.IPNet"><code class="name">var <span class="ident">IPNet</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing an IP network (v4 or v6).</p></section>
+</dd>
+<dt id="awsrun.config.Dotted"><code class="name">var <span class="ident">Dotted</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing a dotted Python path.</p></section>
+</dd>
+<dt id="awsrun.config.URL"><code class="name">var <span class="ident">URL</span></code></dt>
+<dd>
+<section class="desc"><p>Singleton representing a URL in the form of xxxx://.</p></section>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.config.Config"><code class="flex name class">
+<span>class <span class="ident">Config</span></span>
+<span>(</span><span>d)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A <a title="awsrun.config.Config" href="#awsrun.config.Config"><code>Config</code></a> can read type-checked values from a Python dictionary.</p>
+<p>This class provides an interface to read values from a dictionary while
+providing for default values, mandatory values, as well as the ability to
+type-check values. In addition, it can be used to dynamically instantiate
+classes specified in the configuration. Finally, the class also contains a
+registry of configuration parsers based on file extensions, so users can
+load configs from files.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Config:
+    &#34;&#34;&#34;A `Config` can read type-checked values from a Python dictionary.
+
+    This class provides an interface to read values from a dictionary while
+    providing for default values, mandatory values, as well as the ability to
+    type-check values. In addition, it can be used to dynamically instantiate
+    classes specified in the configuration. Finally, the class also contains a
+    registry of configuration parsers based on file extensions, so users can
+    load configs from files.
+    &#34;&#34;&#34;
+    _filetypes = {}
+
+    @classmethod
+    def register_filetype(cls, config_class, *extensions):
+        &#34;&#34;&#34;Register a parser for files with one of the specified extensions.
+
+        The registry is used to find the appropriate config parser when a
+        user invokes the `Config.from_file` factory method. Extensions should be
+        specified as &#39;.ext&#39;. Subsequent registrations for the same extension
+        will override the prior registration.
+        &#34;&#34;&#34;
+        for ext in extensions:
+            cls._filetypes[ext] = config_class
+
+    @classmethod
+    def from_file(cls, filename, must_exist=False):
+        &#34;&#34;&#34;Factory method to Load a `Config` from a filename.
+
+        This method uses the extension of the filename to determine the
+        configuration parser that should be used to instantiate a `Config`
+        object. If `must_exist` is true, a `FileNotFoundError` is raised if the
+        filename does not exist, otherwise an empty `Config` is returned.
+        &#34;&#34;&#34;
+        path = Path(filename)
+
+        if not path.is_file():
+            if must_exist:
+                raise FileNotFoundError(f&#39;Config file not found: {filename}&#39;)
+            return Config({})
+
+        if path.suffix not in cls._filetypes:
+            raise ValueError(f&#39;Unregistered file type extension: {path.suffix}&#39;)
+
+        with path.open() as f:
+            return cls._filetypes[path.suffix](f)
+
+    def __init__(self, d):
+        self.conf = d
+
+    def get(self, *keys, default=None, type=None, must_exist=False):  # pylint: disable=redefined-builtin
+        &#34;&#34;&#34;Return the specified value from the `Config`.
+
+        Specify the value to read by providing the keys required to reach the
+        value in the configuration. If the value is not found at the specified
+        key path, `None` or the `default` value is returned unless the
+        `must_exist` flag is `True`, in which case a `ValueError` is raised.
+
+        Values can be optionally type-checked to ensure it matches the specified
+        type. If the `type` matches the value in the configuration, the value is
+        returned, otherwise a `TypeError` is raised. Types are specified by
+        passing a `Type` object. There are numerous type objects defined in this
+        module. For example:
+
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Int)
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Bool)
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Float)
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Str)
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=StrMatch(r&#39;^\\d+-\\d+$&#39;))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=IP)
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(IP))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(Str))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(Dict(Int, Str)))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Dict(Str, Int))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Or(Int, Float))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=And(StrMatch(r&#39;\\d+&#39;), StrMatch(r&#39;[A-Z]&#39;)))
+            c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Not(Or(Int, Float)))
+        &#34;&#34;&#34;
+
+        # This one-liner will recursively follow a list of keys into a
+        # dictionary and return the value. If a key does not exist, return an
+        # empty dict.
+        try:
+            value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
+        except AttributeError:
+            raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;)
+
+        # If value is {} that means the key doesn&#39;t exist. If the must_exist
+        # flag was passed, then we raise a descriptive ValueError, otherwise we
+        # set it to the default.
+        if value == {}:
+            if must_exist:
+                raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: must be set&#34;)
+            else:
+                value = default
+
+        # If no value has been set in the config and none has been provided as a
+        # default, then return None.
+        if value is None:
+            return value
+
+        # If no type has been specified, then return the value in the config or
+        # the default without doing any type checking.
+        if not type:
+            return value
+
+        # Only return the value if it type checks correctly.
+        if type.type_check(value):
+            return value
+
+        # Finally, all other cases indicate a type error.
+        raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: not a {type}: {repr(value)}&#34;)</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.YAMLConfig" href="#awsrun.config.YAMLConfig">YAMLConfig</a></li>
+<li><a title="awsrun.config.JSONConfig" href="#awsrun.config.JSONConfig">JSONConfig</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="awsrun.config.Config.register_filetype"><code class="name flex">
+<span>def <span class="ident">register_filetype</span></span>(<span>config_class, *extensions)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Register a parser for files with one of the specified extensions.</p>
+<p>The registry is used to find the appropriate config parser when a
+user invokes the <a title="awsrun.config.Config.from_file" href="#awsrun.config.Config.from_file"><code>Config.from_file()</code></a> factory method. Extensions should be
+specified as '.ext'. Subsequent registrations for the same extension
+will override the prior registration.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def register_filetype(cls, config_class, *extensions):
+    &#34;&#34;&#34;Register a parser for files with one of the specified extensions.
+
+    The registry is used to find the appropriate config parser when a
+    user invokes the `Config.from_file` factory method. Extensions should be
+    specified as &#39;.ext&#39;. Subsequent registrations for the same extension
+    will override the prior registration.
+    &#34;&#34;&#34;
+    for ext in extensions:
+        cls._filetypes[ext] = config_class</code></pre>
+</details>
+</dd>
+<dt id="awsrun.config.Config.from_file"><code class="name flex">
+<span>def <span class="ident">from_file</span></span>(<span>filename, must_exist=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Factory method to Load a <a title="awsrun.config.Config" href="#awsrun.config.Config"><code>Config</code></a> from a filename.</p>
+<p>This method uses the extension of the filename to determine the
+configuration parser that should be used to instantiate a <a title="awsrun.config.Config" href="#awsrun.config.Config"><code>Config</code></a>
+object. If <code>must_exist</code> is true, a <code>FileNotFoundError</code> is raised if the
+filename does not exist, otherwise an empty <a title="awsrun.config.Config" href="#awsrun.config.Config"><code>Config</code></a> is returned.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_file(cls, filename, must_exist=False):
+    &#34;&#34;&#34;Factory method to Load a `Config` from a filename.
+
+    This method uses the extension of the filename to determine the
+    configuration parser that should be used to instantiate a `Config`
+    object. If `must_exist` is true, a `FileNotFoundError` is raised if the
+    filename does not exist, otherwise an empty `Config` is returned.
+    &#34;&#34;&#34;
+    path = Path(filename)
+
+    if not path.is_file():
+        if must_exist:
+            raise FileNotFoundError(f&#39;Config file not found: {filename}&#39;)
+        return Config({})
+
+    if path.suffix not in cls._filetypes:
+        raise ValueError(f&#39;Unregistered file type extension: {path.suffix}&#39;)
+
+    with path.open() as f:
+        return cls._filetypes[path.suffix](f)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.config.Config.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self, *keys, default=None, type=None, must_exist=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Return the specified value from the <a title="awsrun.config.Config" href="#awsrun.config.Config"><code>Config</code></a>.</p>
+<p>Specify the value to read by providing the keys required to reach the
+value in the configuration. If the value is not found at the specified
+key path, <code>None</code> or the <code>default</code> value is returned unless the
+<code>must_exist</code> flag is <code>True</code>, in which case a <code>ValueError</code> is raised.</p>
+<p>Values can be optionally type-checked to ensure it matches the specified
+type. If the <code>type</code> matches the value in the configuration, the value is
+returned, otherwise a <code>TypeError</code> is raised. Types are specified by
+passing a <a title="awsrun.config.Type" href="#awsrun.config.Type"><code>Type</code></a> object. There are numerous type objects defined in this
+module. For example:</p>
+<pre><code>c.get('path', 'to', 'value', type=Int)
+c.get('path', 'to', 'value', type=Bool)
+c.get('path', 'to', 'value', type=Float)
+c.get('path', 'to', 'value', type=Str)
+c.get('path', 'to', 'value', type=StrMatch(r'^\d+-\d+$'))
+c.get('path', 'to', 'value', type=IP)
+c.get('path', 'to', 'value', type=List(IP))
+c.get('path', 'to', 'value', type=List(Str))
+c.get('path', 'to', 'value', type=List(Dict(Int, Str)))
+c.get('path', 'to', 'value', type=Dict(Str, Int))
+c.get('path', 'to', 'value', type=Or(Int, Float))
+c.get('path', 'to', 'value', type=And(StrMatch(r'\d+'), StrMatch(r'[A-Z]')))
+c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get(self, *keys, default=None, type=None, must_exist=False):  # pylint: disable=redefined-builtin
+    &#34;&#34;&#34;Return the specified value from the `Config`.
+
+    Specify the value to read by providing the keys required to reach the
+    value in the configuration. If the value is not found at the specified
+    key path, `None` or the `default` value is returned unless the
+    `must_exist` flag is `True`, in which case a `ValueError` is raised.
+
+    Values can be optionally type-checked to ensure it matches the specified
+    type. If the `type` matches the value in the configuration, the value is
+    returned, otherwise a `TypeError` is raised. Types are specified by
+    passing a `Type` object. There are numerous type objects defined in this
+    module. For example:
+
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Int)
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Bool)
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Float)
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Str)
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=StrMatch(r&#39;^\\d+-\\d+$&#39;))
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=IP)
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(IP))
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(Str))
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(Dict(Int, Str)))
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Dict(Str, Int))
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Or(Int, Float))
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=And(StrMatch(r&#39;\\d+&#39;), StrMatch(r&#39;[A-Z]&#39;)))
+        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Not(Or(Int, Float)))
+    &#34;&#34;&#34;
+
+    # This one-liner will recursively follow a list of keys into a
+    # dictionary and return the value. If a key does not exist, return an
+    # empty dict.
+    try:
+        value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
+    except AttributeError:
+        raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;)
+
+    # If value is {} that means the key doesn&#39;t exist. If the must_exist
+    # flag was passed, then we raise a descriptive ValueError, otherwise we
+    # set it to the default.
+    if value == {}:
+        if must_exist:
+            raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: must be set&#34;)
+        else:
+            value = default
+
+    # If no value has been set in the config and none has been provided as a
+    # default, then return None.
+    if value is None:
+        return value
+
+    # If no type has been specified, then return the value in the config or
+    # the default without doing any type checking.
+    if not type:
+        return value
+
+    # Only return the value if it type checks correctly.
+    if type.type_check(value):
+        return value
+
+    # Finally, all other cases indicate a type error.
+    raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: not a {type}: {repr(value)}&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.config.YAMLConfig"><code class="flex name class">
+<span>class <span class="ident">YAMLConfig</span></span>
+<span>(</span><span>stream)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Loads a YAML configuration from a stream.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class YAMLConfig(Config):
+    &#34;&#34;&#34;Loads a YAML configuration from a stream.&#34;&#34;&#34;
+    def __init__(self, stream):
+        import yaml
+        super().__init__(yaml.safe_load(stream))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Config" href="#awsrun.config.Config">Config</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Config" href="#awsrun.config.Config">Config</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Config.from_file" href="#awsrun.config.Config.from_file">from_file</a></code></li>
+<li><code><a title="awsrun.config.Config.get" href="#awsrun.config.Config.get">get</a></code></li>
+<li><code><a title="awsrun.config.Config.register_filetype" href="#awsrun.config.Config.register_filetype">register_filetype</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.JSONConfig"><code class="flex name class">
+<span>class <span class="ident">JSONConfig</span></span>
+<span>(</span><span>stream)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Loads a JSON configuration from a stream.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class JSONConfig(Config):
+    &#34;&#34;&#34;Loads a JSON configuration from a stream.&#34;&#34;&#34;
+    def __init__(self, stream):
+        import json
+        super().__init__(json.load(stream))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Config" href="#awsrun.config.Config">Config</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Config" href="#awsrun.config.Config">Config</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Config.from_file" href="#awsrun.config.Config.from_file">from_file</a></code></li>
+<li><code><a title="awsrun.config.Config.get" href="#awsrun.config.Config.get">get</a></code></li>
+<li><code><a title="awsrun.config.Config.register_filetype" href="#awsrun.config.Config.register_filetype">register_filetype</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.Type"><code class="flex name class">
+<span>class <span class="ident">Type</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a type that can be used in type-check comparisons.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Type:
+    &#34;&#34;&#34;Represents a type that can be used in type-check comparisons.&#34;&#34;&#34;
+
+    def type_check(self, obj):
+        &#34;&#34;&#34;Returns true if obj is a type matching this `Type`.&#34;&#34;&#34;
+        raise NotImplementedError
+
+    def __str__(self):
+        &#34;&#34;&#34;Returns a string representing this `Type`.&#34;&#34;&#34;
+        raise NotImplementedError</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Not" href="#awsrun.config.Not">Not</a></li>
+<li><a title="awsrun.config.Or" href="#awsrun.config.Or">Or</a></li>
+<li><a title="awsrun.config.And" href="#awsrun.config.And">And</a></li>
+<li><a title="awsrun.config.Const" href="#awsrun.config.Const">Const</a></li>
+<li><a title="awsrun.config.Scalar" href="#awsrun.config.Scalar">Scalar</a></li>
+<li><a title="awsrun.config.StrMatch" href="#awsrun.config.StrMatch">StrMatch</a></li>
+<li><a title="awsrun.config.IpAddress" href="#awsrun.config.IpAddress">IpAddress</a></li>
+<li><a title="awsrun.config.IpNetwork" href="#awsrun.config.IpNetwork">IpNetwork</a></li>
+<li><a title="awsrun.config.FileType" href="#awsrun.config.FileType">FileType</a></li>
+<li><a title="awsrun.config.AnyType" href="#awsrun.config.AnyType">AnyType</a></li>
+<li><a title="awsrun.config.List" href="#awsrun.config.List">List</a></li>
+<li><a title="awsrun.config.Dict" href="#awsrun.config.Dict">Dict</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.config.Type.type_check"><code class="name flex">
+<span>def <span class="ident">type_check</span></span>(<span>self, obj)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns true if obj is a type matching this <a title="awsrun.config.Type" href="#awsrun.config.Type"><code>Type</code></a>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def type_check(self, obj):
+    &#34;&#34;&#34;Returns true if obj is a type matching this `Type`.&#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.config.Not"><code class="flex name class">
+<span>class <span class="ident">Not</span></span>
+<span>(</span><span>config_type)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a type that is not a type of <code>config_type</code>.</p>
+<p><code>config_type</code> must be an instance of <a title="awsrun.config.Type" href="#awsrun.config.Type"><code>Type</code></a>.
+For example:</p>
+<pre><code>Not(Str)
+Not(StrMatch(r'\d+'))
+Not(List(Int))
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Not(Type):
+    &#34;&#34;&#34;Represents a type that is not a type of `config_type`.
+
+    `config_type` must be an instance of `Type`.  For example:
+
+        Not(Str)
+        Not(StrMatch(r&#39;\\d+&#39;))
+        Not(List(Int))
+    &#34;&#34;&#34;
+
+    def __init__(self, config_type):
+        self.config_type = config_type
+
+    def type_check(self, obj):
+        return not self.config_type.type_check(obj)
+
+    def __str__(self):
+        return &#39;not &#39; + str(self.config_type)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.Or"><code class="flex name class">
+<span>class <span class="ident">Or</span></span>
+<span>(</span><span>*config_types)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a type that is one of the <code>config_types</code>.</p>
+<p><code>config_type</code> must be an instance of <a title="awsrun.config.Type" href="#awsrun.config.Type"><code>Type</code></a>.
+For example:</p>
+<pre><code>Or(Int, Float)
+Or(StrMatch(r'^file:'), StrMatch(r'^https?:'))
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Or(Type):
+    &#34;&#34;&#34;Represents a type that is one of the `config_types`.
+
+    `config_type` must be an instance of `Type`.  For example:
+
+        Or(Int, Float)
+        Or(StrMatch(r&#39;^file:&#39;), StrMatch(r&#39;^https?:&#39;))
+    &#34;&#34;&#34;
+    def __init__(self, *config_types):
+        self.config_types = config_types
+
+    def type_check(self, obj):
+        return any(t.type_check(obj) for t in self.config_types)
+
+    def __str__(self):
+        s = &#39; or &#39;.join(str(t) for t in self.config_types)
+        return &#39;(&#39; + s + &#39;)&#39;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Choice" href="#awsrun.config.Choice">Choice</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.And"><code class="flex name class">
+<span>class <span class="ident">And</span></span>
+<span>(</span><span>*config_types)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a type that is all of the <code>config_types</code>.</p>
+<p><code>config_type</code> must be an instance of <a title="awsrun.config.Type" href="#awsrun.config.Type"><code>Type</code></a>.
+For example:</p>
+<pre><code>And(StrMatch(r'\d'), StrMatch(r'[!@#$%^&amp;*()]'))
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class And(Type):
+    &#34;&#34;&#34;Represents a type that is all of the `config_types`.
+
+    `config_type` must be an instance of `Type`.  For example:
+
+        And(StrMatch(r&#39;\\d&#39;), StrMatch(r&#39;[!@#$%^&amp;*()]&#39;))
+    &#34;&#34;&#34;
+    def __init__(self, *config_types):
+        self.config_types = config_types
+
+    def type_check(self, obj):
+        return all(t.type_check(obj) for t in self.config_types)
+
+    def __str__(self):
+        s = &#39; and &#39;.join(str(t) for t in self.config_types)
+        return &#39;(&#39; + s + &#39;)&#39;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.Const"><code class="flex name class">
+<span>class <span class="ident">Const</span></span>
+<span>(</span><span>const)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a constant value.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Const(Type):
+    &#34;&#34;&#34;Represents a constant value.&#34;&#34;&#34;
+
+    def __init__(self, const):
+        self.const = const
+
+    def type_check(self, obj):
+        # Why do we bother checking the types if we are just going to test
+        # equality of the objects afterwards? Because True == 1 in python, so if
+        # we did not check types, then this would report incorrect results.
+        # Likewise, we cannot use isinstance here either as a bool is a subclass
+        # of int, so it would also report incorrect results.
+        if type(obj) != type(self.const):  # noqa: E721
+            return False
+        return obj == self.const
+
+    def __str__(self):
+        return f&#34;constant &#39;{self.const}&#39;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.Choice"><code class="flex name class">
+<span>class <span class="ident">Choice</span></span>
+<span>(</span><span>*constants)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a choice of constants.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Choice(Or):
+    &#34;&#34;&#34;Represents a choice of constants.&#34;&#34;&#34;
+
+    def __init__(self, *constants):
+        super().__init__(*[Const(c) for c in constants])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Or" href="#awsrun.config.Or">Or</a></li>
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Or" href="#awsrun.config.Or">Or</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Or.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.Scalar"><code class="flex name class">
+<span>class <span class="ident">Scalar</span></span>
+<span>(</span><span>type)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a type that is a scalar matching <code>type</code>.</p>
+<p><code>type</code> must be one of the builtin Python scalar types. For example:</p>
+<pre><code>Scalar(str)
+Scalar(int)
+Scalar(bool)
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Scalar(Type):
+    &#34;&#34;&#34;Represents a type that is a scalar matching `type`.
+
+    `type` must be one of the builtin Python scalar types. For example:
+
+        Scalar(str)
+        Scalar(int)
+        Scalar(bool)
+    &#34;&#34;&#34;
+
+    def __init__(self, type):  # pylint: disable=redefined-builtin
+        self.type = type
+
+    def type_check(self, obj):
+        return type(obj) == self.type
+
+    def __str__(self):
+        return self.type.__name__</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.StrMatch"><code class="flex name class">
+<span>class <span class="ident">StrMatch</span></span>
+<span>(</span><span>pattern)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a string matching <code>pattern</code>.</p>
+<p><code>pattern</code> is matched using <code>re.search</code> so anchors should be explicit.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StrMatch(Type):
+    &#34;&#34;&#34;Represents a string matching `pattern`.
+
+    `pattern` is matched using `re.search` so anchors should be explicit.
+    &#34;&#34;&#34;
+
+    def __init__(self, pattern):
+        self.pattern = pattern
+
+    def type_check(self, obj):
+        if type(obj) != str:
+            return False
+        return True if re.search(self.pattern, obj) else False
+
+    def __str__(self):
+        return f&#34;str matching &#39;{self.pattern}&#39;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.IpAddress"><code class="flex name class">
+<span>class <span class="ident">IpAddress</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a string matching an IP address (v4 or v6).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IpAddress(Type):
+    &#34;&#34;&#34;Represents a string matching an IP address (v4 or v6).&#34;&#34;&#34;
+
+    def type_check(self, obj):
+        if type(obj) != str:
+            return False
+        try:
+            ipaddress.ip_address(obj)
+            return True
+        except ValueError:
+            return False
+
+    def __str__(self):
+        return &#39;IPv4 or IPv6 address&#39;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.IpNetwork"><code class="flex name class">
+<span>class <span class="ident">IpNetwork</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a string matching an IP network (v4 or v6).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IpNetwork(Type):
+    &#34;&#34;&#34;Represents a string matching an IP network (v4 or v6).&#34;&#34;&#34;
+
+    def type_check(self, obj):
+        if type(obj) != str:
+            return False
+        try:
+            ipaddress.ip_network(obj)
+            return True
+        except ValueError:
+            return False
+
+    def __str__(self):
+        return &#39;IPv4 or IPv6 network&#39;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.FileType"><code class="flex name class">
+<span>class <span class="ident">FileType</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a string pointing to an existing file.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FileType(Type):
+    &#34;&#34;&#34;Represents a string pointing to an existing file.&#34;&#34;&#34;
+
+    def type_check(self, obj):
+        if type(obj) != str:
+            return False
+        return Path(obj).exists()
+
+    def __str__(self):
+        return &#39;existing file&#39;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.AnyType"><code class="flex name class">
+<span>class <span class="ident">AnyType</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents any type.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AnyType(Type):
+    &#34;&#34;&#34;Represents any type.&#34;&#34;&#34;
+
+    def type_check(self, obj):
+        return True
+
+    def __str__(self):
+        return &#39;any type&#39;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.List"><code class="flex name class">
+<span>class <span class="ident">List</span></span>
+<span>(</span><span>element_type)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a list containing elements of <code>element_type</code>.</p>
+<p><code>element_type</code> must be an instance of <a title="awsrun.config.Type" href="#awsrun.config.Type"><code>Type</code></a>. For example:</p>
+<pre><code>List(Str)
+List(Int)
+List(Dict(Str, Int))
+List(StrMatch(r'^https?://'))
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class List(Type):
+    &#34;&#34;&#34;Represents a list containing elements of `element_type`.
+
+    `element_type` must be an instance of `Type`. For example:
+
+        List(Str)
+        List(Int)
+        List(Dict(Str, Int))
+        List(StrMatch(r&#39;^https?://&#39;))
+    &#34;&#34;&#34;
+    def __init__(self, element_type):
+        self.element_type = element_type
+
+    def type_check(self, obj):
+        if type(obj) != list:
+            return False
+        return all(self.element_type.type_check(e) for e in obj)
+
+    def __str__(self):
+        return f&#39;list of {self.element_type}&#39;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.config.Dict"><code class="flex name class">
+<span>class <span class="ident">Dict</span></span>
+<span>(</span><span>key_type, value_type)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a dict containing keys of <code>key_type</code> and values of <code>value_type</code>.</p>
+<p><code>key_type</code> and <code>value_type</code> must be instances of <a title="awsrun.config.Type" href="#awsrun.config.Type"><code>Type</code></a>. For example:</p>
+<pre><code>Dict(Str, Str)
+Dict(Str, List(IP))
+Dict(Str, List(Or(Int, Float)))
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Dict(Type):
+    &#34;&#34;&#34;Represents a dict containing keys of `key_type` and values of `value_type`.
+
+    `key_type` and `value_type` must be instances of `Type`. For example:
+
+        Dict(Str, Str)
+        Dict(Str, List(IP))
+        Dict(Str, List(Or(Int, Float)))
+    &#34;&#34;&#34;
+    def __init__(self, key_type, value_type):
+        self.key_type = key_type
+        self.value_type = value_type
+
+    def type_check(self, obj):
+        if type(obj) != dict:
+            return False
+        return (all(self.key_type.type_check(k) for k in obj.keys())
+                and all(self.value_type.type_check(v) for v in obj.values()))
+
+    def __str__(self):
+        return f&#39;dict with {self.key_type} keys and {self.value_type} values&#39;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#type-checking">Type Checking</a></li>
+<li><a href="#reading-values">Reading Values</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun" href="index.html">awsrun</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="two-column">
+<li><code><a title="awsrun.config.EmptyConfig" href="#awsrun.config.EmptyConfig">EmptyConfig</a></code></li>
+<li><code><a title="awsrun.config.Str" href="#awsrun.config.Str">Str</a></code></li>
+<li><code><a title="awsrun.config.Int" href="#awsrun.config.Int">Int</a></code></li>
+<li><code><a title="awsrun.config.Bool" href="#awsrun.config.Bool">Bool</a></code></li>
+<li><code><a title="awsrun.config.Float" href="#awsrun.config.Float">Float</a></code></li>
+<li><code><a title="awsrun.config.Any" href="#awsrun.config.Any">Any</a></code></li>
+<li><code><a title="awsrun.config.File" href="#awsrun.config.File">File</a></code></li>
+<li><code><a title="awsrun.config.IP" href="#awsrun.config.IP">IP</a></code></li>
+<li><code><a title="awsrun.config.IPNet" href="#awsrun.config.IPNet">IPNet</a></code></li>
+<li><code><a title="awsrun.config.Dotted" href="#awsrun.config.Dotted">Dotted</a></code></li>
+<li><code><a title="awsrun.config.URL" href="#awsrun.config.URL">URL</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.config.Config" href="#awsrun.config.Config">Config</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.config.Config.register_filetype" href="#awsrun.config.Config.register_filetype">register_filetype</a></code></li>
+<li><code><a title="awsrun.config.Config.from_file" href="#awsrun.config.Config.from_file">from_file</a></code></li>
+<li><code><a title="awsrun.config.Config.get" href="#awsrun.config.Config.get">get</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.config.YAMLConfig" href="#awsrun.config.YAMLConfig">YAMLConfig</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.JSONConfig" href="#awsrun.config.JSONConfig">JSONConfig</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.config.Type.type_check" href="#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.config.Not" href="#awsrun.config.Not">Not</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.Or" href="#awsrun.config.Or">Or</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.And" href="#awsrun.config.And">And</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.Const" href="#awsrun.config.Const">Const</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.Choice" href="#awsrun.config.Choice">Choice</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.Scalar" href="#awsrun.config.Scalar">Scalar</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.StrMatch" href="#awsrun.config.StrMatch">StrMatch</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.IpAddress" href="#awsrun.config.IpAddress">IpAddress</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.IpNetwork" href="#awsrun.config.IpNetwork">IpNetwork</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.FileType" href="#awsrun.config.FileType">FileType</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.AnyType" href="#awsrun.config.AnyType">AnyType</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.List" href="#awsrun.config.List">List</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.config.Dict" href="#awsrun.config.Dict">Dict</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

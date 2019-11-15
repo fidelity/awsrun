@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>awsrun.cli API documentation</title>
+<meta name="description" content="The awsrun CLI concurrently executes commands across AWS accounts …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<style>
+body {
+/* Probably too small for most ...
+font-size: .9em;
+*/
+}
+code {
+font-size: .9em;
+}
+pre code {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.cli</code></h1>
+</header>
+<section id="section-intro">
+<p>The awsrun CLI concurrently executes commands across AWS accounts.</p>
+<h2 id="overview">Overview</h2>
+<p>The CLI is a tool that can execute user-defined commands across one or more
+accounts concurrently. This page is a reference containing the available command
+line arguments and configuration options. Please refer to the <a title="awsrun" href="index.html"><code>awsrun</code></a> page for
+the user guide and gentle introduction to its capabilities.</p>
+<h2 id="synopsis">Synopsis</h2>
+<pre><code>$ awsrun [core options] [plug-in options] command [command options]
+</code></pre>
+<p>The CLI accepts three types of command line options:</p>
+<dl>
+<dt>core options</dt>
+<dd>Defined by the awsrun CLI itself. These control the behavior of the main
+program. These options are documented on this page.</dd>
+<dt>plug-in options</dt>
+<dd>Defined by the various plug-ins. Plug-in authors can register their own
+command line arguments and configuration options. These are documented on the
+respective plug-in pages at <a title="awsrun.plugins" href="plugins/index.html"><code>awsrun.plugins</code></a>.</dd>
+<dt>command options</dt>
+<dd>Defined by the command being executed. Command authors can register their
+own command line arguments and configuration options. The built-in commands and
+their options are documented in <a title="awsrun.commands" href="commands/index.html"><code>awsrun.commands</code></a>.</dd>
+</dl>
+<p>Executing the CLI without specifying a command to run will simply print the list
+of selected accounts to the console as well as a list of the available commands
+that have been found in the command path.</p>
+<h2 id="configuration">Configuration</h2>
+<p>The behavior of the CLI can be controlled by passing command line arguments as
+noted above, but those options can also be specified in a YAML configuration
+file that is loaded from "$HOME/.awsrun.yaml" by default. Set the AWSRUN_CONFIG
+environment variable to use an alternate configuration file. Options defined in
+the configuration file can generally be overridden via command line arguments.</p>
+<p>The configuration file contains four optional top-level sections: CLI, Commands,
+Accounts, and Credentials. Each section is described below in more detail.</p>
+<h3 id="cli">CLI</h3>
+<p>This section of the configuration contains the core options of the CLI. Below is
+the syntax and expected types for each option. Options are described in detail
+in the <a href="#cli-options">CLI Options</a> section of this document.</p>
+<pre><code>CLI:
+  account:
+    - STRING
+  account_file: FILENAME
+  include:
+    ATTR_NAME:
+      - ATTR_VALUE
+  exclude:
+    ATTR_NAME:
+      - ATTR_VALUE
+  threads: INTEGER
+  log_level: ("DEBUG" | "INFO" | "WARN" | "ERROR")
+  cmd_path:
+    - STRING
+</code></pre>
+<h3 id="commands">Commands</h3>
+<p>This section of the configuration contains the default options for various
+awsrun commands. A command is defined in its own block, where COMMAND_NAME is
+the Python module that contains the command. I.e., the same name specified on
+the command line. Within the specific command block, users can define default
+values for the command's options. For the built-in commands, refer to the
+<a title="awsrun.commands" href="commands/index.html"><code>awsrun.commands</code></a> pages for the available options on each command.</p>
+<pre><code>Commands:
+  COMMAND_NAME:
+    ARG: VALUE
+    ...
+  COMMAND_NAME:
+    ARG: VALUE
+    ...
+</code></pre>
+<h3 id="accounts">Accounts</h3>
+<p>This section of the configuration file specifies the account loader plug-in to
+be used and its default options. It must contain a <code>plugin</code> key with the path to
+the account loader plug-in in the form of PYTHON_MODULE.CLASSNAME, so the CLI
+can find and load it. If the plug-in accepts options, they can be provided in an
+optional <code>options</code> block. Refer to the account loader's documentation for a list
+of available configuration options. The included account loader plug-ins are
+documented at the <a title="awsrun.plugins.accts" href="plugins/accts.html"><code>awsrun.plugins.accts</code></a> page.</p>
+<p>If this section is not defined, the CLI will use the default account loader
+<a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity"><code>Identity</code></a>.</p>
+<pre><code>Accounts:
+  plugin: PYTHON_MODULE.CLASSNAME
+  options:
+    ARG: VALUE
+    ...
+</code></pre>
+<h3 id="credentials">Credentials</h3>
+<p>This section of the configuration file specifies the credential loader plug-in
+to be used and its default options. It must contain a <code>plugin</code> key with the path
+to the account loader plug-in in the form of PYTHON_MODULE.CLASSNAME, so the CLI
+can find and load it. If the plug-in accepts options, they can be provided in an
+optional <code>options</code> block. Refer to the credential loader's documentation for a
+list of available configuration options. The included credential loader plug-ins
+are documented at the <a title="awsrun.plugins.creds" href="plugins/creds/index.html"><code>awsrun.plugins.creds</code></a> page.</p>
+<p>If this section is not defined, the CLI will use the default credential loader
+<code>awsrun.plugins.creds.Profile.</code>.</p>
+<pre><code>Credentials:
+  plugin: PYTHON_MODULE.CLASSNAME
+  options:
+    ARG: VALUE
+    ...
+</code></pre>
+<h2 id="cli-options">CLI Options</h2>
+<p>The following is a list of configuration options for the CLI. Some options can
+be overridden on the awsrun CLI via command line flags. In those cases, the CLI
+flags are specified next to the option name below:</p>
+<dl>
+<dt><code>account</code>, <code>--account ACCT</code></dt>
+<dd>The list of accounts to process. If specifying more than one account on the
+command line, use multiple <code>--account</code> flags.</dd>
+<dt><code>account_file</code>, <code>--account-file</code></dt>
+<dd>Load the list of accounts to process from the specified file. The file should
+contain one account per line. Blank lines are ignored as are lines that start
+with a # mark.</dd>
+<dt><code>cmd_path</code>, <code>--cmd-path</code></dt>
+<dd>A list of locations to search for commands. This should be a list of Python
+modules that contain commands or a directories containing Python files with
+commands defined within. The default path is "awsrun.commands.aws".</dd>
+<dt><code>--metadata</code></dt>
+<dd>List the available metadata attributes from the account loader. If an
+attribute name is passed as an argument to the flag, list the available values
+for that metadata attribute.</dd>
+<dt><code>include</code>, <code>--include</code></dt>
+<dd>Include only the accounts that match the specified filter. A filter consists
+of an attribute name and a list of possible values for that attribute. If more
+than one attribute is specified, then all attributes must match. If more than
+one value is specified for an attribute, then only one value must match.</dd>
+<dt><code>exclude</code>, <code>--exclude</code></dt>
+<dd>Exclude the accounts that match the specified filter. A filter consists of an
+attribute name and a list of possible values for that attribute. If more than
+one attribute is specified, then all attributes must match. If more than one
+value is specified for an attribute, then only one value must match.</dd>
+<dt><code>--help</code></dt>
+<dd>Print detailed help to the console. The help also includes any defaults read
+from the user's configuration file.</dd>
+<dt><code>--force</code></dt>
+<dd>Do not prompt the user for confirmation when processing accounts. By default,
+if more than one account has been selected, the CLI prompts the user to confirm
+they really want to execute the command over all of those accounts.</dd>
+<dt><code>log_level</code>, <code>--log-level</code></dt>
+<dd>Set the logging level. By default, the value is set to ERROR.</dd>
+<dt><code>--version</code></dt>
+<dd>Print the version of awsrun to the console.</dd>
+</dl>
+<h2 id="metadata-filters">Metadata Filters</h2>
+<p>When specifying the <code>--include</code> and <code>--exclude</code> filters on the CLI, the
+following syntax is used:</p>
+<pre><code>$ awsrun --include ATTR_NAME=TYPE:ATTR_VALUE,ATTR_VALUE,...
+</code></pre>
+<p>Where <code>TYPE</code> is optional and only needed if the values must be cast to a
+different type. The type conversion applies to all of the values specified.</p>
+<p>For more information on the use of metadata filters, see the Account Plug-ins
+section of the user guide at <a title="awsrun" href="index.html"><code>awsrun</code></a>.</p>
+<h2 id="other-csps">Other CSPs</h2>
+<p>Other CSPs aside from AWS can be supported. The name of the installed CLI script
+is used to determine which CSP is being used. For example, if the CLI has been
+installed as "awsrun", the CSP is "aws". If the CLI has been installed as
+"azurerun", the CSP is "azure". The name of the CSP impacts the following:</p>
+<ul>
+<li>
+<p>The user configuration file is loaded from "$HOME/.csprun.yaml", where "csp"
+is the name of the CSP.</p>
+</li>
+<li>
+<p>The environment variable used to select an alternate path for the configuration
+file is "CSPRUN_CONFIG", where "CSP" is the name of the CSP.</p>
+</li>
+<li>
+<p>The default command path is set to "awsrun.commands.csp", where "csp" is the name
+of the CSP.</p>
+</li>
+<li>
+<p>The default credential loader plug-in is "awsrun.plugins.creds.csp", where
+"csp" is the name of the CSP.</p>
+</li>
+</ul>
+<h2 id="debugging">Debugging</h2>
+<p>By default, tracebacks from the core CLI are not printed to the console. Set the
+environment variable AWSRUN_TRACE to 1 to print tracebacks to the console. Note:
+that variable name does not change with different CSPs.</p>
+<p>Tracebacks from exceptions that arise from within a user-defined command,
+however, are included if the default logging level is set to <code>WARN</code>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;The awsrun CLI concurrently executes commands across AWS accounts.
+
+## Overview
+
+The CLI is a tool that can execute user-defined commands across one or more
+accounts concurrently. This page is a reference containing the available command
+line arguments and configuration options. Please refer to the `awsrun` page for
+the user guide and gentle introduction to its capabilities.
+
+## Synopsis
+
+    $ awsrun [core options] [plug-in options] command [command options]
+
+The CLI accepts three types of command line options:
+
+core options
+:  Defined by the awsrun CLI itself. These control the behavior of the main
+program. These options are documented on this page.
+
+plug-in options
+:  Defined by the various plug-ins. Plug-in authors can register their own
+command line arguments and configuration options. These are documented on the
+respective plug-in pages at `awsrun.plugins`.
+
+command options
+:  Defined by the command being executed. Command authors can register their
+own command line arguments and configuration options. The built-in commands and
+their options are documented in `awsrun.commands`.
+
+Executing the CLI without specifying a command to run will simply print the list
+of selected accounts to the console as well as a list of the available commands
+that have been found in the command path.
+
+## Configuration
+
+The behavior of the CLI can be controlled by passing command line arguments as
+noted above, but those options can also be specified in a YAML configuration
+file that is loaded from &#34;$HOME/.awsrun.yaml&#34; by default. Set the AWSRUN_CONFIG
+environment variable to use an alternate configuration file. Options defined in
+the configuration file can generally be overridden via command line arguments.
+
+The configuration file contains four optional top-level sections: CLI, Commands,
+Accounts, and Credentials. Each section is described below in more detail.
+
+### CLI
+
+This section of the configuration contains the core options of the CLI. Below is
+the syntax and expected types for each option. Options are described in detail
+in the [CLI Options](#cli-options) section of this document.
+
+    CLI:
+      account:
+        - STRING
+      account_file: FILENAME
+      include:
+        ATTR_NAME:
+          - ATTR_VALUE
+      exclude:
+        ATTR_NAME:
+          - ATTR_VALUE
+      threads: INTEGER
+      log_level: (&#34;DEBUG&#34; | &#34;INFO&#34; | &#34;WARN&#34; | &#34;ERROR&#34;)
+      cmd_path:
+        - STRING
+
+### Commands
+
+This section of the configuration contains the default options for various
+awsrun commands. A command is defined in its own block, where COMMAND_NAME is
+the Python module that contains the command. I.e., the same name specified on
+the command line. Within the specific command block, users can define default
+values for the command&#39;s options. For the built-in commands, refer to the
+`awsrun.commands` pages for the available options on each command.
+
+    Commands:
+      COMMAND_NAME:
+        ARG: VALUE
+        ...
+      COMMAND_NAME:
+        ARG: VALUE
+        ...
+
+### Accounts
+
+This section of the configuration file specifies the account loader plug-in to
+be used and its default options. It must contain a `plugin` key with the path to
+the account loader plug-in in the form of PYTHON_MODULE.CLASSNAME, so the CLI
+can find and load it. If the plug-in accepts options, they can be provided in an
+optional `options` block. Refer to the account loader&#39;s documentation for a list
+of available configuration options. The included account loader plug-ins are
+documented at the `awsrun.plugins.accts` page.
+
+If this section is not defined, the CLI will use the default account loader
+`awsrun.plugins.accts.Identity`.
+
+    Accounts:
+      plugin: PYTHON_MODULE.CLASSNAME
+      options:
+        ARG: VALUE
+        ...
+
+### Credentials
+
+This section of the configuration file specifies the credential loader plug-in
+to be used and its default options. It must contain a `plugin` key with the path
+to the account loader plug-in in the form of PYTHON_MODULE.CLASSNAME, so the CLI
+can find and load it. If the plug-in accepts options, they can be provided in an
+optional `options` block. Refer to the credential loader&#39;s documentation for a
+list of available configuration options. The included credential loader plug-ins
+are documented at the `awsrun.plugins.creds` page.
+
+If this section is not defined, the CLI will use the default credential loader
+`awsrun.plugins.creds.Profile.`.
+
+    Credentials:
+      plugin: PYTHON_MODULE.CLASSNAME
+      options:
+        ARG: VALUE
+        ...
+
+## CLI Options
+
+The following is a list of configuration options for the CLI. Some options can
+be overridden on the awsrun CLI via command line flags. In those cases, the CLI
+flags are specified next to the option name below:
+
+`account`, `--account ACCT`
+:  The list of accounts to process. If specifying more than one account on the
+command line, use multiple `--account` flags.
+
+`account_file`, `--account-file`
+:  Load the list of accounts to process from the specified file. The file should
+contain one account per line. Blank lines are ignored as are lines that start
+with a # mark.
+
+`cmd_path`, `--cmd-path`
+:  A list of locations to search for commands. This should be a list of Python
+modules that contain commands or a directories containing Python files with
+commands defined within. The default path is &#34;awsrun.commands.aws&#34;.
+
+`--metadata`
+:  List the available metadata attributes from the account loader. If an
+attribute name is passed as an argument to the flag, list the available values
+for that metadata attribute.
+
+`include`, `--include`
+:  Include only the accounts that match the specified filter. A filter consists
+of an attribute name and a list of possible values for that attribute. If more
+than one attribute is specified, then all attributes must match. If more than
+one value is specified for an attribute, then only one value must match.
+
+`exclude`, `--exclude`
+:  Exclude the accounts that match the specified filter. A filter consists of an
+attribute name and a list of possible values for that attribute. If more than
+one attribute is specified, then all attributes must match. If more than one
+value is specified for an attribute, then only one value must match.
+
+`--help`
+:  Print detailed help to the console. The help also includes any defaults read
+from the user&#39;s configuration file.
+
+`--force`
+:  Do not prompt the user for confirmation when processing accounts. By default,
+if more than one account has been selected, the CLI prompts the user to confirm
+they really want to execute the command over all of those accounts.
+
+`log_level`, `--log-level`
+:  Set the logging level. By default, the value is set to ERROR.
+
+`--version`
+:  Print the version of awsrun to the console.
+
+## Metadata Filters
+
+When specifying the `--include` and `--exclude` filters on the CLI, the
+following syntax is used:
+
+    $ awsrun --include ATTR_NAME=TYPE:ATTR_VALUE,ATTR_VALUE,...
+
+Where `TYPE` is optional and only needed if the values must be cast to a
+different type. The type conversion applies to all of the values specified.
+
+For more information on the use of metadata filters, see the Account Plug-ins
+section of the user guide at `awsrun`.
+
+## Other CSPs
+
+Other CSPs aside from AWS can be supported. The name of the installed CLI script
+is used to determine which CSP is being used. For example, if the CLI has been
+installed as &#34;awsrun&#34;, the CSP is &#34;aws&#34;. If the CLI has been installed as
+&#34;azurerun&#34;, the CSP is &#34;azure&#34;. The name of the CSP impacts the following:
+
+- The user configuration file is loaded from &#34;$HOME/.csprun.yaml&#34;, where &#34;csp&#34;
+  is the name of the CSP.
+
+- The environment variable used to select an alternate path for the configuration
+  file is &#34;CSPRUN_CONFIG&#34;, where &#34;CSP&#34; is the name of the CSP.
+
+- The default command path is set to &#34;awsrun.commands.csp&#34;, where &#34;csp&#34; is the name
+  of the CSP.
+
+- The default credential loader plug-in is &#34;awsrun.plugins.creds.csp&#34;, where
+  &#34;csp&#34; is the name of the CSP.
+
+## Debugging
+
+By default, tracebacks from the core CLI are not printed to the console. Set the
+environment variable AWSRUN_TRACE to 1 to print tracebacks to the console. Note:
+that variable name does not change with different CSPs.
+
+Tracebacks from exceptions that arise from within a user-defined command,
+however, are included if the default logging level is set to `WARN`.
+&#34;&#34;&#34;
+
+import argparse
+import logging
+import os
+import sys
+import traceback
+from datetime import timedelta
+from functools import partial
+from pathlib import Path
+
+import awsrun.commands
+from awsrun.acctload import AccountLoader
+from awsrun.argparse import (AppendAttributeValuePair, AppendWithoutDefault,
+                             RawAndDefaultsFormatter, prevent_option_reuse)
+from awsrun.cmdmgr import CommandManager
+from awsrun.config import Any, Choice, Config, Dict, File, Int, List, Str
+from awsrun.plugmgr import PluginManager
+from awsrun.runner import AccountRunner
+from awsrun.session import SessionProvider
+
+LOG = logging.getLogger(__name__)
+
+SHORT_DESCRIPTION = &#34;&#34;&#34;
+Executes a command concurrently across one or more AWS accounts.
+
+Accounts can be specified by using one or more --account flags.
+Alternatively, one or more filter flags (--include or --exclude) can be
+used to select accounts based on metadata attributes. To list the
+attributes available, use the --metadata flag. To list the possible
+values for an attribute, pass the attribute name to the --metadata
+flag.
+
+The list of available commands, and brief descriptions of each, can be
+displayed by omitting the command.  Each command can have its own set
+of command line arguments, which can be viewed by passing --help after
+the command.
+    &#34;&#34;&#34;.strip()
+
+
+# setup.py establishes this as the entry point for the awsrun CLI.
+def main():
+    &#34;&#34;&#34;The main entry point for the `*run` CLI tool installed with this package.
+
+    Runs the CLI tool. Exits with a `0` status code upon success. Upon error,
+    prints the error message to standard error. By default, a stack trace is not
+    included to minimize output. If the trace is desired, set the `AWSRUN_TRACE`
+    environment variable to `1`.
+
+    The CLI tool is installed on the system via the setup.py entry_points key.
+    There can be many instances of this command installed on the system with
+    different names. The CLI uses the name of the shell script installed to
+    determine default path locations for commands as well as the default
+    session manager.
+    &#34;&#34;&#34;
+    try:
+        csp = _CSP.from_prog_name(sys.argv[0])
+        _cli(csp)
+
+    except Exception as e:  # pylint: disable=broad-except
+        # Don&#39;t print stack traces by default as it can be overwhelming (scary)
+        # for those not familiar with Python development.
+        if os.getenv(&#39;AWSRUN_TRACE&#39;):
+            traceback.print_exc(file=sys.stderr)
+
+        print(e, file=sys.stderr)
+        sys.exit(1)
+
+
+def _cli(csp):
+    &#34;&#34;&#34;Parses command line arguments and invokes the awsrun CLI.
+
+    This function may exit and terminate the Python program. It is the driver of
+    the main interactive command line tool and may print output to the console.
+    &#34;&#34;&#34;
+
+    # Load the main user configuration file, which is used extensively to
+    # provide default values for argparse arguments. This allows users to
+    # specify default values for commonly used flags.
+    config = Config.from_file(csp.config_filename())
+
+    # Build a callable to simplify access to the &#39;CLI&#39; section of the config.
+    cfg = partial(config.get, &#39;CLI&#39;, type=Str)
+
+    # Argument parsing for awsrun is performed in four distinct stages because
+    # arguments are defined by the main CLI program, plug-ins can define their
+    # own arguments, and commands can also define their own arguments.
+    #
+    #   1. Parse *known* args for the main CLI
+    #   2. Parse *known* args for the plug-ins
+    #   3. Parse *remaining* args to grab the command and its args
+    #   4. Parse the command&#39;s args later in cmdmgr.py
+    #
+    # Visually, here is a representation of the above;
+    #
+    #             awsrun and plug-in args          command             cmd args
+    #        vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv vvvvvvvvvvvvv vvvvvvvvvvvvvvvvvvvvvvvvvvvv
+    # awsrun --account 123 --saml-username pete access_report --region us-east-1 --verbose
+    #        ^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    #           stage 1           stage 2          stage 3    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    #                                                                    stage 4
+    #
+    # In stage 1, this function calls `parse_known_args` in argparse, which does
+    # not error out if an unknown argument is encountered. Why do we do this?
+    # Because there may be arguments intermixed with the main awsrun args that
+    # are intended for a plug-in, so we don&#39;t want argparse to terminate the
+    # main program, which the more commonly used `parse_args` would do. Note:
+    # the main awsrun arguments on the CLI can be specified anywhere before the
+    # command. Note: flags defined in a command with the same name as a flag in
+    # the main CLI will be eaten by stage 1 processing. I.e. if the main CLI
+    # defines a flag called --count and a command author builds a command that
+    # also takes a flag called --count, then in an invocation such:
+    #
+    #   awsrun --account 123 access_report --count
+    #
+    # The --count arg would never make it to stage 4 processing as it would
+    # be shadowed and consumed by stage 1.
+    #
+    # In stage 2, this function uses the PluginManager to load plug-ins, which
+    # may have registered additional command line arguments on the main parser.
+    # The PluginManager uses `parse_known_args` when loading each plug-in, again
+    # for the same reason as above. There may be arguments destined for a
+    # different plug-in that has yet to be loaded, so we don&#39;t want to error
+    # out. Note: plug-in flags can also shadow command flags as described above.
+    # This is why plug-in author&#39;s should use a prefix on their flags to
+    # minimize chance of collision.
+    #
+    # In stage 3, this function registers arguments for a help flag, the awsrun
+    # command name, and gathers the remaining arguments after the command name.
+    # It then calls `parse_args` as all command line arguments should have been
+    # consumed at this point. If there are any extra arguments, argparse will
+    # error and exit out with an appropriate message.
+    #
+    # Finally, in stage 4, this function uses the CommandManager to load the
+    # command via the name and collected arguments from stage 3. The command
+    # manager creates a new argument parser internally to parse the arguments
+    # that were sent to the command as each command has the option to register
+    # command line arguments.
+
+    # To minimize the likelihood of shadowing flags defined by command authors,
+    # this little hack wraps an internal method of argparse to track use of
+    # flag names across all instances of ArgumentParser. We use two of these
+    # during the 4 stages of CLI parsing. Stage 1-3 use one and stage 4 uses
+    # a second ArgumentParser, so this prevents a command author from defining
+    # the same flag name that we already use in the main CLI or one that a
+    # plug-in author uses. We exclude -h from the check as we want both the
+    # main CLI to have a -h as well as a command. The command&#39;s -h will not be
+    # shadowed as the stage 1 and 2 do not include a -h option. We only add
+    # the -h option in stage 3, and by then, the command name is parsed as
+    # well as the remainder of the argv line, so -h is not processed if it
+    # comes after the command name. This provides the behavior we want. If
+    # you have a -h anywhere before the command name, you get the main help
+    # for all of the awsrun CLI options as well as the options for any flags
+    # defined by plugins. If you specify a command and then a -h afterwards,
+    # you get the help that the command author includes for their command.
+    prevent_option_reuse(exclude=(&#39;-h&#39;, &#39;--help&#39;))
+
+    # STAGE 1 Argument Processing (see description above)
+
+    # Do not add_help here or --help will not include descriptions of arguments
+    # that were registered by the plug-ins. We will add the help flag in stage 3
+    # processing.
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        allow_abbrev=False,
+        formatter_class=RawAndDefaultsFormatter,
+        description=SHORT_DESCRIPTION)
+
+    acct_group = parser.add_argument_group(&#39;account selection options&#39;)
+    acct_group.add_argument(
+        &#39;--account&#39;,
+        metavar=&#39;ACCT&#39;,
+        action=AppendWithoutDefault,
+        default=cfg(&#39;account&#39;, type=List(Str), default=[]),
+        dest=&#39;accounts&#39;,
+        help=&#39;run command on specified list of accounts&#39;)
+
+    acct_group.add_argument(
+        &#39;--account-file&#39;,
+        metavar=&#39;FILE&#39;,
+        type=argparse.FileType(&#39;r&#39;),
+        default=cfg(&#39;account_file&#39;, type=File),
+        help=&#39;filename containing accounts (one per line)&#39;)
+
+    acct_group.add_argument(
+        &#39;--metadata&#39;,
+        metavar=&#39;ATTR&#39;,
+        nargs=&#39;?&#39;,
+        const=True,
+        help=&#39;summarize metadata that can be used in filters&#39;)
+
+    acct_group.add_argument(
+        &#39;--include&#39;,
+        metavar=&#39;ATTR=VAL&#39;,
+        action=AppendAttributeValuePair,
+        default=cfg(&#39;include&#39;, type=Dict(Str, List(Any)), default={}),
+        help=&#39;include filter for accounts&#39;)
+
+    acct_group.add_argument(
+        &#39;--exclude&#39;,
+        metavar=&#39;ATTR=VAL&#39;,
+        action=AppendAttributeValuePair,
+        default=cfg(&#39;exclude&#39;, type=Dict(Str, List(Any)), default={}),
+        help=&#39;exclude filter for accounts&#39;)
+
+    parser.add_argument(
+        &#39;--threads&#39;,
+        metavar=&#34;N&#34;,
+        type=int,
+        default=cfg(&#39;threads&#39;, type=Int, default=10),
+        help=&#39;number of concurrent threads to use&#39;)
+
+    parser.add_argument(
+        &#39;--force&#39;,
+        action=&#39;store_true&#39;,
+        help=&#39;do not prompt user if # of accounts is &gt; 1&#39;)
+
+    parser.add_argument(
+        &#39;--version&#39;,
+        action=&#39;version&#39;,
+        version=&#39;%(prog)s &#39; + awsrun.__version__)
+
+    parser.add_argument(
+        &#39;--log-level&#39;,
+        default=cfg(&#39;log_level&#39;, type=Choice(&#39;DEBUG&#39;, &#39;INFO&#39;, &#39;WARN&#39;, &#39;ERROR&#39;), default=&#39;ERROR&#39;),
+        choices=[&#39;DEBUG&#39;, &#39;INFO&#39;, &#39;WARN&#39;, &#39;ERROR&#39;],
+        help=&#39;set the logging level&#39;)
+
+    parser.add_argument(
+        &#39;--cmd-path&#39;,
+        action=AppendWithoutDefault,
+        metavar=&#39;PATH&#39;,
+        default=cfg(&#39;cmd_path&#39;, type=List(Str), default=[csp.default_command_path()]),
+        help=&#39;directory or python package used to find commands&#39;)
+
+    # Parse only the _known_ arguments as there may be additional args specified
+    # by the user that are intended for consumption by the account loader plugin
+    # or the auth plugin. We save the remaining args and will pass those to the
+    # plugin manager responsible for loading the plugins.
+    args, remaining_argv = parser.parse_known_args()
+
+    # With the log level now available from the CLI options, setup logging so it
+    # can be used immediately by the various python modules in this package.
+    logging.basicConfig(
+        level=args.log_level,
+        format=&#39;%(asctime)s %(name)s %(levelname)s [%(threadName)s] %(message)s&#39;)
+
+    # STAGE 2 Argument Processing (see description above).
+
+    # The plugin manager will load the two plugins and handle command line
+    # parsing of any arguments registered by the plugins.
+    plugin_mgr = PluginManager(config, parser, args, remaining_argv)
+    plugin_mgr.parse_args(&#39;Accounts&#39;, default=&#39;awsrun.plugins.accts.Identity&#39;)
+    plugin_mgr.parse_args(&#39;Credentials&#39;, default=csp.default_session_provider())
+
+    # STAGE 3 Argument Processing (see description above).
+
+    # The help flag is added to the parser _after_ loading all of the plugins
+    # because plugins can register their own flags, which means if the help flag
+    # were added before this point, and a user passed the -h flag, it would not
+    # include descriptions for any of the args registered by the plugins.
+    parser.add_argument(&#39;-h&#39;, &#39;--help&#39;, action=&#39;help&#39;)
+    parser.add_argument(&#39;command&#39;, nargs=&#39;?&#39;, help=&#39;command to execute&#39;)
+    parser.add_argument(&#39;arguments&#39;, nargs=argparse.REMAINDER, default=[], help=&#39;arguments for command&#39;)
+
+    # Now we parse the remaining args that were not consumed by the plugins,
+    # which will typically include the awsrun command name and any of its args.
+    # If there are extra args or unknown args, parse_args will exit here with an
+    # error message and usage string. Note that we obtain the remaining unused
+    # argv from the plugin manager as well as the namespace to add these last
+    # arguments.
+    args = parser.parse_args(plugin_mgr.remaining_argv, plugin_mgr.args)
+
+    # Use the plugin manager to create the actual account loader that will be
+    # used to load accounts and metadata for accounts.
+    account_loader = plugin_mgr.instantiate(&#39;Accounts&#39;, must_be=AccountLoader)
+
+    # Check to see if user is inquiring about the metadata associated with
+    # accounts. If they pass --metadata by itself, print out a list of all
+    # possible attribute names. If they pass an arg to --metadata, such as
+    # &#34;--metadata BU&#34;, then print out all the possible values of that attr,
+    # so they can build filters for it.
+    if args.metadata:
+        attrs = account_loader.attributes()
+        if args.metadata in attrs:
+            print(f&#34;Metadata values for &#39;{args.metadata}&#39; attribute:\n&#34;)
+            print(&#39;\n&#39;.join(sorted(attrs[args.metadata])))
+        elif attrs:
+            print(&#39;Valid metadata attributes:\n&#39;)
+            print(&#39;\n&#39;.join(sorted(attrs)))
+        else:
+            print(&#39;No metadata attributes available&#39;)
+        sys.exit(0)
+
+    # Check to see if the user wants to load additional accounts from a file
+    # specified on the command line. If so, the account IDs will be appended to
+    # any accounts defined on the command line or in the user config.
+    if args.account_file:
+        args.accounts.extend(a.strip() for a in args.account_file if not (a.isspace() or a.startswith(&#39;#&#39;)))
+
+    # Obtain a list of account *objects* for the specified account IDs. The
+    # resulting objects will depend upon the account loader plugin used. Some
+    # plugins will return rich objects with attributes containing metadata and
+    # others may just return a simple list of IDs as strings. The point is that
+    # this is an opaque object that will be passed to the runner and then to the
+    # command being run.
+    accounts = account_loader.accounts(args.accounts, args.include, args.exclude)
+
+    # If we get to here and there are still 0 accounts, that means there were
+    # no accounts specified via --accounts, no accounts specified in the user
+    # config, no accounts specified in a separate file, or none of the
+    # specified accounts matched the filters, so we just exit.
+    if not accounts:
+        print(&#39;No accounts selected&#39;, file=sys.stderr)
+        sys.exit(1)
+
+    # The command manager will be used to search, parse command arguments, and
+    # instantiate the command that was specified on the CLI. It can also provide
+    # a list of all commands found in the paths provided.
+    command_mgr = CommandManager.from_paths(*args.cmd_path)
+
+    # If no command was supplied, then print the list of accounts that were
+    # selected along with a list of all the valid and known commands. This
+    # allows users to test filters to see which accounts will be acted upon.
+    if not args.command:
+        _print_accounts(accounts)
+        _print_valid_commands(command_mgr.commands())
+        sys.exit(1)
+
+    # STAGE 4 Argument Processing (see description above). When the command
+    # manager loads the command, it will create a new argument parser, so
+    # command author&#39;s can define any arguments they might want. After this
+    # step, all command line arguments have been fully processed.
+    try:
+        command = command_mgr.instantiate_command(
+            args.command,
+            args.arguments,
+            partial(config.get, &#39;Commands&#39;, args.command))
+
+    # Most exceptions are passed upwards, but we explicitly catch a failure when
+    # trying to instantiate the command selected by the user, so we can include a
+    # list of valid commands that the command manager knows about. The exception
+    # re-raised so it will be handled by the same error handling logic in main().
+    except Exception:
+        _print_valid_commands(command_mgr.commands(), out=sys.stderr)
+        raise
+
+    # Safety check to make sure user knows they are impacting more than one
+    # account. This can be disabled with the -f flag.
+    if len(accounts) &gt; 1 and not args.force:
+        _ask_for_confirmation(accounts)
+
+    # Load up a session provider to hand out creds for the runner.
+    session_provider = plugin_mgr.instantiate(&#39;Credentials&#39;, must_be=SessionProvider)
+
+    # This is the main entry point into the awsrun API. Note: the entirety of
+    # awsrun can be used without the need of the CLI. One only needs a list of
+    # accounts, an awsrun.runner.Command, and an awsrun.session.SessionProvider.
+    runner = AccountRunner(session_provider, args.threads)
+    elapsed = runner.run(command, accounts, key=account_loader.acct_id)
+
+    # Show a quick summary on how long the command took to run.
+    pluralize = &#39;s&#39; if len(accounts) != 1 else &#39;&#39;
+    print(f&#39;\nProcessed {len(accounts)} account{pluralize} in {timedelta(seconds=elapsed)}&#39;, file=sys.stderr)
+
+
+def _print_valid_commands(commands, out=sys.stdout):
+    &#34;&#34;&#34;Pretty print a table of commands.
+
+    The argument is a dict where keys are the names and values are CLICommand
+    classes from the command modules.
+    &#34;&#34;&#34;
+    if not commands:
+        print(&#39;No commands found, did you specify the correct --cmd-path?&#39;, file=out)
+        return
+
+    print(&#39;The following are the available commands:\n&#39;, file=out)
+    max_cmd_len = max(len(name) for name in commands.keys())
+    for name in sorted(commands.keys()):
+        # By convention, as documented in user documentation, class docstring
+        # is used when printing a summary of commands.
+        docstring = commands[name].__doc__ or &#39;&#39;
+        print(f&#39;{name:{max_cmd_len}}  {docstring}&#39;, file=out)
+    print(file=out)
+
+
+def _print_accounts(accts, out=sys.stdout):
+    &#34;&#34;&#34;Print the list of accounts.&#34;&#34;&#34;
+    count = len(accts)
+    print(f&#39;{count} account{&#34;s&#34; if count != 1 else &#34;&#34;} selected:\n&#39;, file=out)
+    print(&#39;, &#39;.join(str(a) for a in accts), file=out, end=&#39;\n\n&#39;)
+
+
+def _ask_for_confirmation(accts):
+    &#34;&#34;&#34;Prompt user for confirmation and list accounts to be acted upon.&#34;&#34;&#34;
+    _print_accounts(accts, out=sys.stderr)
+    print(&#39;Proceed (y/n)? &#39;, flush=True, end=&#39;&#39;, file=sys.stderr)
+    answer = input()
+    if not answer.lower() in [&#39;y&#39;, &#39;yes&#39;]:
+        print(&#39;Exiting&#39;, file=sys.stderr)
+        sys.exit(0)
+
+
+class _CSP:
+    &#34;&#34;&#34;Represents a Cloud Service Provider (CSP) default settings.
+
+    This class provides the default user configuration path, default command
+    path, and the default session provider. It also includes a factory method
+    to create an instance based on the filename of the CLI script itself. This
+    is used to adapt the CLI behavior based on the CSP based solely on the
+    name.
+
+    To add a new CSP to awsrun, the following must be completed:
+
+    1. Create a new submodule called `aws.commands.csp` where `csp` is the name
+       of the CSP being added. For example, `aws.commands.gcp`. In this module,
+       define one or more command submodules. For example, to build an command
+       called &#34;access_check&#34;, create `aws.commands.gcp.access_check.py` with a
+       `CLICommand` class defined. See top-level `awsrun` documentation on how
+       to build commands.
+
+    2. Create a new submodule called `aws.plugins.creds.csp` where `csp` is the
+       name of the CSP being added. For example, `aws.commands.creds.gcp`. In
+       this module, define one or more plug-ins that return an instance of a
+       `awsrun.session.SessionProvider`. See top-level `awsrun` documentation
+       on how to build plug-ins.
+    &#34;&#34;&#34;
+
+    @classmethod
+    def from_prog_name(cls, prog_name):
+        &#34;&#34;&#34;Return CSP instance based on prog_name.&#34;&#34;&#34;
+
+        # Identify the CSP name from the name of the installed CLI tool. The
+        # installed CLI will be called &#34;awsrun&#34; or &#34;azurerun&#34;.
+        csp = Path(prog_name).name.replace(&#39;run&#39;, &#39;&#39;)
+        if csp not in [&#39;aws&#39;, &#39;azure&#39;]:
+            raise Exception(f&#39;unknown variant: {csp}&#39;)
+        return cls(csp)
+
+    def __init__(self, name):
+        self.name = name
+
+    def config_filename(self):
+        &#34;&#34;&#34;Returns the path to the user configuration.&#34;&#34;&#34;
+        env_var = self.name.upper() + &#39;RUN_CONFIG&#39;
+        dotfile = &#39;.&#39; + self.name.lower() + &#39;run.yaml&#39;
+        return os.environ.get(env_var, Path.home() / dotfile)
+
+    def default_command_path(self):
+        &#34;&#34;&#34;Returns the path to the builtin commands submodule.&#34;&#34;&#34;
+        return &#39;awsrun.commands.&#39; + self.name.lower()
+
+    def default_session_provider(self):
+        &#34;&#34;&#34;Returns the module name of the builtin Profile session provider.&#34;&#34;&#34;
+        return &#39;awsrun.plugins.creds.&#39; + self.name.lower() + &#39;.Profile&#39;
+
+
+if __name__ == &#39;__main__&#39;:
+    main()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="awsrun.cli.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The main entry point for the <code>*run</code> CLI tool installed with this package.</p>
+<p>Runs the CLI tool. Exits with a <code>0</code> status code upon success. Upon error,
+prints the error message to standard error. By default, a stack trace is not
+included to minimize output. If the trace is desired, set the <code>AWSRUN_TRACE</code>
+environment variable to <code>1</code>.</p>
+<p>The CLI tool is installed on the system via the setup.py entry_points key.
+There can be many instances of this command installed on the system with
+different names. The CLI uses the name of the shell script installed to
+determine default path locations for commands as well as the default
+session manager.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main():
+    &#34;&#34;&#34;The main entry point for the `*run` CLI tool installed with this package.
+
+    Runs the CLI tool. Exits with a `0` status code upon success. Upon error,
+    prints the error message to standard error. By default, a stack trace is not
+    included to minimize output. If the trace is desired, set the `AWSRUN_TRACE`
+    environment variable to `1`.
+
+    The CLI tool is installed on the system via the setup.py entry_points key.
+    There can be many instances of this command installed on the system with
+    different names. The CLI uses the name of the shell script installed to
+    determine default path locations for commands as well as the default
+    session manager.
+    &#34;&#34;&#34;
+    try:
+        csp = _CSP.from_prog_name(sys.argv[0])
+        _cli(csp)
+
+    except Exception as e:  # pylint: disable=broad-except
+        # Don&#39;t print stack traces by default as it can be overwhelming (scary)
+        # for those not familiar with Python development.
+        if os.getenv(&#39;AWSRUN_TRACE&#39;):
+            traceback.print_exc(file=sys.stderr)
+
+        print(e, file=sys.stderr)
+        sys.exit(1)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#configuration">Configuration</a><ul>
+<li><a href="#cli">CLI</a></li>
+<li><a href="#commands">Commands</a></li>
+<li><a href="#accounts">Accounts</a></li>
+<li><a href="#credentials">Credentials</a></li>
+</ul>
+</li>
+<li><a href="#cli-options">CLI Options</a></li>
+<li><a href="#metadata-filters">Metadata Filters</a></li>
+<li><a href="#other-csps">Other CSPs</a></li>
+<li><a href="#debugging">Debugging</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun" href="index.html">awsrun</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="awsrun.cli.main" href="#awsrun.cli.main">main</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="terminal" baseProfile="full" viewBox="0 0 666 333" width="666" version="1.1">
+    <defs>
+        <termtosvg:template_settings xmlns:termtosvg="https://github.com/nbedos/termtosvg">
+            <termtosvg:screen_geometry columns="82" rows="19"/>
+            <termtosvg:animation type="css"/>
+        </termtosvg:template_settings>
+        <style type="text/css" id="generated-style"></style>
+        <style type="text/css" id="user-style">
+            .foreground {fill: #abb2bf;}
+            .background {fill: #282c34;}
+            .color0 {fill: #3e4452;}
+            .color1 {fill: #56b6c2;}
+            .color2 {fill: #61afef;}
+            .color3 {fill: #c678dd;}
+            .color4 {fill: #98c379;}
+            .color5 {fill: #e06c75;}
+            .color6 {fill: #d19a66;}
+            .color7 {fill: #abb2bf;}
+            .color8 {fill: #5c6370;}
+            .color9 {fill: #56b6c2;}
+            .color10 {fill: #61afef;}
+            .color11 {fill: #c678dd;}
+            .color12 {fill: #98c379;}
+            .color13 {fill: #be5046;}
+            .color14 {fill: #e5c07b;}
+            .color15 {fill: #828997;}
+        </style>
+    </defs>
+    <rect class="background" width="100%" height="100%" ry="5"/>
+    <svg id="screen" width="656" height="323" x="5" y="5" viewBox="0 0 656 323" preserveAspectRatio="xMidYMin slice"></svg>
+</svg>

@@ -1,0 +1,1081 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>awsrun.cmdmgr API documentation</title>
+<meta name="description" content="Loads and instantiates user-defined awsrun commands …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<style>
+body {
+/* Probably too small for most ...
+font-size: .9em;
+*/
+}
+code {
+font-size: .9em;
+}
+pre code {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.cmdmgr</code></h1>
+</header>
+<section id="section-intro">
+<p>Loads and instantiates user-defined awsrun commands.</p>
+<h2 id="overview">Overview</h2>
+<p>This module provides a <a title="awsrun.cmdmgr.CommandManager" href="#awsrun.cmdmgr.CommandManager"><code>CommandManager</code></a>, which is responsible for loading and
+instantiating user-defined commands for use with <a title="awsrun.runner" href="runner.html"><code>awsrun.runner</code></a>. The command
+manager was built to allow <a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> users to dynamically point awsrun to
+commands installed in user-defined paths. API users of awsrun without the need
+to dynamically load commands will not use this module.</p>
+<p>To facilitate the discovery of commands, each user-defined command intended for
+use from the CLI must be defined in a separate Python module that contains a
+class called <code>CLICommand</code>, which must be a subclass of <a title="awsrun.runner.Command" href="runner.html#awsrun.runner.Command"><code>Command</code></a>.
+The name of the Python module containing this class is the name used on the
+awsrun command line when specifying the command to execute. For example, assume
+<code>~/commands/test_command.py</code> contains the following user-defined command:</p>
+<pre><code>from awsrun.runner import Command
+
+class CLICommand(Command):
+    """Example command that prints a simple message for accounts."""
+
+    def execute(self, session, acct, region):
+        return f'test_command executed in {acct} and {region}'
+</code></pre>
+<p>To invoke this command from the CLI:</p>
+<pre><code># Notice the name of the command is the same name as the Python module
+# containing the CLICommand, but without the ".py" extension.
+$ awsrun -d ~/commands -r us-east-1 -a 100200300400 test_command
+</code></pre>
+<p>The <a title="awsrun.cmdmgr.CommandManager" href="#awsrun.cmdmgr.CommandManager"><code>CommandManager</code></a> relies on a <a title="awsrun.cmdmgr.CommandLoader" href="#awsrun.cmdmgr.CommandLoader"><code>CommandLoader</code></a> to discover, find, and load
+user-defined commands. There are three command loaders provided in this package:
+<a title="awsrun.cmdmgr.DirectoryLoader" href="#awsrun.cmdmgr.DirectoryLoader"><code>DirectoryLoader</code></a>, <a title="awsrun.cmdmgr.ModuleLoader" href="#awsrun.cmdmgr.ModuleLoader"><code>ModuleLoader</code></a>, and <a title="awsrun.cmdmgr.ChainLoader" href="#awsrun.cmdmgr.ChainLoader"><code>ChainLoader</code></a>. For example:</p>
+<pre><code>dl = DirectoryLoader("/tmp")
+cm = CommandManager(dl)
+
+ml = ModuleLoader("awsrun.commands")
+cm = CommandManager(ml)
+
+cl = ChainLoader(dl, ml)
+cm = CommandManager(cl)
+</code></pre>
+<p>As a convenience, a class factory method exists, <a title="awsrun.cmdmgr.CommandManager.from_paths" href="#awsrun.cmdmgr.CommandManager.from_paths"><code>CommandManager.from_paths()</code></a>, to
+simplify the creation of a <a title="awsrun.cmdmgr.CommandManager" href="#awsrun.cmdmgr.CommandManager"><code>CommandManager</code></a> and one or more loaders. For
+example, to create a <a title="awsrun.cmdmgr.CommandManager" href="#awsrun.cmdmgr.CommandManager"><code>CommandManager</code></a> that searches the directories <code>/tmp</code> and
+<code>/Users/me/mycmds</code> as well as a Python module called <code>mycompany.commands</code>:</p>
+<pre><code>cm = CommandManager.from_paths("/tmp/", "/Users/me/mycmds", "mycompany.commands")
+</code></pre>
+<p>Once a command manager has been created, a specific awsrun command can be loaded
+via <a title="awsrun.cmdmgr.CommandManager.instantiate_command" href="#awsrun.cmdmgr.CommandManager.instantiate_command"><code>CommandManager.instantiate_command()</code></a>.
+If the command cannot be found,
+<a title="awsrun.cmdmgr.CommandNotFoundError" href="#awsrun.cmdmgr.CommandNotFoundError"><code>CommandNotFoundError</code></a> is raised. <a title="awsrun.cmdmgr.CommandManager.commands" href="#awsrun.cmdmgr.CommandManager.commands"><code>CommandManager.commands()</code></a> returns a dict of
+all the discovered commands found in the configured paths.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;Loads and instantiates user-defined awsrun commands.
+
+## Overview
+
+This module provides a `CommandManager`, which is responsible for loading and
+instantiating user-defined commands for use with `awsrun.runner`. The command
+manager was built to allow `awsrun.cli` users to dynamically point awsrun to
+commands installed in user-defined paths. API users of awsrun without the need
+to dynamically load commands will not use this module.
+
+To facilitate the discovery of commands, each user-defined command intended for
+use from the CLI must be defined in a separate Python module that contains a
+class called `CLICommand`, which must be a subclass of `awsrun.runner.Command`.
+The name of the Python module containing this class is the name used on the
+awsrun command line when specifying the command to execute. For example, assume
+`~/commands/test_command.py` contains the following user-defined command:
+
+    from awsrun.runner import Command
+
+    class CLICommand(Command):
+        \&#34;\&#34;\&#34;Example command that prints a simple message for accounts.\&#34;\&#34;\&#34;
+
+        def execute(self, session, acct, region):
+            return f&#39;test_command executed in {acct} and {region}&#39;
+
+To invoke this command from the CLI:
+
+    # Notice the name of the command is the same name as the Python module
+    # containing the CLICommand, but without the &#34;.py&#34; extension.
+    $ awsrun -d ~/commands -r us-east-1 -a 100200300400 test_command
+
+The `CommandManager` relies on a `CommandLoader` to discover, find, and load
+user-defined commands. There are three command loaders provided in this package:
+`DirectoryLoader`, `ModuleLoader`, and `ChainLoader`. For example:
+
+    dl = DirectoryLoader(&#34;/tmp&#34;)
+    cm = CommandManager(dl)
+
+    ml = ModuleLoader(&#34;awsrun.commands&#34;)
+    cm = CommandManager(ml)
+
+    cl = ChainLoader(dl, ml)
+    cm = CommandManager(cl)
+
+As a convenience, a class factory method exists, `CommandManager.from_paths`, to
+simplify the creation of a `CommandManager` and one or more loaders. For
+example, to create a `CommandManager` that searches the directories `/tmp` and
+`/Users/me/mycmds` as well as a Python module called `mycompany.commands`:
+
+    cm = CommandManager.from_paths(&#34;/tmp/&#34;, &#34;/Users/me/mycmds&#34;, &#34;mycompany.commands&#34;)
+
+Once a command manager has been created, a specific awsrun command can be loaded
+via `CommandManager.instantiate_command`.  If the command cannot be found,
+`CommandNotFoundError` is raised. `CommandManager.commands` returns a dict of
+all the discovered commands found in the configured paths.
+&#34;&#34;&#34;
+
+import ast
+import argparse
+import contextlib
+import importlib
+import logging
+import os
+import pkgutil
+import sys
+
+from awsrun.argparse import RawAndDefaultsFormatter
+from awsrun.runner import Command
+
+LOG = logging.getLogger(__name__)
+
+
+class CommandManager:
+    &#34;&#34;&#34;Manages the loading and instantiation of user-defined awsrun commands.
+
+    The `loader` parameter of the constructor must be an instance of a
+    `CommandLoader`.  As a convenience, there is a factory method called
+    `CommandManager.from_paths` that will construct a `CommandManager` instance
+    which will load user-defined commands from the specified directories and
+    Python modules.
+    &#34;&#34;&#34;
+    def __init__(self, loader):
+        self._loader = loader
+
+    @classmethod
+    def from_paths(cls, *paths):
+        &#34;&#34;&#34;Creates a `CommandManager` that searches `paths` for awsrun commands.
+
+        The `paths` varags parameter should be a list of strings of directory
+        paths or Python module names that contain one or more Python modules
+        containing an `CLICommand` class. If a path contains any slashes
+        (forward or backward), it will be treated as a directory, otherwise it
+        is assumed to be a valid Python module name unless it is the bare &#39;.&#39;,
+        which specifies the current directory:
+
+            CommandManager.from_paths(&#39;awsrun.commands&#39;, &#39;/some/dir&#39;, &#39;.&#39;)
+        &#34;&#34;&#34;
+        loaders = []
+        for p in paths:
+            if (&#39;/&#39; in p) or (&#39;\\&#39; in p) or (p == &#39;.&#39;):
+                loaders.append(DirectoryLoader(p))
+            else:
+                loaders.append(ModuleLoader(p))
+
+        return cls(ChainLoader(*loaders))
+
+    def commands(self):
+        &#34;&#34;&#34;Returns a dict of names and classes of all valid commands.&#34;&#34;&#34;
+        return self._loader.load_all()
+
+    def instantiate_command(self, command_name, argv, cfg):
+        &#34;&#34;&#34;Returns an instantiated command identified by `command_name`.
+
+        The `argv` parameter should be a a string of command line arguments
+        captured by `argparse.REMAINDER` in the main program that will be passed
+        directly to the command for processing via its static `from_cli` method.
+        If the arguments are not valid, the program will terminate by the arg
+        parser in the command. This is expected as the command&#39;s `argparse` will
+        present a user-friendly help message.
+
+        The `cfg` parameter is a function that can lookup key value pairs from a
+        user&#39;s configuration file. This is provided to the command author via
+        `Command.from_cli`, so default values can be provided for the any of the
+        CLI options defined by the command. See the documentation on
+        `awsrun.config.Config.get` for the parameters of the function.
+
+        If `command_name` is not found, raises `CommandNotFoundError`.
+        &#34;&#34;&#34;
+        # Dynamically load the command specified by the user. All commands are
+        # really defined as modules in the &#39;commands&#39; directory of this package
+        # by default, but this can be overridden by the --cmd-dir flag.
+        cmd_class = self._loader.load(command_name)
+
+        if not issubclass(cmd_class, Command):
+            raise TypeError(f&#34;&#39;{command_name}&#39; must be a subclass of awsrun.runner.Command&#34;)
+
+        # Create an argument parser for the command author, which is populated
+        # with the name and a help string from the command&#39;s module docstring.
+        parser = argparse.ArgumentParser(
+            command_name,
+            formatter_class=RawAndDefaultsFormatter,
+            epilog=sys.modules[cmd_class.__module__].__doc__)
+
+        # We then call the static method on the class to obtain an instance of
+        # the command. The command author is expected to parse whatever command
+        # line args the user passed on the command line. It is expected that the
+        # author terminate the program if incorrect arguments were passed.
+        return cmd_class.from_cli(parser, argv, cfg)
+
+
+class CommandLoader:
+    &#34;&#34;&#34;Abstract base class that loads user-defined awsrun commands from a source.
+
+    Subclasses must provide implementations for `load` and `load_all`.
+    &#34;&#34;&#34;
+
+    def load(self, command_name):
+        &#34;&#34;&#34;Returns the class object for the command called `command_name`.
+
+        If a valid class cannot be found, raises `CommandNotFoundError`.
+        &#34;&#34;&#34;
+        raise NotImplementedError
+
+    def load_all(self):
+        &#34;&#34;&#34;Returns a dict of all valid commands found.
+
+        The keys of the dict are the command names and the values are the class
+        objects that have been loaded.
+        &#34;&#34;&#34;
+        raise NotImplementedError
+
+
+class ChainLoader(CommandLoader):
+    &#34;&#34;&#34;Chains multiple command loaders together in a priority order.
+
+    The `loaders` varargs parameter must be a list of `CommandLoader` objects
+    that will be used to search for awsrun commands. This class allows one to
+    chain one or more loaders together to search for commands in one or more
+    locations.
+    &#34;&#34;&#34;
+    def __init__(self, *loaders):
+        self.loaders = loaders
+
+    def load(self, command_name):
+        &#34;&#34;&#34;Returns the class object for the command called `command_name`.
+
+        All loaders are searched for the command. If a command is found in
+        multiple loaders, the first loader containing the command is preferred.
+        If a valid class cannot be found, raises `CommandNotFoundError`.
+        &#34;&#34;&#34;
+        path_errors = {}
+        for loader in self.loaders:
+            try:
+                return loader.load(command_name)
+            except CommandNotFoundError as e:
+                path_errors.update(e.path_errors)
+
+        raise CommandNotFoundError(command_name, path_errors)
+
+    def load_all(self):
+        &#34;&#34;&#34;Returns a dict of all valid commands found from all loaders.
+
+        The keys of the dict are the command names and the values are the class
+        objects that have been loaded.  If a command is found in multiple
+        loaders, the first loader containing the command is preferred.
+        &#34;&#34;&#34;
+        classes = {}
+        for loader in reversed(self.loaders):
+            # dict.update() replaces existing keys with new values, so reversing
+            # the list ensures that loaders at the beginning of the list take
+            # priority over those that come afterwards.
+            classes.update(loader.load_all())
+
+        return classes
+
+
+class DirectoryLoader(CommandLoader):
+    &#34;&#34;&#34;Loads user-defined awsrun commands from a filesystem directory.
+
+    The `directory_path` parameter specifies a directory that should contain one
+    or more Python modules that implement a class called `CLICommand`, which
+    allows the loader to find compatible commands.
+    &#34;&#34;&#34;
+    def __init__(self, directory_path):
+        self.path = directory_path
+        if directory_path not in sys.path:
+            sys.path.append(directory_path)
+
+    def load(self, command_name):
+        fullpath = os.path.join(self.path, command_name) + &#39;.py&#39;
+        LOG.info(&#34;loading command at &#39;%s&#39;&#34;, fullpath)
+        try:
+            # We inspect the AST of the python file without importing it because
+            # we don&#39;t want to accidentally execute a python script someone has
+            # sitting in their command path, so we inspect the AST to see if it
+            # contains a class definition of CLICommand.
+            if not self._contains_awsrun_command(fullpath):
+                raise Exception(&#34;CLICommand class not found&#34;)
+
+            # Now we will import the module as we know the file is likely an
+            # awsrun command given it contains a CLICommand class.
+            module = importlib.import_module(command_name)
+
+            # All Commands must define an &#39;CLICommand&#39; class as this is the
+            # contract that we have defined as part of the command system.
+            return module.CLICommand
+
+        except Exception as e:
+            LOG.info(&#34;Invalid command at &#39;%s&#39;: %s&#34;, fullpath, e)
+            raise CommandNotFoundError(command_name, {fullpath: e})
+
+    def load_all(self):
+        classes = {}
+        LOG.info(&#34;scanning directory &#39;%s&#39; for commands&#34;, self.path)
+        for fn in os.listdir(self.path):
+            if fn.startswith(&#39;__&#39;) or not fn.endswith(&#39;.py&#39;):
+                continue
+
+            name = fn.split(&#39;.py&#39;)[0]
+            with contextlib.suppress(Exception):
+                classes[name] = self.load(name)
+
+        return classes
+
+    @staticmethod
+    def _contains_awsrun_command(filename):
+        with open(filename) as f:
+            node = ast.parse(f.read(), filename)
+        return any(n.name == &#39;CLICommand&#39; for n in node.body if isinstance(n, ast.ClassDef))
+
+
+class ModuleLoader(CommandLoader):
+    &#34;&#34;&#34;Loads user-defined awsrun commands from a Python module/package.
+
+    The `module_name` parameter specifies a base Python module that should
+    contain one or more modules that implement a class called `CLICommand`,
+    which allows the loader to find compatible commands.
+    &#34;&#34;&#34;
+    def __init__(self, module_name):
+        self.module_name = module_name
+
+    def load(self, command_name):
+        try:
+            path = f&#39;{self.module_name}.{command_name}&#39;
+            LOG.info(&#34;loading command at &#39;%s&#39;&#34;, path)
+            module = importlib.import_module(path)
+
+            # All Commands must define an &#39;CLICommand&#39; class as this is the
+            # contract that we have defined as part of the command system.
+            return module.CLICommand
+
+        except Exception as e:
+            raise CommandNotFoundError(command_name, {self.module_name: e})
+
+    def load_all(self):
+        classes = {}
+        base = importlib.import_module(self.module_name)
+
+        for m in pkgutil.iter_modules(base.__path__):
+            with contextlib.suppress(Exception):
+                classes[m.name] = self.load(m.name)
+
+        return classes
+
+
+class CommandNotFoundError(Exception):
+    &#34;&#34;&#34;Raised if command cannot be found.
+
+    The `command_name` attribute of the instance is the command that could not be
+    found.  The `path_errors` attribute is a dict of path -&gt; loader exceptions for
+    each path searched.
+    &#34;&#34;&#34;
+    def __init__(self, command_name, path_errors):
+        self.path_errors = path_errors
+        self.command_name = command_name
+
+        msg = f&#34;&#39;{command_name}&#39; command not found:\n&#34;
+        for path, error in path_errors.items():
+            msg += f&#39;  {path} =&gt; {error}\n&#39;
+        super().__init__(msg)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.cmdmgr.CommandManager"><code class="flex name class">
+<span>class <span class="ident">CommandManager</span></span>
+<span>(</span><span>loader)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Manages the loading and instantiation of user-defined awsrun commands.</p>
+<p>The <code>loader</code> parameter of the constructor must be an instance of a
+<a title="awsrun.cmdmgr.CommandLoader" href="#awsrun.cmdmgr.CommandLoader"><code>CommandLoader</code></a>.
+As a convenience, there is a factory method called
+<a title="awsrun.cmdmgr.CommandManager.from_paths" href="#awsrun.cmdmgr.CommandManager.from_paths"><code>CommandManager.from_paths()</code></a> that will construct a <a title="awsrun.cmdmgr.CommandManager" href="#awsrun.cmdmgr.CommandManager"><code>CommandManager</code></a> instance
+which will load user-defined commands from the specified directories and
+Python modules.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CommandManager:
+    &#34;&#34;&#34;Manages the loading and instantiation of user-defined awsrun commands.
+
+    The `loader` parameter of the constructor must be an instance of a
+    `CommandLoader`.  As a convenience, there is a factory method called
+    `CommandManager.from_paths` that will construct a `CommandManager` instance
+    which will load user-defined commands from the specified directories and
+    Python modules.
+    &#34;&#34;&#34;
+    def __init__(self, loader):
+        self._loader = loader
+
+    @classmethod
+    def from_paths(cls, *paths):
+        &#34;&#34;&#34;Creates a `CommandManager` that searches `paths` for awsrun commands.
+
+        The `paths` varags parameter should be a list of strings of directory
+        paths or Python module names that contain one or more Python modules
+        containing an `CLICommand` class. If a path contains any slashes
+        (forward or backward), it will be treated as a directory, otherwise it
+        is assumed to be a valid Python module name unless it is the bare &#39;.&#39;,
+        which specifies the current directory:
+
+            CommandManager.from_paths(&#39;awsrun.commands&#39;, &#39;/some/dir&#39;, &#39;.&#39;)
+        &#34;&#34;&#34;
+        loaders = []
+        for p in paths:
+            if (&#39;/&#39; in p) or (&#39;\\&#39; in p) or (p == &#39;.&#39;):
+                loaders.append(DirectoryLoader(p))
+            else:
+                loaders.append(ModuleLoader(p))
+
+        return cls(ChainLoader(*loaders))
+
+    def commands(self):
+        &#34;&#34;&#34;Returns a dict of names and classes of all valid commands.&#34;&#34;&#34;
+        return self._loader.load_all()
+
+    def instantiate_command(self, command_name, argv, cfg):
+        &#34;&#34;&#34;Returns an instantiated command identified by `command_name`.
+
+        The `argv` parameter should be a a string of command line arguments
+        captured by `argparse.REMAINDER` in the main program that will be passed
+        directly to the command for processing via its static `from_cli` method.
+        If the arguments are not valid, the program will terminate by the arg
+        parser in the command. This is expected as the command&#39;s `argparse` will
+        present a user-friendly help message.
+
+        The `cfg` parameter is a function that can lookup key value pairs from a
+        user&#39;s configuration file. This is provided to the command author via
+        `Command.from_cli`, so default values can be provided for the any of the
+        CLI options defined by the command. See the documentation on
+        `awsrun.config.Config.get` for the parameters of the function.
+
+        If `command_name` is not found, raises `CommandNotFoundError`.
+        &#34;&#34;&#34;
+        # Dynamically load the command specified by the user. All commands are
+        # really defined as modules in the &#39;commands&#39; directory of this package
+        # by default, but this can be overridden by the --cmd-dir flag.
+        cmd_class = self._loader.load(command_name)
+
+        if not issubclass(cmd_class, Command):
+            raise TypeError(f&#34;&#39;{command_name}&#39; must be a subclass of awsrun.runner.Command&#34;)
+
+        # Create an argument parser for the command author, which is populated
+        # with the name and a help string from the command&#39;s module docstring.
+        parser = argparse.ArgumentParser(
+            command_name,
+            formatter_class=RawAndDefaultsFormatter,
+            epilog=sys.modules[cmd_class.__module__].__doc__)
+
+        # We then call the static method on the class to obtain an instance of
+        # the command. The command author is expected to parse whatever command
+        # line args the user passed on the command line. It is expected that the
+        # author terminate the program if incorrect arguments were passed.
+        return cmd_class.from_cli(parser, argv, cfg)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="awsrun.cmdmgr.CommandManager.from_paths"><code class="name flex">
+<span>def <span class="ident">from_paths</span></span>(<span>*paths)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Creates a <a title="awsrun.cmdmgr.CommandManager" href="#awsrun.cmdmgr.CommandManager"><code>CommandManager</code></a> that searches <code>paths</code> for awsrun commands.</p>
+<p>The <code>paths</code> varags parameter should be a list of strings of directory
+paths or Python module names that contain one or more Python modules
+containing an <code>CLICommand</code> class. If a path contains any slashes
+(forward or backward), it will be treated as a directory, otherwise it
+is assumed to be a valid Python module name unless it is the bare '.',
+which specifies the current directory:</p>
+<pre><code>CommandManager.from_paths('awsrun.commands', '/some/dir', '.')
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_paths(cls, *paths):
+    &#34;&#34;&#34;Creates a `CommandManager` that searches `paths` for awsrun commands.
+
+    The `paths` varags parameter should be a list of strings of directory
+    paths or Python module names that contain one or more Python modules
+    containing an `CLICommand` class. If a path contains any slashes
+    (forward or backward), it will be treated as a directory, otherwise it
+    is assumed to be a valid Python module name unless it is the bare &#39;.&#39;,
+    which specifies the current directory:
+
+        CommandManager.from_paths(&#39;awsrun.commands&#39;, &#39;/some/dir&#39;, &#39;.&#39;)
+    &#34;&#34;&#34;
+    loaders = []
+    for p in paths:
+        if (&#39;/&#39; in p) or (&#39;\\&#39; in p) or (p == &#39;.&#39;):
+            loaders.append(DirectoryLoader(p))
+        else:
+            loaders.append(ModuleLoader(p))
+
+    return cls(ChainLoader(*loaders))</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.cmdmgr.CommandManager.commands"><code class="name flex">
+<span>def <span class="ident">commands</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a dict of names and classes of all valid commands.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def commands(self):
+    &#34;&#34;&#34;Returns a dict of names and classes of all valid commands.&#34;&#34;&#34;
+    return self._loader.load_all()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.cmdmgr.CommandManager.instantiate_command"><code class="name flex">
+<span>def <span class="ident">instantiate_command</span></span>(<span>self, command_name, argv, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns an instantiated command identified by <code>command_name</code>.</p>
+<p>The <code>argv</code> parameter should be a a string of command line arguments
+captured by <code>argparse.REMAINDER</code> in the main program that will be passed
+directly to the command for processing via its static <code>from_cli</code> method.
+If the arguments are not valid, the program will terminate by the arg
+parser in the command. This is expected as the command's <code>argparse</code> will
+present a user-friendly help message.</p>
+<p>The <code>cfg</code> parameter is a function that can lookup key value pairs from a
+user's configuration file. This is provided to the command author via
+<code>Command.from_cli</code>, so default values can be provided for the any of the
+CLI options defined by the command. See the documentation on
+<a title="awsrun.config.Config.get" href="config.html#awsrun.config.Config.get"><code>Config.get()</code></a> for the parameters of the function.</p>
+<p>If <code>command_name</code> is not found, raises <a title="awsrun.cmdmgr.CommandNotFoundError" href="#awsrun.cmdmgr.CommandNotFoundError"><code>CommandNotFoundError</code></a>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def instantiate_command(self, command_name, argv, cfg):
+    &#34;&#34;&#34;Returns an instantiated command identified by `command_name`.
+
+    The `argv` parameter should be a a string of command line arguments
+    captured by `argparse.REMAINDER` in the main program that will be passed
+    directly to the command for processing via its static `from_cli` method.
+    If the arguments are not valid, the program will terminate by the arg
+    parser in the command. This is expected as the command&#39;s `argparse` will
+    present a user-friendly help message.
+
+    The `cfg` parameter is a function that can lookup key value pairs from a
+    user&#39;s configuration file. This is provided to the command author via
+    `Command.from_cli`, so default values can be provided for the any of the
+    CLI options defined by the command. See the documentation on
+    `awsrun.config.Config.get` for the parameters of the function.
+
+    If `command_name` is not found, raises `CommandNotFoundError`.
+    &#34;&#34;&#34;
+    # Dynamically load the command specified by the user. All commands are
+    # really defined as modules in the &#39;commands&#39; directory of this package
+    # by default, but this can be overridden by the --cmd-dir flag.
+    cmd_class = self._loader.load(command_name)
+
+    if not issubclass(cmd_class, Command):
+        raise TypeError(f&#34;&#39;{command_name}&#39; must be a subclass of awsrun.runner.Command&#34;)
+
+    # Create an argument parser for the command author, which is populated
+    # with the name and a help string from the command&#39;s module docstring.
+    parser = argparse.ArgumentParser(
+        command_name,
+        formatter_class=RawAndDefaultsFormatter,
+        epilog=sys.modules[cmd_class.__module__].__doc__)
+
+    # We then call the static method on the class to obtain an instance of
+    # the command. The command author is expected to parse whatever command
+    # line args the user passed on the command line. It is expected that the
+    # author terminate the program if incorrect arguments were passed.
+    return cmd_class.from_cli(parser, argv, cfg)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.cmdmgr.CommandLoader"><code class="flex name class">
+<span>class <span class="ident">CommandLoader</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Abstract base class that loads user-defined awsrun commands from a source.</p>
+<p>Subclasses must provide implementations for <code>load</code> and <code>load_all</code>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CommandLoader:
+    &#34;&#34;&#34;Abstract base class that loads user-defined awsrun commands from a source.
+
+    Subclasses must provide implementations for `load` and `load_all`.
+    &#34;&#34;&#34;
+
+    def load(self, command_name):
+        &#34;&#34;&#34;Returns the class object for the command called `command_name`.
+
+        If a valid class cannot be found, raises `CommandNotFoundError`.
+        &#34;&#34;&#34;
+        raise NotImplementedError
+
+    def load_all(self):
+        &#34;&#34;&#34;Returns a dict of all valid commands found.
+
+        The keys of the dict are the command names and the values are the class
+        objects that have been loaded.
+        &#34;&#34;&#34;
+        raise NotImplementedError</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="awsrun.cmdmgr.ChainLoader" href="#awsrun.cmdmgr.ChainLoader">ChainLoader</a></li>
+<li><a title="awsrun.cmdmgr.DirectoryLoader" href="#awsrun.cmdmgr.DirectoryLoader">DirectoryLoader</a></li>
+<li><a title="awsrun.cmdmgr.ModuleLoader" href="#awsrun.cmdmgr.ModuleLoader">ModuleLoader</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.cmdmgr.CommandLoader.load"><code class="name flex">
+<span>def <span class="ident">load</span></span>(<span>self, command_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the class object for the command called <code>command_name</code>.</p>
+<p>If a valid class cannot be found, raises <a title="awsrun.cmdmgr.CommandNotFoundError" href="#awsrun.cmdmgr.CommandNotFoundError"><code>CommandNotFoundError</code></a>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load(self, command_name):
+    &#34;&#34;&#34;Returns the class object for the command called `command_name`.
+
+    If a valid class cannot be found, raises `CommandNotFoundError`.
+    &#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+<dt id="awsrun.cmdmgr.CommandLoader.load_all"><code class="name flex">
+<span>def <span class="ident">load_all</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a dict of all valid commands found.</p>
+<p>The keys of the dict are the command names and the values are the class
+objects that have been loaded.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_all(self):
+    &#34;&#34;&#34;Returns a dict of all valid commands found.
+
+    The keys of the dict are the command names and the values are the class
+    objects that have been loaded.
+    &#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.cmdmgr.ChainLoader"><code class="flex name class">
+<span>class <span class="ident">ChainLoader</span></span>
+<span>(</span><span>*loaders)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Chains multiple command loaders together in a priority order.</p>
+<p>The <code>loaders</code> varargs parameter must be a list of <a title="awsrun.cmdmgr.CommandLoader" href="#awsrun.cmdmgr.CommandLoader"><code>CommandLoader</code></a> objects
+that will be used to search for awsrun commands. This class allows one to
+chain one or more loaders together to search for commands in one or more
+locations.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ChainLoader(CommandLoader):
+    &#34;&#34;&#34;Chains multiple command loaders together in a priority order.
+
+    The `loaders` varargs parameter must be a list of `CommandLoader` objects
+    that will be used to search for awsrun commands. This class allows one to
+    chain one or more loaders together to search for commands in one or more
+    locations.
+    &#34;&#34;&#34;
+    def __init__(self, *loaders):
+        self.loaders = loaders
+
+    def load(self, command_name):
+        &#34;&#34;&#34;Returns the class object for the command called `command_name`.
+
+        All loaders are searched for the command. If a command is found in
+        multiple loaders, the first loader containing the command is preferred.
+        If a valid class cannot be found, raises `CommandNotFoundError`.
+        &#34;&#34;&#34;
+        path_errors = {}
+        for loader in self.loaders:
+            try:
+                return loader.load(command_name)
+            except CommandNotFoundError as e:
+                path_errors.update(e.path_errors)
+
+        raise CommandNotFoundError(command_name, path_errors)
+
+    def load_all(self):
+        &#34;&#34;&#34;Returns a dict of all valid commands found from all loaders.
+
+        The keys of the dict are the command names and the values are the class
+        objects that have been loaded.  If a command is found in multiple
+        loaders, the first loader containing the command is preferred.
+        &#34;&#34;&#34;
+        classes = {}
+        for loader in reversed(self.loaders):
+            # dict.update() replaces existing keys with new values, so reversing
+            # the list ensures that loaders at the beginning of the list take
+            # priority over those that come afterwards.
+            classes.update(loader.load_all())
+
+        return classes</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.cmdmgr.CommandLoader" href="#awsrun.cmdmgr.CommandLoader">CommandLoader</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.cmdmgr.ChainLoader.load"><code class="name flex">
+<span>def <span class="ident">load</span></span>(<span>self, command_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the class object for the command called <code>command_name</code>.</p>
+<p>All loaders are searched for the command. If a command is found in
+multiple loaders, the first loader containing the command is preferred.
+If a valid class cannot be found, raises <a title="awsrun.cmdmgr.CommandNotFoundError" href="#awsrun.cmdmgr.CommandNotFoundError"><code>CommandNotFoundError</code></a>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load(self, command_name):
+    &#34;&#34;&#34;Returns the class object for the command called `command_name`.
+
+    All loaders are searched for the command. If a command is found in
+    multiple loaders, the first loader containing the command is preferred.
+    If a valid class cannot be found, raises `CommandNotFoundError`.
+    &#34;&#34;&#34;
+    path_errors = {}
+    for loader in self.loaders:
+        try:
+            return loader.load(command_name)
+        except CommandNotFoundError as e:
+            path_errors.update(e.path_errors)
+
+    raise CommandNotFoundError(command_name, path_errors)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.cmdmgr.ChainLoader.load_all"><code class="name flex">
+<span>def <span class="ident">load_all</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a dict of all valid commands found from all loaders.</p>
+<p>The keys of the dict are the command names and the values are the class
+objects that have been loaded.
+If a command is found in multiple
+loaders, the first loader containing the command is preferred.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_all(self):
+    &#34;&#34;&#34;Returns a dict of all valid commands found from all loaders.
+
+    The keys of the dict are the command names and the values are the class
+    objects that have been loaded.  If a command is found in multiple
+    loaders, the first loader containing the command is preferred.
+    &#34;&#34;&#34;
+    classes = {}
+    for loader in reversed(self.loaders):
+        # dict.update() replaces existing keys with new values, so reversing
+        # the list ensures that loaders at the beginning of the list take
+        # priority over those that come afterwards.
+        classes.update(loader.load_all())
+
+    return classes</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.cmdmgr.DirectoryLoader"><code class="flex name class">
+<span>class <span class="ident">DirectoryLoader</span></span>
+<span>(</span><span>directory_path)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Loads user-defined awsrun commands from a filesystem directory.</p>
+<p>The <code>directory_path</code> parameter specifies a directory that should contain one
+or more Python modules that implement a class called <code>CLICommand</code>, which
+allows the loader to find compatible commands.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DirectoryLoader(CommandLoader):
+    &#34;&#34;&#34;Loads user-defined awsrun commands from a filesystem directory.
+
+    The `directory_path` parameter specifies a directory that should contain one
+    or more Python modules that implement a class called `CLICommand`, which
+    allows the loader to find compatible commands.
+    &#34;&#34;&#34;
+    def __init__(self, directory_path):
+        self.path = directory_path
+        if directory_path not in sys.path:
+            sys.path.append(directory_path)
+
+    def load(self, command_name):
+        fullpath = os.path.join(self.path, command_name) + &#39;.py&#39;
+        LOG.info(&#34;loading command at &#39;%s&#39;&#34;, fullpath)
+        try:
+            # We inspect the AST of the python file without importing it because
+            # we don&#39;t want to accidentally execute a python script someone has
+            # sitting in their command path, so we inspect the AST to see if it
+            # contains a class definition of CLICommand.
+            if not self._contains_awsrun_command(fullpath):
+                raise Exception(&#34;CLICommand class not found&#34;)
+
+            # Now we will import the module as we know the file is likely an
+            # awsrun command given it contains a CLICommand class.
+            module = importlib.import_module(command_name)
+
+            # All Commands must define an &#39;CLICommand&#39; class as this is the
+            # contract that we have defined as part of the command system.
+            return module.CLICommand
+
+        except Exception as e:
+            LOG.info(&#34;Invalid command at &#39;%s&#39;: %s&#34;, fullpath, e)
+            raise CommandNotFoundError(command_name, {fullpath: e})
+
+    def load_all(self):
+        classes = {}
+        LOG.info(&#34;scanning directory &#39;%s&#39; for commands&#34;, self.path)
+        for fn in os.listdir(self.path):
+            if fn.startswith(&#39;__&#39;) or not fn.endswith(&#39;.py&#39;):
+                continue
+
+            name = fn.split(&#39;.py&#39;)[0]
+            with contextlib.suppress(Exception):
+                classes[name] = self.load(name)
+
+        return classes
+
+    @staticmethod
+    def _contains_awsrun_command(filename):
+        with open(filename) as f:
+            node = ast.parse(f.read(), filename)
+        return any(n.name == &#39;CLICommand&#39; for n in node.body if isinstance(n, ast.ClassDef))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.cmdmgr.CommandLoader" href="#awsrun.cmdmgr.CommandLoader">CommandLoader</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.cmdmgr.CommandLoader" href="#awsrun.cmdmgr.CommandLoader">CommandLoader</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.cmdmgr.CommandLoader.load" href="#awsrun.cmdmgr.CommandLoader.load">load</a></code></li>
+<li><code><a title="awsrun.cmdmgr.CommandLoader.load_all" href="#awsrun.cmdmgr.CommandLoader.load_all">load_all</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.cmdmgr.ModuleLoader"><code class="flex name class">
+<span>class <span class="ident">ModuleLoader</span></span>
+<span>(</span><span>module_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Loads user-defined awsrun commands from a Python module/package.</p>
+<p>The <code>module_name</code> parameter specifies a base Python module that should
+contain one or more modules that implement a class called <code>CLICommand</code>,
+which allows the loader to find compatible commands.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ModuleLoader(CommandLoader):
+    &#34;&#34;&#34;Loads user-defined awsrun commands from a Python module/package.
+
+    The `module_name` parameter specifies a base Python module that should
+    contain one or more modules that implement a class called `CLICommand`,
+    which allows the loader to find compatible commands.
+    &#34;&#34;&#34;
+    def __init__(self, module_name):
+        self.module_name = module_name
+
+    def load(self, command_name):
+        try:
+            path = f&#39;{self.module_name}.{command_name}&#39;
+            LOG.info(&#34;loading command at &#39;%s&#39;&#34;, path)
+            module = importlib.import_module(path)
+
+            # All Commands must define an &#39;CLICommand&#39; class as this is the
+            # contract that we have defined as part of the command system.
+            return module.CLICommand
+
+        except Exception as e:
+            raise CommandNotFoundError(command_name, {self.module_name: e})
+
+    def load_all(self):
+        classes = {}
+        base = importlib.import_module(self.module_name)
+
+        for m in pkgutil.iter_modules(base.__path__):
+            with contextlib.suppress(Exception):
+                classes[m.name] = self.load(m.name)
+
+        return classes</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.cmdmgr.CommandLoader" href="#awsrun.cmdmgr.CommandLoader">CommandLoader</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.cmdmgr.CommandLoader" href="#awsrun.cmdmgr.CommandLoader">CommandLoader</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.cmdmgr.CommandLoader.load" href="#awsrun.cmdmgr.CommandLoader.load">load</a></code></li>
+<li><code><a title="awsrun.cmdmgr.CommandLoader.load_all" href="#awsrun.cmdmgr.CommandLoader.load_all">load_all</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.cmdmgr.CommandNotFoundError"><code class="flex name class">
+<span>class <span class="ident">CommandNotFoundError</span></span>
+<span>(</span><span>command_name, path_errors)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Raised if command cannot be found.</p>
+<p>The <code>command_name</code> attribute of the instance is the command that could not be
+found.
+The <code>path_errors</code> attribute is a dict of path -&gt; loader exceptions for
+each path searched.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CommandNotFoundError(Exception):
+    &#34;&#34;&#34;Raised if command cannot be found.
+
+    The `command_name` attribute of the instance is the command that could not be
+    found.  The `path_errors` attribute is a dict of path -&gt; loader exceptions for
+    each path searched.
+    &#34;&#34;&#34;
+    def __init__(self, command_name, path_errors):
+        self.path_errors = path_errors
+        self.command_name = command_name
+
+        msg = f&#34;&#39;{command_name}&#39; command not found:\n&#34;
+        for path, error in path_errors.items():
+            msg += f&#39;  {path} =&gt; {error}\n&#39;
+        super().__init__(msg)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#overview">Overview</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun" href="index.html">awsrun</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.cmdmgr.CommandManager" href="#awsrun.cmdmgr.CommandManager">CommandManager</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.cmdmgr.CommandManager.from_paths" href="#awsrun.cmdmgr.CommandManager.from_paths">from_paths</a></code></li>
+<li><code><a title="awsrun.cmdmgr.CommandManager.commands" href="#awsrun.cmdmgr.CommandManager.commands">commands</a></code></li>
+<li><code><a title="awsrun.cmdmgr.CommandManager.instantiate_command" href="#awsrun.cmdmgr.CommandManager.instantiate_command">instantiate_command</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.cmdmgr.CommandLoader" href="#awsrun.cmdmgr.CommandLoader">CommandLoader</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.cmdmgr.CommandLoader.load" href="#awsrun.cmdmgr.CommandLoader.load">load</a></code></li>
+<li><code><a title="awsrun.cmdmgr.CommandLoader.load_all" href="#awsrun.cmdmgr.CommandLoader.load_all">load_all</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.cmdmgr.ChainLoader" href="#awsrun.cmdmgr.ChainLoader">ChainLoader</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.cmdmgr.ChainLoader.load" href="#awsrun.cmdmgr.ChainLoader.load">load</a></code></li>
+<li><code><a title="awsrun.cmdmgr.ChainLoader.load_all" href="#awsrun.cmdmgr.ChainLoader.load_all">load_all</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.cmdmgr.DirectoryLoader" href="#awsrun.cmdmgr.DirectoryLoader">DirectoryLoader</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.cmdmgr.ModuleLoader" href="#awsrun.cmdmgr.ModuleLoader">ModuleLoader</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.cmdmgr.CommandNotFoundError" href="#awsrun.cmdmgr.CommandNotFoundError">CommandNotFoundError</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

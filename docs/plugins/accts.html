@@ -1,0 +1,1172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>awsrun.plugins.accts API documentation</title>
+<meta name="description" content="Plug-ins for account loading …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<style>
+body {
+/* Probably too small for most ...
+font-size: .9em;
+*/
+}
+code {
+font-size: .9em;
+}
+pre code {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.plugins.accts</code></h1>
+</header>
+<section id="section-intro">
+<p>Plug-ins for account loading.</p>
+<p>The plug-ins in this module allow a user to select accounts using the metadata
+filters on the <a title="awsrun.cli" href="../cli.html"><code>awsrun.cli</code></a> instead of explicitly listing accounts to process.
+For accounts that are explicitly specified, the plug-ins are used to validate
+those accounts exist. Most plugins in this module attach metadata attributes to
+the account objects, which are made available to command authors. To configure
+the CLI to use one of these plug-ins, or a user-defined plug-in, specify an
+<code>Accounts</code> block in the user configuration file:</p>
+<pre><code>Accounts:
+  plugin: PYTHON_MODULE.CLASSNAME
+  options:
+    ARG1: VAL1
+    ARG2: VAL2
+</code></pre>
+<p>Refer to each plug-in's documentation for a list of valid options that can be
+provided via the configuration file or via awsrun CLI flags. CLI flags override
+the values defined in the configuration file. The <code>plugin</code> key may be one of the
+following values:</p>
+<dl>
+<dt>awsrun.plugins.accts.Identity</dt>
+<dd><a title="awsrun.plugins.accts.Identity" href="#awsrun.plugins.accts.Identity"><code>Identity</code></a> does not adorn accounts with additional metadata or perform
+validation. If a user has not configured an account loader, this is the default.</dd>
+<dt>awsrun.plugins.accts.CSV</dt>
+<dd><a title="awsrun.plugins.accts.CSV" href="#awsrun.plugins.accts.CSV"><code>CSV</code></a> loads accounts and metadata from a CSV file.</dd>
+<dt>awsrun.plugins.accts.JSON</dt>
+<dd><a title="awsrun.plugins.accts.JSON" href="#awsrun.plugins.accts.JSON"><code>JSON</code></a> loads accounts and metadata from JSON.</dd>
+<dt>your.own.module.PluginSubclass</dt>
+<dd>A custom plug-in installed in the Python path that subclasses
+<a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin"><code>Plugin</code></a> that returns a <a title="awsrun.acctload.AccountLoader" href="../acctload.html#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a>.</dd>
+</dl>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;Plug-ins for account loading.
+
+The plug-ins in this module allow a user to select accounts using the metadata
+filters on the `awsrun.cli` instead of explicitly listing accounts to process.
+For accounts that are explicitly specified, the plug-ins are used to validate
+those accounts exist. Most plugins in this module attach metadata attributes to
+the account objects, which are made available to command authors. To configure
+the CLI to use one of these plug-ins, or a user-defined plug-in, specify an
+`Accounts` block in the user configuration file:
+
+    Accounts:
+      plugin: PYTHON_MODULE.CLASSNAME
+      options:
+        ARG1: VAL1
+        ARG2: VAL2
+
+Refer to each plug-in&#39;s documentation for a list of valid options that can be
+provided via the configuration file or via awsrun CLI flags. CLI flags override
+the values defined in the configuration file. The `plugin` key may be one of the
+following values:
+
+awsrun.plugins.accts.Identity
+:  `Identity` does not adorn accounts with additional metadata or perform
+validation. If a user has not configured an account loader, this is the default.
+
+awsrun.plugins.accts.CSV
+:  `CSV` loads accounts and metadata from a CSV file.
+
+awsrun.plugins.accts.JSON
+:  `JSON` loads accounts and metadata from JSON.
+
+your.own.module.PluginSubclass
+:  A custom plug-in installed in the Python path that subclasses
+`awsrun.plugmgr.Plugin` that returns a `awsrun.acctload.AccountLoader`.
+&#34;&#34;&#34;
+
+from awsrun.acctload import CSVAccountLoader, IdentityAccountLoader, JSONAccountLoader
+from awsrun.config import List, Str, Int, Bool, URL
+
+from awsrun.plugmgr import Plugin
+
+
+class Identity(Plugin):
+    &#34;&#34;&#34;CLI plug-in that does not adorn accounts with additional metadata.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or `--account-file`
+    will not be loaded from an external data source to ensure they exist, nor
+    will any metadata be attached to the accounts for use in awsrun commands.
+
+    This account loader plug-in is the default if one is not specified in the
+    user configuration.
+
+    ## Configuration
+
+        Accounts:
+          plugin: awsrun.plugins.accts.Identity
+
+    ## Plug-in Options
+
+    There are no options for this plug-in.
+
+    &#34;&#34;&#34;
+    def instantiate(self, args):
+        return IdentityAccountLoader()
+
+
+class JSON(Plugin):
+    &#34;&#34;&#34;CLI plug-in that loads accounts and metadata from a JSON file/url.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or `--account-file`
+    will be validated against the list of accounts in the JSON document.  More
+    importantly, loaded accounts will include metadata associated with each
+    account from the JSON document. This metadata can be used to select accounts
+    using the `--include` and `--exclude` awsrun CLI flags. Given the following
+    JSON structure:
+
+        [
+            {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        ]
+
+    Users could select only the &#34;active&#34; accounts via the `awsrun.cli` by using
+    the metadata filter options. The following would select account numbers
+    &#34;100200300400&#34; and &#34;200300400100&#34;:
+
+        $ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+
+    Additionally, this metadata is made available to command authors for use
+    within their commands. The account loader would build account objects with
+    the following attribute names: `id`, `env`, and `status`. Command authors
+    are provided access to these account objects in their user-defined commands
+    via a parameter to `awsrun.runner.Command.execute`:
+
+        class CLICommand(Command):
+            def execute(self, session, acct):
+                # The acct parameter contains the attributes from the JSON
+                return f&#39;{acct.env} account {acct.id} is {acct.status}\\n&#39;
+
+    In cases where the JSON key names are not valid Python identifiers, they are
+    munged. Leading digits are prefixed with underscores, non-alpha numeric
+    characters are replaced with underscores, and keywords are appended with an
+    underscore.
+
+    Instead of specifying accounts as a JSON array of objects as shown above,
+    the JSON can be specified as a single object with account IDs as keys and
+    metadata as values such as:
+
+        {
+            &#34;100200300400&#34;: {&#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;200300400100&#34;: {&#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;300400100200&#34;: {&#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        }
+
+    The above will create the same list account objects as the first version
+    because this loader assumes a top-level JSON object is the container of
+    accounts. The account objects created will contain the `id` attribute
+    because the default value for the ID attribute is `id`.
+
+    Similarly, the JSON can be specified as follows, where the account ID is
+    used in the top-level object key as well as the object value metadata:
+
+        {
+            &#34;100200300400&#34;: {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;200300400100&#34;: {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;300400100200&#34;: {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        }
+
+    Finally, if the account list is not at the top-level of the JSON, a path
+    can be specified to point the loader to the correct location in the JSON.
+    For example, a path list of &#34;aws&#34; and &#34;accounts&#34; is required to parse the
+    following JSON:
+
+        {
+            &#34;aws&#34;:
+            {
+                &#34;accounts&#34;:
+                [
+                    {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                    {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                    {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+                ]
+            }
+        }
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Accounts:
+          plugin: awsrun.plugins.accts.JSON
+          options:
+            url: STRING*
+            max_age: INTEGER
+            id_attr: STRING*
+            path:
+              - STRING
+            str_template: STRING
+            include_attrs:
+              - STRING
+            exclude_attrs:
+              - STRING
+            no_verify: BOOLEAN
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `url`, `--loader-url`
+    : Load the data from the specified URL. To load a local file, use
+    `file:///absolute/path/data.json`. This value **must** be provided via the
+    user configuration or as an awsrun command line argument.
+
+    `max_age`, `--loader-max-age`
+    : Cache the data retrieved from the URL for the specified number of seconds.
+    The default value is `0`, which disables caching. This can be useful for
+    servers that are slow to generate the account list.
+
+    `id_attr`
+    : Identifies the JSON key name that contains the AWS account ID. This
+    value **must** be provided so awsrun can identify the account number
+    associated with each account in the JSON.
+
+    `path`
+    : Specifies the location within the JSON that contains the array of accounts
+    or object of accounts. If specified, this must be a list of key names to
+    traverse the JSON. The default assumes the accounts are at the top-level.
+
+    `str_template`
+    : Controls how accounts are formatted as strings. This is a [Python format
+    string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
+    that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
+    or `&#34;{id}-{env}&#34;` assuming `id` and `env` are JSON key names.
+
+    `include_attrs`
+    : Include only the specified list of JSON key names from the object
+    metadata. If this option is not supplied, all JSON keys are included as
+    attributes on the account objects created by this loader.
+
+    `exclude_attrs`
+    : Exclude the specified list of JSON key names from the object metadata. If
+    this option is not supplied, no key names are excluded as attributes on
+    the account objects created by this loader.
+
+    `no_verify`, `--loader-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+    &#34;&#34;&#34;
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
+        # chance of collision.
+        group = parser.add_argument_group(&#39;account loader options&#39;)
+        group.add_argument(
+            &#39;--loader-url&#39;,
+            metavar=&#39;URL&#39;,
+            default=cfg(&#39;url&#39;, type=URL, must_exist=True),
+            help=&#39;URL to account data (also supports file:///path/to/file)&#39;)
+
+        group.add_argument(
+            &#39;--loader-no-verify&#39;,
+            action=&#39;store_true&#39;,
+            default=cfg(&#39;no_verify&#39;, type=Bool, default=False),
+            help=&#39;disable cert verification for HTTP requests&#39;)
+
+        group.add_argument(
+            &#39;--loader-max-age&#39;,
+            metavar=&#39;SECS&#39;,
+            type=int,
+            default=cfg(&#39;max_age&#39;, type=Int, default=0),
+            help=&#39;max age for cached URL data&#39;)
+
+        group.add_argument(
+            &#39;--loader-str-template&#39;,
+            metavar=&#39;STRING&#39;,
+            default=cfg(&#39;str_template&#39;),
+            help=&#39;format string used to display an account&#39;)
+
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        loader = JSONAccountLoader(
+            url=args.loader_url,
+            max_age=args.loader_max_age,
+            id_attr=cfg(&#39;id_attr&#39;, must_exist=True),
+            path=cfg(&#39;path&#39;, type=List(Str), default=[]),
+            str_template=args.loader_str_template,
+            include_attrs=cfg(&#39;include_attrs&#39;, type=List(Str), default=[]),
+            exclude_attrs=cfg(&#39;exclude_attrs&#39;, type=List(Str), default=[]),
+            no_verify=args.loader_no_verify)
+
+        return loader
+
+
+class CSV(JSON):
+    &#34;&#34;&#34;CLI plug-in loads accounts and metadata from a CSV file/url.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or `--account-file`
+    will be validated against the list of accounts in the CSV file.  More
+    importantly, loaded accounts will include metadata associated with the
+    columns from the CSV file. This metadata can be used to select accounts
+    using the `--include` and `--exclude` awsrun CLI flags.
+
+    The default delimiter is comma, but may be changed via an option. The
+    column names must be specified on the first row of the CSV file and will
+    become the attribute names on the loaded account objects. Given the
+    following CSV file:
+
+         id, env, status
+         100200300400, prod, active
+         200300400100, non-prod, active
+         300400100200, non-prod, suspended
+
+    Users could select only the &#34;active&#34; accounts via the `awsrun.cli` by using
+    the metadata filter options. The following would select account numbers
+    &#34;100200300400&#34; and &#34;200300400100&#34;:
+
+        $ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+
+    Additionally, this metadata is made available to command authors for use
+    within their commands. The account loader would build account objects with
+    the following attribute names: `id`, `env`, and `status`. Command authors
+    are provided access to these account objects in their user-defined commands
+    via a parameter to `awsrun.runner.Command.execute`:
+
+        class CLICommand(Command):
+            def execute(self, session, acct):
+                # The acct parameter contains the attributes from the CSV
+                return f&#39;{acct.env} account {acct.id} is {acct.status}\\n&#39;
+
+    In cases where the CSV column names are not valid Python identifiers, they
+    are munged. Leading digits are prefixed with underscores, non-alpha numeric
+    characters are replaced with underscores, and keywords are appended with an
+    underscore.
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Accounts:
+          plugin: awsrun.plugins.accts.CSV
+          options:
+            url: STRING*
+            delimiter: STRING
+            max_age: INTEGER
+            id_attr: STRING*
+            str_template: STRING
+            include_attrs:
+              - STRING
+            exclude_attrs:
+              - STRING
+            no_verify: BOOLEAN
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `url`, `--loader-url`
+    : Load the data from the specified URL. To load a local file, use
+    `file:///absolute/path/data.csv`. This value **must** be provided via the
+    user configuration or as an awsrun command line argument.
+
+    `delimiter`, `--loader-delimiter`
+    : Use the specified character as the delimiter for the CSV data. The default
+    value is `&#34;,&#34;`.
+
+    `max_age`, `--loader-max-age`
+    : Cache the data retrieved from the URL for the specified number of seconds.
+    The default value is `0`, which disables caching. This can be useful for
+    servers that are slow to generate the account list.
+
+    `id_attr`
+    : Identifies the CSV column name that contains the AWS account ID. This
+    value **must** be provided so awsrun can identify the account number
+    associated with each row of account data.
+
+    `str_template`
+    : Controls how accounts are formatted as strings. This is a [Python format
+    string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
+    that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
+    or `&#34;{id}-{env}&#34;` assuming `id` and `env` are column names in the CSV.
+
+    `include_attrs`
+    : Include only the specified list of column names from the CSV. If this
+    option is not supplied, all column names are included as attributes on the
+    account objects created by this loader.
+
+    `exclude_attrs`
+    : Exclude the specified list of column names from the CSV. If this option
+    is not supplied, no column names are excluded as attributes on the account
+    objects created by this loader.
+
+    `no_verify`, `--loader-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+    &#34;&#34;&#34;
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
+        # chance of collision.
+        group = parser.add_argument_group(&#39;CSV account loader options&#39;)
+        group.add_argument(
+            &#39;--loader-delimiter&#39;,
+            metavar=&#39;CHAR&#39;,
+            default=cfg(&#39;delimiter&#39;, default=&#39;,&#39;),
+            help=&#39;delimiter used in CSV file&#39;)
+
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        loader = CSVAccountLoader(
+            url=args.loader_url,
+            max_age=args.loader_max_age,
+            delimiter=args.loader_delimiter,
+            id_attr=cfg(&#39;id_attr&#39;, must_exist=True),
+            str_template=args.loader_str_template,
+            include_attrs=cfg(&#39;include_attrs&#39;, type=List(Str), default=[]),
+            exclude_attrs=cfg(&#39;exclude_attrs&#39;, type=List(Str), default=[]),
+            no_verify=args.loader_no_verify)
+
+        return loader</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.plugins.accts.Identity"><code class="flex name class">
+<span>class <span class="ident">Identity</span></span>
+<span>(</span><span>parser, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CLI plug-in that does not adorn accounts with additional metadata.</p>
+<h2 id="overview">Overview</h2>
+<p>Accounts specified on the awsrun CLI via the <code>--account</code> or <code>--account-file</code>
+will not be loaded from an external data source to ensure they exist, nor
+will any metadata be attached to the accounts for use in awsrun commands.</p>
+<p>This account loader plug-in is the default if one is not specified in the
+user configuration.</p>
+<h2 id="configuration">Configuration</h2>
+<pre><code>Accounts:
+  plugin: awsrun.plugins.accts.Identity
+</code></pre>
+<h2 id="plug-in-options">Plug-in Options</h2>
+<p>There are no options for this plug-in.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Identity(Plugin):
+    &#34;&#34;&#34;CLI plug-in that does not adorn accounts with additional metadata.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or `--account-file`
+    will not be loaded from an external data source to ensure they exist, nor
+    will any metadata be attached to the accounts for use in awsrun commands.
+
+    This account loader plug-in is the default if one is not specified in the
+    user configuration.
+
+    ## Configuration
+
+        Accounts:
+          plugin: awsrun.plugins.accts.Identity
+
+    ## Plug-in Options
+
+    There are no options for this plug-in.
+
+    &#34;&#34;&#34;
+    def instantiate(self, args):
+        return IdentityAccountLoader()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.plugmgr.Plugin.instantiate" href="../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.plugins.accts.JSON"><code class="flex name class">
+<span>class <span class="ident">JSON</span></span>
+<span>(</span><span>parser, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CLI plug-in that loads accounts and metadata from a JSON file/url.</p>
+<h2 id="overview">Overview</h2>
+<p>Accounts specified on the awsrun CLI via the <code>--account</code> or <code>--account-file</code>
+will be validated against the list of accounts in the JSON document.
+More
+importantly, loaded accounts will include metadata associated with each
+account from the JSON document. This metadata can be used to select accounts
+using the <code>--include</code> and <code>--exclude</code> awsrun CLI flags. Given the following
+JSON structure:</p>
+<pre><code>[
+    {"id": "100200300400", "env": "prod", "status": "active"},
+    {"id": "200300400100", "env": "non-prod", "status": "active"},
+    {"id": "300400100200", "env": "non-prod", "status": "suspended"}
+]
+</code></pre>
+<p>Users could select only the "active" accounts via the <a title="awsrun.cli" href="../cli.html"><code>awsrun.cli</code></a> by using
+the metadata filter options. The following would select account numbers
+"100200300400" and "200300400100":</p>
+<pre><code>$ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+</code></pre>
+<p>Additionally, this metadata is made available to command authors for use
+within their commands. The account loader would build account objects with
+the following attribute names: <code>id</code>, <code>env</code>, and <code>status</code>. Command authors
+are provided access to these account objects in their user-defined commands
+via a parameter to <a title="awsrun.runner.Command.execute" href="../runner.html#awsrun.runner.Command.execute"><code>Command.execute()</code></a>:</p>
+<pre><code>class CLICommand(Command):
+    def execute(self, session, acct):
+        # The acct parameter contains the attributes from the JSON
+        return f'{acct.env} account {acct.id} is {acct.status}\n'
+</code></pre>
+<p>In cases where the JSON key names are not valid Python identifiers, they are
+munged. Leading digits are prefixed with underscores, non-alpha numeric
+characters are replaced with underscores, and keywords are appended with an
+underscore.</p>
+<p>Instead of specifying accounts as a JSON array of objects as shown above,
+the JSON can be specified as a single object with account IDs as keys and
+metadata as values such as:</p>
+<pre><code>{
+    "100200300400": {"env": "prod", "status": "active"},
+    "200300400100": {"env": "non-prod", "status": "active"},
+    "300400100200": {"env": "non-prod", "status": "suspended"}
+}
+</code></pre>
+<p>The above will create the same list account objects as the first version
+because this loader assumes a top-level JSON object is the container of
+accounts. The account objects created will contain the <code>id</code> attribute
+because the default value for the ID attribute is <code>id</code>.</p>
+<p>Similarly, the JSON can be specified as follows, where the account ID is
+used in the top-level object key as well as the object value metadata:</p>
+<pre><code>{
+    "100200300400": {"id": "100200300400", "env": "prod", "status": "active"},
+    "200300400100": {"id": "200300400100", "env": "non-prod", "status": "active"},
+    "300400100200": {"id": "300400100200", "env": "non-prod", "status": "suspended"}
+}
+</code></pre>
+<p>Finally, if the account list is not at the top-level of the JSON, a path
+can be specified to point the loader to the correct location in the JSON.
+For example, a path list of "aws" and "accounts" is required to parse the
+following JSON:</p>
+<pre><code>{
+    "aws":
+    {
+        "accounts":
+        [
+            {"id": "100200300400", "env": "prod", "status": "active"},
+            {"id": "200300400100", "env": "non-prod", "status": "active"},
+            {"id": "300400100200", "env": "non-prod", "status": "suspended"}
+        ]
+    }
+}
+</code></pre>
+<h2 id="configuration">Configuration</h2>
+<p>Options with an asterisk are mandatory and must be provided:</p>
+<pre><code>Accounts:
+  plugin: awsrun.plugins.accts.JSON
+  options:
+    url: STRING*
+    max_age: INTEGER
+    id_attr: STRING*
+    path:
+      - STRING
+    str_template: STRING
+    include_attrs:
+      - STRING
+    exclude_attrs:
+      - STRING
+    no_verify: BOOLEAN
+</code></pre>
+<h2 id="plug-in-options">Plug-in Options</h2>
+<p>Some options can be overridden on the awsrun CLI via command line flags.
+In those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>url</code>, <code>--loader-url</code></dt>
+<dd>Load the data from the specified URL. To load a local file, use
+<code>file:///absolute/path/data.json</code>. This value <strong>must</strong> be provided via the
+user configuration or as an awsrun command line argument.</dd>
+<dt><code>max_age</code>, <code>--loader-max-age</code></dt>
+<dd>Cache the data retrieved from the URL for the specified number of seconds.
+The default value is <code>0</code>, which disables caching. This can be useful for
+servers that are slow to generate the account list.</dd>
+<dt><code>id_attr</code></dt>
+<dd>Identifies the JSON key name that contains the AWS account ID. This
+value <strong>must</strong> be provided so awsrun can identify the account number
+associated with each account in the JSON.</dd>
+<dt><code>path</code></dt>
+<dd>Specifies the location within the JSON that contains the array of accounts
+or object of accounts. If specified, this must be a list of key names to
+traverse the JSON. The default assumes the accounts are at the top-level.</dd>
+<dt><code>str_template</code></dt>
+<dd>Controls how accounts are formatted as strings. This is a <a href="https://docs.python.org/3.7/library/string.html#format-string-syntax">Python format
+string</a>
+that can include any of the included attributes. For example, <code>"{id}:{env}"</code>
+or <code>"{id}-{env}"</code> assuming <code>id</code> and <code>env</code> are JSON key names.</dd>
+<dt><code>include_attrs</code></dt>
+<dd>Include only the specified list of JSON key names from the object
+metadata. If this option is not supplied, all JSON keys are included as
+attributes on the account objects created by this loader.</dd>
+<dt><code>exclude_attrs</code></dt>
+<dd>Exclude the specified list of JSON key names from the object metadata. If
+this option is not supplied, no key names are excluded as attributes on
+the account objects created by this loader.</dd>
+<dt><code>no_verify</code>, <code>--loader-no-verify</code></dt>
+<dd>Disable HTTP certificate verification. This is not advisable and user will
+be warned on the command line if verification has been disabled. The default
+value is <code>false</code>.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class JSON(Plugin):
+    &#34;&#34;&#34;CLI plug-in that loads accounts and metadata from a JSON file/url.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or `--account-file`
+    will be validated against the list of accounts in the JSON document.  More
+    importantly, loaded accounts will include metadata associated with each
+    account from the JSON document. This metadata can be used to select accounts
+    using the `--include` and `--exclude` awsrun CLI flags. Given the following
+    JSON structure:
+
+        [
+            {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        ]
+
+    Users could select only the &#34;active&#34; accounts via the `awsrun.cli` by using
+    the metadata filter options. The following would select account numbers
+    &#34;100200300400&#34; and &#34;200300400100&#34;:
+
+        $ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+
+    Additionally, this metadata is made available to command authors for use
+    within their commands. The account loader would build account objects with
+    the following attribute names: `id`, `env`, and `status`. Command authors
+    are provided access to these account objects in their user-defined commands
+    via a parameter to `awsrun.runner.Command.execute`:
+
+        class CLICommand(Command):
+            def execute(self, session, acct):
+                # The acct parameter contains the attributes from the JSON
+                return f&#39;{acct.env} account {acct.id} is {acct.status}\\n&#39;
+
+    In cases where the JSON key names are not valid Python identifiers, they are
+    munged. Leading digits are prefixed with underscores, non-alpha numeric
+    characters are replaced with underscores, and keywords are appended with an
+    underscore.
+
+    Instead of specifying accounts as a JSON array of objects as shown above,
+    the JSON can be specified as a single object with account IDs as keys and
+    metadata as values such as:
+
+        {
+            &#34;100200300400&#34;: {&#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;200300400100&#34;: {&#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;300400100200&#34;: {&#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        }
+
+    The above will create the same list account objects as the first version
+    because this loader assumes a top-level JSON object is the container of
+    accounts. The account objects created will contain the `id` attribute
+    because the default value for the ID attribute is `id`.
+
+    Similarly, the JSON can be specified as follows, where the account ID is
+    used in the top-level object key as well as the object value metadata:
+
+        {
+            &#34;100200300400&#34;: {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;200300400100&#34;: {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;300400100200&#34;: {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        }
+
+    Finally, if the account list is not at the top-level of the JSON, a path
+    can be specified to point the loader to the correct location in the JSON.
+    For example, a path list of &#34;aws&#34; and &#34;accounts&#34; is required to parse the
+    following JSON:
+
+        {
+            &#34;aws&#34;:
+            {
+                &#34;accounts&#34;:
+                [
+                    {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                    {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                    {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+                ]
+            }
+        }
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Accounts:
+          plugin: awsrun.plugins.accts.JSON
+          options:
+            url: STRING*
+            max_age: INTEGER
+            id_attr: STRING*
+            path:
+              - STRING
+            str_template: STRING
+            include_attrs:
+              - STRING
+            exclude_attrs:
+              - STRING
+            no_verify: BOOLEAN
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `url`, `--loader-url`
+    : Load the data from the specified URL. To load a local file, use
+    `file:///absolute/path/data.json`. This value **must** be provided via the
+    user configuration or as an awsrun command line argument.
+
+    `max_age`, `--loader-max-age`
+    : Cache the data retrieved from the URL for the specified number of seconds.
+    The default value is `0`, which disables caching. This can be useful for
+    servers that are slow to generate the account list.
+
+    `id_attr`
+    : Identifies the JSON key name that contains the AWS account ID. This
+    value **must** be provided so awsrun can identify the account number
+    associated with each account in the JSON.
+
+    `path`
+    : Specifies the location within the JSON that contains the array of accounts
+    or object of accounts. If specified, this must be a list of key names to
+    traverse the JSON. The default assumes the accounts are at the top-level.
+
+    `str_template`
+    : Controls how accounts are formatted as strings. This is a [Python format
+    string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
+    that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
+    or `&#34;{id}-{env}&#34;` assuming `id` and `env` are JSON key names.
+
+    `include_attrs`
+    : Include only the specified list of JSON key names from the object
+    metadata. If this option is not supplied, all JSON keys are included as
+    attributes on the account objects created by this loader.
+
+    `exclude_attrs`
+    : Exclude the specified list of JSON key names from the object metadata. If
+    this option is not supplied, no key names are excluded as attributes on
+    the account objects created by this loader.
+
+    `no_verify`, `--loader-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+    &#34;&#34;&#34;
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
+        # chance of collision.
+        group = parser.add_argument_group(&#39;account loader options&#39;)
+        group.add_argument(
+            &#39;--loader-url&#39;,
+            metavar=&#39;URL&#39;,
+            default=cfg(&#39;url&#39;, type=URL, must_exist=True),
+            help=&#39;URL to account data (also supports file:///path/to/file)&#39;)
+
+        group.add_argument(
+            &#39;--loader-no-verify&#39;,
+            action=&#39;store_true&#39;,
+            default=cfg(&#39;no_verify&#39;, type=Bool, default=False),
+            help=&#39;disable cert verification for HTTP requests&#39;)
+
+        group.add_argument(
+            &#39;--loader-max-age&#39;,
+            metavar=&#39;SECS&#39;,
+            type=int,
+            default=cfg(&#39;max_age&#39;, type=Int, default=0),
+            help=&#39;max age for cached URL data&#39;)
+
+        group.add_argument(
+            &#39;--loader-str-template&#39;,
+            metavar=&#39;STRING&#39;,
+            default=cfg(&#39;str_template&#39;),
+            help=&#39;format string used to display an account&#39;)
+
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        loader = JSONAccountLoader(
+            url=args.loader_url,
+            max_age=args.loader_max_age,
+            id_attr=cfg(&#39;id_attr&#39;, must_exist=True),
+            path=cfg(&#39;path&#39;, type=List(Str), default=[]),
+            str_template=args.loader_str_template,
+            include_attrs=cfg(&#39;include_attrs&#39;, type=List(Str), default=[]),
+            exclude_attrs=cfg(&#39;exclude_attrs&#39;, type=List(Str), default=[]),
+            no_verify=args.loader_no_verify)
+
+        return loader</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="awsrun.plugins.accts.CSV" href="#awsrun.plugins.accts.CSV">CSV</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.plugmgr.Plugin.instantiate" href="../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.plugins.accts.CSV"><code class="flex name class">
+<span>class <span class="ident">CSV</span></span>
+<span>(</span><span>parser, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CLI plug-in loads accounts and metadata from a CSV file/url.</p>
+<h2 id="overview">Overview</h2>
+<p>Accounts specified on the awsrun CLI via the <code>--account</code> or <code>--account-file</code>
+will be validated against the list of accounts in the CSV file.
+More
+importantly, loaded accounts will include metadata associated with the
+columns from the CSV file. This metadata can be used to select accounts
+using the <code>--include</code> and <code>--exclude</code> awsrun CLI flags.</p>
+<p>The default delimiter is comma, but may be changed via an option. The
+column names must be specified on the first row of the CSV file and will
+become the attribute names on the loaded account objects. Given the
+following CSV file:</p>
+<pre><code> id, env, status
+ 100200300400, prod, active
+ 200300400100, non-prod, active
+ 300400100200, non-prod, suspended
+</code></pre>
+<p>Users could select only the "active" accounts via the <a title="awsrun.cli" href="../cli.html"><code>awsrun.cli</code></a> by using
+the metadata filter options. The following would select account numbers
+"100200300400" and "200300400100":</p>
+<pre><code>$ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+</code></pre>
+<p>Additionally, this metadata is made available to command authors for use
+within their commands. The account loader would build account objects with
+the following attribute names: <code>id</code>, <code>env</code>, and <code>status</code>. Command authors
+are provided access to these account objects in their user-defined commands
+via a parameter to <a title="awsrun.runner.Command.execute" href="../runner.html#awsrun.runner.Command.execute"><code>Command.execute()</code></a>:</p>
+<pre><code>class CLICommand(Command):
+    def execute(self, session, acct):
+        # The acct parameter contains the attributes from the CSV
+        return f'{acct.env} account {acct.id} is {acct.status}\n'
+</code></pre>
+<p>In cases where the CSV column names are not valid Python identifiers, they
+are munged. Leading digits are prefixed with underscores, non-alpha numeric
+characters are replaced with underscores, and keywords are appended with an
+underscore.</p>
+<h2 id="configuration">Configuration</h2>
+<p>Options with an asterisk are mandatory and must be provided:</p>
+<pre><code>Accounts:
+  plugin: awsrun.plugins.accts.CSV
+  options:
+    url: STRING*
+    delimiter: STRING
+    max_age: INTEGER
+    id_attr: STRING*
+    str_template: STRING
+    include_attrs:
+      - STRING
+    exclude_attrs:
+      - STRING
+    no_verify: BOOLEAN
+</code></pre>
+<h2 id="plug-in-options">Plug-in Options</h2>
+<p>Some options can be overridden on the awsrun CLI via command line flags.
+In those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>url</code>, <code>--loader-url</code></dt>
+<dd>Load the data from the specified URL. To load a local file, use
+<code>file:///absolute/path/data.csv</code>. This value <strong>must</strong> be provided via the
+user configuration or as an awsrun command line argument.</dd>
+<dt><code>delimiter</code>, <code>--loader-delimiter</code></dt>
+<dd>Use the specified character as the delimiter for the CSV data. The default
+value is <code>","</code>.</dd>
+<dt><code>max_age</code>, <code>--loader-max-age</code></dt>
+<dd>Cache the data retrieved from the URL for the specified number of seconds.
+The default value is <code>0</code>, which disables caching. This can be useful for
+servers that are slow to generate the account list.</dd>
+<dt><code>id_attr</code></dt>
+<dd>Identifies the CSV column name that contains the AWS account ID. This
+value <strong>must</strong> be provided so awsrun can identify the account number
+associated with each row of account data.</dd>
+<dt><code>str_template</code></dt>
+<dd>Controls how accounts are formatted as strings. This is a <a href="https://docs.python.org/3.7/library/string.html#format-string-syntax">Python format
+string</a>
+that can include any of the included attributes. For example, <code>"{id}:{env}"</code>
+or <code>"{id}-{env}"</code> assuming <code>id</code> and <code>env</code> are column names in the CSV.</dd>
+<dt><code>include_attrs</code></dt>
+<dd>Include only the specified list of column names from the CSV. If this
+option is not supplied, all column names are included as attributes on the
+account objects created by this loader.</dd>
+<dt><code>exclude_attrs</code></dt>
+<dd>Exclude the specified list of column names from the CSV. If this option
+is not supplied, no column names are excluded as attributes on the account
+objects created by this loader.</dd>
+<dt><code>no_verify</code>, <code>--loader-no-verify</code></dt>
+<dd>Disable HTTP certificate verification. This is not advisable and user will
+be warned on the command line if verification has been disabled. The default
+value is <code>false</code>.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CSV(JSON):
+    &#34;&#34;&#34;CLI plug-in loads accounts and metadata from a CSV file/url.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or `--account-file`
+    will be validated against the list of accounts in the CSV file.  More
+    importantly, loaded accounts will include metadata associated with the
+    columns from the CSV file. This metadata can be used to select accounts
+    using the `--include` and `--exclude` awsrun CLI flags.
+
+    The default delimiter is comma, but may be changed via an option. The
+    column names must be specified on the first row of the CSV file and will
+    become the attribute names on the loaded account objects. Given the
+    following CSV file:
+
+         id, env, status
+         100200300400, prod, active
+         200300400100, non-prod, active
+         300400100200, non-prod, suspended
+
+    Users could select only the &#34;active&#34; accounts via the `awsrun.cli` by using
+    the metadata filter options. The following would select account numbers
+    &#34;100200300400&#34; and &#34;200300400100&#34;:
+
+        $ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+
+    Additionally, this metadata is made available to command authors for use
+    within their commands. The account loader would build account objects with
+    the following attribute names: `id`, `env`, and `status`. Command authors
+    are provided access to these account objects in their user-defined commands
+    via a parameter to `awsrun.runner.Command.execute`:
+
+        class CLICommand(Command):
+            def execute(self, session, acct):
+                # The acct parameter contains the attributes from the CSV
+                return f&#39;{acct.env} account {acct.id} is {acct.status}\\n&#39;
+
+    In cases where the CSV column names are not valid Python identifiers, they
+    are munged. Leading digits are prefixed with underscores, non-alpha numeric
+    characters are replaced with underscores, and keywords are appended with an
+    underscore.
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Accounts:
+          plugin: awsrun.plugins.accts.CSV
+          options:
+            url: STRING*
+            delimiter: STRING
+            max_age: INTEGER
+            id_attr: STRING*
+            str_template: STRING
+            include_attrs:
+              - STRING
+            exclude_attrs:
+              - STRING
+            no_verify: BOOLEAN
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `url`, `--loader-url`
+    : Load the data from the specified URL. To load a local file, use
+    `file:///absolute/path/data.csv`. This value **must** be provided via the
+    user configuration or as an awsrun command line argument.
+
+    `delimiter`, `--loader-delimiter`
+    : Use the specified character as the delimiter for the CSV data. The default
+    value is `&#34;,&#34;`.
+
+    `max_age`, `--loader-max-age`
+    : Cache the data retrieved from the URL for the specified number of seconds.
+    The default value is `0`, which disables caching. This can be useful for
+    servers that are slow to generate the account list.
+
+    `id_attr`
+    : Identifies the CSV column name that contains the AWS account ID. This
+    value **must** be provided so awsrun can identify the account number
+    associated with each row of account data.
+
+    `str_template`
+    : Controls how accounts are formatted as strings. This is a [Python format
+    string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
+    that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
+    or `&#34;{id}-{env}&#34;` assuming `id` and `env` are column names in the CSV.
+
+    `include_attrs`
+    : Include only the specified list of column names from the CSV. If this
+    option is not supplied, all column names are included as attributes on the
+    account objects created by this loader.
+
+    `exclude_attrs`
+    : Exclude the specified list of column names from the CSV. If this option
+    is not supplied, no column names are excluded as attributes on the account
+    objects created by this loader.
+
+    `no_verify`, `--loader-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+    &#34;&#34;&#34;
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
+        # chance of collision.
+        group = parser.add_argument_group(&#39;CSV account loader options&#39;)
+        group.add_argument(
+            &#39;--loader-delimiter&#39;,
+            metavar=&#39;CHAR&#39;,
+            default=cfg(&#39;delimiter&#39;, default=&#39;,&#39;),
+            help=&#39;delimiter used in CSV file&#39;)
+
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        loader = CSVAccountLoader(
+            url=args.loader_url,
+            max_age=args.loader_max_age,
+            delimiter=args.loader_delimiter,
+            id_attr=cfg(&#39;id_attr&#39;, must_exist=True),
+            str_template=args.loader_str_template,
+            include_attrs=cfg(&#39;include_attrs&#39;, type=List(Str), default=[]),
+            exclude_attrs=cfg(&#39;exclude_attrs&#39;, type=List(Str), default=[]),
+            no_verify=args.loader_no_verify)
+
+        return loader</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.plugins.accts.JSON" href="#awsrun.plugins.accts.JSON">JSON</a></li>
+<li><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.plugins.accts.JSON" href="#awsrun.plugins.accts.JSON">JSON</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.plugins.accts.JSON.instantiate" href="../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun.plugins" href="index.html">awsrun.plugins</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.plugins.accts.Identity" href="#awsrun.plugins.accts.Identity">Identity</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.plugins.accts.JSON" href="#awsrun.plugins.accts.JSON">JSON</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.plugins.accts.CSV" href="#awsrun.plugins.accts.CSV">CSV</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

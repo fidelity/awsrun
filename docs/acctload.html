@@ -1,0 +1,2386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>awsrun.acctload API documentation</title>
+<meta name="description" content="Loads account objects and metadata for those accounts …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<style>
+body {
+/* Probably too small for most ...
+font-size: .9em;
+*/
+}
+code {
+font-size: .9em;
+}
+pre code {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.acctload</code></h1>
+</header>
+<section id="section-intro">
+<p>Loads account objects and metadata for those accounts.</p>
+<h2 id="overview">Overview</h2>
+<p>This module provides an <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> which is responsible for loading objects
+that represent accounts and attaching metadata associated with those accounts to
+the objects as attributes. Users will pass this list of objects to
+<a title="awsrun.runner.AccountRunner.run" href="runner.html#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>, which schedules the concurrent execution of a
+command across this list of accounts. Each account object is made available to
+the <a title="awsrun.runner.Command.execute" href="runner.html#awsrun.runner.Command.execute"><code>Command.execute()</code></a> method allowing users to pass whatever
+objects and metadata they choose to their commands.</p>
+<p>Several concrete implementations of the <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> abstract base class are
+provided by this module: <a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader"><code>IdentityAccountLoader</code></a>, <a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader"><code>CSVAccountLoader</code></a>, and
+<a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader"><code>JSONAccountLoader</code></a>. These loaders are used by the <a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> to obtain the
+list of accounts and to filter those accounts by metadata attributes specified
+on the command line. The CLI instantiates a loader by calling the the plug-ins
+defined in <a title="awsrun.plugins.accts" href="plugins/accts.html"><code>awsrun.plugins.accts</code></a>.</p>
+<p>The <a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader"><code>IdentityAccountLoader</code></a> is intended for use when no additional metadata is
+to be associated with accounts. It simply returns account objects that are
+strings of account IDs. <a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader"><code>CSVAccountLoader</code></a> loads accounts and metadata from CSVs
+while <a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader"><code>JSONAccountLoader</code></a> does so via JSON. Data is loaded from URLs and support
+file-based URLs for local data. Both the CSV and JSON loaders are subclasses of
+<a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>.</p>
+<p>The <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> provides a convenient object wrapper to an account and
+its metadata which is made available via attributes on the object. Users can
+utilize this loader to build their own loaders to pull data from databases or
+other CMDBs. The <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> only requires a list of dicts representing
+accounts and their metadata.
+Under the covers, the loader dynamically creates a
+subclass of <a title="awsrun.acctload.AbstractAccount" href="#awsrun.acctload.AbstractAccount"><code>AbstractAccount</code></a>, which provides a lightweight object interface to
+the dict.</p>
+<p>Two exceptions are defined in this module. <a title="awsrun.acctload.AccountsNotFoundError" href="#awsrun.acctload.AccountsNotFoundError"><code>AccountsNotFoundError</code></a> is raised
+when <a title="awsrun.acctload.AccountLoader.accounts" href="#awsrun.acctload.AccountLoader.accounts"><code>AccountLoader.accounts()</code></a> cannot find one of the accounts explicitly
+requested by the caller. The other exception, <a title="awsrun.acctload.InvalidFormatTemplateError" href="#awsrun.acctload.InvalidFormatTemplateError"><code>InvalidFormatTemplateError</code></a>, is
+raised when the format string passed to <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> constructor refers
+to attributes that are not present in the accounts being loaded.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;Loads account objects and metadata for those accounts.
+
+## Overview
+
+This module provides an `AccountLoader` which is responsible for loading objects
+that represent accounts and attaching metadata associated with those accounts to
+the objects as attributes. Users will pass this list of objects to
+`awsrun.runner.AccountRunner.run`, which schedules the concurrent execution of a
+command across this list of accounts. Each account object is made available to
+the `awsrun.runner.Command.execute` method allowing users to pass whatever
+objects and metadata they choose to their commands.
+
+Several concrete implementations of the `AccountLoader` abstract base class are
+provided by this module: `IdentityAccountLoader`, `CSVAccountLoader`, and
+`JSONAccountLoader`. These loaders are used by the `awsrun.cli` to obtain the
+list of accounts and to filter those accounts by metadata attributes specified
+on the command line. The CLI instantiates a loader by calling the the plug-ins
+defined in `awsrun.plugins.accts`.
+
+The `IdentityAccountLoader` is intended for use when no additional metadata is
+to be associated with accounts. It simply returns account objects that are
+strings of account IDs. `CSVAccountLoader` loads accounts and metadata from CSVs
+while `JSONAccountLoader` does so via JSON. Data is loaded from URLs and support
+file-based URLs for local data. Both the CSV and JSON loaders are subclasses of
+`MetaAccountLoader`.
+
+The `MetaAccountLoader` provides a convenient object wrapper to an account and
+its metadata which is made available via attributes on the object. Users can
+utilize this loader to build their own loaders to pull data from databases or
+other CMDBs. The `MetaAccountLoader` only requires a list of dicts representing
+accounts and their metadata.  Under the covers, the loader dynamically creates a
+subclass of `AbstractAccount`, which provides a lightweight object interface to
+the dict.
+
+Two exceptions are defined in this module. `AccountsNotFoundError` is raised
+when `AccountLoader.accounts` cannot find one of the accounts explicitly
+requested by the caller. The other exception, `InvalidFormatTemplateError`, is
+raised when the format string passed to `MetaAccountLoader` constructor refers
+to attributes that are not present in the accounts being loaded.
+&#34;&#34;&#34;
+
+import csv
+import io
+import itertools
+import keyword
+import logging
+import re
+import tempfile
+from collections import defaultdict
+from functools import reduce
+from pathlib import Path
+
+import requests
+from requests_file import FileAdapter
+
+from awsrun.cache import PersistentExpiringValue
+
+LOG = logging.getLogger(__name__)
+
+
+class AccountLoader:
+    &#34;&#34;&#34;Abstract base class to load objects representing accounts.
+
+    An `AccountLoader` is responsible for building objects representing accounts
+    and attaching metadata attributes to those accounts as well as providing a
+    mechanism to obtain the account ID from one of those objects.
+
+    Subclasses must provide implementations for `acct_id`, `attributes`, and
+    `accounts`.
+    &#34;&#34;&#34;
+    def acct_id(self, acct):
+        &#34;&#34;&#34;Returns the account ID as a string associated with the `acct` object.&#34;&#34;&#34;
+        raise NotImplementedError
+
+    def attributes(self):
+        &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.&#34;&#34;&#34;
+        raise NotImplementedError
+
+    def accounts(self, acct_ids=None, include=None, exclude=None):
+        &#34;&#34;&#34;Returns a list of account objects representing accounts and metadata.
+
+        Without any arguments, all accounts are returned. A list of `acct_ids`
+        may be provided to limit the list to accounts matching the account IDs.
+        Duplicate account IDs do not result in duplicate account objects. To
+        filter the list based on account metadata, `include` and `exclude` dicts
+        can be specified identifying the keys and matching values.
+        &#34;&#34;&#34;
+        raise NotImplementedError
+
+
+class IdentityAccountLoader(AccountLoader):
+    &#34;&#34;&#34;An `AccountLoader` that uses strings of IDs to represent accounts.
+
+    This class does not load accounts from an external data source such as a
+    file, database, or web server. Because the account objects created by this
+    class are simple strings, there is no additional metadata associated with an
+    account, nor is it possible to filter accounts by metadata.
+
+    This class is used by the `awsrun.cli` when a user does not provide their
+    own `AccountLoader` via the configuration file. It allows users to use
+    awsrun without needing an external source of accounts because account
+    objects are simply represented as strings of account IDs that can be
+    specified on the CLI.
+
+    This is the most basic `AccountLoader` and is useful if one does not have
+    want to adorn accounts IDs with additional data. It does mean that the
+    account object passed to `Command.execute` is simply a string representing
+    the account ID.
+    &#34;&#34;&#34;
+    def acct_id(self, acct):
+        &#34;&#34;&#34;Returns the account ID associated with the `acct` object.
+
+        This is an identity function as the account ID of an account object
+        loaded by this class is the account object itself, thus `acct` returned.
+        &#34;&#34;&#34;
+        return acct
+
+    def attributes(self):
+        &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.
+
+        `IdentityAccountLoader` builds account objects that are simply strings
+        representing the ID of an account. Because there is no other metadata
+        associated with these objects, this method returns an empty dict.
+        &#34;&#34;&#34;
+        return {}
+
+    def accounts(self, acct_ids=None, include=None, exclude=None):
+        &#34;&#34;&#34;Returns a list of account objects.
+
+        Without any arguments, no accounts are returned because this class does
+        not load a list of accounts from an external data source. Instead, this
+        method returns the same list of `acct_ids` as the list of account
+        objects without duplicates. It is an identity function. Because there
+        are no loaded accounts, use of `include` and `exclude` parameters will
+        raise an AttributeError.
+        &#34;&#34;&#34;
+        if include or exclude:
+            raise AttributeError(&#39;Cannot use filters as no attributes are defined&#39;)
+
+        return list(set(acct_ids))
+
+
+class MetaAccountLoader(AccountLoader):
+    &#34;&#34;&#34;An `AccountLoader` that loads account objects from dicts of metadata.
+
+    This class dynamically creates a `AbstractAccount` subclass customized to
+    represent a group of accounts that share common metadata attributes. For
+    each account represented in `accts`, an object of this subclass is created.
+    Each account object is then associated with attributes corresponding to the
+    metadata associated with the account as well as a custom string formatter.
+
+    The `accts` parameter must be a list of account dicts containing key/values
+    representing the metadata associated with an account:
+
+        accts = [
+            {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+            {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+            {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        ]
+        loader = MetaAccountLoader(accts)
+
+    Alternatively, `accts` can be a dict that contains a list of account dicts
+    within:
+
+        accts = {
+            &#39;100200300400&#39;: {&#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+            &#39;200300400100&#39;: {&#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+            &#39;300400100200&#39;: {&#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        }
+        loader = MetaAccountLoader(accts)
+
+    In either case, the account loader will build account objects with the
+    following attribute names: `id`, `env`, `status`. These can be accessed via
+    object notation:
+
+        accts = loader.accounts()
+
+        # Let&#39;s inspect the 1st account object and its metadata
+        assert accts[0].id == &#39;100200300400&#39;
+        assert accts[0].env == &#39;prod&#39;
+        assert accts[0].status == &#39;active&#39;
+
+    Note: the account dicts contained within `accts` are the backing store for
+    the account objects created to avoid copying. In addition, the keys may be
+    mutated by depending on the values of other parameters passed to the
+    constructor. If this is not desired, then pass a deep copy of `accts` to the
+    constructor.
+
+    If the list of account dicts is embedded within the dict, the `path`
+    parameter can be used to extract the list. It should be a list of string
+    keys to follow. For example, given this dict of accounts:
+
+        accts = {
+            &#39;Accounts&#39;: {
+                &#39;100200300400&#39;: {&#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+                &#39;200300400100&#39;: {&#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+                &#39;300400100200&#39;: {&#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+            }
+        }
+        loader = MetaAccountLoader(accts, path=[&#39;Accounts&#39;])
+
+        accts = {
+            &#39;AWS&#39;: {
+                &#39;Accounts&#39;: [
+                    {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+                    {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+                    {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+                ]
+            }
+        }
+        loader = MetaAccountLoader(accts, path=[&#39;AWS&#39;, &#39;Accounts&#39;])
+
+    It is important that the attribute name representing the account ID is
+    provided via the `id_attr` parameter, so `MetaAccountLoader.acct_id` can
+    return the account ID for a given account object. By default, the value of
+    `id_attr` is the string `&#39;id&#39;`. The following would require `acct` to be
+    specified as the value of the `id_attr` argument:
+
+        accts = [
+            {&#39;acct&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+            {&#39;acct&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+            {&#39;acct&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        ]
+
+        loader = MetaAccountLoader(accts, id_attr=&#39;acct&#39;)
+        objs = loader.accounts(acct_ids=[&#39;200300400100&#39;])
+        assert [loader.acct_id(a) for a in objs] == [&#39;200300400100&#39;]
+
+    The account loader builds account objects with the following attributes in
+    the example above: acct, env, status. In cases where the dict keys are not
+    valid Python identifiers, they are munged. Leading digits are prefixed with
+    underscores, non-alpha numeric characters are replaced with underscores, and
+    keywords are appended with an underscore:
+
+        accts = [
+            {&#39;id&#39;: &#39;100200300400&#39;, &#39;@env&#39;: &#39;prod&#39;, &#39;00st@tus&#39;: &#39;active&#39;},
+            {&#39;id&#39;: &#39;200300400100&#39;, &#39;@env&#39;: &#39;prod&#39;, &#39;00st@tus&#39;: &#39;suspended&#39;},
+            {&#39;id&#39;: &#39;300400100200&#39;, &#39;@env&#39;: &#39;dev&#39;, &#39;00st@tus&#39;: &#39;active&#39;},
+        ]
+        loader = acctload.MetaAccountLoader(accts)
+        acct = loader.accounts(acct_ids=[&#39;200300400100&#39;])[0]
+        assert acct._env == &#39;prod&#39;
+        assert acct._00st_tus == &#39;active&#39;
+
+    Even if some of the dict keys are missing, the account objects will still
+    have the attribute, but its value will be None. This ensures that an
+    exception is not raised when accessing a non-existent key:
+
+        accts = [
+            {&#39;id&#39;: &#39;100200300400&#39;, &#39;status&#39;: &#39;active&#39;},
+            {&#39;id&#39;: &#39;200300400100&#39;, },
+            {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        ]
+        loader = acctload.MetaAccountLoader(accts)
+        acct = loader.accounts(acct_ids=[&#39;200300400100&#39;])[0]
+        assert acct.id == &#39;200300400100&#39;
+        assert acct.env is None
+        assert acct.status is None
+
+    In addition to the attributes defined, the account objects will have a
+    default `__str__` implementation that generates a string representing the
+    account ID of the account. This can be overridden by providing a
+    `str_template` parameter. For example, the following string templates would
+    generate the following:
+
+        &#39;{id}&#39;                =&gt;  &#39;100200300400&#39;  # default
+        &#39;{id}/{env}&#39;          =&gt;  &#39;100200300400/prod&#39;
+        &#39;acct={id}&#39;           =&gt;  &#39;acct=100200300400&#39;
+        &#39;{id}-{env}-{status}&#39; =&gt;  &#39;100200300400-prod-active&#39;
+
+    By default, all attributes from the account dicts are included in the
+    generated account objects. These can be overridden by specifying lists of
+    attribute names in `include_attrs` and/or `exclude_attrs`. The attribute
+    name representing the account ID must be include in the selected attribute
+    names. In addition, all of the attributes referenced in `str_template`.
+    &#34;&#34;&#34;
+    def __init__(self, accts, id_attr=&#39;id&#39;, path=None, str_template=None, include_attrs=None, exclude_attrs=None):
+        if not id_attr:
+            raise ValueError(&#34;Must provide a non-None id_attr name&#34;)
+
+        self.id_attr = id_attr
+        self.path = [] if path is None else path
+        self.str_template = str_template or &#39;{&#39; + id_attr + &#39;}&#39;
+        self.include_attrs = [] if include_attrs is None else include_attrs
+        self.exclude_attrs = [] if exclude_attrs is None else exclude_attrs
+
+        # Build a custom Account class with class variable _str_template set,
+        # which is used by the  __str__ implementation.  Instead of dynamically
+        # creating a custom class, a predefined Account class could have been
+        # made and its class variable _str_template could have simply been set.
+        # But, this would limit a user from loading accounts from different
+        # dicts that might contain different metadata keys. Dynamically creating
+        # the class allows a custom class attribute for each.
+        self.CustomAccount = type(&#39;Account&#39;, (AbstractAccount,), {&#39;__slots__&#39;: &#39;_attrs&#39;})
+        self.CustomAccount._str_template = self.str_template  # pylint: disable=protected-access
+
+        self.accts, self.attrs = self._parse(accts)
+        LOG.info(&#39;loaded %d accounts with the metadata attributes: %s&#39;, len(self.accts), self.attrs)
+
+    def acct_id(self, acct):
+        &#34;&#34;&#34;Returns the account ID associated with the `acct` object.
+
+        The `acct` parameter must be an account object that was created by an
+        instance of this `MetaAccountLoader` via `MetaAccountLoader.accounts`.
+        This method returns the string representing the account ID of the
+        account object.
+        &#34;&#34;&#34;
+        return getattr(acct, self.id_attr)
+
+    def attributes(self):
+        &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.
+
+        This method returns the metadata associated with the account objects
+        created by this instance of `MetaAccountLoader`. The keys of the
+        returned dict are the attribute names attached to the account objects.
+        The value of each key is a set representing all of the possible values
+        assigned to that attribute. For example:
+
+            accts = [
+                {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+                {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+                {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+            ]
+            loader = acctload.MetaAccountLoader(accts)
+            attrs = loader.attributes()
+            assert attrs[&#39;env&#39;] == {&#39;prod&#39;, &#39;dev&#39;}
+            assert attrs[&#39;status&#39;] == {&#39;active&#39;, &#39;suspended&#39;}
+            assert attrs[&#39;id&#39;] == {&#39;100200300400&#39;, &#39;200300400100&#39;, &#39;300400100200&#39;}
+        &#34;&#34;&#34;
+        d = defaultdict(set)
+        for acct in self.accts:
+            for attr, value in acct.items():
+                d[attr].add(value)
+        return d
+
+    def accounts(self, acct_ids=None, include=None, exclude=None):
+        &#34;&#34;&#34;Returns a list of account objects.
+
+        Without any arguments, account objects for all accounts are returned. A
+        list of `acct_ids` may be provided to limit the list to accounts
+        matching the account IDs. If one or more specified account IDs is
+        missing, `AccountsNotFoundError` is raised.
+
+        The returned list of accounts can be filtered further by providing dicts
+        for `include` and `exclude` parameters that specify attributes and a
+        list of values for those attributes that must match. For example,
+        assuming the following accounts:
+
+            accts = [
+                {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+                {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+                {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+            ]
+            loader = acctload.MetaAccountLoader(accts)
+
+        To filter active accounts, use the following:
+
+            include = {&#39;status&#39;: [&#39;active&#39;]}
+
+        To filter active *and* production accounts:
+
+            include = {&#39;status&#39;: [&#39;active&#39;], &#39;env&#39;: [&#39;prod&#39;]}
+
+        To filter production accounts, but not suspended:
+
+            include = {&#39;env&#39;: [&#39;prod&#39;]}
+            exclude = {&#39;status&#39;: [&#39;suspended&#39;]}
+
+        To filter active *or* suspended accounts, but not dev accounts:
+
+            include = {&#39;status&#39;: [&#39;active&#39;, &#39;suspended&#39;]}
+            exclude = {&#39;env&#39;: [&#39;dev&#39;]}
+
+        Both `include` and `exclude` filters are applied after the initial
+        account list has been determined, which is all accounts unless it was
+        first limited by `acct_ids`. Then, the `include` filter is applied,
+        followed by the `exclude` filter. If a filter dict has multiple keys,
+        then *each* key must match. A key matches if at least *one* of the
+        values matches as illustrated in the examples above. If a filter refers
+        to an invalid attribute name, `AttributeError` is raised. Finally, if
+        `include` is not set, then all accounts are matched. Likewise, if
+        `exclude` is not set, then no accounts are excluded.
+        &#34;&#34;&#34;
+        accts = self.accts
+        acct_ids = [] if acct_ids is None else acct_ids
+        include = {} if include is None else include
+        exclude = {} if exclude is None else exclude
+
+        # Limit our account list to the requested IDs
+        if acct_ids:
+            requested = set(acct_ids)
+            all_ids = (a[self.id_attr] for a in self.accts)
+
+            missing_acct_ids = requested.difference(all_ids)
+            if missing_acct_ids:
+                raise AccountsNotFoundError(list(missing_acct_ids))
+
+            accts = (a for a in self.accts if a[self.id_attr] in requested)
+
+        # Make sure the filters contain valid attribute names
+        for attr in itertools.chain(include.keys(), exclude.keys()):
+            if attr not in self.attrs:
+                raise AttributeError(f&#34;Invalid attribute &#39;{attr}&#39; in filter&#34;)
+
+        # Limit our account list by the user-supplied filters
+        return [self.CustomAccount(a) for a in accts if self._filter(a, include, exclude)]
+
+    @staticmethod
+    def _filter(acct, include, exclude):
+        &#34;&#34;&#34;Filter accounts based on `include` and `exclude` dicts.
+
+        The `include` filter is applied first, followed by the `exclude` filter.
+        If a filter has multiple keys, then *each* key must match. A key matches
+        if at least *one* of the values matches.  Finally, if `include` is not
+        set, then all accounts are matched. Likewise, if `exclude` is not set,
+        then no accounts are excluded.
+        &#34;&#34;&#34;
+
+        # This internal representation of an account is a dict here, not the
+        # same as the account object that is created via `MetaAccountLoader`
+        # which is why we used dict notation when accessing the account.
+        def test(dictionary, default):
+            if not dictionary:
+                return default
+            return all(any(acct[attr] == v for v in values) for attr, values in dictionary.items())
+
+        included = test(include, True)
+        excluded = test(exclude, False)
+        return included and not excluded
+
+    def _parse(self, accts):
+        &#34;&#34;&#34;Returns a tuple of a a list of account dicts and a set of valid attribute names.&#34;&#34;&#34;
+
+        # If accts is a dict that was created from JSON, the accounts we are
+        # interested might be stored under a key within, so use the path
+        # provided by the user to select them.
+        if isinstance(accts, dict) and self.path:
+            accts = self._select_path(accts)
+
+        # If accts is still a dict, that likely means we have a dict where the
+        # keys are account IDs and the values are dicts of key/value data
+        # associated with an account.
+        if isinstance(accts, dict):
+            accts = self._convert_dict_of_accts_to_list(accts)
+
+        # If accts is still not a list of dicts of key/value account data, then
+        # the user has provided an invalid list of accounts.
+        if not isinstance(accts, list):
+            raise TypeError(f&#39;Account list must be a list of dicts or dict of dicts: {accts}&#39;)
+
+        self._ensure_id_attr_exists(accts)
+        self._ensure_ids_are_strings(accts)
+        self._normalize_attribute_names(accts)
+        attrs = self._filter_attribute_names(accts)
+        self._ensure_valid_str_template(attrs)
+
+        return accts, attrs
+
+    def _select_path(self, accts):
+        &#34;&#34;&#34;Returns the object found by indexing into accts using each element
+        of `self.path`.
+
+        If indexing fails, a `ValueError` is raised. For example, if `self.path` is
+        `[&#39;results&#39;, &#39;accounts&#39;]`, then:
+
+            self._select_path({
+                &#39;results&#39;: {
+                    &#39;accounts&#39;: {
+                        [1, 2, 3, 4]
+                    }
+                }
+            })
+
+            =&gt; [1, 2, 3, 4]
+        &#34;&#34;&#34;
+        try:
+            return reduce(lambda d, p: d[p], self.path, accts)
+        except Exception:
+            raise ValueError(f&#39;Cannot find accounts, did you specify the correct path?&#39;)
+
+    def _convert_dict_of_accts_to_list(self, accts):
+        &#34;&#34;&#34;Converts a dict of accounts to a list of accounts.
+
+        The keys of the input dict should be account IDs and the values should
+        be another dict of account metadata. For example, given the input and
+        `self.id_attr` equal to `&#39;id&#39;`, then:
+
+            _convert_dict_accts_to_list({
+                &#39;100200300400&#39;: {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;},
+                &#39;200300400100&#39;: {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;nonprod&#39;}})
+
+            =&gt; [{&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;},
+                {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;nonprod&#39;}]
+
+        This method will unsure that `self.id_attr` is included in the metadata
+        if it was not part of the account dict data. For example, given the
+        input and `self.id_attr` equal to `&#39;id&#39;`, then:
+
+            _convert_dict_accts_to_list({
+                &#39;100200300400&#39;: {&#39;env&#39;: &#39;prod&#39;},
+                &#39;200300400100&#39;: {&#39;env&#39;: &#39;nonprod&#39;}})
+
+            =&gt; [{&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;},
+                {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;nonprod&#39;}]
+        &#34;&#34;&#34;
+        for key, acct in accts.items():
+            if not isinstance(acct, dict):
+                raise TypeError(f&#39;Accounts are not dicts, did you specify the correct path?&#39;)
+
+            if self.id_attr not in acct:
+                acct[self.id_attr] = key
+
+            if key != acct[self.id_attr]:
+                raise ValueError(f&#34;Account IDs do not match: &#39;{key}&#39; != &#39;{acct[self.id_attr]}&#39;&#34;)
+
+        return list(accts.values())
+
+    def _ensure_ids_are_strings(self, accts):
+        &#34;&#34;&#34;Raises `ValueError` if account ID is not a string.&#34;&#34;&#34;
+        for acct in accts:
+            acct_id = acct[self.id_attr]
+            if not isinstance(acct_id, str):
+                raise ValueError(f&#34;Account ID &#39;{acct_id}&#39; is not a string of digits&#34;)
+
+    def _ensure_id_attr_exists(self, accts):
+        &#34;&#34;&#34;Raises `ValueError` if `self.id_attr` is not in each account dict.&#34;&#34;&#34;
+        for acct in accts:
+            if self.id_attr not in acct:
+                raise ValueError(f&#34;No &#39;{self.id_attr}&#39; attribute in account &#39;{acct}&#39;&#34;)
+
+    def _ensure_valid_str_template(self, attrs):
+        &#34;&#34;&#34;Raises `InvalidFormatTemplateError` if `self.str_template` contains
+        invalid attributes that are not present in the account dicts.
+        &#34;&#34;&#34;
+        tokens = re.findall(r&#39;\{(\w+)(?::[^}]+)?\}&#39;, self.str_template, re.ASCII)
+        unknown = set(tokens).difference(attrs)
+        if unknown:
+            raise InvalidFormatTemplateError(unknown, list(attrs))
+
+    def _normalize_attribute_names(self, accts):
+        &#34;&#34;&#34;Renames keys of acct dicts if invalid Python attribute names.
+
+        This function modifies the accts dict in place.
+        &#34;&#34;&#34;
+        for acct in accts:
+            _convert_keys_to_valid_attribute_names(acct)
+
+    def _filter_attribute_names(self, accts):
+        &#34;&#34;&#34;Returns the set of selected attributes based on include/exclude filters
+        as well as adds missing keys or deletes unused keys.
+
+        This function modifies the accts dict in place.
+        &#34;&#34;&#34;
+        if self.include_attrs and self.id_attr not in self.include_attrs:
+            raise ValueError(f&#34;Must include &#39;{self.id_attr}&#39; in include_attrs&#34;)
+        if self.id_attr in self.exclude_attrs:
+            raise ValueError(f&#34;Cannot exclude &#39;{self.id_attr}&#39; from exclude_attrs&#34;)
+
+        # Create a set of attribute names used across all acct dicts
+        attrs = set()
+        for acct in accts:
+            attrs.update(acct.keys())
+
+        # Filter that full set based on the include/exclude lists
+        if self.include_attrs:
+            attrs = attrs.intersection(self.include_attrs)
+        attrs = attrs.difference(self.exclude_attrs)
+
+        # Using the filtered attribute set, update the acct dicts in place
+        for acct in accts:
+            for key in acct:
+                delete_keys = [k for k in acct if k not in attrs]
+                insert_keys = [k for k in attrs if k not in acct]
+            for key in insert_keys:
+                acct[key] = None
+            for key in delete_keys:
+                acct.pop(key, None)
+
+        # Return the filtered attribute set
+        return attrs
+
+
+class CSVAccountLoader(MetaAccountLoader):
+    &#34;&#34;&#34;Returns an `AccountLoader` with accounts loaded from a CSV file/url.
+
+    Loaded accounts will include metadata associated with each account in the
+    CSV document retrieved from the `url`. File based URLs can be used to load
+    data from a local file. To cache the CSV results, specify the number of
+    seconds via `max_age`. By default, the data in not cached.
+
+    The delimiter used in the file can be changed via the `delimiter` parameter.
+    The default value is comma. The column names, specified on the first row of
+    the CSV file, will become attributes on the loaded account objects. Given
+    the following CSV file:
+
+         id, env, status
+         100200300400, prod, active
+         200300400100, non-prod, active
+         300400100200, non-prod, suspended
+
+    The account loader will build account objects with the following attribute
+    names: `id`, `env`, `status`. For example, assume the above CSV file is
+    called `accts.csv`:
+
+        loader = CSVAccountLoader(&#39;accts.csv&#39;)
+        accts = loader.accounts()
+
+        # Let&#39;s inspect the 1st account object and its metadata
+        assert accts[0].id == &#39;100200300400&#39;
+        assert accts[0].env == &#39;prod&#39;
+        assert accts[0].status == &#39;active&#39;
+
+    CSVAccountLoader is a subclass of the `MetaAccountLoader`, which is passed a
+    set of account dicts loaded from the CSV. As such, the remainder of the
+    parameters in the constructor -- `id_attr`, `str_template`, `include_attrs`,
+    and `exclude_attrs` -- are defined in the constructor of
+    `MetaAccountLoader`.
+    &#34;&#34;&#34;
+    def __init__(self, url, max_age=0, delimiter=&#39;,&#39;, id_attr=&#39;id&#39;, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False):
+        include_attrs = [] if include_attrs is None else include_attrs
+        exclude_attrs = [] if exclude_attrs is None else exclude_attrs
+
+        session = requests.Session()
+        session.mount(&#39;file://&#39;, FileAdapter())
+
+        def load_cache():
+            r = session.get(url, verify=not no_verify)
+            r.raise_for_status()
+            buf = io.StringIO(r.text.strip())
+            return list(csv.DictReader(buf, delimiter=delimiter, skipinitialspace=True))
+
+        cache_file = Path(tempfile.gettempdir(), &#39;awsrun.dat&#39;)
+        accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
+
+        super().__init__(
+            accts.value(),
+            id_attr=id_attr,
+            str_template=str_template,
+            include_attrs=include_attrs,
+            exclude_attrs=exclude_attrs)
+
+
+class JSONAccountLoader(MetaAccountLoader):
+    &#34;&#34;&#34;Returns an `AccountLoader` with accounts loaded from JSON.
+
+    Loaded accounts will include metadata associated with each account in the
+    JSON document retrieved from the `url`. File based URLs can be used to load
+    data from a local file. To cache the JSON results, specify the number of
+    seconds via `max_age`. By default, the data is not cached. Given the
+    following JSON:
+
+        {
+            &#34;Accounts&#34;: [
+                {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+            ]
+        }
+
+    The account loader will build account objects with the following attribute
+    names: `id`, `env`, `status`. Assume the above JSON is returned from
+    http://example.com/accts.json:
+
+        loader = JSONAccountLoader(&#39;http://example.com/accts.json&#39;, path=[&#39;Accounts&#39;])
+        accts = loader.accounts()
+
+        # Let&#39;s inspect the 1st account object and its metadata
+        assert accts[0].id == &#39;100200300400&#39;
+        assert accts[0].env == &#39;prod&#39;
+        assert accts[0].status == &#39;active&#39;
+
+    JSONAccountLoader is a subclass of the `MetaAccountLoader`, which loads
+    accounts from a set of dicts. As such, the remainder of the parameters in
+    the constructor -- `id_attr`, `path`, `str_template`, `include_attrs`, and
+    `exclude_attrs` -- are defined in the constructor of `MetaAccountLoader`.
+    &#34;&#34;&#34;
+    def __init__(self, url, max_age=0, id_attr=&#39;id&#39;, path=None, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False):
+        path = [] if path is None else path
+        include_attrs = [] if include_attrs is None else include_attrs
+        exclude_attrs = [] if exclude_attrs is None else exclude_attrs
+
+        session = requests.Session()
+        session.mount(&#39;file://&#39;, FileAdapter())
+
+        def load_cache():
+            r = session.get(url, verify=not no_verify)
+            r.raise_for_status()
+            return r.json()
+
+        cache_file = Path(tempfile.gettempdir(), &#39;awsrun.dat&#39;)
+        accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
+
+        super().__init__(
+            accts.value(),
+            id_attr=id_attr,
+            path=path,
+            str_template=str_template,
+            include_attrs=include_attrs,
+            exclude_attrs=exclude_attrs)
+
+
+class AbstractAccount:  #pylint: disable=single-string-used-for-slots
+    &#34;&#34;&#34;Abstract base class used by `MetaAccountLoader` to represent an account and its metadata.
+
+    This class is dynamically subclassed by the account loader to create a
+    unique `Account` class to hold account data. It is a lightweight subclass
+    that contains a single fixed slot called `_attrs`, which is used to store a
+    reference to the original account dicts passed to the constructor of
+    `MetaAccountLoader`. The subclass allows for direct object access of those
+    attributes by providing a `__getattr__` implementation.  In addition, a
+    customized `__str__` implementation is provided based on the format string
+    specified as a class attribute called `_str_template`.
+
+    Although not meant to be used directly by users, here is an example showing
+    the features of this abstract base class:
+
+        class Account(AbstractAccount):
+            _str_template = &#39;acct={id}&#39;
+
+        d = {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;}
+        acct = Account(d)
+
+        assert acct.id == &#39;100200300400&#39;
+        assert acct.env == &#39;prod&#39;
+        assert acct.status == &#39;active&#39;
+        assert str(acct) == &#39;acct=100200300400&#39;
+        assert repr(acct) == &#39;Account(id=&#34;100200300400&#34;, env=&#34;prod&#34;, status=&#34;active&#34;)&#39;
+    &#34;&#34;&#34;
+    _str_template = None
+    __slots__ = &#39;_attrs&#39;
+
+    def __init__(self, attributes):
+        self._attrs = attributes
+
+    def __getattr__(self, name):
+        value = self._attrs.get(name)
+        if not value and name not in self._attrs:
+            raise AttributeError(f&#34;&#39;{type(self).__name__}&#39; object has no attribute &#39;{name}&#39;&#34;)
+        return value
+
+    def __eq__(self, other):
+        return self._attrs == other._attrs  # pylint: disable=protected-access
+
+    def __repr__(self):
+        pairs = (f&#39;{k}={repr(v)}&#39; for k, v in self._attrs.items())
+        return f&#39;Account({&#34;, &#34;.join(pairs)})&#39;
+
+    def __str__(self):
+        if not self._str_template:
+            raise NotImplementedError(f&#34;&#39;{type(self).__name__}&#39; class has no variable &#39;str_template&#39;&#34;)
+        return self._str_template.format(**self._attrs)
+
+
+class AccountsNotFoundError(Exception):
+    &#34;&#34;&#34;Raised if an account ID was not found.
+
+    The `missing_acct_ids` attribute contains the missing IDs of the accounts not
+    found.
+    &#34;&#34;&#34;
+
+    def __init__(self, missing_acct_ids):
+        self.missing_acct_ids = missing_acct_ids
+        super().__init__(f&#39;Account IDs not found: {&#34;, &#34;.join(missing_acct_ids)}&#39;)
+
+
+class InvalidFormatTemplateError(Exception):
+    &#34;&#34;&#34;Raised if the format template specified refers to unknown account
+    attributes.
+
+    The `valid_attrs` attribute contains a list of valid attribute names, and
+    `unknown_attrs` contains a list of the unknown attribute names used in the
+    format string of the Account object.
+    &#34;&#34;&#34;
+    def __init__(self, unknown, valid):
+        self.unknown_attrs = unknown
+        self.valid_attrs = valid
+
+        def quote(attrs):
+            return &#34;, &#34;.join([&#34;&#39;&#34; + a + &#34;&#39;&#34; for a in attrs])
+
+        super().__init__(f&#34;Unknown attributes in format template: {quote(unknown)}. Valid attributes are: {quote(valid)}&#34;)
+
+
+def _convert_keys_to_valid_attribute_names(d):
+    &#34;&#34;&#34;Replace keys that are invalid Python identifiers or keywords with
+    valid object attribute names.
+
+    This function is useful when converting a dict to an object where its
+    attributes are the dict keys. Because Python attribute names have
+    restrictions, this function munges any dict keys that are not valid
+    attribute names. For efficiency, the dictionary is modified in place.
+    &#34;&#34;&#34;
+    invalid_keys = [k for k in d.keys() if not k.isidentifier() or keyword.iskeyword(k)]
+    for key in invalid_keys:
+        d[_make_valid_attribute_name(key)] = d.pop(key)
+
+
+def _make_valid_attribute_name(s):
+    &#34;&#34;&#34;Return a string that is a valid Python attribute name.
+
+    Leading digits are prefixed with underscores, non-alpha numeric characters
+    are replaced with underscores, and keywords are appended with an underscore.
+    This function ensures the string can be used as a valid object attribute
+    name.
+    &#34;&#34;&#34;
+    if not s.isidentifier():
+        s = re.sub(r&#39;[^0-9a-zA-Z_]&#39;, r&#39;_&#39;, s)
+        s = re.sub(r&#39;^([0-9]+)&#39;, r&#39;_\1&#39;, s)
+    if keyword.iskeyword(s):
+        s = s + &#39;_&#39;
+    return s</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.acctload.AccountLoader"><code class="flex name class">
+<span>class <span class="ident">AccountLoader</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Abstract base class to load objects representing accounts.</p>
+<p>An <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> is responsible for building objects representing accounts
+and attaching metadata attributes to those accounts as well as providing a
+mechanism to obtain the account ID from one of those objects.</p>
+<p>Subclasses must provide implementations for <code>acct_id</code>, <code>attributes</code>, and
+<code>accounts</code>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AccountLoader:
+    &#34;&#34;&#34;Abstract base class to load objects representing accounts.
+
+    An `AccountLoader` is responsible for building objects representing accounts
+    and attaching metadata attributes to those accounts as well as providing a
+    mechanism to obtain the account ID from one of those objects.
+
+    Subclasses must provide implementations for `acct_id`, `attributes`, and
+    `accounts`.
+    &#34;&#34;&#34;
+    def acct_id(self, acct):
+        &#34;&#34;&#34;Returns the account ID as a string associated with the `acct` object.&#34;&#34;&#34;
+        raise NotImplementedError
+
+    def attributes(self):
+        &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.&#34;&#34;&#34;
+        raise NotImplementedError
+
+    def accounts(self, acct_ids=None, include=None, exclude=None):
+        &#34;&#34;&#34;Returns a list of account objects representing accounts and metadata.
+
+        Without any arguments, all accounts are returned. A list of `acct_ids`
+        may be provided to limit the list to accounts matching the account IDs.
+        Duplicate account IDs do not result in duplicate account objects. To
+        filter the list based on account metadata, `include` and `exclude` dicts
+        can be specified identifying the keys and matching values.
+        &#34;&#34;&#34;
+        raise NotImplementedError</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader">IdentityAccountLoader</a></li>
+<li><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.acctload.AccountLoader.acct_id"><code class="name flex">
+<span>def <span class="ident">acct_id</span></span>(<span>self, acct)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the account ID as a string associated with the <code>acct</code> object.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def acct_id(self, acct):
+    &#34;&#34;&#34;Returns the account ID as a string associated with the `acct` object.&#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+<dt id="awsrun.acctload.AccountLoader.attributes"><code class="name flex">
+<span>def <span class="ident">attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a dict of all metadata attribute names and values.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def attributes(self):
+    &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.&#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+<dt id="awsrun.acctload.AccountLoader.accounts"><code class="name flex">
+<span>def <span class="ident">accounts</span></span>(<span>self, acct_ids=None, include=None, exclude=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a list of account objects representing accounts and metadata.</p>
+<p>Without any arguments, all accounts are returned. A list of <code>acct_ids</code>
+may be provided to limit the list to accounts matching the account IDs.
+Duplicate account IDs do not result in duplicate account objects. To
+filter the list based on account metadata, <code>include</code> and <code>exclude</code> dicts
+can be specified identifying the keys and matching values.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def accounts(self, acct_ids=None, include=None, exclude=None):
+    &#34;&#34;&#34;Returns a list of account objects representing accounts and metadata.
+
+    Without any arguments, all accounts are returned. A list of `acct_ids`
+    may be provided to limit the list to accounts matching the account IDs.
+    Duplicate account IDs do not result in duplicate account objects. To
+    filter the list based on account metadata, `include` and `exclude` dicts
+    can be specified identifying the keys and matching values.
+    &#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.acctload.IdentityAccountLoader"><code class="flex name class">
+<span>class <span class="ident">IdentityAccountLoader</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>An <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> that uses strings of IDs to represent accounts.</p>
+<p>This class does not load accounts from an external data source such as a
+file, database, or web server. Because the account objects created by this
+class are simple strings, there is no additional metadata associated with an
+account, nor is it possible to filter accounts by metadata.</p>
+<p>This class is used by the <a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> when a user does not provide their
+own <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> via the configuration file. It allows users to use
+awsrun without needing an external source of accounts because account
+objects are simply represented as strings of account IDs that can be
+specified on the CLI.</p>
+<p>This is the most basic <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> and is useful if one does not have
+want to adorn accounts IDs with additional data. It does mean that the
+account object passed to <code>Command.execute</code> is simply a string representing
+the account ID.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IdentityAccountLoader(AccountLoader):
+    &#34;&#34;&#34;An `AccountLoader` that uses strings of IDs to represent accounts.
+
+    This class does not load accounts from an external data source such as a
+    file, database, or web server. Because the account objects created by this
+    class are simple strings, there is no additional metadata associated with an
+    account, nor is it possible to filter accounts by metadata.
+
+    This class is used by the `awsrun.cli` when a user does not provide their
+    own `AccountLoader` via the configuration file. It allows users to use
+    awsrun without needing an external source of accounts because account
+    objects are simply represented as strings of account IDs that can be
+    specified on the CLI.
+
+    This is the most basic `AccountLoader` and is useful if one does not have
+    want to adorn accounts IDs with additional data. It does mean that the
+    account object passed to `Command.execute` is simply a string representing
+    the account ID.
+    &#34;&#34;&#34;
+    def acct_id(self, acct):
+        &#34;&#34;&#34;Returns the account ID associated with the `acct` object.
+
+        This is an identity function as the account ID of an account object
+        loaded by this class is the account object itself, thus `acct` returned.
+        &#34;&#34;&#34;
+        return acct
+
+    def attributes(self):
+        &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.
+
+        `IdentityAccountLoader` builds account objects that are simply strings
+        representing the ID of an account. Because there is no other metadata
+        associated with these objects, this method returns an empty dict.
+        &#34;&#34;&#34;
+        return {}
+
+    def accounts(self, acct_ids=None, include=None, exclude=None):
+        &#34;&#34;&#34;Returns a list of account objects.
+
+        Without any arguments, no accounts are returned because this class does
+        not load a list of accounts from an external data source. Instead, this
+        method returns the same list of `acct_ids` as the list of account
+        objects without duplicates. It is an identity function. Because there
+        are no loaded accounts, use of `include` and `exclude` parameters will
+        raise an AttributeError.
+        &#34;&#34;&#34;
+        if include or exclude:
+            raise AttributeError(&#39;Cannot use filters as no attributes are defined&#39;)
+
+        return list(set(acct_ids))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.acctload.IdentityAccountLoader.acct_id"><code class="name flex">
+<span>def <span class="ident">acct_id</span></span>(<span>self, acct)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the account ID associated with the <code>acct</code> object.</p>
+<p>This is an identity function as the account ID of an account object
+loaded by this class is the account object itself, thus <code>acct</code> returned.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def acct_id(self, acct):
+    &#34;&#34;&#34;Returns the account ID associated with the `acct` object.
+
+    This is an identity function as the account ID of an account object
+    loaded by this class is the account object itself, thus `acct` returned.
+    &#34;&#34;&#34;
+    return acct</code></pre>
+</details>
+</dd>
+<dt id="awsrun.acctload.IdentityAccountLoader.attributes"><code class="name flex">
+<span>def <span class="ident">attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a dict of all metadata attribute names and values.</p>
+<p><a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader"><code>IdentityAccountLoader</code></a> builds account objects that are simply strings
+representing the ID of an account. Because there is no other metadata
+associated with these objects, this method returns an empty dict.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def attributes(self):
+    &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.
+
+    `IdentityAccountLoader` builds account objects that are simply strings
+    representing the ID of an account. Because there is no other metadata
+    associated with these objects, this method returns an empty dict.
+    &#34;&#34;&#34;
+    return {}</code></pre>
+</details>
+</dd>
+<dt id="awsrun.acctload.IdentityAccountLoader.accounts"><code class="name flex">
+<span>def <span class="ident">accounts</span></span>(<span>self, acct_ids=None, include=None, exclude=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a list of account objects.</p>
+<p>Without any arguments, no accounts are returned because this class does
+not load a list of accounts from an external data source. Instead, this
+method returns the same list of <code>acct_ids</code> as the list of account
+objects without duplicates. It is an identity function. Because there
+are no loaded accounts, use of <code>include</code> and <code>exclude</code> parameters will
+raise an AttributeError.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def accounts(self, acct_ids=None, include=None, exclude=None):
+    &#34;&#34;&#34;Returns a list of account objects.
+
+    Without any arguments, no accounts are returned because this class does
+    not load a list of accounts from an external data source. Instead, this
+    method returns the same list of `acct_ids` as the list of account
+    objects without duplicates. It is an identity function. Because there
+    are no loaded accounts, use of `include` and `exclude` parameters will
+    raise an AttributeError.
+    &#34;&#34;&#34;
+    if include or exclude:
+        raise AttributeError(&#39;Cannot use filters as no attributes are defined&#39;)
+
+    return list(set(acct_ids))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.acctload.MetaAccountLoader"><code class="flex name class">
+<span>class <span class="ident">MetaAccountLoader</span></span>
+<span>(</span><span>accts, id_attr='id', path=None, str_template=None, include_attrs=None, exclude_attrs=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>An <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> that loads account objects from dicts of metadata.</p>
+<p>This class dynamically creates a <a title="awsrun.acctload.AbstractAccount" href="#awsrun.acctload.AbstractAccount"><code>AbstractAccount</code></a> subclass customized to
+represent a group of accounts that share common metadata attributes. For
+each account represented in <code>accts</code>, an object of this subclass is created.
+Each account object is then associated with attributes corresponding to the
+metadata associated with the account as well as a custom string formatter.</p>
+<p>The <code>accts</code> parameter must be a list of account dicts containing key/values
+representing the metadata associated with an account:</p>
+<pre><code>accts = [
+    {'id': '100200300400', 'env': 'prod', 'status': 'active'},
+    {'id': '200300400100', 'env': 'prod', 'status': 'suspended'},
+    {'id': '300400100200', 'env': 'dev', 'status': 'active'},
+]
+loader = MetaAccountLoader(accts)
+</code></pre>
+<p>Alternatively, <code>accts</code> can be a dict that contains a list of account dicts
+within:</p>
+<pre><code>accts = {
+    '100200300400': {'env': 'prod', 'status': 'active'},
+    '200300400100': {'env': 'prod', 'status': 'suspended'},
+    '300400100200': {'env': 'dev', 'status': 'active'},
+}
+loader = MetaAccountLoader(accts)
+</code></pre>
+<p>In either case, the account loader will build account objects with the
+following attribute names: <code>id</code>, <code>env</code>, <code>status</code>. These can be accessed via
+object notation:</p>
+<pre><code>accts = loader.accounts()
+
+# Let's inspect the 1st account object and its metadata
+assert accts[0].id == '100200300400'
+assert accts[0].env == 'prod'
+assert accts[0].status == 'active'
+</code></pre>
+<p>Note: the account dicts contained within <code>accts</code> are the backing store for
+the account objects created to avoid copying. In addition, the keys may be
+mutated by depending on the values of other parameters passed to the
+constructor. If this is not desired, then pass a deep copy of <code>accts</code> to the
+constructor.</p>
+<p>If the list of account dicts is embedded within the dict, the <code>path</code>
+parameter can be used to extract the list. It should be a list of string
+keys to follow. For example, given this dict of accounts:</p>
+<pre><code>accts = {
+    'Accounts': {
+        '100200300400': {'env': 'prod', 'status': 'active'},
+        '200300400100': {'env': 'prod', 'status': 'suspended'},
+        '300400100200': {'env': 'dev', 'status': 'active'},
+    }
+}
+loader = MetaAccountLoader(accts, path=['Accounts'])
+
+accts = {
+    'AWS': {
+        'Accounts': [
+            {'id': '100200300400', 'env': 'prod', 'status': 'active'},
+            {'id': '200300400100', 'env': 'prod', 'status': 'suspended'},
+            {'id': '300400100200', 'env': 'dev', 'status': 'active'},
+        ]
+    }
+}
+loader = MetaAccountLoader(accts, path=['AWS', 'Accounts'])
+</code></pre>
+<p>It is important that the attribute name representing the account ID is
+provided via the <code>id_attr</code> parameter, so <a title="awsrun.acctload.MetaAccountLoader.acct_id" href="#awsrun.acctload.MetaAccountLoader.acct_id"><code>MetaAccountLoader.acct_id()</code></a> can
+return the account ID for a given account object. By default, the value of
+<code>id_attr</code> is the string <code>'id'</code>. The following would require <code>acct</code> to be
+specified as the value of the <code>id_attr</code> argument:</p>
+<pre><code>accts = [
+    {'acct': '100200300400', 'env': 'prod', 'status': 'active'},
+    {'acct': '200300400100', 'env': 'prod', 'status': 'suspended'},
+    {'acct': '300400100200', 'env': 'dev', 'status': 'active'},
+]
+
+loader = MetaAccountLoader(accts, id_attr='acct')
+objs = loader.accounts(acct_ids=['200300400100'])
+assert [loader.acct_id(a) for a in objs] == ['200300400100']
+</code></pre>
+<p>The account loader builds account objects with the following attributes in
+the example above: acct, env, status. In cases where the dict keys are not
+valid Python identifiers, they are munged. Leading digits are prefixed with
+underscores, non-alpha numeric characters are replaced with underscores, and
+keywords are appended with an underscore:</p>
+<pre><code>accts = [
+    {'id': '100200300400', '@env': 'prod', '00st@tus': 'active'},
+    {'id': '200300400100', '@env': 'prod', '00st@tus': 'suspended'},
+    {'id': '300400100200', '@env': 'dev', '00st@tus': 'active'},
+]
+loader = acctload.MetaAccountLoader(accts)
+acct = loader.accounts(acct_ids=['200300400100'])[0]
+assert acct._env == 'prod'
+assert acct._00st_tus == 'active'
+</code></pre>
+<p>Even if some of the dict keys are missing, the account objects will still
+have the attribute, but its value will be None. This ensures that an
+exception is not raised when accessing a non-existent key:</p>
+<pre><code>accts = [
+    {'id': '100200300400', 'status': 'active'},
+    {'id': '200300400100', },
+    {'id': '300400100200', 'env': 'dev', 'status': 'active'},
+]
+loader = acctload.MetaAccountLoader(accts)
+acct = loader.accounts(acct_ids=['200300400100'])[0]
+assert acct.id == '200300400100'
+assert acct.env is None
+assert acct.status is None
+</code></pre>
+<p>In addition to the attributes defined, the account objects will have a
+default <code>__str__</code> implementation that generates a string representing the
+account ID of the account. This can be overridden by providing a
+<code>str_template</code> parameter. For example, the following string templates would
+generate the following:</p>
+<pre><code>'{id}'                =&gt;  '100200300400'  # default
+'{id}/{env}'          =&gt;  '100200300400/prod'
+'acct={id}'           =&gt;  'acct=100200300400'
+'{id}-{env}-{status}' =&gt;  '100200300400-prod-active'
+</code></pre>
+<p>By default, all attributes from the account dicts are included in the
+generated account objects. These can be overridden by specifying lists of
+attribute names in <code>include_attrs</code> and/or <code>exclude_attrs</code>. The attribute
+name representing the account ID must be include in the selected attribute
+names. In addition, all of the attributes referenced in <code>str_template</code>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MetaAccountLoader(AccountLoader):
+    &#34;&#34;&#34;An `AccountLoader` that loads account objects from dicts of metadata.
+
+    This class dynamically creates a `AbstractAccount` subclass customized to
+    represent a group of accounts that share common metadata attributes. For
+    each account represented in `accts`, an object of this subclass is created.
+    Each account object is then associated with attributes corresponding to the
+    metadata associated with the account as well as a custom string formatter.
+
+    The `accts` parameter must be a list of account dicts containing key/values
+    representing the metadata associated with an account:
+
+        accts = [
+            {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+            {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+            {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        ]
+        loader = MetaAccountLoader(accts)
+
+    Alternatively, `accts` can be a dict that contains a list of account dicts
+    within:
+
+        accts = {
+            &#39;100200300400&#39;: {&#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+            &#39;200300400100&#39;: {&#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+            &#39;300400100200&#39;: {&#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        }
+        loader = MetaAccountLoader(accts)
+
+    In either case, the account loader will build account objects with the
+    following attribute names: `id`, `env`, `status`. These can be accessed via
+    object notation:
+
+        accts = loader.accounts()
+
+        # Let&#39;s inspect the 1st account object and its metadata
+        assert accts[0].id == &#39;100200300400&#39;
+        assert accts[0].env == &#39;prod&#39;
+        assert accts[0].status == &#39;active&#39;
+
+    Note: the account dicts contained within `accts` are the backing store for
+    the account objects created to avoid copying. In addition, the keys may be
+    mutated by depending on the values of other parameters passed to the
+    constructor. If this is not desired, then pass a deep copy of `accts` to the
+    constructor.
+
+    If the list of account dicts is embedded within the dict, the `path`
+    parameter can be used to extract the list. It should be a list of string
+    keys to follow. For example, given this dict of accounts:
+
+        accts = {
+            &#39;Accounts&#39;: {
+                &#39;100200300400&#39;: {&#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+                &#39;200300400100&#39;: {&#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+                &#39;300400100200&#39;: {&#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+            }
+        }
+        loader = MetaAccountLoader(accts, path=[&#39;Accounts&#39;])
+
+        accts = {
+            &#39;AWS&#39;: {
+                &#39;Accounts&#39;: [
+                    {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+                    {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+                    {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+                ]
+            }
+        }
+        loader = MetaAccountLoader(accts, path=[&#39;AWS&#39;, &#39;Accounts&#39;])
+
+    It is important that the attribute name representing the account ID is
+    provided via the `id_attr` parameter, so `MetaAccountLoader.acct_id` can
+    return the account ID for a given account object. By default, the value of
+    `id_attr` is the string `&#39;id&#39;`. The following would require `acct` to be
+    specified as the value of the `id_attr` argument:
+
+        accts = [
+            {&#39;acct&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+            {&#39;acct&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+            {&#39;acct&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        ]
+
+        loader = MetaAccountLoader(accts, id_attr=&#39;acct&#39;)
+        objs = loader.accounts(acct_ids=[&#39;200300400100&#39;])
+        assert [loader.acct_id(a) for a in objs] == [&#39;200300400100&#39;]
+
+    The account loader builds account objects with the following attributes in
+    the example above: acct, env, status. In cases where the dict keys are not
+    valid Python identifiers, they are munged. Leading digits are prefixed with
+    underscores, non-alpha numeric characters are replaced with underscores, and
+    keywords are appended with an underscore:
+
+        accts = [
+            {&#39;id&#39;: &#39;100200300400&#39;, &#39;@env&#39;: &#39;prod&#39;, &#39;00st@tus&#39;: &#39;active&#39;},
+            {&#39;id&#39;: &#39;200300400100&#39;, &#39;@env&#39;: &#39;prod&#39;, &#39;00st@tus&#39;: &#39;suspended&#39;},
+            {&#39;id&#39;: &#39;300400100200&#39;, &#39;@env&#39;: &#39;dev&#39;, &#39;00st@tus&#39;: &#39;active&#39;},
+        ]
+        loader = acctload.MetaAccountLoader(accts)
+        acct = loader.accounts(acct_ids=[&#39;200300400100&#39;])[0]
+        assert acct._env == &#39;prod&#39;
+        assert acct._00st_tus == &#39;active&#39;
+
+    Even if some of the dict keys are missing, the account objects will still
+    have the attribute, but its value will be None. This ensures that an
+    exception is not raised when accessing a non-existent key:
+
+        accts = [
+            {&#39;id&#39;: &#39;100200300400&#39;, &#39;status&#39;: &#39;active&#39;},
+            {&#39;id&#39;: &#39;200300400100&#39;, },
+            {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        ]
+        loader = acctload.MetaAccountLoader(accts)
+        acct = loader.accounts(acct_ids=[&#39;200300400100&#39;])[0]
+        assert acct.id == &#39;200300400100&#39;
+        assert acct.env is None
+        assert acct.status is None
+
+    In addition to the attributes defined, the account objects will have a
+    default `__str__` implementation that generates a string representing the
+    account ID of the account. This can be overridden by providing a
+    `str_template` parameter. For example, the following string templates would
+    generate the following:
+
+        &#39;{id}&#39;                =&gt;  &#39;100200300400&#39;  # default
+        &#39;{id}/{env}&#39;          =&gt;  &#39;100200300400/prod&#39;
+        &#39;acct={id}&#39;           =&gt;  &#39;acct=100200300400&#39;
+        &#39;{id}-{env}-{status}&#39; =&gt;  &#39;100200300400-prod-active&#39;
+
+    By default, all attributes from the account dicts are included in the
+    generated account objects. These can be overridden by specifying lists of
+    attribute names in `include_attrs` and/or `exclude_attrs`. The attribute
+    name representing the account ID must be include in the selected attribute
+    names. In addition, all of the attributes referenced in `str_template`.
+    &#34;&#34;&#34;
+    def __init__(self, accts, id_attr=&#39;id&#39;, path=None, str_template=None, include_attrs=None, exclude_attrs=None):
+        if not id_attr:
+            raise ValueError(&#34;Must provide a non-None id_attr name&#34;)
+
+        self.id_attr = id_attr
+        self.path = [] if path is None else path
+        self.str_template = str_template or &#39;{&#39; + id_attr + &#39;}&#39;
+        self.include_attrs = [] if include_attrs is None else include_attrs
+        self.exclude_attrs = [] if exclude_attrs is None else exclude_attrs
+
+        # Build a custom Account class with class variable _str_template set,
+        # which is used by the  __str__ implementation.  Instead of dynamically
+        # creating a custom class, a predefined Account class could have been
+        # made and its class variable _str_template could have simply been set.
+        # But, this would limit a user from loading accounts from different
+        # dicts that might contain different metadata keys. Dynamically creating
+        # the class allows a custom class attribute for each.
+        self.CustomAccount = type(&#39;Account&#39;, (AbstractAccount,), {&#39;__slots__&#39;: &#39;_attrs&#39;})
+        self.CustomAccount._str_template = self.str_template  # pylint: disable=protected-access
+
+        self.accts, self.attrs = self._parse(accts)
+        LOG.info(&#39;loaded %d accounts with the metadata attributes: %s&#39;, len(self.accts), self.attrs)
+
+    def acct_id(self, acct):
+        &#34;&#34;&#34;Returns the account ID associated with the `acct` object.
+
+        The `acct` parameter must be an account object that was created by an
+        instance of this `MetaAccountLoader` via `MetaAccountLoader.accounts`.
+        This method returns the string representing the account ID of the
+        account object.
+        &#34;&#34;&#34;
+        return getattr(acct, self.id_attr)
+
+    def attributes(self):
+        &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.
+
+        This method returns the metadata associated with the account objects
+        created by this instance of `MetaAccountLoader`. The keys of the
+        returned dict are the attribute names attached to the account objects.
+        The value of each key is a set representing all of the possible values
+        assigned to that attribute. For example:
+
+            accts = [
+                {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+                {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+                {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+            ]
+            loader = acctload.MetaAccountLoader(accts)
+            attrs = loader.attributes()
+            assert attrs[&#39;env&#39;] == {&#39;prod&#39;, &#39;dev&#39;}
+            assert attrs[&#39;status&#39;] == {&#39;active&#39;, &#39;suspended&#39;}
+            assert attrs[&#39;id&#39;] == {&#39;100200300400&#39;, &#39;200300400100&#39;, &#39;300400100200&#39;}
+        &#34;&#34;&#34;
+        d = defaultdict(set)
+        for acct in self.accts:
+            for attr, value in acct.items():
+                d[attr].add(value)
+        return d
+
+    def accounts(self, acct_ids=None, include=None, exclude=None):
+        &#34;&#34;&#34;Returns a list of account objects.
+
+        Without any arguments, account objects for all accounts are returned. A
+        list of `acct_ids` may be provided to limit the list to accounts
+        matching the account IDs. If one or more specified account IDs is
+        missing, `AccountsNotFoundError` is raised.
+
+        The returned list of accounts can be filtered further by providing dicts
+        for `include` and `exclude` parameters that specify attributes and a
+        list of values for those attributes that must match. For example,
+        assuming the following accounts:
+
+            accts = [
+                {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+                {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+                {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+            ]
+            loader = acctload.MetaAccountLoader(accts)
+
+        To filter active accounts, use the following:
+
+            include = {&#39;status&#39;: [&#39;active&#39;]}
+
+        To filter active *and* production accounts:
+
+            include = {&#39;status&#39;: [&#39;active&#39;], &#39;env&#39;: [&#39;prod&#39;]}
+
+        To filter production accounts, but not suspended:
+
+            include = {&#39;env&#39;: [&#39;prod&#39;]}
+            exclude = {&#39;status&#39;: [&#39;suspended&#39;]}
+
+        To filter active *or* suspended accounts, but not dev accounts:
+
+            include = {&#39;status&#39;: [&#39;active&#39;, &#39;suspended&#39;]}
+            exclude = {&#39;env&#39;: [&#39;dev&#39;]}
+
+        Both `include` and `exclude` filters are applied after the initial
+        account list has been determined, which is all accounts unless it was
+        first limited by `acct_ids`. Then, the `include` filter is applied,
+        followed by the `exclude` filter. If a filter dict has multiple keys,
+        then *each* key must match. A key matches if at least *one* of the
+        values matches as illustrated in the examples above. If a filter refers
+        to an invalid attribute name, `AttributeError` is raised. Finally, if
+        `include` is not set, then all accounts are matched. Likewise, if
+        `exclude` is not set, then no accounts are excluded.
+        &#34;&#34;&#34;
+        accts = self.accts
+        acct_ids = [] if acct_ids is None else acct_ids
+        include = {} if include is None else include
+        exclude = {} if exclude is None else exclude
+
+        # Limit our account list to the requested IDs
+        if acct_ids:
+            requested = set(acct_ids)
+            all_ids = (a[self.id_attr] for a in self.accts)
+
+            missing_acct_ids = requested.difference(all_ids)
+            if missing_acct_ids:
+                raise AccountsNotFoundError(list(missing_acct_ids))
+
+            accts = (a for a in self.accts if a[self.id_attr] in requested)
+
+        # Make sure the filters contain valid attribute names
+        for attr in itertools.chain(include.keys(), exclude.keys()):
+            if attr not in self.attrs:
+                raise AttributeError(f&#34;Invalid attribute &#39;{attr}&#39; in filter&#34;)
+
+        # Limit our account list by the user-supplied filters
+        return [self.CustomAccount(a) for a in accts if self._filter(a, include, exclude)]
+
+    @staticmethod
+    def _filter(acct, include, exclude):
+        &#34;&#34;&#34;Filter accounts based on `include` and `exclude` dicts.
+
+        The `include` filter is applied first, followed by the `exclude` filter.
+        If a filter has multiple keys, then *each* key must match. A key matches
+        if at least *one* of the values matches.  Finally, if `include` is not
+        set, then all accounts are matched. Likewise, if `exclude` is not set,
+        then no accounts are excluded.
+        &#34;&#34;&#34;
+
+        # This internal representation of an account is a dict here, not the
+        # same as the account object that is created via `MetaAccountLoader`
+        # which is why we used dict notation when accessing the account.
+        def test(dictionary, default):
+            if not dictionary:
+                return default
+            return all(any(acct[attr] == v for v in values) for attr, values in dictionary.items())
+
+        included = test(include, True)
+        excluded = test(exclude, False)
+        return included and not excluded
+
+    def _parse(self, accts):
+        &#34;&#34;&#34;Returns a tuple of a a list of account dicts and a set of valid attribute names.&#34;&#34;&#34;
+
+        # If accts is a dict that was created from JSON, the accounts we are
+        # interested might be stored under a key within, so use the path
+        # provided by the user to select them.
+        if isinstance(accts, dict) and self.path:
+            accts = self._select_path(accts)
+
+        # If accts is still a dict, that likely means we have a dict where the
+        # keys are account IDs and the values are dicts of key/value data
+        # associated with an account.
+        if isinstance(accts, dict):
+            accts = self._convert_dict_of_accts_to_list(accts)
+
+        # If accts is still not a list of dicts of key/value account data, then
+        # the user has provided an invalid list of accounts.
+        if not isinstance(accts, list):
+            raise TypeError(f&#39;Account list must be a list of dicts or dict of dicts: {accts}&#39;)
+
+        self._ensure_id_attr_exists(accts)
+        self._ensure_ids_are_strings(accts)
+        self._normalize_attribute_names(accts)
+        attrs = self._filter_attribute_names(accts)
+        self._ensure_valid_str_template(attrs)
+
+        return accts, attrs
+
+    def _select_path(self, accts):
+        &#34;&#34;&#34;Returns the object found by indexing into accts using each element
+        of `self.path`.
+
+        If indexing fails, a `ValueError` is raised. For example, if `self.path` is
+        `[&#39;results&#39;, &#39;accounts&#39;]`, then:
+
+            self._select_path({
+                &#39;results&#39;: {
+                    &#39;accounts&#39;: {
+                        [1, 2, 3, 4]
+                    }
+                }
+            })
+
+            =&gt; [1, 2, 3, 4]
+        &#34;&#34;&#34;
+        try:
+            return reduce(lambda d, p: d[p], self.path, accts)
+        except Exception:
+            raise ValueError(f&#39;Cannot find accounts, did you specify the correct path?&#39;)
+
+    def _convert_dict_of_accts_to_list(self, accts):
+        &#34;&#34;&#34;Converts a dict of accounts to a list of accounts.
+
+        The keys of the input dict should be account IDs and the values should
+        be another dict of account metadata. For example, given the input and
+        `self.id_attr` equal to `&#39;id&#39;`, then:
+
+            _convert_dict_accts_to_list({
+                &#39;100200300400&#39;: {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;},
+                &#39;200300400100&#39;: {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;nonprod&#39;}})
+
+            =&gt; [{&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;},
+                {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;nonprod&#39;}]
+
+        This method will unsure that `self.id_attr` is included in the metadata
+        if it was not part of the account dict data. For example, given the
+        input and `self.id_attr` equal to `&#39;id&#39;`, then:
+
+            _convert_dict_accts_to_list({
+                &#39;100200300400&#39;: {&#39;env&#39;: &#39;prod&#39;},
+                &#39;200300400100&#39;: {&#39;env&#39;: &#39;nonprod&#39;}})
+
+            =&gt; [{&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;},
+                {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;nonprod&#39;}]
+        &#34;&#34;&#34;
+        for key, acct in accts.items():
+            if not isinstance(acct, dict):
+                raise TypeError(f&#39;Accounts are not dicts, did you specify the correct path?&#39;)
+
+            if self.id_attr not in acct:
+                acct[self.id_attr] = key
+
+            if key != acct[self.id_attr]:
+                raise ValueError(f&#34;Account IDs do not match: &#39;{key}&#39; != &#39;{acct[self.id_attr]}&#39;&#34;)
+
+        return list(accts.values())
+
+    def _ensure_ids_are_strings(self, accts):
+        &#34;&#34;&#34;Raises `ValueError` if account ID is not a string.&#34;&#34;&#34;
+        for acct in accts:
+            acct_id = acct[self.id_attr]
+            if not isinstance(acct_id, str):
+                raise ValueError(f&#34;Account ID &#39;{acct_id}&#39; is not a string of digits&#34;)
+
+    def _ensure_id_attr_exists(self, accts):
+        &#34;&#34;&#34;Raises `ValueError` if `self.id_attr` is not in each account dict.&#34;&#34;&#34;
+        for acct in accts:
+            if self.id_attr not in acct:
+                raise ValueError(f&#34;No &#39;{self.id_attr}&#39; attribute in account &#39;{acct}&#39;&#34;)
+
+    def _ensure_valid_str_template(self, attrs):
+        &#34;&#34;&#34;Raises `InvalidFormatTemplateError` if `self.str_template` contains
+        invalid attributes that are not present in the account dicts.
+        &#34;&#34;&#34;
+        tokens = re.findall(r&#39;\{(\w+)(?::[^}]+)?\}&#39;, self.str_template, re.ASCII)
+        unknown = set(tokens).difference(attrs)
+        if unknown:
+            raise InvalidFormatTemplateError(unknown, list(attrs))
+
+    def _normalize_attribute_names(self, accts):
+        &#34;&#34;&#34;Renames keys of acct dicts if invalid Python attribute names.
+
+        This function modifies the accts dict in place.
+        &#34;&#34;&#34;
+        for acct in accts:
+            _convert_keys_to_valid_attribute_names(acct)
+
+    def _filter_attribute_names(self, accts):
+        &#34;&#34;&#34;Returns the set of selected attributes based on include/exclude filters
+        as well as adds missing keys or deletes unused keys.
+
+        This function modifies the accts dict in place.
+        &#34;&#34;&#34;
+        if self.include_attrs and self.id_attr not in self.include_attrs:
+            raise ValueError(f&#34;Must include &#39;{self.id_attr}&#39; in include_attrs&#34;)
+        if self.id_attr in self.exclude_attrs:
+            raise ValueError(f&#34;Cannot exclude &#39;{self.id_attr}&#39; from exclude_attrs&#34;)
+
+        # Create a set of attribute names used across all acct dicts
+        attrs = set()
+        for acct in accts:
+            attrs.update(acct.keys())
+
+        # Filter that full set based on the include/exclude lists
+        if self.include_attrs:
+            attrs = attrs.intersection(self.include_attrs)
+        attrs = attrs.difference(self.exclude_attrs)
+
+        # Using the filtered attribute set, update the acct dicts in place
+        for acct in accts:
+            for key in acct:
+                delete_keys = [k for k in acct if k not in attrs]
+                insert_keys = [k for k in attrs if k not in acct]
+            for key in insert_keys:
+                acct[key] = None
+            for key in delete_keys:
+                acct.pop(key, None)
+
+        # Return the filtered attribute set
+        return attrs</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader">CSVAccountLoader</a></li>
+<li><a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader">JSONAccountLoader</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.acctload.MetaAccountLoader.acct_id"><code class="name flex">
+<span>def <span class="ident">acct_id</span></span>(<span>self, acct)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns the account ID associated with the <code>acct</code> object.</p>
+<p>The <code>acct</code> parameter must be an account object that was created by an
+instance of this <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> via <a title="awsrun.acctload.MetaAccountLoader.accounts" href="#awsrun.acctload.MetaAccountLoader.accounts"><code>MetaAccountLoader.accounts()</code></a>.
+This method returns the string representing the account ID of the
+account object.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def acct_id(self, acct):
+    &#34;&#34;&#34;Returns the account ID associated with the `acct` object.
+
+    The `acct` parameter must be an account object that was created by an
+    instance of this `MetaAccountLoader` via `MetaAccountLoader.accounts`.
+    This method returns the string representing the account ID of the
+    account object.
+    &#34;&#34;&#34;
+    return getattr(acct, self.id_attr)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.acctload.MetaAccountLoader.attributes"><code class="name flex">
+<span>def <span class="ident">attributes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a dict of all metadata attribute names and values.</p>
+<p>This method returns the metadata associated with the account objects
+created by this instance of <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>. The keys of the
+returned dict are the attribute names attached to the account objects.
+The value of each key is a set representing all of the possible values
+assigned to that attribute. For example:</p>
+<pre><code>accts = [
+    {'id': '100200300400', 'env': 'prod', 'status': 'active'},
+    {'id': '200300400100', 'env': 'prod', 'status': 'suspended'},
+    {'id': '300400100200', 'env': 'dev', 'status': 'active'},
+]
+loader = acctload.MetaAccountLoader(accts)
+attrs = loader.attributes()
+assert attrs['env'] == {'prod', 'dev'}
+assert attrs['status'] == {'active', 'suspended'}
+assert attrs['id'] == {'100200300400', '200300400100', '300400100200'}
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def attributes(self):
+    &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.
+
+    This method returns the metadata associated with the account objects
+    created by this instance of `MetaAccountLoader`. The keys of the
+    returned dict are the attribute names attached to the account objects.
+    The value of each key is a set representing all of the possible values
+    assigned to that attribute. For example:
+
+        accts = [
+            {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+            {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+            {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        ]
+        loader = acctload.MetaAccountLoader(accts)
+        attrs = loader.attributes()
+        assert attrs[&#39;env&#39;] == {&#39;prod&#39;, &#39;dev&#39;}
+        assert attrs[&#39;status&#39;] == {&#39;active&#39;, &#39;suspended&#39;}
+        assert attrs[&#39;id&#39;] == {&#39;100200300400&#39;, &#39;200300400100&#39;, &#39;300400100200&#39;}
+    &#34;&#34;&#34;
+    d = defaultdict(set)
+    for acct in self.accts:
+        for attr, value in acct.items():
+            d[attr].add(value)
+    return d</code></pre>
+</details>
+</dd>
+<dt id="awsrun.acctload.MetaAccountLoader.accounts"><code class="name flex">
+<span>def <span class="ident">accounts</span></span>(<span>self, acct_ids=None, include=None, exclude=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a list of account objects.</p>
+<p>Without any arguments, account objects for all accounts are returned. A
+list of <code>acct_ids</code> may be provided to limit the list to accounts
+matching the account IDs. If one or more specified account IDs is
+missing, <a title="awsrun.acctload.AccountsNotFoundError" href="#awsrun.acctload.AccountsNotFoundError"><code>AccountsNotFoundError</code></a> is raised.</p>
+<p>The returned list of accounts can be filtered further by providing dicts
+for <code>include</code> and <code>exclude</code> parameters that specify attributes and a
+list of values for those attributes that must match. For example,
+assuming the following accounts:</p>
+<pre><code>accts = [
+    {'id': '100200300400', 'env': 'prod', 'status': 'active'},
+    {'id': '200300400100', 'env': 'prod', 'status': 'suspended'},
+    {'id': '300400100200', 'env': 'dev', 'status': 'active'},
+]
+loader = acctload.MetaAccountLoader(accts)
+</code></pre>
+<p>To filter active accounts, use the following:</p>
+<pre><code>include = {'status': ['active']}
+</code></pre>
+<p>To filter active <em>and</em> production accounts:</p>
+<pre><code>include = {'status': ['active'], 'env': ['prod']}
+</code></pre>
+<p>To filter production accounts, but not suspended:</p>
+<pre><code>include = {'env': ['prod']}
+exclude = {'status': ['suspended']}
+</code></pre>
+<p>To filter active <em>or</em> suspended accounts, but not dev accounts:</p>
+<pre><code>include = {'status': ['active', 'suspended']}
+exclude = {'env': ['dev']}
+</code></pre>
+<p>Both <code>include</code> and <code>exclude</code> filters are applied after the initial
+account list has been determined, which is all accounts unless it was
+first limited by <code>acct_ids</code>. Then, the <code>include</code> filter is applied,
+followed by the <code>exclude</code> filter. If a filter dict has multiple keys,
+then <em>each</em> key must match. A key matches if at least <em>one</em> of the
+values matches as illustrated in the examples above. If a filter refers
+to an invalid attribute name, <code>AttributeError</code> is raised. Finally, if
+<code>include</code> is not set, then all accounts are matched. Likewise, if
+<code>exclude</code> is not set, then no accounts are excluded.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def accounts(self, acct_ids=None, include=None, exclude=None):
+    &#34;&#34;&#34;Returns a list of account objects.
+
+    Without any arguments, account objects for all accounts are returned. A
+    list of `acct_ids` may be provided to limit the list to accounts
+    matching the account IDs. If one or more specified account IDs is
+    missing, `AccountsNotFoundError` is raised.
+
+    The returned list of accounts can be filtered further by providing dicts
+    for `include` and `exclude` parameters that specify attributes and a
+    list of values for those attributes that must match. For example,
+    assuming the following accounts:
+
+        accts = [
+            {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+            {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
+            {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        ]
+        loader = acctload.MetaAccountLoader(accts)
+
+    To filter active accounts, use the following:
+
+        include = {&#39;status&#39;: [&#39;active&#39;]}
+
+    To filter active *and* production accounts:
+
+        include = {&#39;status&#39;: [&#39;active&#39;], &#39;env&#39;: [&#39;prod&#39;]}
+
+    To filter production accounts, but not suspended:
+
+        include = {&#39;env&#39;: [&#39;prod&#39;]}
+        exclude = {&#39;status&#39;: [&#39;suspended&#39;]}
+
+    To filter active *or* suspended accounts, but not dev accounts:
+
+        include = {&#39;status&#39;: [&#39;active&#39;, &#39;suspended&#39;]}
+        exclude = {&#39;env&#39;: [&#39;dev&#39;]}
+
+    Both `include` and `exclude` filters are applied after the initial
+    account list has been determined, which is all accounts unless it was
+    first limited by `acct_ids`. Then, the `include` filter is applied,
+    followed by the `exclude` filter. If a filter dict has multiple keys,
+    then *each* key must match. A key matches if at least *one* of the
+    values matches as illustrated in the examples above. If a filter refers
+    to an invalid attribute name, `AttributeError` is raised. Finally, if
+    `include` is not set, then all accounts are matched. Likewise, if
+    `exclude` is not set, then no accounts are excluded.
+    &#34;&#34;&#34;
+    accts = self.accts
+    acct_ids = [] if acct_ids is None else acct_ids
+    include = {} if include is None else include
+    exclude = {} if exclude is None else exclude
+
+    # Limit our account list to the requested IDs
+    if acct_ids:
+        requested = set(acct_ids)
+        all_ids = (a[self.id_attr] for a in self.accts)
+
+        missing_acct_ids = requested.difference(all_ids)
+        if missing_acct_ids:
+            raise AccountsNotFoundError(list(missing_acct_ids))
+
+        accts = (a for a in self.accts if a[self.id_attr] in requested)
+
+    # Make sure the filters contain valid attribute names
+    for attr in itertools.chain(include.keys(), exclude.keys()):
+        if attr not in self.attrs:
+            raise AttributeError(f&#34;Invalid attribute &#39;{attr}&#39; in filter&#34;)
+
+    # Limit our account list by the user-supplied filters
+    return [self.CustomAccount(a) for a in accts if self._filter(a, include, exclude)]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.acctload.CSVAccountLoader"><code class="flex name class">
+<span>class <span class="ident">CSVAccountLoader</span></span>
+<span>(</span><span>url, max_age=0, delimiter=',', id_attr='id', str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns an <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> with accounts loaded from a CSV file/url.</p>
+<p>Loaded accounts will include metadata associated with each account in the
+CSV document retrieved from the <code>url</code>. File based URLs can be used to load
+data from a local file. To cache the CSV results, specify the number of
+seconds via <code>max_age</code>. By default, the data in not cached.</p>
+<p>The delimiter used in the file can be changed via the <code>delimiter</code> parameter.
+The default value is comma. The column names, specified on the first row of
+the CSV file, will become attributes on the loaded account objects. Given
+the following CSV file:</p>
+<pre><code> id, env, status
+ 100200300400, prod, active
+ 200300400100, non-prod, active
+ 300400100200, non-prod, suspended
+</code></pre>
+<p>The account loader will build account objects with the following attribute
+names: <code>id</code>, <code>env</code>, <code>status</code>. For example, assume the above CSV file is
+called <code>accts.csv</code>:</p>
+<pre><code>loader = CSVAccountLoader('accts.csv')
+accts = loader.accounts()
+
+# Let's inspect the 1st account object and its metadata
+assert accts[0].id == '100200300400'
+assert accts[0].env == 'prod'
+assert accts[0].status == 'active'
+</code></pre>
+<p>CSVAccountLoader is a subclass of the <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>, which is passed a
+set of account dicts loaded from the CSV. As such, the remainder of the
+parameters in the constructor &ndash; <code>id_attr</code>, <code>str_template</code>, <code>include_attrs</code>,
+and <code>exclude_attrs</code> &ndash; are defined in the constructor of
+<a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CSVAccountLoader(MetaAccountLoader):
+    &#34;&#34;&#34;Returns an `AccountLoader` with accounts loaded from a CSV file/url.
+
+    Loaded accounts will include metadata associated with each account in the
+    CSV document retrieved from the `url`. File based URLs can be used to load
+    data from a local file. To cache the CSV results, specify the number of
+    seconds via `max_age`. By default, the data in not cached.
+
+    The delimiter used in the file can be changed via the `delimiter` parameter.
+    The default value is comma. The column names, specified on the first row of
+    the CSV file, will become attributes on the loaded account objects. Given
+    the following CSV file:
+
+         id, env, status
+         100200300400, prod, active
+         200300400100, non-prod, active
+         300400100200, non-prod, suspended
+
+    The account loader will build account objects with the following attribute
+    names: `id`, `env`, `status`. For example, assume the above CSV file is
+    called `accts.csv`:
+
+        loader = CSVAccountLoader(&#39;accts.csv&#39;)
+        accts = loader.accounts()
+
+        # Let&#39;s inspect the 1st account object and its metadata
+        assert accts[0].id == &#39;100200300400&#39;
+        assert accts[0].env == &#39;prod&#39;
+        assert accts[0].status == &#39;active&#39;
+
+    CSVAccountLoader is a subclass of the `MetaAccountLoader`, which is passed a
+    set of account dicts loaded from the CSV. As such, the remainder of the
+    parameters in the constructor -- `id_attr`, `str_template`, `include_attrs`,
+    and `exclude_attrs` -- are defined in the constructor of
+    `MetaAccountLoader`.
+    &#34;&#34;&#34;
+    def __init__(self, url, max_age=0, delimiter=&#39;,&#39;, id_attr=&#39;id&#39;, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False):
+        include_attrs = [] if include_attrs is None else include_attrs
+        exclude_attrs = [] if exclude_attrs is None else exclude_attrs
+
+        session = requests.Session()
+        session.mount(&#39;file://&#39;, FileAdapter())
+
+        def load_cache():
+            r = session.get(url, verify=not no_verify)
+            r.raise_for_status()
+            buf = io.StringIO(r.text.strip())
+            return list(csv.DictReader(buf, delimiter=delimiter, skipinitialspace=True))
+
+        cache_file = Path(tempfile.gettempdir(), &#39;awsrun.dat&#39;)
+        accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
+
+        super().__init__(
+            accts.value(),
+            id_attr=id_attr,
+            str_template=str_template,
+            include_attrs=include_attrs,
+            exclude_attrs=exclude_attrs)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></li>
+<li><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.acctload.MetaAccountLoader.accounts" href="#awsrun.acctload.MetaAccountLoader.accounts">accounts</a></code></li>
+<li><code><a title="awsrun.acctload.MetaAccountLoader.acct_id" href="#awsrun.acctload.MetaAccountLoader.acct_id">acct_id</a></code></li>
+<li><code><a title="awsrun.acctload.MetaAccountLoader.attributes" href="#awsrun.acctload.MetaAccountLoader.attributes">attributes</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.acctload.JSONAccountLoader"><code class="flex name class">
+<span>class <span class="ident">JSONAccountLoader</span></span>
+<span>(</span><span>url, max_age=0, id_attr='id', path=None, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns an <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> with accounts loaded from JSON.</p>
+<p>Loaded accounts will include metadata associated with each account in the
+JSON document retrieved from the <code>url</code>. File based URLs can be used to load
+data from a local file. To cache the JSON results, specify the number of
+seconds via <code>max_age</code>. By default, the data is not cached. Given the
+following JSON:</p>
+<pre><code>{
+    "Accounts": [
+        {"id": "100200300400", "env": "prod", "status": "active"},
+        {"id": "200300400100", "env": "non-prod", "status": "active"},
+        {"id": "300400100200", "env": "non-prod", "status": "suspended"}
+    ]
+}
+</code></pre>
+<p>The account loader will build account objects with the following attribute
+names: <code>id</code>, <code>env</code>, <code>status</code>. Assume the above JSON is returned from
+<a href="http://example.com/accts.json:">http://example.com/accts.json:</a></p>
+<pre><code>loader = JSONAccountLoader('http://example.com/accts.json', path=['Accounts'])
+accts = loader.accounts()
+
+# Let's inspect the 1st account object and its metadata
+assert accts[0].id == '100200300400'
+assert accts[0].env == 'prod'
+assert accts[0].status == 'active'
+</code></pre>
+<p>JSONAccountLoader is a subclass of the <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>, which loads
+accounts from a set of dicts. As such, the remainder of the parameters in
+the constructor &ndash; <code>id_attr</code>, <code>path</code>, <code>str_template</code>, <code>include_attrs</code>, and
+<code>exclude_attrs</code> &ndash; are defined in the constructor of <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class JSONAccountLoader(MetaAccountLoader):
+    &#34;&#34;&#34;Returns an `AccountLoader` with accounts loaded from JSON.
+
+    Loaded accounts will include metadata associated with each account in the
+    JSON document retrieved from the `url`. File based URLs can be used to load
+    data from a local file. To cache the JSON results, specify the number of
+    seconds via `max_age`. By default, the data is not cached. Given the
+    following JSON:
+
+        {
+            &#34;Accounts&#34;: [
+                {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+            ]
+        }
+
+    The account loader will build account objects with the following attribute
+    names: `id`, `env`, `status`. Assume the above JSON is returned from
+    http://example.com/accts.json:
+
+        loader = JSONAccountLoader(&#39;http://example.com/accts.json&#39;, path=[&#39;Accounts&#39;])
+        accts = loader.accounts()
+
+        # Let&#39;s inspect the 1st account object and its metadata
+        assert accts[0].id == &#39;100200300400&#39;
+        assert accts[0].env == &#39;prod&#39;
+        assert accts[0].status == &#39;active&#39;
+
+    JSONAccountLoader is a subclass of the `MetaAccountLoader`, which loads
+    accounts from a set of dicts. As such, the remainder of the parameters in
+    the constructor -- `id_attr`, `path`, `str_template`, `include_attrs`, and
+    `exclude_attrs` -- are defined in the constructor of `MetaAccountLoader`.
+    &#34;&#34;&#34;
+    def __init__(self, url, max_age=0, id_attr=&#39;id&#39;, path=None, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False):
+        path = [] if path is None else path
+        include_attrs = [] if include_attrs is None else include_attrs
+        exclude_attrs = [] if exclude_attrs is None else exclude_attrs
+
+        session = requests.Session()
+        session.mount(&#39;file://&#39;, FileAdapter())
+
+        def load_cache():
+            r = session.get(url, verify=not no_verify)
+            r.raise_for_status()
+            return r.json()
+
+        cache_file = Path(tempfile.gettempdir(), &#39;awsrun.dat&#39;)
+        accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
+
+        super().__init__(
+            accts.value(),
+            id_attr=id_attr,
+            path=path,
+            str_template=str_template,
+            include_attrs=include_attrs,
+            exclude_attrs=exclude_attrs)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></li>
+<li><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.acctload.MetaAccountLoader.accounts" href="#awsrun.acctload.MetaAccountLoader.accounts">accounts</a></code></li>
+<li><code><a title="awsrun.acctload.MetaAccountLoader.acct_id" href="#awsrun.acctload.MetaAccountLoader.acct_id">acct_id</a></code></li>
+<li><code><a title="awsrun.acctload.MetaAccountLoader.attributes" href="#awsrun.acctload.MetaAccountLoader.attributes">attributes</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.acctload.AbstractAccount"><code class="flex name class">
+<span>class <span class="ident">AbstractAccount</span></span>
+<span>(</span><span>attributes)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Abstract base class used by <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> to represent an account and its metadata.</p>
+<p>This class is dynamically subclassed by the account loader to create a
+unique <code>Account</code> class to hold account data. It is a lightweight subclass
+that contains a single fixed slot called <code>_attrs</code>, which is used to store a
+reference to the original account dicts passed to the constructor of
+<a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>. The subclass allows for direct object access of those
+attributes by providing a <code>__getattr__</code> implementation.
+In addition, a
+customized <code>__str__</code> implementation is provided based on the format string
+specified as a class attribute called <code>_str_template</code>.</p>
+<p>Although not meant to be used directly by users, here is an example showing
+the features of this abstract base class:</p>
+<pre><code>class Account(AbstractAccount):
+    _str_template = 'acct={id}'
+
+d = {'id': '100200300400', 'env': 'prod', 'status': 'active'}
+acct = Account(d)
+
+assert acct.id == '100200300400'
+assert acct.env == 'prod'
+assert acct.status == 'active'
+assert str(acct) == 'acct=100200300400'
+assert repr(acct) == 'Account(id="100200300400", env="prod", status="active")'
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AbstractAccount:  #pylint: disable=single-string-used-for-slots
+    &#34;&#34;&#34;Abstract base class used by `MetaAccountLoader` to represent an account and its metadata.
+
+    This class is dynamically subclassed by the account loader to create a
+    unique `Account` class to hold account data. It is a lightweight subclass
+    that contains a single fixed slot called `_attrs`, which is used to store a
+    reference to the original account dicts passed to the constructor of
+    `MetaAccountLoader`. The subclass allows for direct object access of those
+    attributes by providing a `__getattr__` implementation.  In addition, a
+    customized `__str__` implementation is provided based on the format string
+    specified as a class attribute called `_str_template`.
+
+    Although not meant to be used directly by users, here is an example showing
+    the features of this abstract base class:
+
+        class Account(AbstractAccount):
+            _str_template = &#39;acct={id}&#39;
+
+        d = {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;}
+        acct = Account(d)
+
+        assert acct.id == &#39;100200300400&#39;
+        assert acct.env == &#39;prod&#39;
+        assert acct.status == &#39;active&#39;
+        assert str(acct) == &#39;acct=100200300400&#39;
+        assert repr(acct) == &#39;Account(id=&#34;100200300400&#34;, env=&#34;prod&#34;, status=&#34;active&#34;)&#39;
+    &#34;&#34;&#34;
+    _str_template = None
+    __slots__ = &#39;_attrs&#39;
+
+    def __init__(self, attributes):
+        self._attrs = attributes
+
+    def __getattr__(self, name):
+        value = self._attrs.get(name)
+        if not value and name not in self._attrs:
+            raise AttributeError(f&#34;&#39;{type(self).__name__}&#39; object has no attribute &#39;{name}&#39;&#34;)
+        return value
+
+    def __eq__(self, other):
+        return self._attrs == other._attrs  # pylint: disable=protected-access
+
+    def __repr__(self):
+        pairs = (f&#39;{k}={repr(v)}&#39; for k, v in self._attrs.items())
+        return f&#39;Account({&#34;, &#34;.join(pairs)})&#39;
+
+    def __str__(self):
+        if not self._str_template:
+            raise NotImplementedError(f&#34;&#39;{type(self).__name__}&#39; class has no variable &#39;str_template&#39;&#34;)
+        return self._str_template.format(**self._attrs)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.acctload.AccountsNotFoundError"><code class="flex name class">
+<span>class <span class="ident">AccountsNotFoundError</span></span>
+<span>(</span><span>missing_acct_ids)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Raised if an account ID was not found.</p>
+<p>The <code>missing_acct_ids</code> attribute contains the missing IDs of the accounts not
+found.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AccountsNotFoundError(Exception):
+    &#34;&#34;&#34;Raised if an account ID was not found.
+
+    The `missing_acct_ids` attribute contains the missing IDs of the accounts not
+    found.
+    &#34;&#34;&#34;
+
+    def __init__(self, missing_acct_ids):
+        self.missing_acct_ids = missing_acct_ids
+        super().__init__(f&#39;Account IDs not found: {&#34;, &#34;.join(missing_acct_ids)}&#39;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="awsrun.acctload.InvalidFormatTemplateError"><code class="flex name class">
+<span>class <span class="ident">InvalidFormatTemplateError</span></span>
+<span>(</span><span>unknown, valid)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Raised if the format template specified refers to unknown account
+attributes.</p>
+<p>The <code>valid_attrs</code> attribute contains a list of valid attribute names, and
+<code>unknown_attrs</code> contains a list of the unknown attribute names used in the
+format string of the Account object.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InvalidFormatTemplateError(Exception):
+    &#34;&#34;&#34;Raised if the format template specified refers to unknown account
+    attributes.
+
+    The `valid_attrs` attribute contains a list of valid attribute names, and
+    `unknown_attrs` contains a list of the unknown attribute names used in the
+    format string of the Account object.
+    &#34;&#34;&#34;
+    def __init__(self, unknown, valid):
+        self.unknown_attrs = unknown
+        self.valid_attrs = valid
+
+        def quote(attrs):
+            return &#34;, &#34;.join([&#34;&#39;&#34; + a + &#34;&#39;&#34; for a in attrs])
+
+        super().__init__(f&#34;Unknown attributes in format template: {quote(unknown)}. Valid attributes are: {quote(valid)}&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#overview">Overview</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun" href="index.html">awsrun</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.acctload.AccountLoader.acct_id" href="#awsrun.acctload.AccountLoader.acct_id">acct_id</a></code></li>
+<li><code><a title="awsrun.acctload.AccountLoader.attributes" href="#awsrun.acctload.AccountLoader.attributes">attributes</a></code></li>
+<li><code><a title="awsrun.acctload.AccountLoader.accounts" href="#awsrun.acctload.AccountLoader.accounts">accounts</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader">IdentityAccountLoader</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.acctload.IdentityAccountLoader.acct_id" href="#awsrun.acctload.IdentityAccountLoader.acct_id">acct_id</a></code></li>
+<li><code><a title="awsrun.acctload.IdentityAccountLoader.attributes" href="#awsrun.acctload.IdentityAccountLoader.attributes">attributes</a></code></li>
+<li><code><a title="awsrun.acctload.IdentityAccountLoader.accounts" href="#awsrun.acctload.IdentityAccountLoader.accounts">accounts</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.acctload.MetaAccountLoader.acct_id" href="#awsrun.acctload.MetaAccountLoader.acct_id">acct_id</a></code></li>
+<li><code><a title="awsrun.acctload.MetaAccountLoader.attributes" href="#awsrun.acctload.MetaAccountLoader.attributes">attributes</a></code></li>
+<li><code><a title="awsrun.acctload.MetaAccountLoader.accounts" href="#awsrun.acctload.MetaAccountLoader.accounts">accounts</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader">CSVAccountLoader</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader">JSONAccountLoader</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.acctload.AbstractAccount" href="#awsrun.acctload.AbstractAccount">AbstractAccount</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.acctload.AccountsNotFoundError" href="#awsrun.acctload.AccountsNotFoundError">AccountsNotFoundError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.acctload.InvalidFormatTemplateError" href="#awsrun.acctload.InvalidFormatTemplateError">InvalidFormatTemplateError</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

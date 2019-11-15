@@ -1,0 +1,1363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>awsrun.commands.aws.list_iam_policies API documentation</title>
+<meta name="description" content="Display the IAM policies (inline and attached) in an account …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<style>
+body {
+/* Probably too small for most ...
+font-size: .9em;
+*/
+}
+code {
+font-size: .9em;
+}
+pre code {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.commands.aws.list_iam_policies</code></h1>
+</header>
+<section id="section-intro">
+<p>Display the IAM policies (inline and attached) in an account.</p>
+<h2 id="overview">Overview</h2>
+<p>The list_iam_policies command will display the IAM policies, inline and
+attached, associated with identities in an account. Identities include users,
+groups, and roles. By default, the policy name and the identity it is
+associated with are displayed. For example:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies
+100200300400: identity=user:joe policy=attached:ReadOnlyAccess
+100200300400: identity=role:AWSServiceRoleForAutoScaling policy=attached:AutoScalingServiceRolePolicy
+100200300400: identity=role:AWSServiceRoleForECS policy=attached:AmazonECSServiceRolePolicy
+100200300400: identity=role:AWSServiceRoleForElasticLoadBalancing policy=attached:AWSElasticLoadBalancingServiceRolePolicy
+...
+</code></pre>
+<p>In the above output, there is one attached user policy called ReadOnlyAccess and
+it is associated with the "joe" user. In addition, there are several attached
+role policies.
+The <code>--users</code>, <code>--groups</code>, and <code>--roles</code> flags will limit the
+output to policies attached to the respective identity type. For example, to
+show only user policies:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies --users
+100200300400: identity=user:joe policy=attached:ReadOnlyAccess
+</code></pre>
+<p>The <code>--inline</code> and <code>--attached</code> flags will limit the output to the type of
+policy. These flags can be combined with the identity filter flags as well.
+For
+example, to show only inline policies associated with roles:</p>
+<pre><code>$ awsrun -a 100200300400 list_iam_policies --inline --roles
+100200300400: identity=role:ECSAutoScalingRole policy=inline:service-autoscaling
+100200300400: identity=role:ECSClusterEC2Role policy=inline:ecs-service
+100200300400: identity=role:ECSServiceRole policy=inline:ecs-service
+</code></pre>
+<p>Use <code>--verbose</code> to display the JSON policy document contents. For example, to
+view the contents of all user policies:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies --users --verbose
+100200300400: identity=user:joe policy=attached:ReadOnlyAccess
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "a4b:Get*",
+                "a4b:List*",
+                "a4b:Describe*",
+                "a4b:Search*",
+                "acm:Describe*",
+                "acm:Get*",
+                ...
+</code></pre>
+<p>In addition to filtering policies based on identity types, the <code>--user-name
+NAME</code>, <code>--group-name NAME</code>, and <code>--role-name NAME</code> options will display only
+policies matching the respective NAMEs. For example, to match roles with
+the name "viewer":</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies --role-name viewer
+100200300400: identity=user:joe policy=attached:ReadOnlyAccess
+100200300400: identity=role:viewer policy=attached:ViewOnlyAccess
+</code></pre>
+<p>Note: the above output contained a user policy as well even though <code>--role-name</code>
+was specified. Filtering on names does not exclude other identity types from the
+output. To show only role policies with a name of "viewer" be sure to include
+<code>--roles</code> as well:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies --roles --role-name viewer
+100200300400: identity=role:viewer policy=attached:ViewOnlyAccess
+</code></pre>
+<p>User, group, and role name filters can be used together. For example, to filter
+on the "joe" user as well as the "bu_readonly" role while excluding any group
+policies:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies --roles --role-name bu_readonly --users --user-name joe
+100200300400: identity=user:joe policy=attached:ReadOnlyAccess
+100200300400: identity=role:bu_readonly policy=attached:ReadOnlyAccess
+100200300400: identity=role:bu_readonly policy=attached:AWSSupportAccess
+</code></pre>
+<p>Multiple name filters for the same identity type can be specified by supplying
+multiple flags. For example, to filter on "bu_readonly" and "viewer" roles:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies --roles --role-name bu_readonly --role-name viewer
+100200300400: identity=role:bu_readonly policy=attached:ReadOnlyAccess
+100200300400: identity=role:bu_readonly policy=attached:AWSSupportAccess
+100200300400: identity=role:viewer policy=attached:ViewOnlyAccess
+</code></pre>
+<p>To filter on a specific policy name or to exclude a specific policy by name, use
+the <code>--policy-name NAME</code> and the <code>--not-policy-name NAME</code> flags. These flags are
+mutually exclusive. Like the other name filters, multiple names can be specified
+by supplying additional flags.
+For example:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies --policy-name key-policy --policy-name vpc-flow-log-policy
+100200300400: identity=role:logging policy=inline:key-policy
+100200300400: identity=role:logging policy=attached:vpc-flow-log-policy
+</code></pre>
+<p>When matching policy names, if a policy name starts with the NAME specified on
+the command line, it is considered a match. For example, to match any policy
+that starts with "vpc":</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies --policy-name vpc
+100200300400: identity=role:logging policy=attached:vpc-flow-log-policy
+</code></pre>
+<p>Finally, to filter policies that contain a specific IAM action, use the
+<code>--action-name NAME</code> and <code>--not-action-name NAME</code> flags. When filtering by
+action names, only policies that include the action in the policy's Action or
+NotAction block are included in the results.
+The matching algorithm does take
+into account any wildcards used in the policy.
+For example, if the IAM policy
+included:</p>
+<pre><code>Action: [ "sts:*", "ec2:*" ]
+</code></pre>
+<p>Then searching for an action name using <code>--action-name sts:AssumeRole</code> would
+match the policy, and thus be included in the output. Wildcards, however, cannot
+be used in search terms as exact matches are used.
+Like the other name filters,
+multiple names can be specified by supplying multiple flags. For example, to
+search all policies that do not start with IAM, but contain sts:AssumeRole:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies --not-policy-name admin --action-name sts:AssumeRole
+100200300400: identity=role:automation policy=attached:automation-policy
+100200300400: identity=role:OrganizationAccountAccessRole policy=inline:AdministratorAccess
+</code></pre>
+<p>Note: search results do not take into account whether or action is allowed or
+denied, only whether or not it is present in an Action or NotAction block.</p>
+<p>To view the details of the AdministratorAccess policy, specify the <code>--verbose</code>
+flag:</p>
+<pre><code>$ awsrun --account 100200300400 list_iam_policies --policy-name AdministratorAccess --verbose
+100200300400: identity=role:OrganizationAccountAccessRole policy=attached:AdministratorAccess
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "*",
+            "Resource": "*"
+        }
+    ]
+}
+</code></pre>
+<h2 id="reference">Reference</h2>
+<h3 id="synopsis">Synopsis</h3>
+<pre><code>$ awsrun [options] list_iam_policies [command options]
+</code></pre>
+<h3 id="configuration">Configuration</h3>
+<p>The following is the syntax for the options that can be specified in the user
+configuration file:</p>
+<pre><code>Commands:
+  list_iam_policies:
+    verbose: BOOLEAN
+    roles: BOOLEAN
+    users: BOOLEAN
+    groups: BOOLEAN
+    inline: BOOLEAN
+    attached: BOOLEAN
+    role_name:
+      - STRING
+    user_name:
+      - STRING
+    group_name:
+      - STRING
+    action_name:
+      - STRING
+    not_action_name:
+      - STRING
+    policy_name:
+      - STRING
+    not_policy_name:
+      - STRING
+</code></pre>
+<h3 id="command-options">Command Options</h3>
+<p>Some options can be overridden on the awsrun CLI via command line flags. In
+those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>verbose</code>, <code>--verbose</code>, <code>-v</code></dt>
+<dd>Include the JSON policy body in the output.</dd>
+<dt><code>roles</code>, <code>--roles</code></dt>
+<dd>Flag to search role policies. If neither the roles, users, or groups flags
+are specified, then all are searched. Specifying one or more of these flags will
+limit the search to those identity types.</dd>
+<dt><code>users</code>, <code>--users</code></dt>
+<dd>Flag to search user policies. If neither the roles, users, or groups flags
+are specified, then all are searched. Specifying one or more of these flags will
+limit the search to those identity types.</dd>
+<dt><code>groups</code>, <code>--groups</code></dt>
+<dd>Flag to search group policies. If neither the roles, users, or groups flags
+are specified, then all are searched. Specifying one or more of these flags will
+limit the search to those identity types.</dd>
+<dt><code>inline</code>, <code>--inline</code></dt>
+<dd>Flag to search inline policies. If neither the inline or attached flags are
+specified, then all are searched. Specifying one or more of these flags will
+limit the search to those policy types.</dd>
+<dt><code>attached</code>, <code>--attached</code></dt>
+<dd>Flag to search attached policies. If neither the inline or attached flags are
+specified, then all are searched. Specifying one or more of these flags will
+limit the search to those policy types.</dd>
+<dt><code>role_name</code>, <code>--role-name</code></dt>
+<dd>Limit output to include the specified role names. When specifying multiple
+values on the command line, use multiple flags for each value.</dd>
+<dt><code>user_name</code>, <code>--user-name</code></dt>
+<dd>Limit output to include the specified user names. When specifying multiple
+values on the command line, use multiple flags for each value.</dd>
+<dt><code>group_name</code>, <code>--group-name</code></dt>
+<dd>Limit output to include the specified group names. When specifying multiple
+values on the command line, use multiple flags for each value.</dd>
+<dt><code>action_name</code>, <code>--action-name</code></dt>
+<dd>Limit output to include the policy if it contains the specified Action names.
+When specifying multiple values on the command line, use multiple flags for each
+value. This option cannot be used in conjunction with <code>not_action_name</code>.</dd>
+<dt><code>not_action_name</code>, <code>--not-action-name</code></dt>
+<dd>Limit output to include the policy if it contains the specified NotAction
+names. When specifying multiple values on the command line, use multiple flags
+for each value. This option cannot be used in conjunction with <code>action_name</code>.</dd>
+<dt><code>policy_name</code>, <code>--policy-name</code></dt>
+<dd>Limit output to include the policy if its name starts with the specified
+value. When specifying multiple values on the command line, use multiple flags
+for each value. This option cannot be used in conjunction with
+<code>not_policy_name</code>.</dd>
+<dt><code>not_policy_name</code>, <code>--not-policy-name</code></dt>
+<dd>Limit output to include the policy if its name does not start with the
+specified value. When specifying multiple values on the command line, use
+multiple flags for each value. This option cannot be used in conjunction with
+<code>policy_name</code>.</dd>
+</dl>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;
+Display the IAM policies (inline and attached) in an account.
+
+## Overview
+
+The list_iam_policies command will display the IAM policies, inline and
+attached, associated with identities in an account. Identities include users,
+groups, and roles. By default, the policy name and the identity it is
+associated with are displayed. For example:
+
+    $ awsrun --account 100200300400 list_iam_policies
+    100200300400: identity=user:joe policy=attached:ReadOnlyAccess
+    100200300400: identity=role:AWSServiceRoleForAutoScaling policy=attached:AutoScalingServiceRolePolicy
+    100200300400: identity=role:AWSServiceRoleForECS policy=attached:AmazonECSServiceRolePolicy
+    100200300400: identity=role:AWSServiceRoleForElasticLoadBalancing policy=attached:AWSElasticLoadBalancingServiceRolePolicy
+    ...
+
+In the above output, there is one attached user policy called ReadOnlyAccess and
+it is associated with the &#34;joe&#34; user. In addition, there are several attached
+role policies.  The `--users`, `--groups`, and `--roles` flags will limit the
+output to policies attached to the respective identity type. For example, to
+show only user policies:
+
+    $ awsrun --account 100200300400 list_iam_policies --users
+    100200300400: identity=user:joe policy=attached:ReadOnlyAccess
+
+The `--inline` and `--attached` flags will limit the output to the type of
+policy. These flags can be combined with the identity filter flags as well.  For
+example, to show only inline policies associated with roles:
+
+    $ awsrun -a 100200300400 list_iam_policies --inline --roles
+    100200300400: identity=role:ECSAutoScalingRole policy=inline:service-autoscaling
+    100200300400: identity=role:ECSClusterEC2Role policy=inline:ecs-service
+    100200300400: identity=role:ECSServiceRole policy=inline:ecs-service
+
+Use `--verbose` to display the JSON policy document contents. For example, to
+view the contents of all user policies:
+
+    $ awsrun --account 100200300400 list_iam_policies --users --verbose
+    100200300400: identity=user:joe policy=attached:ReadOnlyAccess
+    {
+        &#34;Version&#34;: &#34;2012-10-17&#34;,
+        &#34;Statement&#34;: [
+            {
+                &#34;Action&#34;: [
+                    &#34;a4b:Get*&#34;,
+                    &#34;a4b:List*&#34;,
+                    &#34;a4b:Describe*&#34;,
+                    &#34;a4b:Search*&#34;,
+                    &#34;acm:Describe*&#34;,
+                    &#34;acm:Get*&#34;,
+                    ...
+
+In addition to filtering policies based on identity types, the `--user-name
+NAME`, `--group-name NAME`, and `--role-name NAME` options will display only
+policies matching the respective NAMEs. For example, to match roles with
+the name &#34;viewer&#34;:
+
+    $ awsrun --account 100200300400 list_iam_policies --role-name viewer
+    100200300400: identity=user:joe policy=attached:ReadOnlyAccess
+    100200300400: identity=role:viewer policy=attached:ViewOnlyAccess
+
+Note: the above output contained a user policy as well even though `--role-name`
+was specified. Filtering on names does not exclude other identity types from the
+output. To show only role policies with a name of &#34;viewer&#34; be sure to include
+`--roles` as well:
+
+    $ awsrun --account 100200300400 list_iam_policies --roles --role-name viewer
+    100200300400: identity=role:viewer policy=attached:ViewOnlyAccess
+
+User, group, and role name filters can be used together. For example, to filter
+on the &#34;joe&#34; user as well as the &#34;bu_readonly&#34; role while excluding any group
+policies:
+
+    $ awsrun --account 100200300400 list_iam_policies --roles --role-name bu_readonly --users --user-name joe
+    100200300400: identity=user:joe policy=attached:ReadOnlyAccess
+    100200300400: identity=role:bu_readonly policy=attached:ReadOnlyAccess
+    100200300400: identity=role:bu_readonly policy=attached:AWSSupportAccess
+
+Multiple name filters for the same identity type can be specified by supplying
+multiple flags. For example, to filter on &#34;bu_readonly&#34; and &#34;viewer&#34; roles:
+
+    $ awsrun --account 100200300400 list_iam_policies --roles --role-name bu_readonly --role-name viewer
+    100200300400: identity=role:bu_readonly policy=attached:ReadOnlyAccess
+    100200300400: identity=role:bu_readonly policy=attached:AWSSupportAccess
+    100200300400: identity=role:viewer policy=attached:ViewOnlyAccess
+
+To filter on a specific policy name or to exclude a specific policy by name, use
+the `--policy-name NAME` and the `--not-policy-name NAME` flags. These flags are
+mutually exclusive. Like the other name filters, multiple names can be specified
+by supplying additional flags.  For example:
+
+    $ awsrun --account 100200300400 list_iam_policies --policy-name key-policy --policy-name vpc-flow-log-policy
+    100200300400: identity=role:logging policy=inline:key-policy
+    100200300400: identity=role:logging policy=attached:vpc-flow-log-policy
+
+When matching policy names, if a policy name starts with the NAME specified on
+the command line, it is considered a match. For example, to match any policy
+that starts with &#34;vpc&#34;:
+
+    $ awsrun --account 100200300400 list_iam_policies --policy-name vpc
+    100200300400: identity=role:logging policy=attached:vpc-flow-log-policy
+
+Finally, to filter policies that contain a specific IAM action, use the
+`--action-name NAME` and `--not-action-name NAME` flags. When filtering by
+action names, only policies that include the action in the policy&#39;s Action or
+NotAction block are included in the results.  The matching algorithm does take
+into account any wildcards used in the policy.  For example, if the IAM policy
+included:
+
+    Action: [ &#34;sts:*&#34;, &#34;ec2:*&#34; ]
+
+Then searching for an action name using `--action-name sts:AssumeRole` would
+match the policy, and thus be included in the output. Wildcards, however, cannot
+be used in search terms as exact matches are used.  Like the other name filters,
+multiple names can be specified by supplying multiple flags. For example, to
+search all policies that do not start with IAM, but contain sts:AssumeRole:
+
+    $ awsrun --account 100200300400 list_iam_policies --not-policy-name admin --action-name sts:AssumeRole
+    100200300400: identity=role:automation policy=attached:automation-policy
+    100200300400: identity=role:OrganizationAccountAccessRole policy=inline:AdministratorAccess
+
+Note: search results do not take into account whether or action is allowed or
+denied, only whether or not it is present in an Action or NotAction block.
+
+To view the details of the AdministratorAccess policy, specify the `--verbose`
+flag:
+
+    $ awsrun --account 100200300400 list_iam_policies --policy-name AdministratorAccess --verbose
+    100200300400: identity=role:OrganizationAccountAccessRole policy=attached:AdministratorAccess
+    {
+        &#34;Version&#34;: &#34;2012-10-17&#34;,
+        &#34;Statement&#34;: [
+            {
+                &#34;Effect&#34;: &#34;Allow&#34;,
+                &#34;Action&#34;: &#34;*&#34;,
+                &#34;Resource&#34;: &#34;*&#34;
+            }
+        ]
+    }
+
+## Reference
+
+### Synopsis
+
+    $ awsrun [options] list_iam_policies [command options]
+
+### Configuration
+
+The following is the syntax for the options that can be specified in the user
+configuration file:
+
+    Commands:
+      list_iam_policies:
+        verbose: BOOLEAN
+        roles: BOOLEAN
+        users: BOOLEAN
+        groups: BOOLEAN
+        inline: BOOLEAN
+        attached: BOOLEAN
+        role_name:
+          - STRING
+        user_name:
+          - STRING
+        group_name:
+          - STRING
+        action_name:
+          - STRING
+        not_action_name:
+          - STRING
+        policy_name:
+          - STRING
+        not_policy_name:
+          - STRING
+
+### Command Options
+
+Some options can be overridden on the awsrun CLI via command line flags. In
+those cases, the CLI flags are specified next to the option name below:
+
+`verbose`, `--verbose`, `-v`
+:  Include the JSON policy body in the output.
+
+`roles`, `--roles`
+:  Flag to search role policies. If neither the roles, users, or groups flags
+are specified, then all are searched. Specifying one or more of these flags will
+limit the search to those identity types.
+
+`users`, `--users`
+:  Flag to search user policies. If neither the roles, users, or groups flags
+are specified, then all are searched. Specifying one or more of these flags will
+limit the search to those identity types.
+
+`groups`, `--groups`
+:  Flag to search group policies. If neither the roles, users, or groups flags
+are specified, then all are searched. Specifying one or more of these flags will
+limit the search to those identity types.
+
+`inline`, `--inline`
+:  Flag to search inline policies. If neither the inline or attached flags are
+specified, then all are searched. Specifying one or more of these flags will
+limit the search to those policy types.
+
+`attached`, `--attached`
+:  Flag to search attached policies. If neither the inline or attached flags are
+specified, then all are searched. Specifying one or more of these flags will
+limit the search to those policy types.
+
+`role_name`, `--role-name`
+:  Limit output to include the specified role names. When specifying multiple
+values on the command line, use multiple flags for each value.
+
+`user_name`, `--user-name`
+:  Limit output to include the specified user names. When specifying multiple
+values on the command line, use multiple flags for each value.
+
+`group_name`, `--group-name`
+:  Limit output to include the specified group names. When specifying multiple
+values on the command line, use multiple flags for each value.
+
+`action_name`, `--action-name`
+:  Limit output to include the policy if it contains the specified Action names.
+When specifying multiple values on the command line, use multiple flags for each
+value. This option cannot be used in conjunction with `not_action_name`.
+
+`not_action_name`, `--not-action-name`
+:  Limit output to include the policy if it contains the specified NotAction
+names. When specifying multiple values on the command line, use multiple flags
+for each value. This option cannot be used in conjunction with `action_name`.
+
+`policy_name`, `--policy-name`
+:  Limit output to include the policy if its name starts with the specified
+value. When specifying multiple values on the command line, use multiple flags
+for each value. This option cannot be used in conjunction with
+`not_policy_name`.
+
+`not_policy_name`, `--not-policy-name`
+:  Limit output to include the policy if its name does not start with the
+specified value. When specifying multiple values on the command line, use
+multiple flags for each value. This option cannot be used in conjunction with
+`policy_name`.
+&#34;&#34;&#34;
+
+import io
+import json
+import re
+
+from botocore.exceptions import ClientError
+
+from awsrun.config import Bool, List, Str
+from awsrun.runner import Command
+
+
+class CLICommand(Command):
+    &#34;&#34;&#34;Display the IAM policies (inline and attached) in an account.&#34;&#34;&#34;
+
+    @classmethod
+    def from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            &#39;--verbose&#39;, &#39;-v&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;include JSON policy body&#39;,
+            default=cfg(&#39;verbose&#39;, type=Bool))
+
+        include_group = parser.add_argument_group(&#39;limit flags&#39;, &#39;Search only these identity and policy types&#39;)
+        include_group.add_argument(
+            &#39;--roles&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;search role policies only&#39;,
+            default=cfg(&#39;roles&#39;, type=Bool))
+        include_group.add_argument(
+            &#39;--users&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;search user policies only&#39;,
+            default=cfg(&#39;users&#39;, type=Bool))
+        include_group.add_argument(
+            &#39;--groups&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;search group policies only&#39;,
+            default=cfg(&#39;groups&#39;, type=Bool))
+        include_group.add_argument(
+            &#39;--inline&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;search inline policies only&#39;,
+            default=cfg(&#39;inline&#39;, type=Bool))
+        include_group.add_argument(
+            &#39;--attached&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;search attached policies only&#39;,
+            default=cfg(&#39;attached&#39;, type=Bool))
+
+        search_group = parser.add_argument_group(&#39;filter flags&#39;, &#39;Search only policies associated with identity name&#39;)
+        search_group.add_argument(
+            &#39;--role-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;role_names&#39;,
+            help=&#39;filter on role name&#39;,
+            default=cfg(&#39;role_name&#39;, type=List(Str), default=[]))
+        search_group.add_argument(
+            &#39;--user-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;user_names&#39;,
+            help=&#39;filter on user name&#39;,
+            default=cfg(&#39;user_name&#39;, type=List(Str), default=[]))
+        search_group.add_argument(
+            &#39;--group-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;group_names&#39;,
+            help=&#39;filter on group name&#39;,
+            default=cfg(&#39;group_name&#39;, type=List(Str), default=[]))
+
+        other_group = parser.add_argument_group(&#39;other filters&#39;, &#39;Search only policies matching these other options&#39;)
+        action_group = other_group.add_mutually_exclusive_group()
+        action_group.add_argument(
+            &#39;--action-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;action_names&#39;,
+            help=&#39;include policy if it contains the action&#39;,
+            default=cfg(&#39;action_name&#39;, type=List(Str), default=[]))
+        action_group.add_argument(
+            &#39;--not-action-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;not_action_names&#39;,
+            help=&#39;include policy if it does not contains the action&#39;,
+            default=cfg(&#39;not_action_name&#39;, type=List(Str), default=[]))
+        policy_group = other_group.add_mutually_exclusive_group()
+        policy_group.add_argument(
+            &#39;--policy-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;policy_names&#39;,
+            help=&#39;include if policy name starts with&#39;,
+            default=cfg(&#39;policy_name&#39;, type=List(Str), default=[]))
+        policy_group.add_argument(
+            &#39;--not-policy-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;not_policy_names&#39;,
+            help=&#39;exclude if policy name starts with&#39;,
+            default=cfg(&#39;not_policy_name&#39;, type=List(Str), default=[]))
+
+        args = parser.parse_args(argv)
+        return cls(**vars(args))
+
+    def __init__(self, verbose, roles, users, groups, inline, attached, role_names, user_names, group_names, action_names, not_action_names, policy_names, not_policy_names):
+        self.verbose = verbose
+
+        # This set of flags is used to include identity and policy types
+        self.include_roles = roles
+        self.include_users = users
+        self.include_groups = groups
+        self.include_inline = inline
+        self.include_attached = attached
+
+        # If neither roles, users, or groups are specified, search all by default
+        if not (roles or users or groups):
+            self.include_roles = True
+            self.include_users = True
+            self.include_groups = True
+
+        # If neither inline or attached are specified, search both by default
+        if not (inline or attached):
+            self.include_inline = True
+            self.include_attached = True
+
+        # This set of flags is used to search on a specific name(s).
+        self.search_roles = role_names
+        self.search_users = user_names
+        self.search_groups = group_names
+        self.search_actions = action_names
+        self.not_search_actions = not_action_names
+        self.search_policies = policy_names
+        self.not_search_policies = not_policy_names
+
+    def execute(self, session, acct):
+        out = io.StringIO()
+        iam = session.resource(&#39;iam&#39;)
+
+        # Will be a dict containing all the policies associated with users,
+        # groups, and roles keyed by the identity type.
+        identities = {}
+
+        if self.include_users:
+            identities[&#39;user&#39;] = get_identities(iam.users, iam.User, self.search_users)
+
+        if self.include_groups:
+            identities[&#39;group&#39;] = get_identities(iam.groups, iam.Group, self.search_groups)
+
+        if self.include_roles:
+            identities[&#39;role&#39;] = get_identities(iam.roles, iam.Role, self.search_roles)
+
+        for i_type in identities:
+            for identity in identities[i_type]:
+                ip = IdentityPrinter(out, f&#39;{acct}: identity={i_type}:{identity.name}&#39;)
+                self.show_inline_policies(identity, ip)
+                self.show_attached_policies(identity, ip)
+
+        return out.getvalue()
+
+    def show_inline_policies(self, identity, ip):
+        &#34;&#34;&#34;Prints the inline policies associated with identity.&#34;&#34;&#34;
+        if not self.include_inline:
+            return
+
+        for inline in identity.policies.all():
+            # We wrap the policy_document in a lambda so boto3 resource is not
+            # fetched unless it is really needed. Although pylint complains
+            # about wrapping the looping var in a lambda, we use the lambda
+            # immediately if needed.
+            if self.should_skip(inline.policy_name, lambda: inline.policy_document):  # pylint: disable=cell-var-from-loop
+                continue
+
+            ip.print(f&#39;policy=inline:{inline.policy_name}&#39;)
+            if self.verbose:
+                ip.print(json.dumps(inline.policy_document, indent=4), prefix=False)
+
+    def show_attached_policies(self, identity, ip):
+        &#34;&#34;&#34;Prints the attached policies associated with identity.&#34;&#34;&#34;
+        if not self.include_attached:
+            return
+
+        for attached in identity.attached_policies.all():
+            # We wrap the default_version.document in a lambda so boto3 resource
+            # is not fetched unless it is really needed.
+            if self.should_skip(attached.policy_name, lambda: attached.default_version.document):  # pylint: disable=cell-var-from-loop
+                continue
+
+            ip.print(f&#39;policy=attached:{attached.policy_name}&#39;)
+            if self.verbose:
+                ip.print(json.dumps(attached.default_version.document, indent=4), prefix=False)
+
+    def should_skip(self, name, get_doc):
+        &#34;&#34;&#34;Returns false if the policy with name and policy document should be
+        skipped.  For efficiency, the get_doc argument should be a function
+        that returns the policy document, so it is only called if needed.&#34;&#34;&#34;
+
+        if self.search_policies and not any(name.startswith(n) for n in self.search_policies):
+            return True
+        if self.not_search_policies and any(name.startswith(n) for n in self.not_search_policies):
+            return True
+
+        # Short-circuit us out of here if we don&#39;t need to search for actions,
+        # which would require downloading the policy document. Recall, boto
+        # loads these things lazily, so if we don&#39;t need to access it, then
+        # don&#39;t load it.
+        if not self.search_actions and not self.not_search_actions:
+            return False
+
+        # Since we now need to search through the actual policy for action
+        # statements, invoke the function passed to actually get the policy.
+        doc = get_doc()
+        if self.search_actions and not has_actions(doc, self.search_actions):
+            return True
+        if self.not_search_actions and has_actions(doc, self.not_search_actions):
+            return True
+
+        return False
+
+
+# ---------------------------------------------------------------------------
+# Helper Classes
+
+# This class is used so I don&#39;t have to pass around a bunch of args to each
+# method just for printing out the standard &#34;acct:&#34; lines. Instead, one instance
+# is instantiated with the prefix, and then this object is passed from method to
+# method.
+#
+# Remember, do not be tempted to store mutable variables from your CLICommand
+# execute method as instance variables. The execute method is NOT thread safe
+# and will be running concurrently with many other threads!
+class IdentityPrinter:
+    &#34;&#34;&#34;Utility class to buffer printing with a prefix.&#34;&#34;&#34;
+    def __init__(self, out, prefix=None):
+        self.out = out
+        self.prefix = prefix
+
+    def print(self, msg, prefix=True):
+        &#34;&#34;&#34;Print msg to buffer, if prefix is True, prepend the prefix.&#34;&#34;&#34;
+        if prefix:
+            print(f&#39;{self.prefix} {msg}&#39;, file=self.out)
+        else:
+            print(msg, file=self.out)
+
+
+# ---------------------------------------------------------------------------
+# Helper Functions
+
+def has_actions(policy_doc, search_actions):
+    &#34;&#34;&#34;Search a policy document, specifically the Action and NotAction blocks
+    for any IAM actions that match the search_actions. Matching does take into
+    account wildcards specified in the policy document. Returns true if the
+    document contains any of the actions in search_actions. Note: this does not
+    take into account whether an action is allowed or denied.&#34;&#34;&#34;
+
+    for statement in make_list(policy_doc[&#39;Statement&#39;]):
+        if &#39;Action&#39; in statement:
+            action_block = statement[&#39;Action&#39;]
+        else:
+            action_block = statement[&#39;NotAction&#39;]
+
+        for action in make_list(action_block):
+            pattern = re.compile(&#39;^&#39; + re.escape(action).replace(&#39;\\*&#39;, &#39;.*&#39;) + &#39;$&#39;)
+            for search_action in search_actions:
+                if pattern.search(search_action):
+                    return True
+    return False
+
+
+def make_list(obj):
+    &#34;&#34;&#34;Returns obj if it is a list, otherwise returns a list of one element
+    containing obj. This is due to AWS&#39;s inconsistent use of JSON arrays.&#34;&#34;&#34;
+
+    if isinstance(obj, list):
+        return obj
+
+    return [obj]
+
+
+def get_identities(collection, subresource, search_names):
+    &#34;&#34;&#34;Return an iterable of IAM identities. If search_names is empty, then all
+    identities from collection are returned. If search_names contains a list of
+    names, a resource is created by calling subresource. The resource is then
+    loaded to ensure it exists. All valid resources are returned.&#34;&#34;&#34;
+
+    if not search_names:
+        return collection.all()
+
+    # For each name being searched, create a resource object
+    identities = [subresource(name) for name in search_names]
+
+    # Resource objects load lazily, so we don&#39;t know if the identities
+    # above are valid or not. Let&#39;s filter out only the valid ones.
+    return filter(identity_exists, identities)
+
+
+def identity_exists(identity):
+    &#34;&#34;&#34;Returns True if the identity exists, otherwise false. As a side
+    effect, the identity&#39;s resources are loaded.&#34;&#34;&#34;
+
+    try:
+        identity.load()
+        return True
+    except ClientError as e:
+        if e.response[&#39;Error&#39;][&#39;Code&#39;] == &#39;NoSuchEntity&#39;:
+            return False
+        raise e</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="awsrun.commands.aws.list_iam_policies.has_actions"><code class="name flex">
+<span>def <span class="ident">has_actions</span></span>(<span>policy_doc, search_actions)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Search a policy document, specifically the Action and NotAction blocks
+for any IAM actions that match the search_actions. Matching does take into
+account wildcards specified in the policy document. Returns true if the
+document contains any of the actions in search_actions. Note: this does not
+take into account whether an action is allowed or denied.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def has_actions(policy_doc, search_actions):
+    &#34;&#34;&#34;Search a policy document, specifically the Action and NotAction blocks
+    for any IAM actions that match the search_actions. Matching does take into
+    account wildcards specified in the policy document. Returns true if the
+    document contains any of the actions in search_actions. Note: this does not
+    take into account whether an action is allowed or denied.&#34;&#34;&#34;
+
+    for statement in make_list(policy_doc[&#39;Statement&#39;]):
+        if &#39;Action&#39; in statement:
+            action_block = statement[&#39;Action&#39;]
+        else:
+            action_block = statement[&#39;NotAction&#39;]
+
+        for action in make_list(action_block):
+            pattern = re.compile(&#39;^&#39; + re.escape(action).replace(&#39;\\*&#39;, &#39;.*&#39;) + &#39;$&#39;)
+            for search_action in search_actions:
+                if pattern.search(search_action):
+                    return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.list_iam_policies.make_list"><code class="name flex">
+<span>def <span class="ident">make_list</span></span>(<span>obj)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns obj if it is a list, otherwise returns a list of one element
+containing obj. This is due to AWS's inconsistent use of JSON arrays.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def make_list(obj):
+    &#34;&#34;&#34;Returns obj if it is a list, otherwise returns a list of one element
+    containing obj. This is due to AWS&#39;s inconsistent use of JSON arrays.&#34;&#34;&#34;
+
+    if isinstance(obj, list):
+        return obj
+
+    return [obj]</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.list_iam_policies.get_identities"><code class="name flex">
+<span>def <span class="ident">get_identities</span></span>(<span>collection, subresource, search_names)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Return an iterable of IAM identities. If search_names is empty, then all
+identities from collection are returned. If search_names contains a list of
+names, a resource is created by calling subresource. The resource is then
+loaded to ensure it exists. All valid resources are returned.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_identities(collection, subresource, search_names):
+    &#34;&#34;&#34;Return an iterable of IAM identities. If search_names is empty, then all
+    identities from collection are returned. If search_names contains a list of
+    names, a resource is created by calling subresource. The resource is then
+    loaded to ensure it exists. All valid resources are returned.&#34;&#34;&#34;
+
+    if not search_names:
+        return collection.all()
+
+    # For each name being searched, create a resource object
+    identities = [subresource(name) for name in search_names]
+
+    # Resource objects load lazily, so we don&#39;t know if the identities
+    # above are valid or not. Let&#39;s filter out only the valid ones.
+    return filter(identity_exists, identities)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.list_iam_policies.identity_exists"><code class="name flex">
+<span>def <span class="ident">identity_exists</span></span>(<span>identity)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns True if the identity exists, otherwise false. As a side
+effect, the identity's resources are loaded.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def identity_exists(identity):
+    &#34;&#34;&#34;Returns True if the identity exists, otherwise false. As a side
+    effect, the identity&#39;s resources are loaded.&#34;&#34;&#34;
+
+    try:
+        identity.load()
+        return True
+    except ClientError as e:
+        if e.response[&#39;Error&#39;][&#39;Code&#39;] == &#39;NoSuchEntity&#39;:
+            return False
+        raise e</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.commands.aws.list_iam_policies.CLICommand"><code class="flex name class">
+<span>class <span class="ident">CLICommand</span></span>
+<span>(</span><span>verbose, roles, users, groups, inline, attached, role_names, user_names, group_names, action_names, not_action_names, policy_names, not_policy_names)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Display the IAM policies (inline and attached) in an account.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CLICommand(Command):
+    &#34;&#34;&#34;Display the IAM policies (inline and attached) in an account.&#34;&#34;&#34;
+
+    @classmethod
+    def from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            &#39;--verbose&#39;, &#39;-v&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;include JSON policy body&#39;,
+            default=cfg(&#39;verbose&#39;, type=Bool))
+
+        include_group = parser.add_argument_group(&#39;limit flags&#39;, &#39;Search only these identity and policy types&#39;)
+        include_group.add_argument(
+            &#39;--roles&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;search role policies only&#39;,
+            default=cfg(&#39;roles&#39;, type=Bool))
+        include_group.add_argument(
+            &#39;--users&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;search user policies only&#39;,
+            default=cfg(&#39;users&#39;, type=Bool))
+        include_group.add_argument(
+            &#39;--groups&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;search group policies only&#39;,
+            default=cfg(&#39;groups&#39;, type=Bool))
+        include_group.add_argument(
+            &#39;--inline&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;search inline policies only&#39;,
+            default=cfg(&#39;inline&#39;, type=Bool))
+        include_group.add_argument(
+            &#39;--attached&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;search attached policies only&#39;,
+            default=cfg(&#39;attached&#39;, type=Bool))
+
+        search_group = parser.add_argument_group(&#39;filter flags&#39;, &#39;Search only policies associated with identity name&#39;)
+        search_group.add_argument(
+            &#39;--role-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;role_names&#39;,
+            help=&#39;filter on role name&#39;,
+            default=cfg(&#39;role_name&#39;, type=List(Str), default=[]))
+        search_group.add_argument(
+            &#39;--user-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;user_names&#39;,
+            help=&#39;filter on user name&#39;,
+            default=cfg(&#39;user_name&#39;, type=List(Str), default=[]))
+        search_group.add_argument(
+            &#39;--group-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;group_names&#39;,
+            help=&#39;filter on group name&#39;,
+            default=cfg(&#39;group_name&#39;, type=List(Str), default=[]))
+
+        other_group = parser.add_argument_group(&#39;other filters&#39;, &#39;Search only policies matching these other options&#39;)
+        action_group = other_group.add_mutually_exclusive_group()
+        action_group.add_argument(
+            &#39;--action-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;action_names&#39;,
+            help=&#39;include policy if it contains the action&#39;,
+            default=cfg(&#39;action_name&#39;, type=List(Str), default=[]))
+        action_group.add_argument(
+            &#39;--not-action-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;not_action_names&#39;,
+            help=&#39;include policy if it does not contains the action&#39;,
+            default=cfg(&#39;not_action_name&#39;, type=List(Str), default=[]))
+        policy_group = other_group.add_mutually_exclusive_group()
+        policy_group.add_argument(
+            &#39;--policy-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;policy_names&#39;,
+            help=&#39;include if policy name starts with&#39;,
+            default=cfg(&#39;policy_name&#39;, type=List(Str), default=[]))
+        policy_group.add_argument(
+            &#39;--not-policy-name&#39;,
+            metavar=&#39;NAME&#39;,
+            action=&#39;append&#39;,
+            dest=&#39;not_policy_names&#39;,
+            help=&#39;exclude if policy name starts with&#39;,
+            default=cfg(&#39;not_policy_name&#39;, type=List(Str), default=[]))
+
+        args = parser.parse_args(argv)
+        return cls(**vars(args))
+
+    def __init__(self, verbose, roles, users, groups, inline, attached, role_names, user_names, group_names, action_names, not_action_names, policy_names, not_policy_names):
+        self.verbose = verbose
+
+        # This set of flags is used to include identity and policy types
+        self.include_roles = roles
+        self.include_users = users
+        self.include_groups = groups
+        self.include_inline = inline
+        self.include_attached = attached
+
+        # If neither roles, users, or groups are specified, search all by default
+        if not (roles or users or groups):
+            self.include_roles = True
+            self.include_users = True
+            self.include_groups = True
+
+        # If neither inline or attached are specified, search both by default
+        if not (inline or attached):
+            self.include_inline = True
+            self.include_attached = True
+
+        # This set of flags is used to search on a specific name(s).
+        self.search_roles = role_names
+        self.search_users = user_names
+        self.search_groups = group_names
+        self.search_actions = action_names
+        self.not_search_actions = not_action_names
+        self.search_policies = policy_names
+        self.not_search_policies = not_policy_names
+
+    def execute(self, session, acct):
+        out = io.StringIO()
+        iam = session.resource(&#39;iam&#39;)
+
+        # Will be a dict containing all the policies associated with users,
+        # groups, and roles keyed by the identity type.
+        identities = {}
+
+        if self.include_users:
+            identities[&#39;user&#39;] = get_identities(iam.users, iam.User, self.search_users)
+
+        if self.include_groups:
+            identities[&#39;group&#39;] = get_identities(iam.groups, iam.Group, self.search_groups)
+
+        if self.include_roles:
+            identities[&#39;role&#39;] = get_identities(iam.roles, iam.Role, self.search_roles)
+
+        for i_type in identities:
+            for identity in identities[i_type]:
+                ip = IdentityPrinter(out, f&#39;{acct}: identity={i_type}:{identity.name}&#39;)
+                self.show_inline_policies(identity, ip)
+                self.show_attached_policies(identity, ip)
+
+        return out.getvalue()
+
+    def show_inline_policies(self, identity, ip):
+        &#34;&#34;&#34;Prints the inline policies associated with identity.&#34;&#34;&#34;
+        if not self.include_inline:
+            return
+
+        for inline in identity.policies.all():
+            # We wrap the policy_document in a lambda so boto3 resource is not
+            # fetched unless it is really needed. Although pylint complains
+            # about wrapping the looping var in a lambda, we use the lambda
+            # immediately if needed.
+            if self.should_skip(inline.policy_name, lambda: inline.policy_document):  # pylint: disable=cell-var-from-loop
+                continue
+
+            ip.print(f&#39;policy=inline:{inline.policy_name}&#39;)
+            if self.verbose:
+                ip.print(json.dumps(inline.policy_document, indent=4), prefix=False)
+
+    def show_attached_policies(self, identity, ip):
+        &#34;&#34;&#34;Prints the attached policies associated with identity.&#34;&#34;&#34;
+        if not self.include_attached:
+            return
+
+        for attached in identity.attached_policies.all():
+            # We wrap the default_version.document in a lambda so boto3 resource
+            # is not fetched unless it is really needed.
+            if self.should_skip(attached.policy_name, lambda: attached.default_version.document):  # pylint: disable=cell-var-from-loop
+                continue
+
+            ip.print(f&#39;policy=attached:{attached.policy_name}&#39;)
+            if self.verbose:
+                ip.print(json.dumps(attached.default_version.document, indent=4), prefix=False)
+
+    def should_skip(self, name, get_doc):
+        &#34;&#34;&#34;Returns false if the policy with name and policy document should be
+        skipped.  For efficiency, the get_doc argument should be a function
+        that returns the policy document, so it is only called if needed.&#34;&#34;&#34;
+
+        if self.search_policies and not any(name.startswith(n) for n in self.search_policies):
+            return True
+        if self.not_search_policies and any(name.startswith(n) for n in self.not_search_policies):
+            return True
+
+        # Short-circuit us out of here if we don&#39;t need to search for actions,
+        # which would require downloading the policy document. Recall, boto
+        # loads these things lazily, so if we don&#39;t need to access it, then
+        # don&#39;t load it.
+        if not self.search_actions and not self.not_search_actions:
+            return False
+
+        # Since we now need to search through the actual policy for action
+        # statements, invoke the function passed to actually get the policy.
+        doc = get_doc()
+        if self.search_actions and not has_actions(doc, self.search_actions):
+            return True
+        if self.not_search_actions and has_actions(doc, self.not_search_actions):
+            return True
+
+        return False</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.list_iam_policies.CLICommand.show_inline_policies"><code class="name flex">
+<span>def <span class="ident">show_inline_policies</span></span>(<span>self, identity, ip)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Prints the inline policies associated with identity.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_inline_policies(self, identity, ip):
+    &#34;&#34;&#34;Prints the inline policies associated with identity.&#34;&#34;&#34;
+    if not self.include_inline:
+        return
+
+    for inline in identity.policies.all():
+        # We wrap the policy_document in a lambda so boto3 resource is not
+        # fetched unless it is really needed. Although pylint complains
+        # about wrapping the looping var in a lambda, we use the lambda
+        # immediately if needed.
+        if self.should_skip(inline.policy_name, lambda: inline.policy_document):  # pylint: disable=cell-var-from-loop
+            continue
+
+        ip.print(f&#39;policy=inline:{inline.policy_name}&#39;)
+        if self.verbose:
+            ip.print(json.dumps(inline.policy_document, indent=4), prefix=False)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.list_iam_policies.CLICommand.show_attached_policies"><code class="name flex">
+<span>def <span class="ident">show_attached_policies</span></span>(<span>self, identity, ip)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Prints the attached policies associated with identity.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_attached_policies(self, identity, ip):
+    &#34;&#34;&#34;Prints the attached policies associated with identity.&#34;&#34;&#34;
+    if not self.include_attached:
+        return
+
+    for attached in identity.attached_policies.all():
+        # We wrap the default_version.document in a lambda so boto3 resource
+        # is not fetched unless it is really needed.
+        if self.should_skip(attached.policy_name, lambda: attached.default_version.document):  # pylint: disable=cell-var-from-loop
+            continue
+
+        ip.print(f&#39;policy=attached:{attached.policy_name}&#39;)
+        if self.verbose:
+            ip.print(json.dumps(attached.default_version.document, indent=4), prefix=False)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.list_iam_policies.CLICommand.should_skip"><code class="name flex">
+<span>def <span class="ident">should_skip</span></span>(<span>self, name, get_doc)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns false if the policy with name and policy document should be
+skipped.
+For efficiency, the get_doc argument should be a function
+that returns the policy document, so it is only called if needed.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def should_skip(self, name, get_doc):
+    &#34;&#34;&#34;Returns false if the policy with name and policy document should be
+    skipped.  For efficiency, the get_doc argument should be a function
+    that returns the policy document, so it is only called if needed.&#34;&#34;&#34;
+
+    if self.search_policies and not any(name.startswith(n) for n in self.search_policies):
+        return True
+    if self.not_search_policies and any(name.startswith(n) for n in self.not_search_policies):
+        return True
+
+    # Short-circuit us out of here if we don&#39;t need to search for actions,
+    # which would require downloading the policy document. Recall, boto
+    # loads these things lazily, so if we don&#39;t need to access it, then
+    # don&#39;t load it.
+    if not self.search_actions and not self.not_search_actions:
+        return False
+
+    # Since we now need to search through the actual policy for action
+    # statements, invoke the function passed to actually get the policy.
+    doc = get_doc()
+    if self.search_actions and not has_actions(doc, self.search_actions):
+        return True
+    if self.not_search_actions and has_actions(doc, self.not_search_actions):
+        return True
+
+    return False</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.Command.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.Command.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.Command.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.Command.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.commands.aws.list_iam_policies.IdentityPrinter"><code class="flex name class">
+<span>class <span class="ident">IdentityPrinter</span></span>
+<span>(</span><span>out, prefix=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Utility class to buffer printing with a prefix.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IdentityPrinter:
+    &#34;&#34;&#34;Utility class to buffer printing with a prefix.&#34;&#34;&#34;
+    def __init__(self, out, prefix=None):
+        self.out = out
+        self.prefix = prefix
+
+    def print(self, msg, prefix=True):
+        &#34;&#34;&#34;Print msg to buffer, if prefix is True, prepend the prefix.&#34;&#34;&#34;
+        if prefix:
+            print(f&#39;{self.prefix} {msg}&#39;, file=self.out)
+        else:
+            print(msg, file=self.out)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.list_iam_policies.IdentityPrinter.print"><code class="name flex">
+<span>def <span class="ident">print</span></span>(<span>self, msg, prefix=True)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Print msg to buffer, if prefix is True, prepend the prefix.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def print(self, msg, prefix=True):
+    &#34;&#34;&#34;Print msg to buffer, if prefix is True, prepend the prefix.&#34;&#34;&#34;
+    if prefix:
+        print(f&#39;{self.prefix} {msg}&#39;, file=self.out)
+    else:
+        print(msg, file=self.out)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#reference">Reference</a><ul>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#command-options">Command Options</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun.commands.aws" href="index.html">awsrun.commands.aws</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.list_iam_policies.has_actions" href="#awsrun.commands.aws.list_iam_policies.has_actions">has_actions</a></code></li>
+<li><code><a title="awsrun.commands.aws.list_iam_policies.make_list" href="#awsrun.commands.aws.list_iam_policies.make_list">make_list</a></code></li>
+<li><code><a title="awsrun.commands.aws.list_iam_policies.get_identities" href="#awsrun.commands.aws.list_iam_policies.get_identities">get_identities</a></code></li>
+<li><code><a title="awsrun.commands.aws.list_iam_policies.identity_exists" href="#awsrun.commands.aws.list_iam_policies.identity_exists">identity_exists</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.commands.aws.list_iam_policies.CLICommand" href="#awsrun.commands.aws.list_iam_policies.CLICommand">CLICommand</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.list_iam_policies.CLICommand.show_inline_policies" href="#awsrun.commands.aws.list_iam_policies.CLICommand.show_inline_policies">show_inline_policies</a></code></li>
+<li><code><a title="awsrun.commands.aws.list_iam_policies.CLICommand.show_attached_policies" href="#awsrun.commands.aws.list_iam_policies.CLICommand.show_attached_policies">show_attached_policies</a></code></li>
+<li><code><a title="awsrun.commands.aws.list_iam_policies.CLICommand.should_skip" href="#awsrun.commands.aws.list_iam_policies.CLICommand.should_skip">should_skip</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.list_iam_policies.IdentityPrinter" href="#awsrun.commands.aws.list_iam_policies.IdentityPrinter">IdentityPrinter</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.list_iam_policies.IdentityPrinter.print" href="#awsrun.commands.aws.list_iam_policies.IdentityPrinter.print">print</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

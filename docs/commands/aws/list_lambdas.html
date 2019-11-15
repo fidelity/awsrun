@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.1" />
+<title>awsrun.commands.aws.list_lambdas API documentation</title>
+<meta name="description" content="Display the Lambda functions deployed within an account …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<style>
+body {
+/* Probably too small for most ...
+font-size: .9em;
+*/
+}
+code {
+font-size: .9em;
+}
+pre code {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.commands.aws.list_lambdas</code></h1>
+</header>
+<section id="section-intro">
+<p>Display the Lambda functions deployed within an account.</p>
+<h2 id="overview">Overview</h2>
+<p>The list_lambdas command displays the name of the Lambda function, the role the
+function assumes, and whether or not the Lambda is a public function. A public
+function is one that is not bound to a VPC and thus has direct access to the
+Internet. For example:</p>
+<pre><code>$ awsrun --account 100200300400 list_lambdas --region us-east-1
+100200300400/us-east-1: name=event_transmitter runtime=python3.6 role=arn:aws:iam::100200300400:role/logger public=False
+100200300400/us-east-1: name=event_collector role=arn:aws:iam::100200300400:role/logger public=True
+</code></pre>
+<p>The <code>--summary</code> flag will summarize by the IAM role associated with the Lambda
+function. For example:</p>
+<pre><code>$ awsrun --account 100200300400 list_lambdas --region us-east-1 --summary
+100200300400/us-east-1: role=arn:aws:iam::100200300400:role/logger total=2 private=1 public=1
+</code></pre>
+<h2 id="reference">Reference</h2>
+<h3 id="synopsis">Synopsis</h3>
+<pre><code>$ awsrun [options] list_lambdas [command options]
+</code></pre>
+<h3 id="configuration">Configuration</h3>
+<p>The following is the syntax for the options that can be specified in the user
+configuration file:</p>
+<pre><code>Commands:
+  list_lambdas:
+    summary: BOOLEAN
+    region:
+      - STRING
+</code></pre>
+<h3 id="command-options">Command Options</h3>
+<p>Some options can be overridden on the awsrun CLI via command line flags. In
+those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>summary</code>, <code>--summary</code></dt>
+<dd>Print only a summary of Lambda functions per execution role.</dd>
+<dt><code>region</code>, <code>--region</code></dt>
+<dd>Run the AWS CLI command in the specified regions. When specifying multiple
+values on the command line, use multiple flags for each value.</dd>
+</dl>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;
+Display the Lambda functions deployed within an account.
+
+## Overview
+
+The list_lambdas command displays the name of the Lambda function, the role the
+function assumes, and whether or not the Lambda is a public function. A public
+function is one that is not bound to a VPC and thus has direct access to the
+Internet. For example:
+
+    $ awsrun --account 100200300400 list_lambdas --region us-east-1
+    100200300400/us-east-1: name=event_transmitter runtime=python3.6 role=arn:aws:iam::100200300400:role/logger public=False
+    100200300400/us-east-1: name=event_collector role=arn:aws:iam::100200300400:role/logger public=True
+
+The `--summary` flag will summarize by the IAM role associated with the Lambda
+function. For example:
+
+    $ awsrun --account 100200300400 list_lambdas --region us-east-1 --summary
+    100200300400/us-east-1: role=arn:aws:iam::100200300400:role/logger total=2 private=1 public=1
+
+## Reference
+
+### Synopsis
+
+    $ awsrun [options] list_lambdas [command options]
+
+### Configuration
+
+The following is the syntax for the options that can be specified in the user
+configuration file:
+
+    Commands:
+      list_lambdas:
+        summary: BOOLEAN
+        region:
+          - STRING
+
+### Command Options
+
+Some options can be overridden on the awsrun CLI via command line flags. In
+those cases, the CLI flags are specified next to the option name below:
+
+`summary`, `--summary`
+:  Print only a summary of Lambda functions per execution role.
+
+`region`, `--region`
+:  Run the AWS CLI command in the specified regions. When specifying multiple
+values on the command line, use multiple flags for each value.
+&#34;&#34;&#34;
+
+import io
+from collections import defaultdict
+
+from awsrun.config import Bool
+from awsrun.runner import RegionalCommand
+
+
+class CLICommand(RegionalCommand):
+    &#34;&#34;&#34;Display Lambda functions deployed in accounts.&#34;&#34;&#34;
+
+    @classmethod
+    def regional_from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            &#39;--summary&#39;, &#39;-s&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;display summary by role&#39;,
+            default=cfg(&#39;summary&#39;, type=Bool))
+
+        args = parser.parse_args(argv)
+        return cls(**vars(args))
+
+    def __init__(self, regions, summary):
+        super().__init__(regions)
+        self.show_summary_only = summary
+
+    def regional_execute(self, session, acct, region):
+        out = io.StringIO()
+        by_role = defaultdict(list)
+
+        aws_lambda = session.client(&#39;lambda&#39;, region_name=region)
+        paginator = aws_lambda.get_paginator(&#39;list_functions&#39;)
+
+        for fn_page in paginator.paginate():
+            for fn in fn_page[&#39;Functions&#39;]:
+                if self.show_summary_only:
+                    by_role[fn[&#39;Role&#39;]].append(fn)
+                    continue
+                print(f&#39;{acct}/{region}: name={fn[&#34;FunctionName&#34;]} runtime={fn[&#34;Runtime&#34;]} role={fn[&#34;Role&#34;]} public={_is_public(fn)}&#39;, file=out)
+
+        if self.show_summary_only:
+            for role in by_role:
+                total = len(by_role[role])
+                public = len([fn for fn in by_role[role] if _is_public(fn)])
+                print(f&#39;{acct}/{region}: role={role} total={total} private={total-public} public={public}&#39;, file=out)
+
+        return out.getvalue()
+
+
+def _is_public(fn):
+    if &#39;VpcConfig&#39; not in fn:
+        return True
+    return len(fn[&#39;VpcConfig&#39;][&#39;SubnetIds&#39;]) == 0</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.commands.aws.list_lambdas.CLICommand"><code class="flex name class">
+<span>class <span class="ident">CLICommand</span></span>
+<span>(</span><span>regions, summary)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Display Lambda functions deployed in accounts.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CLICommand(RegionalCommand):
+    &#34;&#34;&#34;Display Lambda functions deployed in accounts.&#34;&#34;&#34;
+
+    @classmethod
+    def regional_from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            &#39;--summary&#39;, &#39;-s&#39;,
+            action=&#39;store_true&#39;,
+            help=&#39;display summary by role&#39;,
+            default=cfg(&#39;summary&#39;, type=Bool))
+
+        args = parser.parse_args(argv)
+        return cls(**vars(args))
+
+    def __init__(self, regions, summary):
+        super().__init__(regions)
+        self.show_summary_only = summary
+
+    def regional_execute(self, session, acct, region):
+        out = io.StringIO()
+        by_role = defaultdict(list)
+
+        aws_lambda = session.client(&#39;lambda&#39;, region_name=region)
+        paginator = aws_lambda.get_paginator(&#39;list_functions&#39;)
+
+        for fn_page in paginator.paginate():
+            for fn in fn_page[&#39;Functions&#39;]:
+                if self.show_summary_only:
+                    by_role[fn[&#39;Role&#39;]].append(fn)
+                    continue
+                print(f&#39;{acct}/{region}: name={fn[&#34;FunctionName&#34;]} runtime={fn[&#34;Runtime&#34;]} role={fn[&#34;Role&#34;]} public={_is_public(fn)}&#39;, file=out)
+
+        if self.show_summary_only:
+            for role in by_role:
+                total = len(by_role[role])
+                public = len([fn for fn in by_role[role] if _is_public(fn)])
+                print(f&#39;{acct}/{region}: role={role} total={total} private={total-public} public={public}&#39;, file=out)
+
+        return out.getvalue()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></li>
+<li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.RegionalCommand.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="../../runner.html#awsrun.runner.RegionalCommand.regional_collect_results">regional_collect_results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_execute" href="../../runner.html#awsrun.runner.RegionalCommand.regional_execute">regional_execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_from_cli" href="../../runner.html#awsrun.runner.RegionalCommand.regional_from_cli">regional_from_cli</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#reference">Reference</a><ul>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#command-options">Command Options</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun.commands.aws" href="index.html">awsrun.commands.aws</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.commands.aws.list_lambdas.CLICommand" href="#awsrun.commands.aws.list_lambdas.CLICommand">CLICommand</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
