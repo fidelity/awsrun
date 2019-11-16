@@ -116,3 +116,17 @@ includes the following:
   loader plug-in and credential plug-in if the included ones are not suitable to your
   environment.
   
+## Change Log
+
+### v2.1.0
+
+* Add a YAML account loader plug-in to complement the CSV and JSON account
+  loader plug-ins.
+* Minor clarification in user guide about the interaction between `--accounts` and
+  metadata filters (`--include`/`--exclude`).
+
+### v2.0.0
+
+* Initial open source release of awsrun from Fidelity's CloudX Network team. This
+  version abstracts the Fidelity specific integrations into plug-ins, so others
+  can take advantage of this tool, which has proven to be valuable for our teams.
