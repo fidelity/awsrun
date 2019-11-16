@@ -189,8 +189,8 @@ class Plugin:
     CLI flags are added to their own argument group, which is used by `argparse`
     when displaying help to the user:
 
-        group = parser.add_argument_group(&#39;JSON account loader options&#39;)
-        group.add_argument(&#39;--loader-url&#39;, metavar=&#39;URL&#39;, help=&#39;URL to JSON data&#39;)
+        group = parser.add_argument_group(&#39;account loader options&#39;)
+        group.add_argument(&#39;--loader-url&#39;, metavar=&#39;URL&#39;, help=&#39;URL to account data&#39;)
 
     If new CLI arguments are defined on the `parser`, it is highly recommended
     that they are prefixed with a name that will not conflict with the main
@@ -536,8 +536,8 @@ responsible for managing the state of CLI argument processing.</p>
 define additional flags on the main awsrun CLI. It is suggested that plug-in
 CLI flags are added to their own argument group, which is used by <code>argparse</code>
 when displaying help to the user:</p>
-<pre><code>group = parser.add_argument_group('JSON account loader options')
-group.add_argument('--loader-url', metavar='URL', help='URL to JSON data')
+<pre><code>group = parser.add_argument_group('account loader options')
+group.add_argument('--loader-url', metavar='URL', help='URL to account data')
 </code></pre>
 <p>If new CLI arguments are defined on the <code>parser</code>, it is highly recommended
 that they are prefixed with a name that will not conflict with the main
@@ -600,8 +600,8 @@ register new CLI arguments and invoke the superclass's constructor.</p></section
     CLI flags are added to their own argument group, which is used by `argparse`
     when displaying help to the user:
 
-        group = parser.add_argument_group(&#39;JSON account loader options&#39;)
-        group.add_argument(&#39;--loader-url&#39;, metavar=&#39;URL&#39;, help=&#39;URL to JSON data&#39;)
+        group = parser.add_argument_group(&#39;account loader options&#39;)
+        group.add_argument(&#39;--loader-url&#39;, metavar=&#39;URL&#39;, help=&#39;URL to account data&#39;)
 
     If new CLI arguments are defined on the `parser`, it is highly recommended
     that they are prefixed with a name that will not conflict with the main
@@ -676,7 +676,7 @@ register new CLI arguments and invoke the superclass's constructor.</p></section
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity">Identity</a></li>
-<li><a title="awsrun.plugins.accts.JSON" href="plugins/accts.html#awsrun.plugins.accts.JSON">JSON</a></li>
+<li>awsrun.plugins.accts._CachingLoaderPlugin</li>
 <li><a title="awsrun.plugins.creds.aws.Profile" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.Profile">Profile</a></li>
 <li><a title="awsrun.plugins.creds.aws.SAML" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAML">SAML</a></li>
 <li>awsrun.plugins.creds.aws.AbstractCrossAccount</li>

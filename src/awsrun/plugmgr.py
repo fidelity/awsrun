@@ -94,8 +94,8 @@ class Plugin:
     CLI flags are added to their own argument group, which is used by `argparse`
     when displaying help to the user:
 
-        group = parser.add_argument_group('JSON account loader options')
-        group.add_argument('--loader-url', metavar='URL', help='URL to JSON data')
+        group = parser.add_argument_group('account loader options')
+        group.add_argument('--loader-url', metavar='URL', help='URL to account data')
 
     If new CLI arguments are defined on the `parser`, it is highly recommended
     that they are prefixed with a name that will not conflict with the main

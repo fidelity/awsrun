@@ -43,17 +43,17 @@ command across this list of accounts. Each account object is made available to
 the <a title="awsrun.runner.Command.execute" href="runner.html#awsrun.runner.Command.execute"><code>Command.execute()</code></a> method allowing users to pass whatever
 objects and metadata they choose to their commands.</p>
 <p>Several concrete implementations of the <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> abstract base class are
-provided by this module: <a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader"><code>IdentityAccountLoader</code></a>, <a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader"><code>CSVAccountLoader</code></a>, and
-<a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader"><code>JSONAccountLoader</code></a>. These loaders are used by the <a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> to obtain the
-list of accounts and to filter those accounts by metadata attributes specified
-on the command line. The CLI instantiates a loader by calling the the plug-ins
-defined in <a title="awsrun.plugins.accts" href="plugins/accts.html"><code>awsrun.plugins.accts</code></a>.</p>
+provided by this module: <a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader"><code>IdentityAccountLoader</code></a>, <a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader"><code>CSVAccountLoader</code></a>,
+<a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader"><code>JSONAccountLoader</code></a>, and <a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader"><code>YAMLAccountLoader</code></a>. These loaders are used by the
+<a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> to obtain the list of accounts and to filter those accounts by
+metadata attributes specified on the command line. The CLI instantiates a loader
+by calling the the plug-ins defined in <a title="awsrun.plugins.accts" href="plugins/accts.html"><code>awsrun.plugins.accts</code></a>.</p>
 <p>The <a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader"><code>IdentityAccountLoader</code></a> is intended for use when no additional metadata is
 to be associated with accounts. It simply returns account objects that are
 strings of account IDs. <a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader"><code>CSVAccountLoader</code></a> loads accounts and metadata from CSVs
-while <a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader"><code>JSONAccountLoader</code></a> does so via JSON. Data is loaded from URLs and support
-file-based URLs for local data. Both the CSV and JSON loaders are subclasses of
-<a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>.</p>
+while <a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader"><code>JSONAccountLoader</code></a> and <a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader"><code>YAMLAccountLoader</code></a> do so via JSON and YAML
+respectively. Data is loaded from URLs and support file-based URLs for local
+data. The CSV, JSON, and YAML loaders are subclasses of <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>.</p>
 <p>The <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> provides a convenient object wrapper to an account and
 its metadata which is made available via attributes on the object. Users can
 utilize this loader to build their own loaders to pull data from databases or
@@ -89,18 +89,18 @@ the `awsrun.runner.Command.execute` method allowing users to pass whatever
 objects and metadata they choose to their commands.
 
 Several concrete implementations of the `AccountLoader` abstract base class are
-provided by this module: `IdentityAccountLoader`, `CSVAccountLoader`, and
-`JSONAccountLoader`. These loaders are used by the `awsrun.cli` to obtain the
-list of accounts and to filter those accounts by metadata attributes specified
-on the command line. The CLI instantiates a loader by calling the the plug-ins
-defined in `awsrun.plugins.accts`.
+provided by this module: `IdentityAccountLoader`, `CSVAccountLoader`,
+`JSONAccountLoader`, and `YAMLAccountLoader`. These loaders are used by the
+`awsrun.cli` to obtain the list of accounts and to filter those accounts by
+metadata attributes specified on the command line. The CLI instantiates a loader
+by calling the the plug-ins defined in `awsrun.plugins.accts`.
 
 The `IdentityAccountLoader` is intended for use when no additional metadata is
 to be associated with accounts. It simply returns account objects that are
 strings of account IDs. `CSVAccountLoader` loads accounts and metadata from CSVs
-while `JSONAccountLoader` does so via JSON. Data is loaded from URLs and support
-file-based URLs for local data. Both the CSV and JSON loaders are subclasses of
-`MetaAccountLoader`.
+while `JSONAccountLoader` and `YAMLAccountLoader` do so via JSON and YAML
+respectively. Data is loaded from URLs and support file-based URLs for local
+data. The CSV, JSON, and YAML loaders are subclasses of `MetaAccountLoader`.
 
 The `MetaAccountLoader` provides a convenient object wrapper to an account and
 its metadata which is made available via attributes on the object. Users can
@@ -129,6 +129,7 @@ from functools import reduce
 from pathlib import Path
 
 import requests
+import yaml
 from requests_file import FileAdapter
 
 from awsrun.cache import PersistentExpiringValue
@@ -777,7 +778,69 @@ class JSONAccountLoader(MetaAccountLoader):
             exclude_attrs=exclude_attrs)
 
 
-class AbstractAccount:  #pylint: disable=single-string-used-for-slots
+class YAMLAccountLoader(MetaAccountLoader):
+    &#34;&#34;&#34;Returns an `AccountLoader` with accounts loaded from YAML.
+
+    Loaded accounts will include metadata associated with each account in the
+    YAML document retrieved from the `url`. File based URLs can be used to load
+    data from a local file. To cache the YAML results, specify the number of
+    seconds via `max_age`. By default, the data is not cached. Given the
+    following YAML:
+
+          Accounts:
+            - id: &#39;100200300400&#39;
+              env: prod
+              status: active
+            - id: &#39;200300400100&#39;
+              env: non-prod
+              status: active
+            - id: &#39;300400100200&#39;
+              env: non-prod
+              status: suspended
+
+    The account loader will build account objects with the following attribute
+    names: `id`, `env`, `status`. Assume the above YAML is returned from
+    http://example.com/accts.yaml:
+
+        loader = YAMLAccountLoader(&#39;http://example.com/accts.yaml&#39;, path=[&#39;Accounts&#39;])
+        accts = loader.accounts()
+
+        # Let&#39;s inspect the 1st account object and its metadata
+        assert accts[0].id == &#39;100200300400&#39;
+        assert accts[0].env == &#39;prod&#39;
+        assert accts[0].status == &#39;active&#39;
+
+    YAMLAccountLoader is a subclass of the `MetaAccountLoader`, which loads
+    accounts from a set of dicts. As such, the remainder of the parameters in
+    the constructor -- `id_attr`, `path`, `str_template`, `include_attrs`, and
+    `exclude_attrs` -- are defined in the constructor of `MetaAccountLoader`.
+    &#34;&#34;&#34;
+    def __init__(self, url, max_age=0, id_attr=&#39;id&#39;, path=None, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False):
+        path = [] if path is None else path
+        include_attrs = [] if include_attrs is None else include_attrs
+        exclude_attrs = [] if exclude_attrs is None else exclude_attrs
+
+        session = requests.Session()
+        session.mount(&#39;file://&#39;, FileAdapter())
+
+        def load_cache():
+            r = session.get(url, verify=not no_verify)
+            r.raise_for_status()
+            return yaml.safe_load(r.text)
+
+        cache_file = Path(tempfile.gettempdir(), &#39;awsrun.dat&#39;)
+        accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
+
+        super().__init__(
+            accts.value(),
+            id_attr=id_attr,
+            path=path,
+            str_template=str_template,
+            include_attrs=include_attrs,
+            exclude_attrs=exclude_attrs)
+
+
+class AbstractAccount:  # pylint: disable=single-string-used-for-slots
     &#34;&#34;&#34;Abstract base class used by `MetaAccountLoader` to represent an account and its metadata.
 
     This class is dynamically subclassed by the account loader to create a
@@ -1737,6 +1800,7 @@ names. In addition, all of the attributes referenced in <code>str_template</code
 <ul class="hlist">
 <li><a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader">CSVAccountLoader</a></li>
 <li><a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader">JSONAccountLoader</a></li>
+<li><a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader">YAMLAccountLoader</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -2164,6 +2228,124 @@ the constructor &ndash; <code>id_attr</code>, <code>path</code>, <code>str_templ
 </li>
 </ul>
 </dd>
+<dt id="awsrun.acctload.YAMLAccountLoader"><code class="flex name class">
+<span>class <span class="ident">YAMLAccountLoader</span></span>
+<span>(</span><span>url, max_age=0, id_attr='id', path=None, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns an <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> with accounts loaded from YAML.</p>
+<p>Loaded accounts will include metadata associated with each account in the
+YAML document retrieved from the <code>url</code>. File based URLs can be used to load
+data from a local file. To cache the YAML results, specify the number of
+seconds via <code>max_age</code>. By default, the data is not cached. Given the
+following YAML:</p>
+<pre><code>  Accounts:
+    - id: '100200300400'
+      env: prod
+      status: active
+    - id: '200300400100'
+      env: non-prod
+      status: active
+    - id: '300400100200'
+      env: non-prod
+      status: suspended
+</code></pre>
+<p>The account loader will build account objects with the following attribute
+names: <code>id</code>, <code>env</code>, <code>status</code>. Assume the above YAML is returned from
+<a href="http://example.com/accts.yaml:">http://example.com/accts.yaml:</a></p>
+<pre><code>loader = YAMLAccountLoader('http://example.com/accts.yaml', path=['Accounts'])
+accts = loader.accounts()
+
+# Let's inspect the 1st account object and its metadata
+assert accts[0].id == '100200300400'
+assert accts[0].env == 'prod'
+assert accts[0].status == 'active'
+</code></pre>
+<p>YAMLAccountLoader is a subclass of the <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>, which loads
+accounts from a set of dicts. As such, the remainder of the parameters in
+the constructor &ndash; <code>id_attr</code>, <code>path</code>, <code>str_template</code>, <code>include_attrs</code>, and
+<code>exclude_attrs</code> &ndash; are defined in the constructor of <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class YAMLAccountLoader(MetaAccountLoader):
+    &#34;&#34;&#34;Returns an `AccountLoader` with accounts loaded from YAML.
+
+    Loaded accounts will include metadata associated with each account in the
+    YAML document retrieved from the `url`. File based URLs can be used to load
+    data from a local file. To cache the YAML results, specify the number of
+    seconds via `max_age`. By default, the data is not cached. Given the
+    following YAML:
+
+          Accounts:
+            - id: &#39;100200300400&#39;
+              env: prod
+              status: active
+            - id: &#39;200300400100&#39;
+              env: non-prod
+              status: active
+            - id: &#39;300400100200&#39;
+              env: non-prod
+              status: suspended
+
+    The account loader will build account objects with the following attribute
+    names: `id`, `env`, `status`. Assume the above YAML is returned from
+    http://example.com/accts.yaml:
+
+        loader = YAMLAccountLoader(&#39;http://example.com/accts.yaml&#39;, path=[&#39;Accounts&#39;])
+        accts = loader.accounts()
+
+        # Let&#39;s inspect the 1st account object and its metadata
+        assert accts[0].id == &#39;100200300400&#39;
+        assert accts[0].env == &#39;prod&#39;
+        assert accts[0].status == &#39;active&#39;
+
+    YAMLAccountLoader is a subclass of the `MetaAccountLoader`, which loads
+    accounts from a set of dicts. As such, the remainder of the parameters in
+    the constructor -- `id_attr`, `path`, `str_template`, `include_attrs`, and
+    `exclude_attrs` -- are defined in the constructor of `MetaAccountLoader`.
+    &#34;&#34;&#34;
+    def __init__(self, url, max_age=0, id_attr=&#39;id&#39;, path=None, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False):
+        path = [] if path is None else path
+        include_attrs = [] if include_attrs is None else include_attrs
+        exclude_attrs = [] if exclude_attrs is None else exclude_attrs
+
+        session = requests.Session()
+        session.mount(&#39;file://&#39;, FileAdapter())
+
+        def load_cache():
+            r = session.get(url, verify=not no_verify)
+            r.raise_for_status()
+            return yaml.safe_load(r.text)
+
+        cache_file = Path(tempfile.gettempdir(), &#39;awsrun.dat&#39;)
+        accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
+
+        super().__init__(
+            accts.value(),
+            id_attr=id_attr,
+            path=path,
+            str_template=str_template,
+            include_attrs=include_attrs,
+            exclude_attrs=exclude_attrs)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></li>
+<li><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.acctload.MetaAccountLoader.accounts" href="#awsrun.acctload.MetaAccountLoader.accounts">accounts</a></code></li>
+<li><code><a title="awsrun.acctload.MetaAccountLoader.acct_id" href="#awsrun.acctload.MetaAccountLoader.acct_id">acct_id</a></code></li>
+<li><code><a title="awsrun.acctload.MetaAccountLoader.attributes" href="#awsrun.acctload.MetaAccountLoader.attributes">attributes</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="awsrun.acctload.AbstractAccount"><code class="flex name class">
 <span>class <span class="ident">AbstractAccount</span></span>
 <span>(</span><span>attributes)</span>
@@ -2197,7 +2379,7 @@ assert repr(acct) == 'Account(id="100200300400", env="prod", status="active")'
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class AbstractAccount:  #pylint: disable=single-string-used-for-slots
+<pre><code class="python">class AbstractAccount:  # pylint: disable=single-string-used-for-slots
     &#34;&#34;&#34;Abstract base class used by `MetaAccountLoader` to represent an account and its metadata.
 
     This class is dynamically subclassed by the account loader to create a
@@ -2362,6 +2544,9 @@ format string of the Account object.</p></section>
 </li>
 <li>
 <h4><code><a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader">JSONAccountLoader</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader">YAMLAccountLoader</a></code></h4>
 </li>
 <li>
 <h4><code><a title="awsrun.acctload.AbstractAccount" href="#awsrun.acctload.AbstractAccount">AbstractAccount</a></code></h4>

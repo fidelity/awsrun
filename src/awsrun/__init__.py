@@ -403,9 +403,9 @@ The account loader plug-in is responsible for loading the full list of the
 accounts you manage as well as the metadata associated with each account. Using
 this metadata, we can specify filters on the command line or via your config to
 select groups of accounts to process. awsrun includes plug-ins to load account
-information from CSV and JSON files/urls. If, on the other hand, you have an
-enterprise CMDB that stores information about your accounts in a database, then
-you could write your own plug-in to load accounts from it.
+information from CSV, JSON, and YAML files/urls. If, on the other hand, you have
+an enterprise CMDB that stores information about your accounts in a database,
+then you could write your own plug-in to load accounts from it.
 
 For the purpose of this guide, let's keep things simple and assume you have a
 list of accounts and metadata for those accounts stored in a JSON file called
@@ -440,6 +440,12 @@ to traverse before reaching the actual list of accounts. In our example JSON
 file above, all of the accounts are embedded within the "accounts" key. Finally,
 the `id_attr` key provides the name of the key that contains the account number
 for each account.
+
+Note: if you've been following this guide from the beginning, then you will want
+to remove the explicit list of `accounts` in the top-level `CLI` block of your
+configuration, or your results will not be the same in the following examples.
+If you do not, the metadata filters will apply only to the explicit list of
+accounts you have specified.
 
 With the plug-in configured, we can now use the help system to view the various
 options defined by the JSON plug-in:
@@ -503,7 +509,7 @@ metadata`--include ATTR=VALUE` flag:
 If we want to select "dev" or "prd" accounts, we can specify the include flag
 twice for each value, or we can combine values. When specifying more than one
 value for a filter attribute, a match is successful if only one of the values
-matches: 
+matches:
 
     $ awsrun --include env=dev,prd
     5 accounts selected:
@@ -847,8 +853,8 @@ In this example, we create a Boto 3 EC2 resource from the `session` object for
 the appropriate `region`, and then we obtain a list of all of the VPC IDs in
 that region for the account being processed. Finally, we return a string, which
 is then displayed on the console thanks to the default implementation of
-`awsrun.runner.Command.regional_collect_results`. Collecting results will be
-discussed further in the next section.
+`awsrun.runner.RegionalCommand.regional_collect_results`. Collecting results
+will be discussed further in the next section.
 
 The `acct` parameter is a string representing the account being processed,
 unless you are using a custom account loader that provides a custom account
@@ -1175,4 +1181,4 @@ additional guidance on how to build your own.
 """
 
 name = "awsrun"
-__version__ = "2.0.0"
+__version__ = "2.1.0"

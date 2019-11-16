@@ -59,6 +59,8 @@ validation. If a user has not configured an account loader, this is the default.
 <dd><a title="awsrun.plugins.accts.CSV" href="#awsrun.plugins.accts.CSV"><code>CSV</code></a> loads accounts and metadata from a CSV file.</dd>
 <dt>awsrun.plugins.accts.JSON</dt>
 <dd><a title="awsrun.plugins.accts.JSON" href="#awsrun.plugins.accts.JSON"><code>JSON</code></a> loads accounts and metadata from JSON.</dd>
+<dt>awsrun.plugins.accts.YAML</dt>
+<dd><a title="awsrun.plugins.accts.YAML" href="#awsrun.plugins.accts.YAML"><code>YAML</code></a> loads accounts and metadata from YAML.</dd>
 <dt>your.own.module.PluginSubclass</dt>
 <dd>A custom plug-in installed in the Python path that subclasses
 <a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin"><code>Plugin</code></a> that returns a <a title="awsrun.acctload.AccountLoader" href="../acctload.html#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a>.</dd>
@@ -103,12 +105,15 @@ awsrun.plugins.accts.CSV
 awsrun.plugins.accts.JSON
 :  `JSON` loads accounts and metadata from JSON.
 
+awsrun.plugins.accts.YAML
+:  `YAML` loads accounts and metadata from YAML.
+
 your.own.module.PluginSubclass
 :  A custom plug-in installed in the Python path that subclasses
 `awsrun.plugmgr.Plugin` that returns a `awsrun.acctload.AccountLoader`.
 &#34;&#34;&#34;
 
-from awsrun.acctload import CSVAccountLoader, IdentityAccountLoader, JSONAccountLoader
+from awsrun.acctload import CSVAccountLoader, IdentityAccountLoader, JSONAccountLoader, YAMLAccountLoader
 from awsrun.config import List, Str, Int, Bool, URL
 
 from awsrun.plugmgr import Plugin
@@ -140,7 +145,44 @@ class Identity(Plugin):
         return IdentityAccountLoader()
 
 
-class JSON(Plugin):
+class _CachingLoaderPlugin(Plugin):
+    &#34;&#34;&#34;Base plug-in for CSV, JSON, and YAML caching account loaders.&#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
+        # chance of collision.
+        group = parser.add_argument_group(&#39;account loader options&#39;)
+        group.add_argument(
+            &#39;--loader-url&#39;,
+            metavar=&#39;URL&#39;,
+            default=cfg(&#39;url&#39;, type=URL, must_exist=True),
+            help=&#39;URL to account data (also supports file:///path/to/file)&#39;)
+
+        group.add_argument(
+            &#39;--loader-no-verify&#39;,
+            action=&#39;store_true&#39;,
+            default=cfg(&#39;no_verify&#39;, type=Bool, default=False),
+            help=&#39;disable cert verification for HTTP requests&#39;)
+
+        group.add_argument(
+            &#39;--loader-max-age&#39;,
+            metavar=&#39;SECS&#39;,
+            type=int,
+            default=cfg(&#39;max_age&#39;, type=Int, default=0),
+            help=&#39;max age for cached URL data&#39;)
+
+        group.add_argument(
+            &#39;--loader-str-template&#39;,
+            metavar=&#39;STRING&#39;,
+            default=cfg(&#39;str_template&#39;),
+            help=&#39;format string used to display an account&#39;)
+
+
+class JSON(_CachingLoaderPlugin):
     &#34;&#34;&#34;CLI plug-in that loads accounts and metadata from a JSON file/url.
 
     ## Overview
@@ -286,39 +328,6 @@ class JSON(Plugin):
     be warned on the command line if verification has been disabled. The default
     value is `false`.
     &#34;&#34;&#34;
-    def __init__(self, parser, cfg):
-        super().__init__(parser, cfg)
-
-        # Define the arguments that we want to allow a user to override via the
-        # main CLI. Any CLI args added via add_argument will be commingled with
-        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
-        # chance of collision.
-        group = parser.add_argument_group(&#39;account loader options&#39;)
-        group.add_argument(
-            &#39;--loader-url&#39;,
-            metavar=&#39;URL&#39;,
-            default=cfg(&#39;url&#39;, type=URL, must_exist=True),
-            help=&#39;URL to account data (also supports file:///path/to/file)&#39;)
-
-        group.add_argument(
-            &#39;--loader-no-verify&#39;,
-            action=&#39;store_true&#39;,
-            default=cfg(&#39;no_verify&#39;, type=Bool, default=False),
-            help=&#39;disable cert verification for HTTP requests&#39;)
-
-        group.add_argument(
-            &#39;--loader-max-age&#39;,
-            metavar=&#39;SECS&#39;,
-            type=int,
-            default=cfg(&#39;max_age&#39;, type=Int, default=0),
-            help=&#39;max age for cached URL data&#39;)
-
-        group.add_argument(
-            &#39;--loader-str-template&#39;,
-            metavar=&#39;STRING&#39;,
-            default=cfg(&#39;str_template&#39;),
-            help=&#39;format string used to display an account&#39;)
-
     def instantiate(self, args):
         cfg = self.cfg
 
@@ -335,7 +344,185 @@ class JSON(Plugin):
         return loader
 
 
-class CSV(JSON):
+class YAML(_CachingLoaderPlugin):
+    &#34;&#34;&#34;CLI plug-in that loads accounts and metadata from a YAML file/url.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or `--account-file`
+    will be validated against the list of accounts in the YAML document.  More
+    importantly, loaded accounts will include metadata associated with each
+    account from the YAML document. This metadata can be used to select accounts
+    using the `--include` and `--exclude` awsrun CLI flags. Given the following
+    YAML structure:
+
+        - id: &#39;100200300400&#39;
+          env: prod
+          status: active
+        - id: &#39;200300400100&#39;
+          env: non-prod
+          status: active
+        - id: &#39;300400100200&#39;
+          env: non-prod
+          status: suspended
+
+    Users could select only the &#34;active&#34; accounts via the `awsrun.cli` by using
+    the metadata filter options. The following would select account numbers
+    &#34;100200300400&#34; and &#34;200300400100&#34;:
+
+        $ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+
+    Additionally, this metadata is made available to command authors for use
+    within their commands. The account loader would build account objects with
+    the following attribute names: `id`, `env`, and `status`. Command authors
+    are provided access to these account objects in their user-defined commands
+    via a parameter to `awsrun.runner.Command.execute`:
+
+        class CLICommand(Command):
+            def execute(self, session, acct):
+                # The acct parameter contains the attributes from the YAML
+                return f&#39;{acct.env} account {acct.id} is {acct.status}\\n&#39;
+
+    In cases where the YAML key names are not valid Python identifiers, they are
+    munged. Leading digits are prefixed with underscores, non-alpha numeric
+    characters are replaced with underscores, and keywords are appended with an
+    underscore.
+
+    Instead of specifying accounts as a YAML array of objects as shown above,
+    the YAML can be specified as a single object with account IDs as keys and
+    metadata as values such as:
+
+        &#39;100200300400&#39;:
+          env: prod
+          status: active
+        &#39;200300400100&#39;:
+          env: non-prod
+          status: active
+        &#39;300400100200&#39;:
+          env: non-prod
+          status: suspended
+
+    The above will create the same list account objects as the first version
+    because this loader assumes a top-level YAML object is the container of
+    accounts. The account objects created will contain the `id` attribute
+    because the default value for the ID attribute is `id`.
+
+    Similarly, the YAML can be specified as follows, where the account ID is
+    used in the top-level object key as well as the object value metadata. If
+    the values do not match, an exception will be raised.
+
+        &#39;100200300400&#39;:
+          id: &#39;100200300400&#39;
+          env: prod
+          status: active
+        &#39;200300400100&#39;:
+          id: &#39;200300400100&#39;
+          env: non-prod
+          status: active
+        &#39;300400100200&#39;:
+          id: &#39;300400100200&#39;
+          env: non-prod
+          status: suspended
+
+    Finally, if the account list is not at the top-level of the YAML, a path
+    can be specified to point the loader to the correct location in the YAML.
+    For example, a path list of &#34;aws&#34; and &#34;accounts&#34; is required to parse the
+    following YAML:
+
+        aws:
+          accounts:
+            - id: &#39;100200300400&#39;
+              env: prod
+              status: active
+            - id: &#39;200300400100&#39;
+              env: non-prod
+              status: active
+            - id: &#39;300400100200&#39;
+              env: non-prod
+              status: suspended
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Accounts:
+          plugin: awsrun.plugins.accts.YAML
+          options:
+            url: STRING*
+            max_age: INTEGER
+            id_attr: STRING*
+            path:
+              - STRING
+            str_template: STRING
+            include_attrs:
+              - STRING
+            exclude_attrs:
+              - STRING
+            no_verify: BOOLEAN
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `url`, `--loader-url`
+    : Load the data from the specified URL. To load a local file, use
+    `file:///absolute/path/data.yaml`. This value **must** be provided via the
+    user configuration or as an awsrun command line argument.
+
+    `max_age`, `--loader-max-age`
+    : Cache the data retrieved from the URL for the specified number of seconds.
+    The default value is `0`, which disables caching. This can be useful for
+    servers that are slow to generate the account list.
+
+    `id_attr`
+    : Identifies the YAML key name that contains the AWS account ID. This
+    value **must** be provided so awsrun can identify the account number
+    associated with each account in the YAML.
+
+    `path`
+    : Specifies the location within the YAML that contains the array of accounts
+    or object of accounts. If specified, this must be a list of key names to
+    traverse the YAML. The default assumes the accounts are at the top-level.
+
+    `str_template`
+    : Controls how accounts are formatted as strings. This is a [Python format
+    string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
+    that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
+    or `&#34;{id}-{env}&#34;` assuming `id` and `env` are YAML key names.
+
+    `include_attrs`
+    : Include only the specified list of YAML key names from the object
+    metadata. If this option is not supplied, all YAML keys are included as
+    attributes on the account objects created by this loader.
+
+    `exclude_attrs`
+    : Exclude the specified list of YAML key names from the object metadata. If
+    this option is not supplied, no key names are excluded as attributes on
+    the account objects created by this loader.
+
+    `no_verify`, `--loader-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+    &#34;&#34;&#34;
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        loader = YAMLAccountLoader(
+            url=args.loader_url,
+            max_age=args.loader_max_age,
+            id_attr=cfg(&#39;id_attr&#39;, must_exist=True),
+            path=cfg(&#39;path&#39;, type=List(Str), default=[]),
+            str_template=args.loader_str_template,
+            include_attrs=cfg(&#39;include_attrs&#39;, type=List(Str), default=[]),
+            exclude_attrs=cfg(&#39;exclude_attrs&#39;, type=List(Str), default=[]),
+            no_verify=args.loader_no_verify)
+
+        return loader
+
+
+class CSV(_CachingLoaderPlugin):
     &#34;&#34;&#34;CLI plug-in loads accounts and metadata from a CSV file/url.
 
     ## Overview
@@ -348,7 +535,8 @@ class CSV(JSON):
 
     The default delimiter is comma, but may be changed via an option. The
     column names must be specified on the first row of the CSV file and will
-    become the attribute names on the loaded account objects. Given the
+    become the attribute names on the loaded account objects. All values are
+    treated as strings, and thus account IDs do not need to be quoted. Given the
     following CSV file:
 
          id, env, status
@@ -675,7 +863,7 @@ value is <code>false</code>.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class JSON(Plugin):
+<pre><code class="python">class JSON(_CachingLoaderPlugin):
     &#34;&#34;&#34;CLI plug-in that loads accounts and metadata from a JSON file/url.
 
     ## Overview
@@ -821,39 +1009,6 @@ value is <code>false</code>.</dd>
     be warned on the command line if verification has been disabled. The default
     value is `false`.
     &#34;&#34;&#34;
-    def __init__(self, parser, cfg):
-        super().__init__(parser, cfg)
-
-        # Define the arguments that we want to allow a user to override via the
-        # main CLI. Any CLI args added via add_argument will be commingled with
-        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
-        # chance of collision.
-        group = parser.add_argument_group(&#39;account loader options&#39;)
-        group.add_argument(
-            &#39;--loader-url&#39;,
-            metavar=&#39;URL&#39;,
-            default=cfg(&#39;url&#39;, type=URL, must_exist=True),
-            help=&#39;URL to account data (also supports file:///path/to/file)&#39;)
-
-        group.add_argument(
-            &#39;--loader-no-verify&#39;,
-            action=&#39;store_true&#39;,
-            default=cfg(&#39;no_verify&#39;, type=Bool, default=False),
-            help=&#39;disable cert verification for HTTP requests&#39;)
-
-        group.add_argument(
-            &#39;--loader-max-age&#39;,
-            metavar=&#39;SECS&#39;,
-            type=int,
-            default=cfg(&#39;max_age&#39;, type=Int, default=0),
-            help=&#39;max age for cached URL data&#39;)
-
-        group.add_argument(
-            &#39;--loader-str-template&#39;,
-            metavar=&#39;STRING&#39;,
-            default=cfg(&#39;str_template&#39;),
-            help=&#39;format string used to display an account&#39;)
-
     def instantiate(self, args):
         cfg = self.cfg
 
@@ -871,11 +1026,350 @@ value is <code>false</code>.</dd>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li>awsrun.plugins.accts._CachingLoaderPlugin</li>
 <li><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li>
 </ul>
-<h3>Subclasses</h3>
+<h3>Inherited members</h3>
 <ul class="hlist">
-<li><a title="awsrun.plugins.accts.CSV" href="#awsrun.plugins.accts.CSV">CSV</a></li>
+<li><code><b><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.plugmgr.Plugin.instantiate" href="../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.plugins.accts.YAML"><code class="flex name class">
+<span>class <span class="ident">YAML</span></span>
+<span>(</span><span>parser, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CLI plug-in that loads accounts and metadata from a YAML file/url.</p>
+<h2 id="overview">Overview</h2>
+<p>Accounts specified on the awsrun CLI via the <code>--account</code> or <code>--account-file</code>
+will be validated against the list of accounts in the YAML document.
+More
+importantly, loaded accounts will include metadata associated with each
+account from the YAML document. This metadata can be used to select accounts
+using the <code>--include</code> and <code>--exclude</code> awsrun CLI flags. Given the following
+YAML structure:</p>
+<pre><code>- id: '100200300400'
+  env: prod
+  status: active
+- id: '200300400100'
+  env: non-prod
+  status: active
+- id: '300400100200'
+  env: non-prod
+  status: suspended
+</code></pre>
+<p>Users could select only the "active" accounts via the <a title="awsrun.cli" href="../cli.html"><code>awsrun.cli</code></a> by using
+the metadata filter options. The following would select account numbers
+"100200300400" and "200300400100":</p>
+<pre><code>$ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+</code></pre>
+<p>Additionally, this metadata is made available to command authors for use
+within their commands. The account loader would build account objects with
+the following attribute names: <code>id</code>, <code>env</code>, and <code>status</code>. Command authors
+are provided access to these account objects in their user-defined commands
+via a parameter to <a title="awsrun.runner.Command.execute" href="../runner.html#awsrun.runner.Command.execute"><code>Command.execute()</code></a>:</p>
+<pre><code>class CLICommand(Command):
+    def execute(self, session, acct):
+        # The acct parameter contains the attributes from the YAML
+        return f'{acct.env} account {acct.id} is {acct.status}\n'
+</code></pre>
+<p>In cases where the YAML key names are not valid Python identifiers, they are
+munged. Leading digits are prefixed with underscores, non-alpha numeric
+characters are replaced with underscores, and keywords are appended with an
+underscore.</p>
+<p>Instead of specifying accounts as a YAML array of objects as shown above,
+the YAML can be specified as a single object with account IDs as keys and
+metadata as values such as:</p>
+<pre><code>'100200300400':
+  env: prod
+  status: active
+'200300400100':
+  env: non-prod
+  status: active
+'300400100200':
+  env: non-prod
+  status: suspended
+</code></pre>
+<p>The above will create the same list account objects as the first version
+because this loader assumes a top-level YAML object is the container of
+accounts. The account objects created will contain the <code>id</code> attribute
+because the default value for the ID attribute is <code>id</code>.</p>
+<p>Similarly, the YAML can be specified as follows, where the account ID is
+used in the top-level object key as well as the object value metadata. If
+the values do not match, an exception will be raised.</p>
+<pre><code>'100200300400':
+  id: '100200300400'
+  env: prod
+  status: active
+'200300400100':
+  id: '200300400100'
+  env: non-prod
+  status: active
+'300400100200':
+  id: '300400100200'
+  env: non-prod
+  status: suspended
+</code></pre>
+<p>Finally, if the account list is not at the top-level of the YAML, a path
+can be specified to point the loader to the correct location in the YAML.
+For example, a path list of "aws" and "accounts" is required to parse the
+following YAML:</p>
+<pre><code>aws:
+  accounts:
+    - id: '100200300400'
+      env: prod
+      status: active
+    - id: '200300400100'
+      env: non-prod
+      status: active
+    - id: '300400100200'
+      env: non-prod
+      status: suspended
+</code></pre>
+<h2 id="configuration">Configuration</h2>
+<p>Options with an asterisk are mandatory and must be provided:</p>
+<pre><code>Accounts:
+  plugin: awsrun.plugins.accts.YAML
+  options:
+    url: STRING*
+    max_age: INTEGER
+    id_attr: STRING*
+    path:
+      - STRING
+    str_template: STRING
+    include_attrs:
+      - STRING
+    exclude_attrs:
+      - STRING
+    no_verify: BOOLEAN
+</code></pre>
+<h2 id="plug-in-options">Plug-in Options</h2>
+<p>Some options can be overridden on the awsrun CLI via command line flags.
+In those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>url</code>, <code>--loader-url</code></dt>
+<dd>Load the data from the specified URL. To load a local file, use
+<code>file:///absolute/path/data.yaml</code>. This value <strong>must</strong> be provided via the
+user configuration or as an awsrun command line argument.</dd>
+<dt><code>max_age</code>, <code>--loader-max-age</code></dt>
+<dd>Cache the data retrieved from the URL for the specified number of seconds.
+The default value is <code>0</code>, which disables caching. This can be useful for
+servers that are slow to generate the account list.</dd>
+<dt><code>id_attr</code></dt>
+<dd>Identifies the YAML key name that contains the AWS account ID. This
+value <strong>must</strong> be provided so awsrun can identify the account number
+associated with each account in the YAML.</dd>
+<dt><code>path</code></dt>
+<dd>Specifies the location within the YAML that contains the array of accounts
+or object of accounts. If specified, this must be a list of key names to
+traverse the YAML. The default assumes the accounts are at the top-level.</dd>
+<dt><code>str_template</code></dt>
+<dd>Controls how accounts are formatted as strings. This is a <a href="https://docs.python.org/3.7/library/string.html#format-string-syntax">Python format
+string</a>
+that can include any of the included attributes. For example, <code>"{id}:{env}"</code>
+or <code>"{id}-{env}"</code> assuming <code>id</code> and <code>env</code> are YAML key names.</dd>
+<dt><code>include_attrs</code></dt>
+<dd>Include only the specified list of YAML key names from the object
+metadata. If this option is not supplied, all YAML keys are included as
+attributes on the account objects created by this loader.</dd>
+<dt><code>exclude_attrs</code></dt>
+<dd>Exclude the specified list of YAML key names from the object metadata. If
+this option is not supplied, no key names are excluded as attributes on
+the account objects created by this loader.</dd>
+<dt><code>no_verify</code>, <code>--loader-no-verify</code></dt>
+<dd>Disable HTTP certificate verification. This is not advisable and user will
+be warned on the command line if verification has been disabled. The default
+value is <code>false</code>.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class YAML(_CachingLoaderPlugin):
+    &#34;&#34;&#34;CLI plug-in that loads accounts and metadata from a YAML file/url.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or `--account-file`
+    will be validated against the list of accounts in the YAML document.  More
+    importantly, loaded accounts will include metadata associated with each
+    account from the YAML document. This metadata can be used to select accounts
+    using the `--include` and `--exclude` awsrun CLI flags. Given the following
+    YAML structure:
+
+        - id: &#39;100200300400&#39;
+          env: prod
+          status: active
+        - id: &#39;200300400100&#39;
+          env: non-prod
+          status: active
+        - id: &#39;300400100200&#39;
+          env: non-prod
+          status: suspended
+
+    Users could select only the &#34;active&#34; accounts via the `awsrun.cli` by using
+    the metadata filter options. The following would select account numbers
+    &#34;100200300400&#34; and &#34;200300400100&#34;:
+
+        $ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+
+    Additionally, this metadata is made available to command authors for use
+    within their commands. The account loader would build account objects with
+    the following attribute names: `id`, `env`, and `status`. Command authors
+    are provided access to these account objects in their user-defined commands
+    via a parameter to `awsrun.runner.Command.execute`:
+
+        class CLICommand(Command):
+            def execute(self, session, acct):
+                # The acct parameter contains the attributes from the YAML
+                return f&#39;{acct.env} account {acct.id} is {acct.status}\\n&#39;
+
+    In cases where the YAML key names are not valid Python identifiers, they are
+    munged. Leading digits are prefixed with underscores, non-alpha numeric
+    characters are replaced with underscores, and keywords are appended with an
+    underscore.
+
+    Instead of specifying accounts as a YAML array of objects as shown above,
+    the YAML can be specified as a single object with account IDs as keys and
+    metadata as values such as:
+
+        &#39;100200300400&#39;:
+          env: prod
+          status: active
+        &#39;200300400100&#39;:
+          env: non-prod
+          status: active
+        &#39;300400100200&#39;:
+          env: non-prod
+          status: suspended
+
+    The above will create the same list account objects as the first version
+    because this loader assumes a top-level YAML object is the container of
+    accounts. The account objects created will contain the `id` attribute
+    because the default value for the ID attribute is `id`.
+
+    Similarly, the YAML can be specified as follows, where the account ID is
+    used in the top-level object key as well as the object value metadata. If
+    the values do not match, an exception will be raised.
+
+        &#39;100200300400&#39;:
+          id: &#39;100200300400&#39;
+          env: prod
+          status: active
+        &#39;200300400100&#39;:
+          id: &#39;200300400100&#39;
+          env: non-prod
+          status: active
+        &#39;300400100200&#39;:
+          id: &#39;300400100200&#39;
+          env: non-prod
+          status: suspended
+
+    Finally, if the account list is not at the top-level of the YAML, a path
+    can be specified to point the loader to the correct location in the YAML.
+    For example, a path list of &#34;aws&#34; and &#34;accounts&#34; is required to parse the
+    following YAML:
+
+        aws:
+          accounts:
+            - id: &#39;100200300400&#39;
+              env: prod
+              status: active
+            - id: &#39;200300400100&#39;
+              env: non-prod
+              status: active
+            - id: &#39;300400100200&#39;
+              env: non-prod
+              status: suspended
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Accounts:
+          plugin: awsrun.plugins.accts.YAML
+          options:
+            url: STRING*
+            max_age: INTEGER
+            id_attr: STRING*
+            path:
+              - STRING
+            str_template: STRING
+            include_attrs:
+              - STRING
+            exclude_attrs:
+              - STRING
+            no_verify: BOOLEAN
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `url`, `--loader-url`
+    : Load the data from the specified URL. To load a local file, use
+    `file:///absolute/path/data.yaml`. This value **must** be provided via the
+    user configuration or as an awsrun command line argument.
+
+    `max_age`, `--loader-max-age`
+    : Cache the data retrieved from the URL for the specified number of seconds.
+    The default value is `0`, which disables caching. This can be useful for
+    servers that are slow to generate the account list.
+
+    `id_attr`
+    : Identifies the YAML key name that contains the AWS account ID. This
+    value **must** be provided so awsrun can identify the account number
+    associated with each account in the YAML.
+
+    `path`
+    : Specifies the location within the YAML that contains the array of accounts
+    or object of accounts. If specified, this must be a list of key names to
+    traverse the YAML. The default assumes the accounts are at the top-level.
+
+    `str_template`
+    : Controls how accounts are formatted as strings. This is a [Python format
+    string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
+    that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
+    or `&#34;{id}-{env}&#34;` assuming `id` and `env` are YAML key names.
+
+    `include_attrs`
+    : Include only the specified list of YAML key names from the object
+    metadata. If this option is not supplied, all YAML keys are included as
+    attributes on the account objects created by this loader.
+
+    `exclude_attrs`
+    : Exclude the specified list of YAML key names from the object metadata. If
+    this option is not supplied, no key names are excluded as attributes on
+    the account objects created by this loader.
+
+    `no_verify`, `--loader-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+    &#34;&#34;&#34;
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        loader = YAMLAccountLoader(
+            url=args.loader_url,
+            max_age=args.loader_max_age,
+            id_attr=cfg(&#39;id_attr&#39;, must_exist=True),
+            path=cfg(&#39;path&#39;, type=List(Str), default=[]),
+            str_template=args.loader_str_template,
+            include_attrs=cfg(&#39;include_attrs&#39;, type=List(Str), default=[]),
+            exclude_attrs=cfg(&#39;exclude_attrs&#39;, type=List(Str), default=[]),
+            no_verify=args.loader_no_verify)
+
+        return loader</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>awsrun.plugins.accts._CachingLoaderPlugin</li>
+<li><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li>
 </ul>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -901,7 +1395,8 @@ columns from the CSV file. This metadata can be used to select accounts
 using the <code>--include</code> and <code>--exclude</code> awsrun CLI flags.</p>
 <p>The default delimiter is comma, but may be changed via an option. The
 column names must be specified on the first row of the CSV file and will
-become the attribute names on the loaded account objects. Given the
+become the attribute names on the loaded account objects. All values are
+treated as strings, and thus account IDs do not need to be quoted. Given the
 following CSV file:</p>
 <pre><code> id, env, status
  100200300400, prod, active
@@ -984,7 +1479,7 @@ value is <code>false</code>.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class CSV(JSON):
+<pre><code class="python">class CSV(_CachingLoaderPlugin):
     &#34;&#34;&#34;CLI plug-in loads accounts and metadata from a CSV file/url.
 
     ## Overview
@@ -997,7 +1492,8 @@ value is <code>false</code>.</dd>
 
     The default delimiter is comma, but may be changed via an option. The
     column names must be specified on the first row of the CSV file and will
-    become the attribute names on the loaded account objects. Given the
+    become the attribute names on the loaded account objects. All values are
+    treated as strings, and thus account IDs do not need to be quoted. Given the
     following CSV file:
 
          id, env, status
@@ -1121,14 +1617,14 @@ value is <code>false</code>.</dd>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="awsrun.plugins.accts.JSON" href="#awsrun.plugins.accts.JSON">JSON</a></li>
+<li>awsrun.plugins.accts._CachingLoaderPlugin</li>
 <li><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li>
 </ul>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="awsrun.plugins.accts.JSON" href="#awsrun.plugins.accts.JSON">JSON</a></b></code>:
+<li><code><b><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></b></code>:
 <ul class="hlist">
-<li><code><a title="awsrun.plugins.accts.JSON.instantiate" href="../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
+<li><code><a title="awsrun.plugmgr.Plugin.instantiate" href="../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1154,6 +1650,9 @@ value is <code>false</code>.</dd>
 </li>
 <li>
 <h4><code><a title="awsrun.plugins.accts.JSON" href="#awsrun.plugins.accts.JSON">JSON</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.plugins.accts.YAML" href="#awsrun.plugins.accts.YAML">YAML</a></code></h4>
 </li>
 <li>
 <h4><code><a title="awsrun.plugins.accts.CSV" href="#awsrun.plugins.accts.CSV">CSV</a></code></h4>
