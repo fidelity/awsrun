@@ -198,7 +198,7 @@
       % if subclasses:
           <h3>Subclasses</h3>
           <ul class="hlist">
-          % for sub in sorted(subclasses, key=lambda x: x.qualname):
+          % for sub in sorted(subclasses, key=lambda x: x.refname):
               <li>${link(sub)}</li>
           % endfor
           </ul>
