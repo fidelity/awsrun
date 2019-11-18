@@ -136,7 +136,7 @@ class ExpiringValue(AbstractExpiringValue):
 
 
 class PersistentExpiringValue(ExpiringValue):
-    """Represents an expiring value that will is persisted to disk as JSON.
+    """Represents an expiring value that will be persisted to disk as JSON.
 
     A `PersistentExpiringValue` represents a lazily loaded value that will
     expire over time and is cached to disk as JSON. The constructor takes a
