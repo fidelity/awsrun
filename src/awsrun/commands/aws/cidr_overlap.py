@@ -67,7 +67,7 @@ class _CIDR:
         self.block = ip_network(block)
 
     def __str__(self):
-        return f'{self.acct}/{self.region}/{self.vpc}/{self.block}'
+        return f"{self.acct}/{self.region}/{self.vpc}/{self.block}"
 
     def __lt__(self, other):
         return self.block < other.block
@@ -85,11 +85,12 @@ class CLICommand(RegionalCommand):
     @classmethod
     def regional_from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            '--exclude-block',
-            action='append',
-            dest='exclude_blocks',
-            default=cfg('exclude_block', type=List(IPNet), default=[]),
-            help='exclude CIDR blocks from check')
+            "--exclude-block",
+            action="append",
+            dest="exclude_blocks",
+            default=cfg("exclude_block", type=List(IPNet), default=[]),
+            help="exclude CIDR blocks from check",
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -100,15 +101,19 @@ class CLICommand(RegionalCommand):
         self.cidrs = []
 
     def regional_execute(self, session, acct, region):
-        ec2 = session.resource('ec2', region_name=region)
-        return [(c['CidrBlock'], vpc.id) for vpc in ec2.vpcs.all() for c in vpc.cidr_block_association_set]
+        ec2 = session.resource("ec2", region_name=region)
+        return [
+            (c["CidrBlock"], vpc.id)
+            for vpc in ec2.vpcs.all()
+            for c in vpc.cidr_block_association_set
+        ]
 
     def regional_collect_results(self, acct, region, get_result):
         for block, vpc_id in get_result():
             if block not in self.exclude_blocks:
                 cidr = _CIDR(acct, region, vpc_id, block)
                 self.cidrs.append(cidr)
-                print(f'Found CIDR {cidr}', flush=True)
+                print(f"Found CIDR {cidr}", flush=True)
 
     def post_hook(self):
         overlap = []
@@ -121,4 +126,4 @@ class CLICommand(RegionalCommand):
                     overlap.append(sorted((c1, c2)))
 
         for c1, c2 in sorted(overlap, key=lambda x: x[0]):
-            print(f'OVERLAP! {c1} <<<>>> {c2}')
+            print(f"OVERLAP! {c1} <<<>>> {c2}")

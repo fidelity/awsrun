@@ -53,15 +53,21 @@ class CLICommand(RegionalCommand):
 
     def regional_execute(self, session, acct, region):
         out = io.StringIO()
-        ec2 = session.resource('ec2', region_name=region)
+        ec2 = session.resource("ec2", region_name=region)
 
         for igw in ec2.internet_gateways.all():
             igw_id = igw.internet_gateway_id
-            attachments = [a['VpcId'] for a in igw.attachments if a['State'] == 'available']
+            attachments = [
+                a["VpcId"] for a in igw.attachments if a["State"] == "available"
+            ]
 
-            print(f'{acct}/{region}: id={igw_id} attachments={len(attachments)}', end='', file=out)
+            print(
+                f"{acct}/{region}: id={igw_id} attachments={len(attachments)}",
+                end="",
+                file=out,
+            )
             if attachments:
-                print(f' vpcs={", ".join(attachments)}', end='', file=out)
+                print(f' vpcs={", ".join(attachments)}', end="", file=out)
 
             print(file=out)
 

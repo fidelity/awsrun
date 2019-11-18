@@ -139,6 +139,7 @@ class Plugin:
     associated with argument processing. The constructor should be used to only
     register new CLI arguments and invoke the superclass's constructor.
     """
+
     def __init__(self, parser, cfg):
         self.parser = parser
         self.cfg = cfg
@@ -219,6 +220,7 @@ class PluginManager:
     how the `config` and `parser` interact with each other during the
     instantiation of a plug-in.
     """
+
     def __init__(self, config, parser, parsed_args, unparsed_argv):
         self._config = config
         self._parser = parser
@@ -266,8 +268,8 @@ class PluginManager:
         If the `Accounts` key does not exist in the configuration, then the
         `awsrun.plugins.accts.Identity` plug-in will be used instead.
         """
-        path = self._config.get(*keys, 'plugin') or default
-        LOG.info('loading plug-in: %s', path)
+        path = self._config.get(*keys, "plugin") or default
+        LOG.info("loading plug-in: %s", path)
 
         try:
             plugin_class = load_dotted_object(path)
@@ -276,17 +278,21 @@ class PluginManager:
             raise ValueError(f"Error in config: {'->'.join(keys)}->plugin: {e}")
 
         if not issubclass(plugin_class, Plugin):
-            raise TypeError(f"Error in config: {'->'.join(keys)}->plugin: '{path}' is not a {Plugin}")
+            raise TypeError(
+                f"Error in config: {'->'.join(keys)}->plugin: '{path}' is not a {Plugin}"
+            )
 
         # Create a new config callable that points directly to the options
         # stored in the configuration. This will make it easy for plugin authors
         # to query the config without having to specify the key path leading up
         # to the options section of the config.
-        cfg = partial(self._config.get, *keys, 'options')
+        cfg = partial(self._config.get, *keys, "options")
 
         plugin = plugin_class(self._parser, cfg)
-        self.args, self.remaining_argv = self._parser.parse_known_args(self.remaining_argv, self.args)
-        LOG.info('parsed args=%s remaining args=%s', self.args, self.remaining_argv)
+        self.args, self.remaining_argv = self._parser.parse_known_args(
+            self.remaining_argv, self.args
+        )
+        LOG.info("parsed args=%s remaining args=%s", self.args, self.remaining_argv)
 
         self._plugins[keys] = plugin
 
@@ -325,7 +331,9 @@ class PluginManager:
         instance = self._plugins[keys].instantiate(self.args)
 
         if must_be and not isinstance(instance, must_be):
-            raise TypeError(f"Error in config: {'->'.join(keys)}->plugin: plugin did not build a {must_be}")
+            raise TypeError(
+                f"Error in config: {'->'.join(keys)}->plugin: plugin did not build a {must_be}"
+            )
 
         return instance
 
@@ -338,6 +346,7 @@ def load_dotted_object(dotted_name):
     class object `MyClass` from the Python module `some.module`. If the object
     cannot be loaded, `ImportError` is raised.
     """
+
     def doit(mod_name, attributes=None):
         attributes = [] if attributes is None else attributes
 
@@ -349,14 +358,16 @@ def load_dotted_object(dotted_name):
             mod = importlib.import_module(mod_name)
 
         if not mod:
-            mod_name, _, attr = mod_name.rpartition('.')
+            mod_name, _, attr = mod_name.rpartition(".")
             attributes.append(attr)
             return doit(mod_name, attributes)
 
         attributes.reverse()
         obj = reduce(lambda a, p: getattr(a, p, {}), attributes, mod)
         if not obj:
-            raise ImportError(f"module '{mod_name}' does not contain '{'.'.join(attributes)}'")
+            raise ImportError(
+                f"module '{mod_name}' does not contain '{'.'.join(attributes)}'"
+            )
 
         return obj
 

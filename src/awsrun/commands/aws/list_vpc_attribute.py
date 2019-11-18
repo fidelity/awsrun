@@ -66,10 +66,15 @@ class CLICommand(RegionalCommand):
     @classmethod
     def regional_from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            'attribute',
-            nargs='*',
-            help='vpc attributes to query',
-            default=cfg('attribute', type=List(Str), default=['enableDnsSupport', 'enableDnsHostnames']))
+            "attribute",
+            nargs="*",
+            help="vpc attributes to query",
+            default=cfg(
+                "attribute",
+                type=List(Str),
+                default=["enableDnsSupport", "enableDnsHostnames"],
+            ),
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -80,13 +85,13 @@ class CLICommand(RegionalCommand):
 
     def regional_execute(self, session, acct, region):
         out = io.StringIO()
-        ec2 = session.resource('ec2', region_name=region)
+        ec2 = session.resource("ec2", region_name=region)
 
         for vpc in ec2.vpcs.all():
-            print(f'{acct}/{region}: vpc={vpc.vpc_id} ', end='', file=out)
+            print(f"{acct}/{region}: vpc={vpc.vpc_id} ", end="", file=out)
             for attr in self.attributes:
                 flag = _vpc_attribute(attr, vpc)
-                print(f'{attr}={flag} ', end='', file=out)
+                print(f"{attr}={flag} ", end="", file=out)
             print(file=out)
 
         return out.getvalue()
@@ -100,4 +105,4 @@ def _vpc_attribute(attr, vpc):
     attr = attr[0].upper() + attr[1:]  # Capitalize first letter
     if attr not in result:
         return None
-    return result[attr]['Value']
+    return result[attr]["Value"]

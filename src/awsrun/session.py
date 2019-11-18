@@ -258,6 +258,7 @@ class SessionProvider:
     credentials included. The Session object should be ready to use by the user
     upon request.
     """
+
     def session(self, acct_id):
         """Returns a boto3 Session with credentials for the requested account.
 
@@ -276,6 +277,7 @@ class CachingSessionProvider(SessionProvider):
     is based on the IAM `role` being assumed and the the account ID. Credentials
     are cached for `duration` seconds, which defaults to 1 hour.
     """
+
     def __init__(self, role, duration=3600):
         self._role = role
         self._duration = duration
@@ -303,14 +305,16 @@ class CachingSessionProvider(SessionProvider):
             # the lock may seem redundant, but it's safer to make this explicit.
             ev = self._creds.setdefault(
                 (acct_id, self._role),
-                ExpiringValue(lambda: self.credentials(acct_id), self._duration / 2))
+                ExpiringValue(lambda: self.credentials(acct_id), self._duration / 2),
+            )
 
         creds = ev.value()
 
         return boto3.Session(
-            aws_access_key_id=creds['AccessKeyId'],
-            aws_secret_access_key=creds['SecretAccessKey'],
-            aws_session_token=creds['SessionToken'])
+            aws_access_key_id=creds["AccessKeyId"],
+            aws_secret_access_key=creds["SecretAccessKey"],
+            aws_session_token=creds["SessionToken"],
+        )
 
     def credentials(self, acct_id):
         """Returns a dict containing AWS credentials for the requested account.
@@ -353,12 +357,15 @@ class CredsViaProfile(SessionProvider):
     secret keys, pre-defined cross-account access, or even use an external
     process to obtain credentials.
     """
+
     def session(self, acct_id):
         try:
             return boto3.Session(profile_name=acct_id)
 
         except botocore.exceptions.ProfileNotFound:
-            LOG.info('no profile found for %s, falling back to default profile', acct_id)
+            LOG.info(
+                "no profile found for %s, falling back to default profile", acct_id
+            )
             return boto3.Session()
 
 
@@ -389,7 +396,17 @@ class CredsViaSAML(CachingSessionProvider):
     seconds, which defaults to 1 hour. Likewise, the SAML assertion obtained
     from the IdP is cached for `saml_duration`, which defaults to 5 minutes.
     """
-    def __init__(self, role, url, auth, headers=None, duration=3600, saml_duration=300, no_verify=False):
+
+    def __init__(
+        self,
+        role,
+        url,
+        auth,
+        headers=None,
+        duration=3600,
+        saml_duration=300,
+        no_verify=False,
+    ):
         super().__init__(role, duration)
         self._url = url
         self._auth = auth
@@ -411,22 +428,30 @@ class CredsViaSAML(CachingSessionProvider):
 
         See the module documentation for the exceptions that may be raised.
         """
-        LOG.info('Fetching SAML assertion')
+        LOG.info("Fetching SAML assertion")
         with requests.Session() as s:
             s.auth = self._auth
             s.headers = self._headers
             resp = s.get(self._url, verify=not self._no_verify)
 
         if resp.status_code == 401:
-            raise IDPAccessDeniedException(f'Could not authenticate')
+            raise IDPAccessDeniedException(f"Could not authenticate")
         if not 200 <= resp.status_code < 300:
-            raise IDPInvalidResponseException(f'{resp.status_code} response from {self._url}')
+            raise IDPInvalidResponseException(
+                f"{resp.status_code} response from {self._url}"
+            )
 
         soup = BeautifulSoup(resp.text, "html.parser")
-        saml = [t.get('value') for t in soup.find_all('input') if t.get('name') == 'SAMLResponse']
+        saml = [
+            t.get("value")
+            for t in soup.find_all("input")
+            if t.get("name") == "SAMLResponse"
+        ]
 
         if len(saml) != 1:
-            raise IDPInvalidResponseException(f'Cannot extract SAML assertion from response')
+            raise IDPInvalidResponseException(
+                f"Cannot extract SAML assertion from response"
+            )
 
         # Indexing is guaranteed to succeed as we check the length above
         return saml[0]
@@ -437,25 +462,27 @@ class CredsViaSAML(CachingSessionProvider):
 
         # Extract all the roles from the SAML response.
         roles = []
-        for attr in root.iter('{urn:oasis:names:tc:SAML:2.0:assertion}Attribute'):
-            if attr.get('Name') == 'https://aws.amazon.com/SAML/Attributes/Role':
-                for value in attr.iter('{urn:oasis:names:tc:SAML:2.0:assertion}AttributeValue'):
+        for attr in root.iter("{urn:oasis:names:tc:SAML:2.0:assertion}Attribute"):
+            if attr.get("Name") == "https://aws.amazon.com/SAML/Attributes/Role":
+                for value in attr.iter(
+                    "{urn:oasis:names:tc:SAML:2.0:assertion}AttributeValue"
+                ):
                     roles.append(value.text)
-        LOG.info('roles in SAML response: %s', roles)
+        LOG.info("roles in SAML response: %s", roles)
 
         # Note the format of the attribute value should be role,principal but
         # lots of blogs list it as principal,role so let's reverse them if
         # needed. We also filter out any that do not match the account or role
         # that user instantiated the class with.
         filtered_roles = []
-        for r, p in [arns.split(',') for arns in roles]:
-            if ':saml-provider/' in r:
+        for r, p in [arns.split(",") for arns in roles]:
+            if ":saml-provider/" in r:
                 r, p = p, r
-            if r.endswith(f':{acct_id}:role/{self._role}'):
+            if r.endswith(f":{acct_id}:role/{self._role}"):
                 filtered_roles.append((r, p))
 
         if len(filtered_roles) != 1:
-            raise IDPInvalidRoleException(f'Cannot find {acct_id}/{self._role}')
+            raise IDPInvalidRoleException(f"Cannot find {acct_id}/{self._role}")
 
         # All index accesses below are guaranteed to not fail because we ensure
         # there is an element in filter_roles, and the values are 2-item tuples
@@ -463,17 +490,18 @@ class CredsViaSAML(CachingSessionProvider):
         role_arn = filtered_roles[0][0]
         principal_arn = filtered_roles[0][1]
 
-        LOG.info('Assuming role with SAML for %s with %s', role_arn, principal_arn)
-        assumed_role = boto3.client('sts').assume_role_with_saml(
+        LOG.info("Assuming role with SAML for %s with %s", role_arn, principal_arn)
+        assumed_role = boto3.client("sts").assume_role_with_saml(
             RoleArn=role_arn,
             PrincipalArn=principal_arn,
             SAMLAssertion=saml,
-            DurationSeconds=self._duration)
+            DurationSeconds=self._duration,
+        )
 
         if not assumed_role:
-            raise AWSAssumeRoleException(f'Cannot assume role: {role_arn}')
+            raise AWSAssumeRoleException(f"Cannot assume role: {role_arn}")
 
-        return assumed_role['Credentials']
+        return assumed_role["Credentials"]
 
 
 class CredsViaCrossAccount(CachingSessionProvider):
@@ -503,6 +531,7 @@ class CredsViaCrossAccount(CachingSessionProvider):
     The AWS credentials for the role and account are cached for `duration`
     seconds, which defaults to 1 hour.
     """
+
     def __init__(self, base_auth, base_acct, role, external_id=None, duration=3600):
         super().__init__(role, duration)
         self._base_auth = base_auth
@@ -510,26 +539,26 @@ class CredsViaCrossAccount(CachingSessionProvider):
         self._external_id = external_id
 
     def credentials(self, acct_id):
-        sts = self._base_auth.session(self._base_acct).client('sts')
+        sts = self._base_auth.session(self._base_acct).client("sts")
 
-        role_arn = f'arn:aws:iam::{acct_id}:role/{self._role}'
-        LOG.info('Assuming cross-account role for %s', role_arn)
+        role_arn = f"arn:aws:iam::{acct_id}:role/{self._role}"
+        LOG.info("Assuming cross-account role for %s", role_arn)
 
         kwargs = {
-            'RoleArn': role_arn,
-            'RoleSessionName': f'AWSRunSession{random.randint(10000, 99999)}',
-            'DurationSeconds': self._duration
+            "RoleArn": role_arn,
+            "RoleSessionName": f"AWSRunSession{random.randint(10000, 99999)}",
+            "DurationSeconds": self._duration,
         }
 
         if self._external_id:
-            kwargs['ExternalId'] = self._external_id
+            kwargs["ExternalId"] = self._external_id
 
         assumed_role = sts.assume_role(**kwargs)
 
         if not assumed_role:
-            raise AWSAssumeRoleException(f'Cannot assume role: {role_arn}')
+            raise AWSAssumeRoleException(f"Cannot assume role: {role_arn}")
 
-        return assumed_role['Credentials']
+        return assumed_role["Credentials"]
 
 
 class IDPAccessDeniedException(Exception):

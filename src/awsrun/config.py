@@ -96,6 +96,7 @@ class Config:
     registry of configuration parsers based on file extensions, so users can
     load configs from files.
     """
+
     _filetypes = {}
 
     @classmethod
@@ -123,11 +124,11 @@ class Config:
 
         if not path.is_file():
             if must_exist:
-                raise FileNotFoundError(f'Config file not found: {filename}')
+                raise FileNotFoundError(f"Config file not found: {filename}")
             return Config({})
 
         if path.suffix not in cls._filetypes:
-            raise ValueError(f'Unregistered file type extension: {path.suffix}')
+            raise ValueError(f"Unregistered file type extension: {path.suffix}")
 
         with path.open() as f:
             return cls._filetypes[path.suffix](f)
@@ -135,7 +136,9 @@ class Config:
     def __init__(self, d):
         self.conf = d
 
-    def get(self, *keys, default=None, type=None, must_exist=False):  # pylint: disable=redefined-builtin
+    def get(
+        self, *keys, default=None, type=None, must_exist=False
+    ):  # pylint: disable=redefined-builtin
         """Return the specified value from the `Config`.
 
         Specify the value to read by providing the keys required to reach the
@@ -170,7 +173,9 @@ class Config:
         try:
             value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
         except AttributeError:
-            raise ValueError(f"Error in config: {'->'.join(keys[:-1])}: not a dictionary")
+            raise ValueError(
+                f"Error in config: {'->'.join(keys[:-1])}: not a dictionary"
+            )
 
         # If value is {} that means the key doesn't exist. If the must_exist
         # flag was passed, then we raise a descriptive ValueError, otherwise we
@@ -195,7 +200,9 @@ class Config:
             return value
 
         # Finally, all other cases indicate a type error.
-        raise TypeError(f"Error in config: {'->'.join(keys)}: not a {type}: {repr(value)}")
+        raise TypeError(
+            f"Error in config: {'->'.join(keys)}: not a {type}: {repr(value)}"
+        )
 
 
 EmptyConfig = Config({})
@@ -204,18 +211,20 @@ EmptyConfig = Config({})
 
 class YAMLConfig(Config):
     """Loads a YAML configuration from a stream."""
+
     def __init__(self, stream):
         super().__init__(yaml.safe_load(stream))
 
 
 class JSONConfig(Config):
     """Loads a JSON configuration from a stream."""
+
     def __init__(self, stream):
         super().__init__(json.load(stream))
 
 
-Config.register_filetype(JSONConfig, '.json', '.jsn')
-Config.register_filetype(YAMLConfig, '.yaml', '.yml')
+Config.register_filetype(JSONConfig, ".json", ".jsn")
+Config.register_filetype(YAMLConfig, ".yaml", ".yml")
 
 
 class Type:
@@ -247,7 +256,7 @@ class Not(Type):
         return not self.config_type.type_check(obj)
 
     def __str__(self):
-        return 'not ' + str(self.config_type)
+        return "not " + str(self.config_type)
 
 
 class Or(Type):
@@ -258,6 +267,7 @@ class Or(Type):
         Or(Int, Float)
         Or(StrMatch(r'^file:'), StrMatch(r'^https?:'))
     """
+
     def __init__(self, *config_types):
         self.config_types = config_types
 
@@ -265,8 +275,8 @@ class Or(Type):
         return any(t.type_check(obj) for t in self.config_types)
 
     def __str__(self):
-        s = ' or '.join(str(t) for t in self.config_types)
-        return '(' + s + ')'
+        s = " or ".join(str(t) for t in self.config_types)
+        return "(" + s + ")"
 
 
 class And(Type):
@@ -276,6 +286,7 @@ class And(Type):
 
         And(StrMatch(r'\\d'), StrMatch(r'[!@#$%^&*()]'))
     """
+
     def __init__(self, *config_types):
         self.config_types = config_types
 
@@ -283,8 +294,8 @@ class And(Type):
         return all(t.type_check(obj) for t in self.config_types)
 
     def __str__(self):
-        s = ' and '.join(str(t) for t in self.config_types)
-        return '(' + s + ')'
+        s = " and ".join(str(t) for t in self.config_types)
+        return "(" + s + ")"
 
 
 class Const(Type):
@@ -365,7 +376,7 @@ class IpAddress(Type):
             return False
 
     def __str__(self):
-        return 'IPv4 or IPv6 address'
+        return "IPv4 or IPv6 address"
 
 
 class IpNetwork(Type):
@@ -381,7 +392,7 @@ class IpNetwork(Type):
             return False
 
     def __str__(self):
-        return 'IPv4 or IPv6 network'
+        return "IPv4 or IPv6 network"
 
 
 class FileType(Type):
@@ -393,7 +404,7 @@ class FileType(Type):
         return Path(obj).exists()
 
     def __str__(self):
-        return 'existing file'
+        return "existing file"
 
 
 class AnyType(Type):
@@ -403,7 +414,7 @@ class AnyType(Type):
         return True
 
     def __str__(self):
-        return 'any type'
+        return "any type"
 
 
 Str = Scalar(str)
@@ -430,10 +441,10 @@ IP = IpAddress()
 IPNet = IpNetwork()
 """Singleton representing an IP network (v4 or v6)."""
 
-Dotted = StrMatch(r'^[^.]+(\.[^.]+)*$')
+Dotted = StrMatch(r"^[^.]+(\.[^.]+)*$")
 """Singleton representing a dotted Python path."""
 
-URL = StrMatch(r'^[^:]+://')
+URL = StrMatch(r"^[^:]+://")
 """Singleton representing a URL in the form of xxxx://."""
 
 
@@ -447,6 +458,7 @@ class List(Type):
         List(Dict(Str, Int))
         List(StrMatch(r'^https?://'))
     """
+
     def __init__(self, element_type):
         self.element_type = element_type
 
@@ -456,7 +468,7 @@ class List(Type):
         return all(self.element_type.type_check(e) for e in obj)
 
     def __str__(self):
-        return f'list of {self.element_type}'
+        return f"list of {self.element_type}"
 
 
 class Dict(Type):
@@ -468,6 +480,7 @@ class Dict(Type):
         Dict(Str, List(IP))
         Dict(Str, List(Or(Int, Float)))
     """
+
     def __init__(self, key_type, value_type):
         self.key_type = key_type
         self.value_type = value_type
@@ -475,8 +488,9 @@ class Dict(Type):
     def type_check(self, obj):
         if type(obj) != dict:
             return False
-        return (all(self.key_type.type_check(k) for k in obj.keys())
-                and all(self.value_type.type_check(v) for v in obj.values()))
+        return all(self.key_type.type_check(k) for k in obj.keys()) and all(
+            self.value_type.type_check(v) for v in obj.values()
+        )
 
     def __str__(self):
-        return f'dict with {self.key_type} keys and {self.value_type} values'
+        return f"dict with {self.key_type} keys and {self.value_type} values"

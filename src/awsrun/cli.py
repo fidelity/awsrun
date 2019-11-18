@@ -228,8 +228,12 @@ from pathlib import Path
 
 import awsrun.commands
 from awsrun.acctload import AccountLoader
-from awsrun.argparse import (AppendAttributeValuePair, AppendWithoutDefault,
-                             RawAndDefaultsFormatter, prevent_option_reuse)
+from awsrun.argparse import (
+    AppendAttributeValuePair,
+    AppendWithoutDefault,
+    RawAndDefaultsFormatter,
+    prevent_option_reuse,
+)
 from awsrun.cmdmgr import CommandManager
 from awsrun.config import Any, Choice, Config, Dict, File, Int, List, Str
 from awsrun.plugmgr import PluginManager
@@ -277,7 +281,7 @@ def main():
     except Exception as e:  # pylint: disable=broad-except
         # Don't print stack traces by default as it can be overwhelming (scary)
         # for those not familiar with Python development.
-        if os.getenv('AWSRUN_TRACE'):
+        if os.getenv("AWSRUN_TRACE"):
             traceback.print_exc(file=sys.stderr)
 
         print(e, file=sys.stderr)
@@ -297,7 +301,7 @@ def _cli(csp):
     config = Config.from_file(csp.config_filename())
 
     # Build a callable to simplify access to the 'CLI' section of the config.
-    cfg = partial(config.get, 'CLI', type=Str)
+    cfg = partial(config.get, "CLI", type=Str)
 
     # Argument parsing for awsrun is performed in four distinct stages because
     # arguments are defined by the main CLI program, plug-ins can define their
@@ -370,7 +374,7 @@ def _cli(csp):
     # for all of the awsrun CLI options as well as the options for any flags
     # defined by plugins. If you specify a command and then a -h afterwards,
     # you get the help that the command author includes for their command.
-    prevent_option_reuse(exclude=('-h', '--help'))
+    prevent_option_reuse(exclude=("-h", "--help"))
 
     # STAGE 1 Argument Processing (see description above)
 
@@ -381,74 +385,85 @@ def _cli(csp):
         add_help=False,
         allow_abbrev=False,
         formatter_class=RawAndDefaultsFormatter,
-        description=SHORT_DESCRIPTION)
+        description=SHORT_DESCRIPTION,
+    )
 
-    acct_group = parser.add_argument_group('account selection options')
+    acct_group = parser.add_argument_group("account selection options")
     acct_group.add_argument(
-        '--account',
-        metavar='ACCT',
+        "--account",
+        metavar="ACCT",
         action=AppendWithoutDefault,
-        default=cfg('account', type=List(Str), default=[]),
-        dest='accounts',
-        help='run command on specified list of accounts')
+        default=cfg("account", type=List(Str), default=[]),
+        dest="accounts",
+        help="run command on specified list of accounts",
+    )
 
     acct_group.add_argument(
-        '--account-file',
-        metavar='FILE',
-        type=argparse.FileType('r'),
-        default=cfg('account_file', type=File),
-        help='filename containing accounts (one per line)')
+        "--account-file",
+        metavar="FILE",
+        type=argparse.FileType("r"),
+        default=cfg("account_file", type=File),
+        help="filename containing accounts (one per line)",
+    )
 
     acct_group.add_argument(
-        '--metadata',
-        metavar='ATTR',
-        nargs='?',
+        "--metadata",
+        metavar="ATTR",
+        nargs="?",
         const=True,
-        help='summarize metadata that can be used in filters')
+        help="summarize metadata that can be used in filters",
+    )
 
     acct_group.add_argument(
-        '--include',
-        metavar='ATTR=VAL',
+        "--include",
+        metavar="ATTR=VAL",
         action=AppendAttributeValuePair,
-        default=cfg('include', type=Dict(Str, List(Any)), default={}),
-        help='include filter for accounts')
+        default=cfg("include", type=Dict(Str, List(Any)), default={}),
+        help="include filter for accounts",
+    )
 
     acct_group.add_argument(
-        '--exclude',
-        metavar='ATTR=VAL',
+        "--exclude",
+        metavar="ATTR=VAL",
         action=AppendAttributeValuePair,
-        default=cfg('exclude', type=Dict(Str, List(Any)), default={}),
-        help='exclude filter for accounts')
+        default=cfg("exclude", type=Dict(Str, List(Any)), default={}),
+        help="exclude filter for accounts",
+    )
 
     parser.add_argument(
-        '--threads',
+        "--threads",
         metavar="N",
         type=int,
-        default=cfg('threads', type=Int, default=10),
-        help='number of concurrent threads to use')
+        default=cfg("threads", type=Int, default=10),
+        help="number of concurrent threads to use",
+    )
 
     parser.add_argument(
-        '--force',
-        action='store_true',
-        help='do not prompt user if # of accounts is > 1')
+        "--force",
+        action="store_true",
+        help="do not prompt user if # of accounts is > 1",
+    )
 
     parser.add_argument(
-        '--version',
-        action='version',
-        version='%(prog)s ' + awsrun.__version__)
+        "--version", action="version", version="%(prog)s " + awsrun.__version__
+    )
 
     parser.add_argument(
-        '--log-level',
-        default=cfg('log_level', type=Choice('DEBUG', 'INFO', 'WARN', 'ERROR'), default='ERROR'),
-        choices=['DEBUG', 'INFO', 'WARN', 'ERROR'],
-        help='set the logging level')
+        "--log-level",
+        default=cfg(
+            "log_level", type=Choice("DEBUG", "INFO", "WARN", "ERROR"), default="ERROR"
+        ),
+        choices=["DEBUG", "INFO", "WARN", "ERROR"],
+        help="set the logging level",
+    )
 
     parser.add_argument(
-        '--cmd-path',
+        "--cmd-path",
         action=AppendWithoutDefault,
-        metavar='PATH',
-        default=cfg('cmd_path', type=List(Str), default=[csp.default_command_path()]),
-        help='directory or python package used to find commands')
+        metavar="PATH",
+        default=cfg("cmd_path", type=List(Str), default=[csp.default_command_path()]),
+        help="directory or python package used to find commands",
+    )
 
     # Parse only the _known_ arguments as there may be additional args specified
     # by the user that are intended for consumption by the account loader plugin
@@ -460,15 +475,16 @@ def _cli(csp):
     # can be used immediately by the various python modules in this package.
     logging.basicConfig(
         level=args.log_level,
-        format='%(asctime)s %(name)s %(levelname)s [%(threadName)s] %(message)s')
+        format="%(asctime)s %(name)s %(levelname)s [%(threadName)s] %(message)s",
+    )
 
     # STAGE 2 Argument Processing (see description above).
 
     # The plugin manager will load the two plugins and handle command line
     # parsing of any arguments registered by the plugins.
     plugin_mgr = PluginManager(config, parser, args, remaining_argv)
-    plugin_mgr.parse_args('Accounts', default='awsrun.plugins.accts.Identity')
-    plugin_mgr.parse_args('Credentials', default=csp.default_session_provider())
+    plugin_mgr.parse_args("Accounts", default="awsrun.plugins.accts.Identity")
+    plugin_mgr.parse_args("Credentials", default=csp.default_session_provider())
 
     # STAGE 3 Argument Processing (see description above).
 
@@ -476,9 +492,11 @@ def _cli(csp):
     # because plugins can register their own flags, which means if the help flag
     # were added before this point, and a user passed the -h flag, it would not
     # include descriptions for any of the args registered by the plugins.
-    parser.add_argument('-h', '--help', action='help')
-    parser.add_argument('command', nargs='?', help='command to execute')
-    parser.add_argument('arguments', nargs=argparse.REMAINDER, default=[], help='arguments for command')
+    parser.add_argument("-h", "--help", action="help")
+    parser.add_argument("command", nargs="?", help="command to execute")
+    parser.add_argument(
+        "arguments", nargs=argparse.REMAINDER, default=[], help="arguments for command"
+    )
 
     # Now we parse the remaining args that were not consumed by the plugins,
     # which will typically include the awsrun command name and any of its args.
@@ -490,7 +508,7 @@ def _cli(csp):
 
     # Use the plugin manager to create the actual account loader that will be
     # used to load accounts and metadata for accounts.
-    account_loader = plugin_mgr.instantiate('Accounts', must_be=AccountLoader)
+    account_loader = plugin_mgr.instantiate("Accounts", must_be=AccountLoader)
 
     # Check to see if user is inquiring about the metadata associated with
     # accounts. If they pass --metadata by itself, print out a list of all
@@ -501,19 +519,23 @@ def _cli(csp):
         attrs = account_loader.attributes()
         if args.metadata in attrs:
             print(f"Metadata values for '{args.metadata}' attribute:\n")
-            print('\n'.join(sorted(attrs[args.metadata])))
+            print("\n".join(sorted(attrs[args.metadata])))
         elif attrs:
-            print('Valid metadata attributes:\n')
-            print('\n'.join(sorted(attrs)))
+            print("Valid metadata attributes:\n")
+            print("\n".join(sorted(attrs)))
         else:
-            print('No metadata attributes available')
+            print("No metadata attributes available")
         sys.exit(0)
 
     # Check to see if the user wants to load additional accounts from a file
     # specified on the command line. If so, the account IDs will be appended to
     # any accounts defined on the command line or in the user config.
     if args.account_file:
-        args.accounts.extend(a.strip() for a in args.account_file if not (a.isspace() or a.startswith('#')))
+        args.accounts.extend(
+            a.strip()
+            for a in args.account_file
+            if not (a.isspace() or a.startswith("#"))
+        )
 
     # Obtain a list of account *objects* for the specified account IDs. The
     # resulting objects will depend upon the account loader plugin used. Some
@@ -528,7 +550,7 @@ def _cli(csp):
     # config, no accounts specified in a separate file, or none of the
     # specified accounts matched the filters, so we just exit.
     if not accounts:
-        print('No accounts selected', file=sys.stderr)
+        print("No accounts selected", file=sys.stderr)
         sys.exit(1)
 
     # The command manager will be used to search, parse command arguments, and
@@ -550,9 +572,8 @@ def _cli(csp):
     # step, all command line arguments have been fully processed.
     try:
         command = command_mgr.instantiate_command(
-            args.command,
-            args.arguments,
-            partial(config.get, 'Commands', args.command))
+            args.command, args.arguments, partial(config.get, "Commands", args.command)
+        )
 
     # Most exceptions are passed upwards, but we explicitly catch a failure when
     # trying to instantiate the command selected by the user, so we can include a
@@ -568,7 +589,7 @@ def _cli(csp):
         _ask_for_confirmation(accounts)
 
     # Load up a session provider to hand out creds for the runner.
-    session_provider = plugin_mgr.instantiate('Credentials', must_be=SessionProvider)
+    session_provider = plugin_mgr.instantiate("Credentials", must_be=SessionProvider)
 
     # This is the main entry point into the awsrun API. Note: the entirety of
     # awsrun can be used without the need of the CLI. One only needs a list of
@@ -577,8 +598,11 @@ def _cli(csp):
     elapsed = runner.run(command, accounts, key=account_loader.acct_id)
 
     # Show a quick summary on how long the command took to run.
-    pluralize = 's' if len(accounts) != 1 else ''
-    print(f'\nProcessed {len(accounts)} account{pluralize} in {timedelta(seconds=elapsed)}', file=sys.stderr)
+    pluralize = "s" if len(accounts) != 1 else ""
+    print(
+        f"\nProcessed {len(accounts)} account{pluralize} in {timedelta(seconds=elapsed)}",
+        file=sys.stderr,
+    )
 
 
 def _print_valid_commands(commands, out=sys.stdout):
@@ -588,16 +612,16 @@ def _print_valid_commands(commands, out=sys.stdout):
     classes from the command modules.
     """
     if not commands:
-        print('No commands found, did you specify the correct --cmd-path?', file=out)
+        print("No commands found, did you specify the correct --cmd-path?", file=out)
         return
 
-    print('The following are the available commands:\n', file=out)
+    print("The following are the available commands:\n", file=out)
     max_cmd_len = max(len(name) for name in commands.keys())
     for name in sorted(commands.keys()):
         # By convention, as documented in user documentation, class docstring
         # is used when printing a summary of commands.
-        docstring = commands[name].__doc__ or ''
-        print(f'{name:{max_cmd_len}}  {docstring}', file=out)
+        docstring = commands[name].__doc__ or ""
+        print(f"{name:{max_cmd_len}}  {docstring}", file=out)
     print(file=out)
 
 
@@ -605,16 +629,16 @@ def _print_accounts(accts, out=sys.stdout):
     """Print the list of accounts."""
     count = len(accts)
     print(f'{count} account{"s" if count != 1 else ""} selected:\n', file=out)
-    print(', '.join(str(a) for a in accts), file=out, end='\n\n')
+    print(", ".join(str(a) for a in accts), file=out, end="\n\n")
 
 
 def _ask_for_confirmation(accts):
     """Prompt user for confirmation and list accounts to be acted upon."""
     _print_accounts(accts, out=sys.stderr)
-    print('Proceed (y/n)? ', flush=True, end='', file=sys.stderr)
+    print("Proceed (y/n)? ", flush=True, end="", file=sys.stderr)
     answer = input()
-    if not answer.lower() in ['y', 'yes']:
-        print('Exiting', file=sys.stderr)
+    if not answer.lower() in ["y", "yes"]:
+        print("Exiting", file=sys.stderr)
         sys.exit(0)
 
 
@@ -649,9 +673,9 @@ class _CSP:
 
         # Identify the CSP name from the name of the installed CLI tool. The
         # installed CLI will be called "awsrun" or "azurerun".
-        csp = Path(prog_name).name.replace('run', '')
-        if csp not in ['aws', 'azure']:
-            raise Exception(f'unknown variant: {csp}')
+        csp = Path(prog_name).name.replace("run", "")
+        if csp not in ["aws", "azure"]:
+            raise Exception(f"unknown variant: {csp}")
         return cls(csp)
 
     def __init__(self, name):
@@ -659,18 +683,18 @@ class _CSP:
 
     def config_filename(self):
         """Returns the path to the user configuration."""
-        env_var = self.name.upper() + 'RUN_CONFIG'
-        dotfile = '.' + self.name.lower() + 'run.yaml'
+        env_var = self.name.upper() + "RUN_CONFIG"
+        dotfile = "." + self.name.lower() + "run.yaml"
         return os.environ.get(env_var, Path.home() / dotfile)
 
     def default_command_path(self):
         """Returns the path to the builtin commands submodule."""
-        return 'awsrun.commands.' + self.name.lower()
+        return "awsrun.commands." + self.name.lower()
 
     def default_session_provider(self):
         """Returns the module name of the builtin Profile session provider."""
-        return 'awsrun.plugins.creds.' + self.name.lower() + '.Profile'
+        return "awsrun.plugins.creds." + self.name.lower() + ".Profile"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

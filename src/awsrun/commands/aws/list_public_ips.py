@@ -53,7 +53,7 @@ class CLICommand(RegionalCommand):
 
     def regional_execute(self, session, acct, region):
         out = io.StringIO()
-        ec2 = session.resource('ec2', region_name=region)
+        ec2 = session.resource("ec2", region_name=region)
 
         public_ips = defaultdict(list)
         for vpc in ec2.vpcs.all():
@@ -69,7 +69,7 @@ class CLICommand(RegionalCommand):
                 #     public_ips[vpc.id].append(ni.association.public_ip)
 
                 if ni.association_attribute:
-                    public_ips[vpc.id].append(ni.association_attribute['PublicIp'])
+                    public_ips[vpc.id].append(ni.association_attribute["PublicIp"])
 
         for vpc_id, ips in public_ips.items():
             print(f'{acct}/{region}/{vpc_id}: {", ".join(ips)}', file=out)

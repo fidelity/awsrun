@@ -42,7 +42,12 @@ your.own.module.PluginSubclass
 `awsrun.plugmgr.Plugin` that returns a `awsrun.acctload.AccountLoader`.
 """
 
-from awsrun.acctload import CSVAccountLoader, IdentityAccountLoader, JSONAccountLoader, YAMLAccountLoader
+from awsrun.acctload import (
+    CSVAccountLoader,
+    IdentityAccountLoader,
+    JSONAccountLoader,
+    YAMLAccountLoader,
+)
 from awsrun.config import List, Str, Int, Bool, URL
 
 from awsrun.plugmgr import Plugin
@@ -70,6 +75,7 @@ class Identity(Plugin):
     There are no options for this plug-in.
 
     """
+
     def instantiate(self, args):
         return IdentityAccountLoader()
 
@@ -84,31 +90,35 @@ class _CachingLoaderPlugin(Plugin):
         # main CLI. Any CLI args added via add_argument will be commingled with
         # the main awsrun args, so they are prefixed with '--loader-' to lessen
         # chance of collision.
-        group = parser.add_argument_group('account loader options')
+        group = parser.add_argument_group("account loader options")
         group.add_argument(
-            '--loader-url',
-            metavar='URL',
-            default=cfg('url', type=URL, must_exist=True),
-            help='URL to account data (also supports file:///path/to/file)')
+            "--loader-url",
+            metavar="URL",
+            default=cfg("url", type=URL, must_exist=True),
+            help="URL to account data (also supports file:///path/to/file)",
+        )
 
         group.add_argument(
-            '--loader-no-verify',
-            action='store_true',
-            default=cfg('no_verify', type=Bool, default=False),
-            help='disable cert verification for HTTP requests')
+            "--loader-no-verify",
+            action="store_true",
+            default=cfg("no_verify", type=Bool, default=False),
+            help="disable cert verification for HTTP requests",
+        )
 
         group.add_argument(
-            '--loader-max-age',
-            metavar='SECS',
+            "--loader-max-age",
+            metavar="SECS",
             type=int,
-            default=cfg('max_age', type=Int, default=0),
-            help='max age for cached URL data')
+            default=cfg("max_age", type=Int, default=0),
+            help="max age for cached URL data",
+        )
 
         group.add_argument(
-            '--loader-str-template',
-            metavar='STRING',
-            default=cfg('str_template'),
-            help='format string used to display an account')
+            "--loader-str-template",
+            metavar="STRING",
+            default=cfg("str_template"),
+            help="format string used to display an account",
+        )
 
     def instantiate(self, args):
         raise NotImplementedError
@@ -260,18 +270,20 @@ class JSON(_CachingLoaderPlugin):
     be warned on the command line if verification has been disabled. The default
     value is `false`.
     """
+
     def instantiate(self, args):
         cfg = self.cfg
 
         loader = JSONAccountLoader(
             url=args.loader_url,
             max_age=args.loader_max_age,
-            id_attr=cfg('id_attr', must_exist=True),
-            path=cfg('path', type=List(Str), default=[]),
+            id_attr=cfg("id_attr", must_exist=True),
+            path=cfg("path", type=List(Str), default=[]),
             str_template=args.loader_str_template,
-            include_attrs=cfg('include_attrs', type=List(Str), default=[]),
-            exclude_attrs=cfg('exclude_attrs', type=List(Str), default=[]),
-            no_verify=args.loader_no_verify)
+            include_attrs=cfg("include_attrs", type=List(Str), default=[]),
+            exclude_attrs=cfg("exclude_attrs", type=List(Str), default=[]),
+            no_verify=args.loader_no_verify,
+        )
 
         return loader
 
@@ -438,18 +450,20 @@ class YAML(_CachingLoaderPlugin):
     be warned on the command line if verification has been disabled. The default
     value is `false`.
     """
+
     def instantiate(self, args):
         cfg = self.cfg
 
         loader = YAMLAccountLoader(
             url=args.loader_url,
             max_age=args.loader_max_age,
-            id_attr=cfg('id_attr', must_exist=True),
-            path=cfg('path', type=List(Str), default=[]),
+            id_attr=cfg("id_attr", must_exist=True),
+            path=cfg("path", type=List(Str), default=[]),
             str_template=args.loader_str_template,
-            include_attrs=cfg('include_attrs', type=List(Str), default=[]),
-            exclude_attrs=cfg('exclude_attrs', type=List(Str), default=[]),
-            no_verify=args.loader_no_verify)
+            include_attrs=cfg("include_attrs", type=List(Str), default=[]),
+            exclude_attrs=cfg("exclude_attrs", type=List(Str), default=[]),
+            no_verify=args.loader_no_verify,
+        )
 
         return loader
 
@@ -561,6 +575,7 @@ class CSV(_CachingLoaderPlugin):
     be warned on the command line if verification has been disabled. The default
     value is `false`.
     """
+
     def __init__(self, parser, cfg):
         super().__init__(parser, cfg)
 
@@ -568,12 +583,13 @@ class CSV(_CachingLoaderPlugin):
         # main CLI. Any CLI args added via add_argument will be commingled with
         # the main awsrun args, so they are prefixed with '--loader-' to lessen
         # chance of collision.
-        group = parser.add_argument_group('CSV account loader options')
+        group = parser.add_argument_group("CSV account loader options")
         group.add_argument(
-            '--loader-delimiter',
-            metavar='CHAR',
-            default=cfg('delimiter', default=','),
-            help='delimiter used in CSV file')
+            "--loader-delimiter",
+            metavar="CHAR",
+            default=cfg("delimiter", default=","),
+            help="delimiter used in CSV file",
+        )
 
     def instantiate(self, args):
         cfg = self.cfg
@@ -582,10 +598,11 @@ class CSV(_CachingLoaderPlugin):
             url=args.loader_url,
             max_age=args.loader_max_age,
             delimiter=args.loader_delimiter,
-            id_attr=cfg('id_attr', must_exist=True),
+            id_attr=cfg("id_attr", must_exist=True),
             str_template=args.loader_str_template,
-            include_attrs=cfg('include_attrs', type=List(Str), default=[]),
-            exclude_attrs=cfg('exclude_attrs', type=List(Str), default=[]),
-            no_verify=args.loader_no_verify)
+            include_attrs=cfg("include_attrs", type=List(Str), default=[]),
+            exclude_attrs=cfg("exclude_attrs", type=List(Str), default=[]),
+            no_verify=args.loader_no_verify,
+        )
 
         return loader

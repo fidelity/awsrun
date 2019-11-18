@@ -66,10 +66,12 @@ class CLICommand(RegionalCommand):
     @classmethod
     def regional_from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            '--summary', '-s',
-            action='store_true',
-            help='display summary by role',
-            default=cfg('summary', type=Bool))
+            "--summary",
+            "-s",
+            action="store_true",
+            help="display summary by role",
+            default=cfg("summary", type=Bool),
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -82,26 +84,32 @@ class CLICommand(RegionalCommand):
         out = io.StringIO()
         by_role = defaultdict(list)
 
-        aws_lambda = session.client('lambda', region_name=region)
-        paginator = aws_lambda.get_paginator('list_functions')
+        aws_lambda = session.client("lambda", region_name=region)
+        paginator = aws_lambda.get_paginator("list_functions")
 
         for fn_page in paginator.paginate():
-            for fn in fn_page['Functions']:
+            for fn in fn_page["Functions"]:
                 if self.show_summary_only:
-                    by_role[fn['Role']].append(fn)
+                    by_role[fn["Role"]].append(fn)
                     continue
-                print(f'{acct}/{region}: name={fn["FunctionName"]} runtime={fn["Runtime"]} role={fn["Role"]} public={_is_public(fn)}', file=out)
+                print(
+                    f'{acct}/{region}: name={fn["FunctionName"]} runtime={fn["Runtime"]} role={fn["Role"]} public={_is_public(fn)}',
+                    file=out,
+                )
 
         if self.show_summary_only:
             for role in by_role:
                 total = len(by_role[role])
                 public = len([fn for fn in by_role[role] if _is_public(fn)])
-                print(f'{acct}/{region}: role={role} total={total} private={total-public} public={public}', file=out)
+                print(
+                    f"{acct}/{region}: role={role} total={total} private={total-public} public={public}",
+                    file=out,
+                )
 
         return out.getvalue()
 
 
 def _is_public(fn):
-    if 'VpcConfig' not in fn:
+    if "VpcConfig" not in fn:
         return True
-    return len(fn['VpcConfig']['SubnetIds']) == 0
+    return len(fn["VpcConfig"]["SubnetIds"]) == 0

@@ -51,10 +51,10 @@ class CLICommand(RegionalCommand):
 
     def regional_execute(self, session, acct, region):
         out = io.StringIO()
-        ec2 = session.resource('ec2', region_name=region)
+        ec2 = session.resource("ec2", region_name=region)
 
         for vpc in ec2.vpcs.all():
-            cidrs = ', '.join(c['CidrBlock'] for c in vpc.cidr_block_association_set)
-            print(f'{acct}/{region}: id={vpc.id} cidrs={cidrs}', file=out)
+            cidrs = ", ".join(c["CidrBlock"] for c in vpc.cidr_block_association_set)
+            print(f"{acct}/{region}: id={vpc.id} cidrs={cidrs}", file=out)
 
         return out.getvalue()

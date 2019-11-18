@@ -387,11 +387,11 @@ class Command:
         trace at WARN log level.
         """
         try:
-            print(get_result(), end='', flush=True)
+            print(get_result(), end="", flush=True)
 
         except Exception as e:  # pylint: disable=broad-except
             LOG.warning("%s: error: %s", acct, e, exc_info=True)
-            print(f'{acct}: error: {e}', flush=True, file=sys.stderr)
+            print(f"{acct}: error: {e}", flush=True, file=sys.stderr)
 
 
 class RegionalCommand(Command):
@@ -425,17 +425,20 @@ class RegionalCommand(Command):
     examples on how to write custom regional commands, refer to the built-in
     commands included in the `awsrun.commands` module.
     """
+
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         # If the user does not provide their own from_cli method, we make sure
         # that we invoke parse_args and add the --region flag on their behalf.
         parser.add_argument(
-            '--region', '-r',
+            "--region",
+            "-r",
             action=AppendWithoutDefault,
-            default=cfg('region', type=List(Str), default=[]),
-            dest='regions',
-            metavar='REGION',
-            help='region in which to run commands')
+            default=cfg("region", type=List(Str), default=[]),
+            dest="regions",
+            metavar="REGION",
+            help="region in which to run commands",
+        )
 
         # Delegate out to the user defining their command
         command = cls.regional_from_cli(parser, argv, cfg)
@@ -447,7 +450,7 @@ class RegionalCommand(Command):
         # default value to be provided via the user config file. So, we check to
         # see if this is an empty list here, and if so, then complain and exit.
         if not command.regions:
-            parser.error('No regions specified')
+            parser.error("No regions specified")
 
         return command
 
@@ -495,7 +498,10 @@ class RegionalCommand(Command):
         self.regions = regions
 
     def execute(self, session, acct):
-        return [(r, _wrap_result(self.regional_execute, session, acct, r)) for r in self.regions]
+        return [
+            (r, _wrap_result(self.regional_execute, session, acct, r))
+            for r in self.regions
+        ]
 
     def regional_execute(self, session, acct, region):
         """Invoked by `AccountRunner.run` to process an account / region pair.
@@ -559,7 +565,7 @@ class RegionalCommand(Command):
 
         except Exception as e:  # pylint: disable=broad-except
             LOG.warning("%s: error: %s", acct, e, exc_info=True)
-            print(f'{acct}: error: {e}', flush=True, file=sys.stderr)
+            print(f"{acct}: error: {e}", flush=True, file=sys.stderr)
 
     def regional_collect_results(self, acct, region, get_result):
         """Invoked by `AccountRunner.run` after processing an account and region.
@@ -585,11 +591,11 @@ class RegionalCommand(Command):
         standard error and logs the stack trace at WARN log level.
         """
         try:
-            print(get_result(), end='', flush=True)
+            print(get_result(), end="", flush=True)
 
         except Exception as e:  # pylint: disable=broad-except
             LOG.warning("%s/%s: error: %s", acct, region, e, exc_info=True)
-            print(f'{acct}/{region}: error: {e}', flush=True, file=sys.stderr)
+            print(f"{acct}/{region}: error: {e}", flush=True, file=sys.stderr)
 
 
 class AccountRunner:
@@ -610,9 +616,12 @@ class AccountRunner:
     caught to prevent the termination of other threads. The result of the
     execute method, or exceptions raised, are made available to the command.
     """
+
     def __init__(self, session_provider, max_workers=10):
         if not isinstance(session_provider, SessionProvider):
-            raise TypeError(f"'{session_provider}' must be a subclass of awsrun.session.SessionProvider")
+            raise TypeError(
+                f"'{session_provider}' must be a subclass of awsrun.session.SessionProvider"
+            )
 
         self.session_provider = session_provider
         self.max_workers = max_workers
@@ -734,14 +743,16 @@ def _valid_key_fn(fn):
     `InvalidAccountIDError` is raised when the returned function is invoked,
     otherwise the original result of `fn` is returned.
     """
+
     def new_key_fn(*args, **kwargs):
         try:
             result = fn(*args, **kwargs)
         except Exception as e:
-            raise InvalidAccountIDError(f'The key function threw an exception: {e}')
+            raise InvalidAccountIDError(f"The key function threw an exception: {e}")
         if not isinstance(result, str):
-            raise InvalidAccountIDError(f'Account ID is not a string: {result}')
+            raise InvalidAccountIDError(f"Account ID is not a string: {result}")
         return result
+
     return new_key_fn
 
 
@@ -781,6 +792,8 @@ def _wrap_result(fn, *args, **kwargs):
 
 def _wrap_exception(exception):
     """Returns a function that when invoked will raise `exception`."""
+
     def fn():
         raise exception
+
     return fn

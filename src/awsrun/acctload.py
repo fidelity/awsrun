@@ -74,6 +74,7 @@ class AccountLoader:
     Subclasses must provide implementations for `acct_id`, `attributes`, and
     `accounts`.
     """
+
     def acct_id(self, acct):
         """Returns the account ID as a string associated with the `acct` object."""
         raise NotImplementedError
@@ -113,6 +114,7 @@ class IdentityAccountLoader(AccountLoader):
     account object passed to `Command.execute` is simply a string representing
     the account ID.
     """
+
     def acct_id(self, acct):
         """Returns the account ID associated with the `acct` object.
 
@@ -141,7 +143,7 @@ class IdentityAccountLoader(AccountLoader):
         raise an AttributeError.
         """
         if include or exclude:
-            raise AttributeError('Cannot use filters as no attributes are defined')
+            raise AttributeError("Cannot use filters as no attributes are defined")
 
         return list(set(acct_ids))
 
@@ -280,13 +282,22 @@ class MetaAccountLoader(AccountLoader):
     name representing the account ID must be include in the selected attribute
     names. In addition, all of the attributes referenced in `str_template`.
     """
-    def __init__(self, accts, id_attr='id', path=None, str_template=None, include_attrs=None, exclude_attrs=None):
+
+    def __init__(
+        self,
+        accts,
+        id_attr="id",
+        path=None,
+        str_template=None,
+        include_attrs=None,
+        exclude_attrs=None,
+    ):
         if not id_attr:
             raise ValueError("Must provide a non-None id_attr name")
 
         self.id_attr = id_attr
         self.path = [] if path is None else path
-        self.str_template = str_template or '{' + id_attr + '}'
+        self.str_template = str_template or "{" + id_attr + "}"
         self.include_attrs = [] if include_attrs is None else include_attrs
         self.exclude_attrs = [] if exclude_attrs is None else exclude_attrs
 
@@ -297,11 +308,19 @@ class MetaAccountLoader(AccountLoader):
         # But, this would limit a user from loading accounts from different
         # dicts that might contain different metadata keys. Dynamically creating
         # the class allows a custom class attribute for each.
-        self.CustomAccount = type('Account', (AbstractAccount,), {'__slots__': '_attrs'})
-        self.CustomAccount._str_template = self.str_template  # pylint: disable=protected-access
+        self.CustomAccount = type(
+            "Account", (AbstractAccount,), {"__slots__": "_attrs"}
+        )
+        self.CustomAccount._str_template = (
+            self.str_template
+        )  # pylint: disable=protected-access
 
         self.accts, self.attrs = self._parse(accts)
-        LOG.info('loaded %d accounts with the metadata attributes: %s', len(self.accts), self.attrs)
+        LOG.info(
+            "loaded %d accounts with the metadata attributes: %s",
+            len(self.accts),
+            self.attrs,
+        )
 
     def acct_id(self, acct):
         """Returns the account ID associated with the `acct` object.
@@ -409,7 +428,9 @@ class MetaAccountLoader(AccountLoader):
                 raise AttributeError(f"Invalid attribute '{attr}' in filter")
 
         # Limit our account list by the user-supplied filters
-        return [self.CustomAccount(a) for a in accts if self._filter(a, include, exclude)]
+        return [
+            self.CustomAccount(a) for a in accts if self._filter(a, include, exclude)
+        ]
 
     @staticmethod
     def _filter(acct, include, exclude):
@@ -428,7 +449,10 @@ class MetaAccountLoader(AccountLoader):
         def test(dictionary, default):
             if not dictionary:
                 return default
-            return all(any(acct[attr] == v for v in values) for attr, values in dictionary.items())
+            return all(
+                any(acct[attr] == v for v in values)
+                for attr, values in dictionary.items()
+            )
 
         included = test(include, True)
         excluded = test(exclude, False)
@@ -452,7 +476,9 @@ class MetaAccountLoader(AccountLoader):
         # If accts is still not a list of dicts of key/value account data, then
         # the user has provided an invalid list of accounts.
         if not isinstance(accts, list):
-            raise TypeError(f'Account list must be a list of dicts or dict of dicts: {accts}')
+            raise TypeError(
+                f"Account list must be a list of dicts or dict of dicts: {accts}"
+            )
 
         self._ensure_id_attr_exists(accts)
         self._ensure_ids_are_strings(accts)
@@ -482,7 +508,7 @@ class MetaAccountLoader(AccountLoader):
         try:
             return reduce(lambda d, p: d[p], self.path, accts)
         except Exception:
-            raise ValueError(f'Cannot find accounts, did you specify the correct path?')
+            raise ValueError(f"Cannot find accounts, did you specify the correct path?")
 
     def _convert_dict_of_accts_to_list(self, accts):
         """Converts a dict of accounts to a list of accounts.
@@ -511,13 +537,17 @@ class MetaAccountLoader(AccountLoader):
         """
         for key, acct in accts.items():
             if not isinstance(acct, dict):
-                raise TypeError(f'Accounts are not dicts, did you specify the correct path?')
+                raise TypeError(
+                    f"Accounts are not dicts, did you specify the correct path?"
+                )
 
             if self.id_attr not in acct:
                 acct[self.id_attr] = key
 
             if key != acct[self.id_attr]:
-                raise ValueError(f"Account IDs do not match: '{key}' != '{acct[self.id_attr]}'")
+                raise ValueError(
+                    f"Account IDs do not match: '{key}' != '{acct[self.id_attr]}'"
+                )
 
         return list(accts.values())
 
@@ -538,7 +568,7 @@ class MetaAccountLoader(AccountLoader):
         """Raises `InvalidFormatTemplateError` if `self.str_template` contains
         invalid attributes that are not present in the account dicts.
         """
-        tokens = re.findall(r'\{(\w+)(?::[^}]+)?\}', self.str_template, re.ASCII)
+        tokens = re.findall(r"\{(\w+)(?::[^}]+)?\}", self.str_template, re.ASCII)
         unknown = set(tokens).difference(attrs)
         if unknown:
             raise InvalidFormatTemplateError(unknown, list(attrs))
@@ -622,12 +652,23 @@ class CSVAccountLoader(MetaAccountLoader):
     and `exclude_attrs` -- are defined in the constructor of
     `MetaAccountLoader`.
     """
-    def __init__(self, url, max_age=0, delimiter=',', id_attr='id', str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False):
+
+    def __init__(
+        self,
+        url,
+        max_age=0,
+        delimiter=",",
+        id_attr="id",
+        str_template=None,
+        include_attrs=None,
+        exclude_attrs=None,
+        no_verify=False,
+    ):
         include_attrs = [] if include_attrs is None else include_attrs
         exclude_attrs = [] if exclude_attrs is None else exclude_attrs
 
         session = requests.Session()
-        session.mount('file://', FileAdapter())
+        session.mount("file://", FileAdapter())
 
         def load_cache():
             r = session.get(url, verify=not no_verify)
@@ -635,7 +676,7 @@ class CSVAccountLoader(MetaAccountLoader):
             buf = io.StringIO(r.text.strip())
             return list(csv.DictReader(buf, delimiter=delimiter, skipinitialspace=True))
 
-        cache_file = Path(tempfile.gettempdir(), 'awsrun.dat')
+        cache_file = Path(tempfile.gettempdir(), "awsrun.dat")
         accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
 
         super().__init__(
@@ -643,7 +684,8 @@ class CSVAccountLoader(MetaAccountLoader):
             id_attr=id_attr,
             str_template=str_template,
             include_attrs=include_attrs,
-            exclude_attrs=exclude_attrs)
+            exclude_attrs=exclude_attrs,
+        )
 
 
 class JSONAccountLoader(MetaAccountLoader):
@@ -680,20 +722,31 @@ class JSONAccountLoader(MetaAccountLoader):
     the constructor -- `id_attr`, `path`, `str_template`, `include_attrs`, and
     `exclude_attrs` -- are defined in the constructor of `MetaAccountLoader`.
     """
-    def __init__(self, url, max_age=0, id_attr='id', path=None, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False):
+
+    def __init__(
+        self,
+        url,
+        max_age=0,
+        id_attr="id",
+        path=None,
+        str_template=None,
+        include_attrs=None,
+        exclude_attrs=None,
+        no_verify=False,
+    ):
         path = [] if path is None else path
         include_attrs = [] if include_attrs is None else include_attrs
         exclude_attrs = [] if exclude_attrs is None else exclude_attrs
 
         session = requests.Session()
-        session.mount('file://', FileAdapter())
+        session.mount("file://", FileAdapter())
 
         def load_cache():
             r = session.get(url, verify=not no_verify)
             r.raise_for_status()
             return r.json()
 
-        cache_file = Path(tempfile.gettempdir(), 'awsrun.dat')
+        cache_file = Path(tempfile.gettempdir(), "awsrun.dat")
         accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
 
         super().__init__(
@@ -702,7 +755,8 @@ class JSONAccountLoader(MetaAccountLoader):
             path=path,
             str_template=str_template,
             include_attrs=include_attrs,
-            exclude_attrs=exclude_attrs)
+            exclude_attrs=exclude_attrs,
+        )
 
 
 class YAMLAccountLoader(MetaAccountLoader):
@@ -742,20 +796,31 @@ class YAMLAccountLoader(MetaAccountLoader):
     the constructor -- `id_attr`, `path`, `str_template`, `include_attrs`, and
     `exclude_attrs` -- are defined in the constructor of `MetaAccountLoader`.
     """
-    def __init__(self, url, max_age=0, id_attr='id', path=None, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False):
+
+    def __init__(
+        self,
+        url,
+        max_age=0,
+        id_attr="id",
+        path=None,
+        str_template=None,
+        include_attrs=None,
+        exclude_attrs=None,
+        no_verify=False,
+    ):
         path = [] if path is None else path
         include_attrs = [] if include_attrs is None else include_attrs
         exclude_attrs = [] if exclude_attrs is None else exclude_attrs
 
         session = requests.Session()
-        session.mount('file://', FileAdapter())
+        session.mount("file://", FileAdapter())
 
         def load_cache():
             r = session.get(url, verify=not no_verify)
             r.raise_for_status()
             return yaml.safe_load(r.text)
 
-        cache_file = Path(tempfile.gettempdir(), 'awsrun.dat')
+        cache_file = Path(tempfile.gettempdir(), "awsrun.dat")
         accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
 
         super().__init__(
@@ -764,7 +829,8 @@ class YAMLAccountLoader(MetaAccountLoader):
             path=path,
             str_template=str_template,
             include_attrs=include_attrs,
-            exclude_attrs=exclude_attrs)
+            exclude_attrs=exclude_attrs,
+        )
 
 
 class AbstractAccount:  # pylint: disable=single-string-used-for-slots
@@ -794,8 +860,9 @@ class AbstractAccount:  # pylint: disable=single-string-used-for-slots
         assert str(acct) == 'acct=100200300400'
         assert repr(acct) == 'Account(id="100200300400", env="prod", status="active")'
     """
+
     _str_template = None
-    __slots__ = '_attrs'
+    __slots__ = "_attrs"
 
     def __init__(self, attributes):
         self._attrs = attributes
@@ -803,19 +870,23 @@ class AbstractAccount:  # pylint: disable=single-string-used-for-slots
     def __getattr__(self, name):
         value = self._attrs.get(name)
         if not value and name not in self._attrs:
-            raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
+            raise AttributeError(
+                f"'{type(self).__name__}' object has no attribute '{name}'"
+            )
         return value
 
     def __eq__(self, other):
         return self._attrs == other._attrs  # pylint: disable=protected-access
 
     def __repr__(self):
-        pairs = (f'{k}={repr(v)}' for k, v in self._attrs.items())
+        pairs = (f"{k}={repr(v)}" for k, v in self._attrs.items())
         return f'Account({", ".join(pairs)})'
 
     def __str__(self):
         if not self._str_template:
-            raise NotImplementedError(f"'{type(self).__name__}' class has no variable 'str_template'")
+            raise NotImplementedError(
+                f"'{type(self).__name__}' class has no variable 'str_template'"
+            )
         return self._str_template.format(**self._attrs)
 
 
@@ -839,6 +910,7 @@ class InvalidFormatTemplateError(Exception):
     `unknown_attrs` contains a list of the unknown attribute names used in the
     format string of the Account object.
     """
+
     def __init__(self, unknown, valid):
         self.unknown_attrs = unknown
         self.valid_attrs = valid
@@ -846,7 +918,9 @@ class InvalidFormatTemplateError(Exception):
         def quote(attrs):
             return ", ".join(["'" + a + "'" for a in attrs])
 
-        super().__init__(f"Unknown attributes in format template: {quote(unknown)}. Valid attributes are: {quote(valid)}")
+        super().__init__(
+            f"Unknown attributes in format template: {quote(unknown)}. Valid attributes are: {quote(valid)}"
+        )
 
 
 def _convert_keys_to_valid_attribute_names(d):
@@ -872,8 +946,8 @@ def _make_valid_attribute_name(s):
     name.
     """
     if not s.isidentifier():
-        s = re.sub(r'[^0-9a-zA-Z_]', r'_', s)
-        s = re.sub(r'^([0-9]+)', r'_\1', s)
+        s = re.sub(r"[^0-9a-zA-Z_]", r"_", s)
+        s = re.sub(r"^([0-9]+)", r"_\1", s)
     if keyword.iskeyword(s):
-        s = s + '_'
+        s = s + "_"
     return s
