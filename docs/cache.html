@@ -196,7 +196,7 @@ class ExpiringValue(AbstractExpiringValue):
 
 
 class PersistentExpiringValue(ExpiringValue):
-    &#34;&#34;&#34;Represents an expiring value that will is persisted to disk as JSON.
+    &#34;&#34;&#34;Represents an expiring value that will be persisted to disk as JSON.
 
     A `PersistentExpiringValue` represents a lazily loaded value that will
     expire over time and is cached to disk as JSON. The constructor takes a
@@ -512,7 +512,7 @@ method is called. This class is thread-safe.</p></section>
 <span>(</span><span>refresh_fn, path, max_age)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Represents an expiring value that will is persisted to disk as JSON.</p>
+<section class="desc"><p>Represents an expiring value that will be persisted to disk as JSON.</p>
 <p>A <a title="awsrun.cache.PersistentExpiringValue" href="#awsrun.cache.PersistentExpiringValue"><code>PersistentExpiringValue</code></a> represents a lazily loaded value that will
 expire over time and is cached to disk as JSON. The constructor takes a
 <code>refresh_fn</code> function of zero arguments, which is called to obtain the value
@@ -528,7 +528,7 @@ persisted as JSON, a TypeError is thrown.</p></section>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class PersistentExpiringValue(ExpiringValue):
-    &#34;&#34;&#34;Represents an expiring value that will is persisted to disk as JSON.
+    &#34;&#34;&#34;Represents an expiring value that will be persisted to disk as JSON.
 
     A `PersistentExpiringValue` represents a lazily loaded value that will
     expire over time and is cached to disk as JSON. The constructor takes a
