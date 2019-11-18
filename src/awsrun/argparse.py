@@ -160,9 +160,9 @@ def prevent_option_reuse(exclude=None):
     """
     seen = set()
     exclude = [] if exclude is None else exclude
-    original = (
-        argparse._ActionsContainer.add_argument
-    )  # pylint: disable=protected-access
+
+    # pylint: disable=protected-access
+    original = argparse._ActionsContainer.add_argument
 
     @wraps(original)
     def wrapper(self, *args, **kwargs):
@@ -173,12 +173,10 @@ def prevent_option_reuse(exclude=None):
                 seen.add(arg)
         return original(self, *args, **kwargs)
 
-    argparse._ActionsContainer.add_argument = (
-        wrapper
-    )  # pylint: disable=protected-access
+    argparse._ActionsContainer.add_argument = wrapper
 
 
-def from_str_to(type):  # pylint: disable=redefined-builtin
+def from_str_to(type_):
     """Return a cast function to convert a string to a builtin type.
 
     The `type` parameter is the name of the type as a string. Returns the
@@ -188,24 +186,24 @@ def from_str_to(type):  # pylint: disable=redefined-builtin
     return `False`. For any other `type` specified, the builtin `str`
     function is returned.
 
-        >>> f = _cast_function("str")
+        >>> f = from_str_to("str")
         >>> f("hello")
         "hello"
 
-        >>> f = _cast_function("int")
+        >>> f = from_str_to("int")
         >>> f("10")
         10
 
-        >>> f = _cast_function("float")
+        >>> f = from_str_to("float")
         >>> f("10")
         10.0
 
-        >>> f = _cast_function("bool")
+        >>> f = from_str_to("bool")
         >>> [f(s) for s in ['yes', 'no', 'true', 'false']]
         [True, False, True, False]
     """
-    if type in ("str", "int", "float"):
-        return getattr(builtins, type)
-    if type == "bool":
+    if type_ in ("str", "int", "float"):
+        return getattr(builtins, type_)
+    if type_ == "bool":
         return lambda s: s.lower() in ("y", "yes", "true", "True", "1")
     return str

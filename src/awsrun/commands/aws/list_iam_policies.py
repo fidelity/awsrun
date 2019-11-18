@@ -450,13 +450,12 @@ class CLICommand(Command):
             return
 
         for inline in identity.policies.all():
+            # pylint: disable=cell-var-from-loop
             # We wrap the policy_document in a lambda so boto3 resource is not
             # fetched unless it is really needed. Although pylint complains
             # about wrapping the looping var in a lambda, we use the lambda
             # immediately if needed.
-            if self.should_skip(
-                inline.policy_name, lambda: inline.policy_document
-            ):  # pylint: disable=cell-var-from-loop
+            if self.should_skip(inline.policy_name, lambda: inline.policy_document):
                 continue
 
             ip.print(f"policy=inline:{inline.policy_name}")
@@ -469,11 +468,12 @@ class CLICommand(Command):
             return
 
         for attached in identity.attached_policies.all():
+            # pylint: disable=cell-var-from-loop
             # We wrap the default_version.document in a lambda so boto3 resource
             # is not fetched unless it is really needed.
             if self.should_skip(
                 attached.policy_name, lambda: attached.default_version.document
-            ):  # pylint: disable=cell-var-from-loop
+            ):
                 continue
 
             ip.print(f"policy=attached:{attached.policy_name}")

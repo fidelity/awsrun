@@ -136,9 +136,7 @@ class Config:
     def __init__(self, d):
         self.conf = d
 
-    def get(
-        self, *keys, default=None, type=None, must_exist=False
-    ):  # pylint: disable=redefined-builtin
+    def get(self, *keys, default=None, type=None, must_exist=False):
         """Return the specified value from the `Config`.
 
         Specify the value to read by providing the keys required to reach the
@@ -166,6 +164,7 @@ class Config:
             c.get('path', 'to', 'value', type=And(StrMatch(r'\\d+'), StrMatch(r'[A-Z]')))
             c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
         """
+        # pylint: disable=redefined-builtin
 
         # This one-liner will recursively follow a list of keys into a
         # dictionary and return the value. If a key does not exist, return an
@@ -335,8 +334,8 @@ class Scalar(Type):
         Scalar(bool)
     """
 
-    def __init__(self, type):  # pylint: disable=redefined-builtin
-        self.type = type
+    def __init__(self, type_):
+        self.type = type_
 
     def type_check(self, obj):
         return type(obj) == self.type

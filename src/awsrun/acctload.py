@@ -833,7 +833,7 @@ class YAMLAccountLoader(MetaAccountLoader):
         )
 
 
-class AbstractAccount:  # pylint: disable=single-string-used-for-slots
+class AbstractAccount:
     """Abstract base class used by `MetaAccountLoader` to represent an account and its metadata.
 
     This class is dynamically subclassed by the account loader to create a
@@ -862,7 +862,7 @@ class AbstractAccount:  # pylint: disable=single-string-used-for-slots
     """
 
     _str_template = None
-    __slots__ = "_attrs"
+    __slots__ = ("_attrs",)
 
     def __init__(self, attributes):
         self._attrs = attributes
