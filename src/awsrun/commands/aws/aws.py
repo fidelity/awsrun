@@ -441,7 +441,7 @@ class CLICommand(RegionalCommand):
         self.awscli_args = awscli_args
         self.output = output
         self.annotate = annotate
-        self.output_dir = Path(output_dir) if output_dir else False
+        self.output_dir = Path(output_dir) if output_dir else None
 
         if self.output_dir:
             self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -491,6 +491,7 @@ class CLICommand(RegionalCommand):
         result = subprocess.run(
             cmd,
             env=env,
+            check=False,
             universal_newlines=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)

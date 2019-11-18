@@ -86,7 +86,7 @@ looking for reference material instead, the following pages will be of interest:
 
 `awsrun.cli`
 :  Contains the list of available CLI command line options as well as the
-options that can be defined in the user configuration file. If you prefer a 
+options that can be defined in the user configuration file. If you prefer a
 user guide, then continue reading this page instead for a more verbose intro to
 the CLI.
 
@@ -363,7 +363,7 @@ obtain a temporary credentials for each account being processed by awsrun all
 without any hassle:
 
     $ awsrun --account 100200300400 --saml-username dmn\\pete aws ec2 describe-vpcs --region us-east-1
-    Password for dmn\\pete? 
+    Password for dmn\\pete?
     ...
 
 Again, as before with the SAML plug-in, there are several options that can be
@@ -535,7 +535,7 @@ ATTR=TYPE:VALUE` format:
     $ awsrun --include priority=int:1
     1 account selected:
 
-    200300400100    
+    200300400100
 
 The supported cast operators include: `str`, `int`, `float`, or `bool`. By
 default, filter values are treated as strings, but this does not prevent you
@@ -1164,7 +1164,7 @@ the high-level steps involved in writing your own plug-ins:
     account loader or a credential loader.
 
 It is recommended that you review the existing plug-ins included in awsrun for
-additional guidance on how to build your own. 
+additional guidance on how to build your own.
 
 ## Roadmap
 

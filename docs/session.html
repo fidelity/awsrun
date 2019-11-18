@@ -654,7 +654,7 @@ class CredsViaSAML(CachingSessionProvider):
 
         if resp.status_code == 401:
             raise IDPAccessDeniedException(f&#39;Could not authenticate&#39;)
-        elif not 200 &lt;= resp.status_code &lt; 300:
+        if not 200 &lt;= resp.status_code &lt; 300:
             raise IDPInvalidResponseException(f&#39;{resp.status_code} response from {self._url}&#39;)
 
         soup = BeautifulSoup(resp.text, &#34;html.parser&#34;)
@@ -1174,7 +1174,7 @@ from the IdP is cached for <code>saml_duration</code>, which defaults to 5 minut
 
         if resp.status_code == 401:
             raise IDPAccessDeniedException(f&#39;Could not authenticate&#39;)
-        elif not 200 &lt;= resp.status_code &lt; 300:
+        if not 200 &lt;= resp.status_code &lt; 300:
             raise IDPInvalidResponseException(f&#39;{resp.status_code} response from {self._url}&#39;)
 
         soup = BeautifulSoup(resp.text, &#34;html.parser&#34;)

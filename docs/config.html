@@ -163,10 +163,13 @@ other.
 &#34;&#34;&#34;
 
 import ipaddress
+import json
 import logging
 import re
 from functools import reduce
 from pathlib import Path
+
+import yaml
 
 LOG = logging.getLogger(__name__)
 
@@ -270,8 +273,7 @@ class Config:
         if value == {}:
             if must_exist:
                 raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: must be set&#34;)
-            else:
-                value = default
+            value = default
 
         # If no value has been set in the config and none has been provided as a
         # default, then return None.
@@ -298,14 +300,12 @@ EmptyConfig = Config({})
 class YAMLConfig(Config):
     &#34;&#34;&#34;Loads a YAML configuration from a stream.&#34;&#34;&#34;
     def __init__(self, stream):
-        import yaml
         super().__init__(yaml.safe_load(stream))
 
 
 class JSONConfig(Config):
     &#34;&#34;&#34;Loads a JSON configuration from a stream.&#34;&#34;&#34;
     def __init__(self, stream):
-        import json
         super().__init__(json.load(stream))
 
 
@@ -441,7 +441,7 @@ class StrMatch(Type):
     def type_check(self, obj):
         if type(obj) != str:
             return False
-        return True if re.search(self.pattern, obj) else False
+        return bool(re.search(self.pattern, obj))
 
     def __str__(self):
         return f&#34;str matching &#39;{self.pattern}&#39;&#34;
@@ -741,8 +741,7 @@ load configs from files.</p></section>
         if value == {}:
             if must_exist:
                 raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: must be set&#34;)
-            else:
-                value = default
+            value = default
 
         # If no value has been set in the config and none has been provided as a
         # default, then return None.
@@ -908,8 +907,7 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
     if value == {}:
         if must_exist:
             raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: must be set&#34;)
-        else:
-            value = default
+        value = default
 
     # If no value has been set in the config and none has been provided as a
     # default, then return None.
@@ -944,7 +942,6 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
 <pre><code class="python">class YAMLConfig(Config):
     &#34;&#34;&#34;Loads a YAML configuration from a stream.&#34;&#34;&#34;
     def __init__(self, stream):
-        import yaml
         super().__init__(yaml.safe_load(stream))</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -975,7 +972,6 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
 <pre><code class="python">class JSONConfig(Config):
     &#34;&#34;&#34;Loads a JSON configuration from a stream.&#34;&#34;&#34;
     def __init__(self, stream):
-        import json
         super().__init__(json.load(stream))</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1331,7 +1327,7 @@ Scalar(bool)
     def type_check(self, obj):
         if type(obj) != str:
             return False
-        return True if re.search(self.pattern, obj) else False
+        return bool(re.search(self.pattern, obj))
 
     def __str__(self):
         return f&#34;str matching &#39;{self.pattern}&#39;&#34;</code></pre>

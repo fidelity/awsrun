@@ -59,7 +59,7 @@ from awsrun.config import IPNet, List
 from awsrun.runner import RegionalCommand
 
 
-class CIDR:
+class _CIDR:
     def __init__(self, acct, region, vpc, block):
         self.acct = acct
         self.region = region
@@ -106,7 +106,7 @@ class CLICommand(RegionalCommand):
     def regional_collect_results(self, acct, region, get_result):
         for block, vpc_id in get_result():
             if block not in self.exclude_blocks:
-                cidr = CIDR(acct, region, vpc_id, block)
+                cidr = _CIDR(acct, region, vpc_id, block)
                 self.cidrs.append(cidr)
                 print(f'Found CIDR {cidr}', flush=True)
 

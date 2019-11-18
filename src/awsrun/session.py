@@ -419,7 +419,7 @@ class CredsViaSAML(CachingSessionProvider):
 
         if resp.status_code == 401:
             raise IDPAccessDeniedException(f'Could not authenticate')
-        elif not 200 <= resp.status_code < 300:
+        if not 200 <= resp.status_code < 300:
             raise IDPInvalidResponseException(f'{resp.status_code} response from {self._url}')
 
         soup = BeautifulSoup(resp.text, "html.parser")

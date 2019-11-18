@@ -68,10 +68,13 @@ other.
 """
 
 import ipaddress
+import json
 import logging
 import re
 from functools import reduce
 from pathlib import Path
+
+import yaml
 
 LOG = logging.getLogger(__name__)
 
@@ -175,8 +178,7 @@ class Config:
         if value == {}:
             if must_exist:
                 raise ValueError(f"Error in config: {'->'.join(keys)}: must be set")
-            else:
-                value = default
+            value = default
 
         # If no value has been set in the config and none has been provided as a
         # default, then return None.
@@ -203,14 +205,12 @@ EmptyConfig = Config({})
 class YAMLConfig(Config):
     """Loads a YAML configuration from a stream."""
     def __init__(self, stream):
-        import yaml
         super().__init__(yaml.safe_load(stream))
 
 
 class JSONConfig(Config):
     """Loads a JSON configuration from a stream."""
     def __init__(self, stream):
-        import json
         super().__init__(json.load(stream))
 
 
@@ -346,7 +346,7 @@ class StrMatch(Type):
     def type_check(self, obj):
         if type(obj) != str:
             return False
-        return True if re.search(self.pattern, obj) else False
+        return bool(re.search(self.pattern, obj))
 
     def __str__(self):
         return f"str matching '{self.pattern}'"

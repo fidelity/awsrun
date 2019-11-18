@@ -310,7 +310,6 @@ class Command:
 
         The default implementation does nothing.
         """
-        pass
 
     def post_hook(self):
         """Invoked by `AccountRunner.run` after all processing has completed.
@@ -321,7 +320,6 @@ class Command:
 
         The default implementation does nothing.
         """
-        pass
 
     def execute(self, session, acct):
         """Invoked by `AccountRunner.run` to process an account.

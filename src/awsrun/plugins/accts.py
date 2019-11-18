@@ -110,6 +110,9 @@ class _CachingLoaderPlugin(Plugin):
             default=cfg('str_template'),
             help='format string used to display an account')
 
+    def instantiate(self, args):
+        raise NotImplementedError
+
 
 class JSON(_CachingLoaderPlugin):
     """CLI plug-in that loads accounts and metadata from a JSON file/url.

@@ -19,7 +19,6 @@ class RawAndDefaultsFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.R
     This class combines the raw formatter along with the default args formatter,
     which is used by awsrun CLI.
     """
-    pass
 
 
 class AppendWithoutDefault(argparse.Action):
