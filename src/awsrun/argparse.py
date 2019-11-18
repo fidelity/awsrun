@@ -12,7 +12,9 @@ import re
 from functools import wraps
 
 
-class RawAndDefaultsFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+class RawAndDefaultsFormatter(
+    argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter
+):
     """Mixin of ArgumentDefaultsHelpFormatter and RawDescriptionHelpFormatter.
 
     The argparse API does not allow for easy combinations of help formatters.
@@ -44,6 +46,7 @@ class AppendWithoutDefault(argparse.Action):
         >>> parser.parse_args('')
         Namespace(region=['central'])
     """
+
     def __init__(self, *args, **kwargs):
         self.has_been_called = False
         super().__init__(*args, **kwargs)
@@ -105,10 +108,11 @@ class AppendAttributeValuePair(argparse.Action):
         >>> test('-f level=bool:1,2,3')
         {'level': [True, False, False]}
     """
+
     def __call__(self, parser, namespace, values, option_string=None):
-        match = re.match(r'([^=]+)=(?:(str|int|float|bool):)?(.+)', values)
+        match = re.match(r"([^=]+)=(?:(str|int|float|bool):)?(.+)", values)
         if not match:
-            parser.error(f'{option_string}: expected attr=val1,val2,etc')
+            parser.error(f"{option_string}: expected attr=val1,val2,etc")
 
         name, value_type, comma_sep_values = match.groups()
         cast = from_str_to(value_type)
@@ -131,10 +135,10 @@ class AppendAttributeValuePair(argparse.Action):
             d[name] = []
 
         try:
-            d[name].extend(cast(v.strip()) for v in comma_sep_values.split(','))
+            d[name].extend(cast(v.strip()) for v in comma_sep_values.split(","))
 
         except ValueError:  # cast might throw an error
-            parser.error(f'{option_string}: invalid {value_type} in {match.group()}')
+            parser.error(f"{option_string}: invalid {value_type} in {match.group()}")
 
         setattr(namespace, self.dest, d)
 
@@ -156,18 +160,22 @@ def prevent_option_reuse(exclude=None):
     """
     seen = set()
     exclude = [] if exclude is None else exclude
-    original = argparse._ActionsContainer.add_argument  # pylint: disable=protected-access
+    original = (
+        argparse._ActionsContainer.add_argument
+    )  # pylint: disable=protected-access
 
     @wraps(original)
     def wrapper(self, *args, **kwargs):
         for arg in args:
             if arg in seen:
-                raise argparse.ArgumentError(None, f'option flag already used: {arg}')
+                raise argparse.ArgumentError(None, f"option flag already used: {arg}")
             if any(arg.startswith(p) for p in self.prefix_chars) and arg not in exclude:
                 seen.add(arg)
         return original(self, *args, **kwargs)
 
-    argparse._ActionsContainer.add_argument = wrapper  # pylint: disable=protected-access
+    argparse._ActionsContainer.add_argument = (
+        wrapper
+    )  # pylint: disable=protected-access
 
 
 def from_str_to(type):  # pylint: disable=redefined-builtin
@@ -196,8 +204,8 @@ def from_str_to(type):  # pylint: disable=redefined-builtin
         >>> [f(s) for s in ['yes', 'no', 'true', 'false']]
         [True, False, True, False]
     """
-    if type in ('str', 'int', 'float'):
+    if type in ("str", "int", "float"):
         return getattr(builtins, type)
-    if type == 'bool':
-        return lambda s: s.lower() in ('y', 'yes', 'true', 'True', '1')
+    if type == "bool":
+        return lambda s: s.lower() in ("y", "yes", "true", "True", "1")
     return str

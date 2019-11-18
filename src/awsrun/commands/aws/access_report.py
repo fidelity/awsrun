@@ -63,10 +63,12 @@ class CLICommand(Command):
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            '--verbose', '-v',
-            action='store_true',
-            default=cfg('verbose', type=Bool, default=False),
-            help='display accounts while being processed')
+            "--verbose",
+            "-v",
+            action="store_true",
+            default=cfg("verbose", type=Bool, default=False),
+            help="display accounts while being processed",
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -78,7 +80,7 @@ class CLICommand(Command):
 
     def execute(self, session, acct):
         if self.verbose:
-            return f'{acct}: successful\n'
+            return f"{acct}: successful\n"
         return None
 
     def collect_results(self, acct, get_result):
@@ -90,15 +92,15 @@ class CLICommand(Command):
             return
 
         if result:
-            print(result, end='', flush=True)
+            print(result, end="", flush=True)
 
     def post_hook(self):
         unsuccessful = len(self.no_access)
         successful = self.total - unsuccessful
 
-        print(f'Success: {successful}, Failures: {unsuccessful}')
+        print(f"Success: {successful}, Failures: {unsuccessful}")
 
         if unsuccessful:
-            print(f'\nUnsuccessful attempts:')
+            print(f"\nUnsuccessful attempts:")
             for acct in self.no_access:
                 print(acct)

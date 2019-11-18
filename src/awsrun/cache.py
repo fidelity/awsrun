@@ -52,6 +52,7 @@ class AbstractExpiringValue:
     method is called. This class is thread-safe. Subclasses must provide
     implementations for `is_expired`, `load`, and `save`.
     """
+
     def __init__(self, refresh_fn, max_age):
         self._refresh_fn = refresh_fn
         self._max_age = max_age
@@ -72,7 +73,7 @@ class AbstractExpiringValue:
 
             value = self._refresh_fn()
             self.save(value)
-            LOG.info('refreshed data and saved in cache')
+            LOG.info("refreshed data and saved in cache")
             return value
 
     def is_expired(self):
@@ -117,6 +118,7 @@ class ExpiringValue(AbstractExpiringValue):
     not refreshed at the time it expires, but only the next time the value
     method is called. This class is thread-safe.
     """
+
     def __init__(self, refresh_fn, max_age):
         super().__init__(refresh_fn, max_age)
         self._value = None
@@ -150,6 +152,7 @@ class PersistentExpiringValue(ExpiringValue):
     method is called. This class is thread-safe. If the value cannot be
     persisted as JSON, a TypeError is thrown.
     """
+
     def __init__(self, refresh_fn, path, max_age):
         super().__init__(refresh_fn, max_age)
         self._path = path if isinstance(path, Path) else Path(path)
@@ -161,8 +164,8 @@ class PersistentExpiringValue(ExpiringValue):
         return time.time() > last_modification + self._max_age
 
     def load(self):
-        LOG.debug('Loading cached data from %s', self._path)
-        with self._path.open('r') as file:
+        LOG.debug("Loading cached data from %s", self._path)
+        with self._path.open("r") as file:
             return json.load(file)
 
     def save(self, value):
@@ -170,9 +173,9 @@ class PersistentExpiringValue(ExpiringValue):
         if self._max_age == 0:
             return
 
-        LOG.debug('Saving data to cache file %s', self._path)
-        tmp = self._path.with_suffix('.tmp')
-        with tmp.open('w') as file:
+        LOG.debug("Saving data to cache file %s", self._path)
+        tmp = self._path.with_suffix(".tmp")
+        with tmp.open("w") as file:
             json.dump(value, file)
 
         # Pathlib.replace uses os.replace which is atomic on POSIX systems

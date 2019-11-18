@@ -76,15 +76,19 @@ class CLICommand(Command):
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            '--role', '-r',
-            action='append',
-            help='Limit results to role name',
-            default=cfg('role', type=List(Str), default=[]))
+            "--role",
+            "-r",
+            action="append",
+            help="Limit results to role name",
+            default=cfg("role", type=List(Str), default=[]),
+        )
         parser.add_argument(
-            '--trust', '-t',
-            action='store_true',
-            help='List trust relationships for each role',
-            default=cfg('trust', type=Bool))
+            "--trust",
+            "-t",
+            action="store_true",
+            help="List trust relationships for each role",
+            default=cfg("trust", type=Bool),
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -95,16 +99,16 @@ class CLICommand(Command):
 
     def execute(self, session, acct):
         out = io.StringIO()
-        iam = session.resource('iam')
+        iam = session.resource("iam")
 
         for role in iam.roles.all():
             if self.role_filter and role.name not in self.role_filter:
                 continue
 
-            output = f'{acct}: arn={role.arn}'
+            output = f"{acct}: arn={role.arn}"
             if self.trust:
                 arns = _trusted_arns(role.assume_role_policy_document)
-                output += ' trusted=' + ", ".join(arns)
+                output += " trusted=" + ", ".join(arns)
             print(output, file=out)
 
         return out.getvalue()
@@ -116,10 +120,10 @@ def _trusted_arns(policy):
         return []
 
     arns = []
-    for statement in policy.get('Statement', []):
-        if not statement.get('Effect', '') == 'Allow':
+    for statement in policy.get("Statement", []):
+        if not statement.get("Effect", "") == "Allow":
             continue
-        for arn in statement.get('Principal', {}).values():
+        for arn in statement.get("Principal", {}).values():
             if isinstance(arn, list):
                 arns.extend(arn)
             else:

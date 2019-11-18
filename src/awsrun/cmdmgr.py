@@ -84,6 +84,7 @@ class CommandManager:
     which will load user-defined commands from the specified directories and
     Python modules.
     """
+
     def __init__(self, loader):
         self._loader = loader
 
@@ -102,7 +103,7 @@ class CommandManager:
         """
         loaders = []
         for p in paths:
-            if ('/' in p) or ('\\' in p) or (p == '.'):
+            if ("/" in p) or ("\\" in p) or (p == "."):
                 loaders.append(DirectoryLoader(p))
             else:
                 loaders.append(ModuleLoader(p))
@@ -137,14 +138,17 @@ class CommandManager:
         cmd_class = self._loader.load(command_name)
 
         if not issubclass(cmd_class, Command):
-            raise TypeError(f"'{command_name}' must be a subclass of awsrun.runner.Command")
+            raise TypeError(
+                f"'{command_name}' must be a subclass of awsrun.runner.Command"
+            )
 
         # Create an argument parser for the command author, which is populated
         # with the name and a help string from the command's module docstring.
         parser = argparse.ArgumentParser(
             command_name,
             formatter_class=RawAndDefaultsFormatter,
-            epilog=sys.modules[cmd_class.__module__].__doc__)
+            epilog=sys.modules[cmd_class.__module__].__doc__,
+        )
 
         # We then call the static method on the class to obtain an instance of
         # the command. The command author is expected to parse whatever command
@@ -183,6 +187,7 @@ class ChainLoader(CommandLoader):
     chain one or more loaders together to search for commands in one or more
     locations.
     """
+
     def __init__(self, *loaders):
         self.loaders = loaders
 
@@ -226,13 +231,14 @@ class DirectoryLoader(CommandLoader):
     or more Python modules that implement a class called `CLICommand`, which
     allows the loader to find compatible commands.
     """
+
     def __init__(self, directory_path):
         self.path = directory_path
         if directory_path not in sys.path:
             sys.path.append(directory_path)
 
     def load(self, command_name):
-        fullpath = os.path.join(self.path, command_name) + '.py'
+        fullpath = os.path.join(self.path, command_name) + ".py"
         LOG.info("loading command at '%s'", fullpath)
         try:
             # We inspect the AST of the python file without importing it because
@@ -258,10 +264,10 @@ class DirectoryLoader(CommandLoader):
         classes = {}
         LOG.info("scanning directory '%s' for commands", self.path)
         for fn in os.listdir(self.path):
-            if fn.startswith('__') or not fn.endswith('.py'):
+            if fn.startswith("__") or not fn.endswith(".py"):
                 continue
 
-            name = fn.split('.py')[0]
+            name = fn.split(".py")[0]
             with contextlib.suppress(Exception):
                 classes[name] = self.load(name)
 
@@ -271,7 +277,9 @@ class DirectoryLoader(CommandLoader):
     def _contains_awsrun_command(filename):
         with open(filename) as f:
             node = ast.parse(f.read(), filename)
-        return any(n.name == 'CLICommand' for n in node.body if isinstance(n, ast.ClassDef))
+        return any(
+            n.name == "CLICommand" for n in node.body if isinstance(n, ast.ClassDef)
+        )
 
 
 class ModuleLoader(CommandLoader):
@@ -281,12 +289,13 @@ class ModuleLoader(CommandLoader):
     contain one or more modules that implement a class called `CLICommand`,
     which allows the loader to find compatible commands.
     """
+
     def __init__(self, module_name):
         self.module_name = module_name
 
     def load(self, command_name):
         try:
-            path = f'{self.module_name}.{command_name}'
+            path = f"{self.module_name}.{command_name}"
             LOG.info("loading command at '%s'", path)
             module = importlib.import_module(path)
 
@@ -315,11 +324,12 @@ class CommandNotFoundError(Exception):
     found.  The `path_errors` attribute is a dict of path -> loader exceptions for
     each path searched.
     """
+
     def __init__(self, command_name, path_errors):
         self.path_errors = path_errors
         self.command_name = command_name
 
         msg = f"'{command_name}' command not found:\n"
         for path, error in path_errors.items():
-            msg += f'  {path} => {error}\n'
+            msg += f"  {path} => {error}\n"
         super().__init__(msg)

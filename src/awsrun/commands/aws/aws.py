@@ -399,16 +399,18 @@ class CLICommand(RegionalCommand):
         # valid awscli args interspersed among the awsrun command flags. To
         # avoid namespace collisions, the aws command args are prefixed.
         parser.add_argument(
-            '--awsrun-output-dir',
-            metavar='DIR',
-            default=cfg('awsrun_output_dir'),
-            help='output directory to write results to separate files')
+            "--awsrun-output-dir",
+            metavar="DIR",
+            default=cfg("awsrun_output_dir"),
+            help="output directory to write results to separate files",
+        )
 
         parser.add_argument(
-            '--awsrun-annotate',
-            choices=['json', 'text', 'table'],
-            default=cfg('awsrun_annotate', type=StrMatch('^(json|text|table)$')),
-            help='annotate each result with account / region')
+            "--awsrun-annotate",
+            choices=["json", "text", "table"],
+            default=cfg("awsrun_annotate", type=StrMatch("^(json|text|table)$")),
+            help="annotate each result with account / region",
+        )
 
         # Let's gobble up any --profile or --output flags passed to the awscli
         # command. We don't include these flags in the help message as they are
@@ -416,27 +418,34 @@ class CLICommand(RegionalCommand):
         # users not to specify them. As for output flag, this is captured so we
         # can make sure user does not try to specify a different output if they
         # selected --awsrun-annotate. The types need to match.
-        parser.add_argument('--profile', help=argparse.SUPPRESS)
-        parser.add_argument('--output', help=argparse.SUPPRESS)
+        parser.add_argument("--profile", help=argparse.SUPPRESS)
+        parser.add_argument("--output", help=argparse.SUPPRESS)
 
         # We parse the known args and then collect the rest as those will be
         # passed to the awscli command later.
         args, remaining_args = parser.parse_known_args(argv)
 
         if args.profile:
-            parser.error("Do not specify --profile aws CLI flag, it is supplied by awsrun")
+            parser.error(
+                "Do not specify --profile aws CLI flag, it is supplied by awsrun"
+            )
 
         if args.awsrun_annotate and args.output and args.awsrun_annotate != args.output:
-            parser.error("When specifying --awsrun-annotate, you do not need the --output flag")
+            parser.error(
+                "When specifying --awsrun-annotate, you do not need the --output flag"
+            )
 
         return cls(
             remaining_args,
             regions=args.regions,
             output=args.output,
             output_dir=args.awsrun_output_dir,
-            annotate=args.awsrun_annotate)
+            annotate=args.awsrun_annotate,
+        )
 
-    def __init__(self, awscli_args, regions, output=None, output_dir=None, annotate=False):
+    def __init__(
+        self, awscli_args, regions, output=None, output_dir=None, annotate=False
+    ):
         super().__init__(regions)
         self.awscli_args = awscli_args
         self.output = output
@@ -456,11 +465,11 @@ class CLICommand(RegionalCommand):
         # We will also provide --output if the user has asked us to annotate an
         # output type. This ensures we override any user settings that the AWS
         # cli tool may pick up from ~/.aws/config.
-        cmd = [shutil.which('aws'), '--region', region]
+        cmd = [shutil.which("aws"), "--region", region]
         if self.annotate:
-            cmd += ['--output', self.annotate]
+            cmd += ["--output", self.annotate]
         elif self.output:
-            cmd += ['--output', self.output]
+            cmd += ["--output", self.output]
         cmd += self.awscli_args
         LOG.info("%s-%s: AWS CLI command: %s", acct, region, cmd)
 
@@ -472,7 +481,7 @@ class CLICommand(RegionalCommand):
         new_vars = {
             "AWS_ACCESS_KEY_ID": creds.access_key,
             "AWS_SECRET_ACCESS_KEY": creds.secret_key,
-            "AWS_SESSION_TOKEN": creds.token
+            "AWS_SESSION_TOKEN": creds.token,
         }
 
         env = ChainMap(new_vars, os.environ)
@@ -494,7 +503,8 @@ class CLICommand(RegionalCommand):
             check=False,
             universal_newlines=True,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+            stderr=subprocess.PIPE,
+        )
 
         # Lastly, we return the ProcessCompleted object from the run() method.
         # Recall, an awsrun command can return anything if you provide your own
@@ -505,16 +515,22 @@ class CLICommand(RegionalCommand):
         """Print the results to the console and files if specified."""
 
         def annotate_lines(text, file=sys.stdout):
-            for line in filter(None, text.split('\n')):
-                print(f'{acct}/{region}: {line}', file=file, flush=True)
+            for line in filter(None, text.split("\n")):
+                print(f"{acct}/{region}: {line}", file=file, flush=True)
 
         def annotate_json(text):
             try:
-                d = {'Account': str(acct), 'Region': region, 'Results': json.loads(text)}
+                d = {
+                    "Account": str(acct),
+                    "Region": region,
+                    "Results": json.loads(text),
+                }
                 json.dump(d, sys.stdout, indent=4)
                 print()
             except json.decoder.JSONDecodeError:
-                annotate_lines('Result of AWS CLI command is not valid JSON', file=sys.stderr)
+                annotate_lines(
+                    "Result of AWS CLI command is not valid JSON", file=sys.stderr
+                )
 
         try:
             # Let's get the return value from the execute method, which is the
@@ -525,7 +541,7 @@ class CLICommand(RegionalCommand):
             # ... unless there was an exception in which case it is raised by
             # the call to get_result and we handle it here.
             LOG.info("%s/%s: error: %s", acct, region, e, exc_info=True)
-            annotate_lines(f'error: {e}', file=sys.stderr)
+            annotate_lines(f"error: {e}", file=sys.stderr)
             return
 
         # Print stderr from AWS CLI always annotating the lines
@@ -533,10 +549,10 @@ class CLICommand(RegionalCommand):
 
         # Print stdout from AWS CLI annotating when appropriate
         if not self.annotate:
-            print(result.stdout, end='', flush=True)
-        elif self.annotate == 'json':
+            print(result.stdout, end="", flush=True)
+        elif self.annotate == "json":
             annotate_json(result.stdout)
-        elif self.annotate in ['text', 'table']:
+        elif self.annotate in ["text", "table"]:
             annotate_lines(result.stdout)
 
         # Save stdout and stderr from AWS CLI to disk if requested
@@ -545,13 +561,13 @@ class CLICommand(RegionalCommand):
             # str() method should provide us a unique means of identifying the
             # account, but we need to escape any slashes if we use this as part
             # of a filename so pathlib doesn't interpret as directories.
-            escaped = re.sub(r'[\\/]', '_', str(acct))
-            name = self.output_dir / f'{escaped}-{region}'
+            escaped = re.sub(r"[\\/]", "_", str(acct))
+            name = self.output_dir / f"{escaped}-{region}"
 
             def save(suffix, text):
-                with name.with_suffix(suffix).open('w') as out:
+                with name.with_suffix(suffix).open("w") as out:
                     out.write(text)
 
-            save('.stdout.log', result.stdout)
+            save(".stdout.log", result.stdout)
             if result.stderr:
-                save('.stderr.log', result.stderr)
+                save(".stderr.log", result.stderr)

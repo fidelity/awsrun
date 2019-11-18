@@ -51,14 +51,17 @@ class CLICommand(RegionalCommand):
     def regional_execute(self, session, acct, region):
         out = io.StringIO()
 
-        route53 = session.client('route53', region_name=region)
-        paginator = route53.get_paginator('list_hosted_zones')
+        route53 = session.client("route53", region_name=region)
+        paginator = route53.get_paginator("list_hosted_zones")
 
         for zone_page in paginator.paginate():
-            for zone in zone_page['HostedZones']:
-                name = zone['Name']
-                rrcount = zone['ResourceRecordSetCount']
-                isprivate = zone['Config']['PrivateZone']
-                print(f'{acct}/{region}: zone={name} #rr={rrcount} private={isprivate}', file=out)
+            for zone in zone_page["HostedZones"]:
+                name = zone["Name"]
+                rrcount = zone["ResourceRecordSetCount"]
+                isprivate = zone["Config"]["PrivateZone"]
+                print(
+                    f"{acct}/{region}: zone={name} #rr={rrcount} private={isprivate}",
+                    file=out,
+                )
 
         return out.getvalue()
