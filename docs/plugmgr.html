@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.1" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>awsrun.plugmgr API documentation</title>
 <meta name="description" content="Loads and instantiates awsrun plug-ins for the CLI …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -234,6 +234,7 @@ class Plugin:
     associated with argument processing. The constructor should be used to only
     register new CLI arguments and invoke the superclass&#39;s constructor.
     &#34;&#34;&#34;
+
     def __init__(self, parser, cfg):
         self.parser = parser
         self.cfg = cfg
@@ -314,6 +315,7 @@ class PluginManager:
     how the `config` and `parser` interact with each other during the
     instantiation of a plug-in.
     &#34;&#34;&#34;
+
     def __init__(self, config, parser, parsed_args, unparsed_argv):
         self._config = config
         self._parser = parser
@@ -361,8 +363,8 @@ class PluginManager:
         If the `Accounts` key does not exist in the configuration, then the
         `awsrun.plugins.accts.Identity` plug-in will be used instead.
         &#34;&#34;&#34;
-        path = self._config.get(*keys, &#39;plugin&#39;) or default
-        LOG.info(&#39;loading plug-in: %s&#39;, path)
+        path = self._config.get(*keys, &#34;plugin&#34;) or default
+        LOG.info(&#34;loading plug-in: %s&#34;, path)
 
         try:
             plugin_class = load_dotted_object(path)
@@ -371,17 +373,21 @@ class PluginManager:
             raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: {e}&#34;)
 
         if not issubclass(plugin_class, Plugin):
-            raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: &#39;{path}&#39; is not a {Plugin}&#34;)
+            raise TypeError(
+                f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: &#39;{path}&#39; is not a {Plugin}&#34;
+            )
 
         # Create a new config callable that points directly to the options
         # stored in the configuration. This will make it easy for plugin authors
         # to query the config without having to specify the key path leading up
         # to the options section of the config.
-        cfg = partial(self._config.get, *keys, &#39;options&#39;)
+        cfg = partial(self._config.get, *keys, &#34;options&#34;)
 
         plugin = plugin_class(self._parser, cfg)
-        self.args, self.remaining_argv = self._parser.parse_known_args(self.remaining_argv, self.args)
-        LOG.info(&#39;parsed args=%s remaining args=%s&#39;, self.args, self.remaining_argv)
+        self.args, self.remaining_argv = self._parser.parse_known_args(
+            self.remaining_argv, self.args
+        )
+        LOG.info(&#34;parsed args=%s remaining args=%s&#34;, self.args, self.remaining_argv)
 
         self._plugins[keys] = plugin
 
@@ -420,7 +426,9 @@ class PluginManager:
         instance = self._plugins[keys].instantiate(self.args)
 
         if must_be and not isinstance(instance, must_be):
-            raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: plugin did not build a {must_be}&#34;)
+            raise TypeError(
+                f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: plugin did not build a {must_be}&#34;
+            )
 
         return instance
 
@@ -433,6 +441,7 @@ def load_dotted_object(dotted_name):
     class object `MyClass` from the Python module `some.module`. If the object
     cannot be loaded, `ImportError` is raised.
     &#34;&#34;&#34;
+
     def doit(mod_name, attributes=None):
         attributes = [] if attributes is None else attributes
 
@@ -444,14 +453,16 @@ def load_dotted_object(dotted_name):
             mod = importlib.import_module(mod_name)
 
         if not mod:
-            mod_name, _, attr = mod_name.rpartition(&#39;.&#39;)
+            mod_name, _, attr = mod_name.rpartition(&#34;.&#34;)
             attributes.append(attr)
             return doit(mod_name, attributes)
 
         attributes.reverse()
         obj = reduce(lambda a, p: getattr(a, p, {}), attributes, mod)
         if not obj:
-            raise ImportError(f&#34;module &#39;{mod_name}&#39; does not contain &#39;{&#39;.&#39;.join(attributes)}&#39;&#34;)
+            raise ImportError(
+                f&#34;module &#39;{mod_name}&#39; does not contain &#39;{&#39;.&#39;.join(attributes)}&#39;&#34;
+            )
 
         return obj
 
@@ -486,6 +497,7 @@ cannot be loaded, <code>ImportError</code> is raised.</p></section>
     class object `MyClass` from the Python module `some.module`. If the object
     cannot be loaded, `ImportError` is raised.
     &#34;&#34;&#34;
+
     def doit(mod_name, attributes=None):
         attributes = [] if attributes is None else attributes
 
@@ -497,14 +509,16 @@ cannot be loaded, <code>ImportError</code> is raised.</p></section>
             mod = importlib.import_module(mod_name)
 
         if not mod:
-            mod_name, _, attr = mod_name.rpartition(&#39;.&#39;)
+            mod_name, _, attr = mod_name.rpartition(&#34;.&#34;)
             attributes.append(attr)
             return doit(mod_name, attributes)
 
         attributes.reverse()
         obj = reduce(lambda a, p: getattr(a, p, {}), attributes, mod)
         if not obj:
-            raise ImportError(f&#34;module &#39;{mod_name}&#39; does not contain &#39;{&#39;.&#39;.join(attributes)}&#39;&#34;)
+            raise ImportError(
+                f&#34;module &#39;{mod_name}&#39; does not contain &#39;{&#39;.&#39;.join(attributes)}&#39;&#34;
+            )
 
         return obj
 
@@ -645,6 +659,7 @@ register new CLI arguments and invoke the superclass's constructor.</p></section
     associated with argument processing. The constructor should be used to only
     register new CLI arguments and invoke the superclass&#39;s constructor.
     &#34;&#34;&#34;
+
     def __init__(self, parser, cfg):
         self.parser = parser
         self.cfg = cfg
@@ -839,6 +854,7 @@ instantiation of a plug-in.</p></section>
     how the `config` and `parser` interact with each other during the
     instantiation of a plug-in.
     &#34;&#34;&#34;
+
     def __init__(self, config, parser, parsed_args, unparsed_argv):
         self._config = config
         self._parser = parser
@@ -886,8 +902,8 @@ instantiation of a plug-in.</p></section>
         If the `Accounts` key does not exist in the configuration, then the
         `awsrun.plugins.accts.Identity` plug-in will be used instead.
         &#34;&#34;&#34;
-        path = self._config.get(*keys, &#39;plugin&#39;) or default
-        LOG.info(&#39;loading plug-in: %s&#39;, path)
+        path = self._config.get(*keys, &#34;plugin&#34;) or default
+        LOG.info(&#34;loading plug-in: %s&#34;, path)
 
         try:
             plugin_class = load_dotted_object(path)
@@ -896,17 +912,21 @@ instantiation of a plug-in.</p></section>
             raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: {e}&#34;)
 
         if not issubclass(plugin_class, Plugin):
-            raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: &#39;{path}&#39; is not a {Plugin}&#34;)
+            raise TypeError(
+                f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: &#39;{path}&#39; is not a {Plugin}&#34;
+            )
 
         # Create a new config callable that points directly to the options
         # stored in the configuration. This will make it easy for plugin authors
         # to query the config without having to specify the key path leading up
         # to the options section of the config.
-        cfg = partial(self._config.get, *keys, &#39;options&#39;)
+        cfg = partial(self._config.get, *keys, &#34;options&#34;)
 
         plugin = plugin_class(self._parser, cfg)
-        self.args, self.remaining_argv = self._parser.parse_known_args(self.remaining_argv, self.args)
-        LOG.info(&#39;parsed args=%s remaining args=%s&#39;, self.args, self.remaining_argv)
+        self.args, self.remaining_argv = self._parser.parse_known_args(
+            self.remaining_argv, self.args
+        )
+        LOG.info(&#34;parsed args=%s remaining args=%s&#34;, self.args, self.remaining_argv)
 
         self._plugins[keys] = plugin
 
@@ -945,7 +965,9 @@ instantiation of a plug-in.</p></section>
         instance = self._plugins[keys].instantiate(self.args)
 
         if must_be and not isinstance(instance, must_be):
-            raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: plugin did not build a {must_be}&#34;)
+            raise TypeError(
+                f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: plugin did not build a {must_be}&#34;
+            )
 
         return instance</code></pre>
 </details>
@@ -1020,8 +1042,8 @@ pm.parse_args('Accounts', default='awsrun.plugins.accts.Identity')
     If the `Accounts` key does not exist in the configuration, then the
     `awsrun.plugins.accts.Identity` plug-in will be used instead.
     &#34;&#34;&#34;
-    path = self._config.get(*keys, &#39;plugin&#39;) or default
-    LOG.info(&#39;loading plug-in: %s&#39;, path)
+    path = self._config.get(*keys, &#34;plugin&#34;) or default
+    LOG.info(&#34;loading plug-in: %s&#34;, path)
 
     try:
         plugin_class = load_dotted_object(path)
@@ -1030,17 +1052,21 @@ pm.parse_args('Accounts', default='awsrun.plugins.accts.Identity')
         raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: {e}&#34;)
 
     if not issubclass(plugin_class, Plugin):
-        raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: &#39;{path}&#39; is not a {Plugin}&#34;)
+        raise TypeError(
+            f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: &#39;{path}&#39; is not a {Plugin}&#34;
+        )
 
     # Create a new config callable that points directly to the options
     # stored in the configuration. This will make it easy for plugin authors
     # to query the config without having to specify the key path leading up
     # to the options section of the config.
-    cfg = partial(self._config.get, *keys, &#39;options&#39;)
+    cfg = partial(self._config.get, *keys, &#34;options&#34;)
 
     plugin = plugin_class(self._parser, cfg)
-    self.args, self.remaining_argv = self._parser.parse_known_args(self.remaining_argv, self.args)
-    LOG.info(&#39;parsed args=%s remaining args=%s&#39;, self.args, self.remaining_argv)
+    self.args, self.remaining_argv = self._parser.parse_known_args(
+        self.remaining_argv, self.args
+    )
+    LOG.info(&#34;parsed args=%s remaining args=%s&#34;, self.args, self.remaining_argv)
 
     self._plugins[keys] = plugin</code></pre>
 </details>
@@ -1112,7 +1138,9 @@ If <code>must_be</code> is not provided, the returned object can be of any type.
     instance = self._plugins[keys].instantiate(self.args)
 
     if must_be and not isinstance(instance, must_be):
-        raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: plugin did not build a {must_be}&#34;)
+        raise TypeError(
+            f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: plugin did not build a {must_be}&#34;
+        )
 
     return instance</code></pre>
 </details>
@@ -1163,7 +1191,7 @@ If <code>must_be</code> is not provided, the returned object can be of any type.
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

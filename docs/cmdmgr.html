@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.1" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>awsrun.cmdmgr API documentation</title>
 <meta name="description" content="Loads and instantiates user-defined awsrun commands …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -172,6 +172,7 @@ class CommandManager:
     which will load user-defined commands from the specified directories and
     Python modules.
     &#34;&#34;&#34;
+
     def __init__(self, loader):
         self._loader = loader
 
@@ -190,7 +191,7 @@ class CommandManager:
         &#34;&#34;&#34;
         loaders = []
         for p in paths:
-            if (&#39;/&#39; in p) or (&#39;\\&#39; in p) or (p == &#39;.&#39;):
+            if (&#34;/&#34; in p) or (&#34;\\&#34; in p) or (p == &#34;.&#34;):
                 loaders.append(DirectoryLoader(p))
             else:
                 loaders.append(ModuleLoader(p))
@@ -225,14 +226,17 @@ class CommandManager:
         cmd_class = self._loader.load(command_name)
 
         if not issubclass(cmd_class, Command):
-            raise TypeError(f&#34;&#39;{command_name}&#39; must be a subclass of awsrun.runner.Command&#34;)
+            raise TypeError(
+                f&#34;&#39;{command_name}&#39; must be a subclass of awsrun.runner.Command&#34;
+            )
 
         # Create an argument parser for the command author, which is populated
         # with the name and a help string from the command&#39;s module docstring.
         parser = argparse.ArgumentParser(
             command_name,
             formatter_class=RawAndDefaultsFormatter,
-            epilog=sys.modules[cmd_class.__module__].__doc__)
+            epilog=sys.modules[cmd_class.__module__].__doc__,
+        )
 
         # We then call the static method on the class to obtain an instance of
         # the command. The command author is expected to parse whatever command
@@ -271,6 +275,7 @@ class ChainLoader(CommandLoader):
     chain one or more loaders together to search for commands in one or more
     locations.
     &#34;&#34;&#34;
+
     def __init__(self, *loaders):
         self.loaders = loaders
 
@@ -314,13 +319,14 @@ class DirectoryLoader(CommandLoader):
     or more Python modules that implement a class called `CLICommand`, which
     allows the loader to find compatible commands.
     &#34;&#34;&#34;
+
     def __init__(self, directory_path):
         self.path = directory_path
         if directory_path not in sys.path:
             sys.path.append(directory_path)
 
     def load(self, command_name):
-        fullpath = os.path.join(self.path, command_name) + &#39;.py&#39;
+        fullpath = os.path.join(self.path, command_name) + &#34;.py&#34;
         LOG.info(&#34;loading command at &#39;%s&#39;&#34;, fullpath)
         try:
             # We inspect the AST of the python file without importing it because
@@ -346,10 +352,10 @@ class DirectoryLoader(CommandLoader):
         classes = {}
         LOG.info(&#34;scanning directory &#39;%s&#39; for commands&#34;, self.path)
         for fn in os.listdir(self.path):
-            if fn.startswith(&#39;__&#39;) or not fn.endswith(&#39;.py&#39;):
+            if fn.startswith(&#34;__&#34;) or not fn.endswith(&#34;.py&#34;):
                 continue
 
-            name = fn.split(&#39;.py&#39;)[0]
+            name = fn.split(&#34;.py&#34;)[0]
             with contextlib.suppress(Exception):
                 classes[name] = self.load(name)
 
@@ -359,7 +365,9 @@ class DirectoryLoader(CommandLoader):
     def _contains_awsrun_command(filename):
         with open(filename) as f:
             node = ast.parse(f.read(), filename)
-        return any(n.name == &#39;CLICommand&#39; for n in node.body if isinstance(n, ast.ClassDef))
+        return any(
+            n.name == &#34;CLICommand&#34; for n in node.body if isinstance(n, ast.ClassDef)
+        )
 
 
 class ModuleLoader(CommandLoader):
@@ -369,12 +377,13 @@ class ModuleLoader(CommandLoader):
     contain one or more modules that implement a class called `CLICommand`,
     which allows the loader to find compatible commands.
     &#34;&#34;&#34;
+
     def __init__(self, module_name):
         self.module_name = module_name
 
     def load(self, command_name):
         try:
-            path = f&#39;{self.module_name}.{command_name}&#39;
+            path = f&#34;{self.module_name}.{command_name}&#34;
             LOG.info(&#34;loading command at &#39;%s&#39;&#34;, path)
             module = importlib.import_module(path)
 
@@ -403,13 +412,14 @@ class CommandNotFoundError(Exception):
     found.  The `path_errors` attribute is a dict of path -&gt; loader exceptions for
     each path searched.
     &#34;&#34;&#34;
+
     def __init__(self, command_name, path_errors):
         self.path_errors = path_errors
         self.command_name = command_name
 
         msg = f&#34;&#39;{command_name}&#39; command not found:\n&#34;
         for path, error in path_errors.items():
-            msg += f&#39;  {path} =&gt; {error}\n&#39;
+            msg += f&#34;  {path} =&gt; {error}\n&#34;
         super().__init__(msg)</code></pre>
 </details>
 </section>
@@ -447,6 +457,7 @@ Python modules.</p></section>
     which will load user-defined commands from the specified directories and
     Python modules.
     &#34;&#34;&#34;
+
     def __init__(self, loader):
         self._loader = loader
 
@@ -465,7 +476,7 @@ Python modules.</p></section>
         &#34;&#34;&#34;
         loaders = []
         for p in paths:
-            if (&#39;/&#39; in p) or (&#39;\\&#39; in p) or (p == &#39;.&#39;):
+            if (&#34;/&#34; in p) or (&#34;\\&#34; in p) or (p == &#34;.&#34;):
                 loaders.append(DirectoryLoader(p))
             else:
                 loaders.append(ModuleLoader(p))
@@ -500,14 +511,17 @@ Python modules.</p></section>
         cmd_class = self._loader.load(command_name)
 
         if not issubclass(cmd_class, Command):
-            raise TypeError(f&#34;&#39;{command_name}&#39; must be a subclass of awsrun.runner.Command&#34;)
+            raise TypeError(
+                f&#34;&#39;{command_name}&#39; must be a subclass of awsrun.runner.Command&#34;
+            )
 
         # Create an argument parser for the command author, which is populated
         # with the name and a help string from the command&#39;s module docstring.
         parser = argparse.ArgumentParser(
             command_name,
             formatter_class=RawAndDefaultsFormatter,
-            epilog=sys.modules[cmd_class.__module__].__doc__)
+            epilog=sys.modules[cmd_class.__module__].__doc__,
+        )
 
         # We then call the static method on the class to obtain an instance of
         # the command. The command author is expected to parse whatever command
@@ -549,7 +563,7 @@ def from_paths(cls, *paths):
     &#34;&#34;&#34;
     loaders = []
     for p in paths:
-        if (&#39;/&#39; in p) or (&#39;\\&#39; in p) or (p == &#39;.&#39;):
+        if (&#34;/&#34; in p) or (&#34;\\&#34; in p) or (p == &#34;.&#34;):
             loaders.append(DirectoryLoader(p))
         else:
             loaders.append(ModuleLoader(p))
@@ -619,14 +633,17 @@ CLI options defined by the command. See the documentation on
     cmd_class = self._loader.load(command_name)
 
     if not issubclass(cmd_class, Command):
-        raise TypeError(f&#34;&#39;{command_name}&#39; must be a subclass of awsrun.runner.Command&#34;)
+        raise TypeError(
+            f&#34;&#39;{command_name}&#39; must be a subclass of awsrun.runner.Command&#34;
+        )
 
     # Create an argument parser for the command author, which is populated
     # with the name and a help string from the command&#39;s module docstring.
     parser = argparse.ArgumentParser(
         command_name,
         formatter_class=RawAndDefaultsFormatter,
-        epilog=sys.modules[cmd_class.__module__].__doc__)
+        epilog=sys.modules[cmd_class.__module__].__doc__,
+    )
 
     # We then call the static method on the class to obtain an instance of
     # the command. The command author is expected to parse whatever command
@@ -739,6 +756,7 @@ locations.</p></section>
     chain one or more loaders together to search for commands in one or more
     locations.
     &#34;&#34;&#34;
+
     def __init__(self, *loaders):
         self.loaders = loaders
 
@@ -861,13 +879,14 @@ allows the loader to find compatible commands.</p></section>
     or more Python modules that implement a class called `CLICommand`, which
     allows the loader to find compatible commands.
     &#34;&#34;&#34;
+
     def __init__(self, directory_path):
         self.path = directory_path
         if directory_path not in sys.path:
             sys.path.append(directory_path)
 
     def load(self, command_name):
-        fullpath = os.path.join(self.path, command_name) + &#39;.py&#39;
+        fullpath = os.path.join(self.path, command_name) + &#34;.py&#34;
         LOG.info(&#34;loading command at &#39;%s&#39;&#34;, fullpath)
         try:
             # We inspect the AST of the python file without importing it because
@@ -893,10 +912,10 @@ allows the loader to find compatible commands.</p></section>
         classes = {}
         LOG.info(&#34;scanning directory &#39;%s&#39; for commands&#34;, self.path)
         for fn in os.listdir(self.path):
-            if fn.startswith(&#39;__&#39;) or not fn.endswith(&#39;.py&#39;):
+            if fn.startswith(&#34;__&#34;) or not fn.endswith(&#34;.py&#34;):
                 continue
 
-            name = fn.split(&#39;.py&#39;)[0]
+            name = fn.split(&#34;.py&#34;)[0]
             with contextlib.suppress(Exception):
                 classes[name] = self.load(name)
 
@@ -906,7 +925,9 @@ allows the loader to find compatible commands.</p></section>
     def _contains_awsrun_command(filename):
         with open(filename) as f:
             node = ast.parse(f.read(), filename)
-        return any(n.name == &#39;CLICommand&#39; for n in node.body if isinstance(n, ast.ClassDef))</code></pre>
+        return any(
+            n.name == &#34;CLICommand&#34; for n in node.body if isinstance(n, ast.ClassDef)
+        )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -942,12 +963,13 @@ which allows the loader to find compatible commands.</p></section>
     contain one or more modules that implement a class called `CLICommand`,
     which allows the loader to find compatible commands.
     &#34;&#34;&#34;
+
     def __init__(self, module_name):
         self.module_name = module_name
 
     def load(self, command_name):
         try:
-            path = f&#39;{self.module_name}.{command_name}&#39;
+            path = f&#34;{self.module_name}.{command_name}&#34;
             LOG.info(&#34;loading command at &#39;%s&#39;&#34;, path)
             module = importlib.import_module(path)
 
@@ -1003,13 +1025,14 @@ each path searched.</p></section>
     found.  The `path_errors` attribute is a dict of path -&gt; loader exceptions for
     each path searched.
     &#34;&#34;&#34;
+
     def __init__(self, command_name, path_errors):
         self.path_errors = path_errors
         self.command_name = command_name
 
         msg = f&#34;&#39;{command_name}&#39; command not found:\n&#34;
         for path, error in path_errors.items():
-            msg += f&#39;  {path} =&gt; {error}\n&#39;
+            msg += f&#34;  {path} =&gt; {error}\n&#34;
         super().__init__(msg)</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1073,7 +1096,7 @@ each path searched.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

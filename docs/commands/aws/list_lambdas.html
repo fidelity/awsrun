@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.1" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>awsrun.commands.aws.list_lambdas API documentation</title>
 <meta name="description" content="Display the Lambda functions deployed within an account …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -143,10 +143,12 @@ class CLICommand(RegionalCommand):
     @classmethod
     def regional_from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#39;--summary&#39;, &#39;-s&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;display summary by role&#39;,
-            default=cfg(&#39;summary&#39;, type=Bool))
+            &#34;--summary&#34;,
+            &#34;-s&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;display summary by role&#34;,
+            default=cfg(&#34;summary&#34;, type=Bool),
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -159,29 +161,35 @@ class CLICommand(RegionalCommand):
         out = io.StringIO()
         by_role = defaultdict(list)
 
-        aws_lambda = session.client(&#39;lambda&#39;, region_name=region)
-        paginator = aws_lambda.get_paginator(&#39;list_functions&#39;)
+        aws_lambda = session.client(&#34;lambda&#34;, region_name=region)
+        paginator = aws_lambda.get_paginator(&#34;list_functions&#34;)
 
         for fn_page in paginator.paginate():
-            for fn in fn_page[&#39;Functions&#39;]:
+            for fn in fn_page[&#34;Functions&#34;]:
                 if self.show_summary_only:
-                    by_role[fn[&#39;Role&#39;]].append(fn)
+                    by_role[fn[&#34;Role&#34;]].append(fn)
                     continue
-                print(f&#39;{acct}/{region}: name={fn[&#34;FunctionName&#34;]} runtime={fn[&#34;Runtime&#34;]} role={fn[&#34;Role&#34;]} public={_is_public(fn)}&#39;, file=out)
+                print(
+                    f&#39;{acct}/{region}: name={fn[&#34;FunctionName&#34;]} runtime={fn[&#34;Runtime&#34;]} role={fn[&#34;Role&#34;]} public={_is_public(fn)}&#39;,
+                    file=out,
+                )
 
         if self.show_summary_only:
             for role in by_role:
                 total = len(by_role[role])
                 public = len([fn for fn in by_role[role] if _is_public(fn)])
-                print(f&#39;{acct}/{region}: role={role} total={total} private={total-public} public={public}&#39;, file=out)
+                print(
+                    f&#34;{acct}/{region}: role={role} total={total} private={total-public} public={public}&#34;,
+                    file=out,
+                )
 
         return out.getvalue()
 
 
 def _is_public(fn):
-    if &#39;VpcConfig&#39; not in fn:
+    if &#34;VpcConfig&#34; not in fn:
         return True
-    return len(fn[&#39;VpcConfig&#39;][&#39;SubnetIds&#39;]) == 0</code></pre>
+    return len(fn[&#34;VpcConfig&#34;][&#34;SubnetIds&#34;]) == 0</code></pre>
 </details>
 </section>
 <section>
@@ -209,10 +217,12 @@ def _is_public(fn):
     @classmethod
     def regional_from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#39;--summary&#39;, &#39;-s&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;display summary by role&#39;,
-            default=cfg(&#39;summary&#39;, type=Bool))
+            &#34;--summary&#34;,
+            &#34;-s&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;display summary by role&#34;,
+            default=cfg(&#34;summary&#34;, type=Bool),
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -225,21 +235,27 @@ def _is_public(fn):
         out = io.StringIO()
         by_role = defaultdict(list)
 
-        aws_lambda = session.client(&#39;lambda&#39;, region_name=region)
-        paginator = aws_lambda.get_paginator(&#39;list_functions&#39;)
+        aws_lambda = session.client(&#34;lambda&#34;, region_name=region)
+        paginator = aws_lambda.get_paginator(&#34;list_functions&#34;)
 
         for fn_page in paginator.paginate():
-            for fn in fn_page[&#39;Functions&#39;]:
+            for fn in fn_page[&#34;Functions&#34;]:
                 if self.show_summary_only:
-                    by_role[fn[&#39;Role&#39;]].append(fn)
+                    by_role[fn[&#34;Role&#34;]].append(fn)
                     continue
-                print(f&#39;{acct}/{region}: name={fn[&#34;FunctionName&#34;]} runtime={fn[&#34;Runtime&#34;]} role={fn[&#34;Role&#34;]} public={_is_public(fn)}&#39;, file=out)
+                print(
+                    f&#39;{acct}/{region}: name={fn[&#34;FunctionName&#34;]} runtime={fn[&#34;Runtime&#34;]} role={fn[&#34;Role&#34;]} public={_is_public(fn)}&#39;,
+                    file=out,
+                )
 
         if self.show_summary_only:
             for role in by_role:
                 total = len(by_role[role])
                 public = len([fn for fn in by_role[role] if _is_public(fn)])
-                print(f&#39;{acct}/{region}: role={role} total={total} private={total-public} public={public}&#39;, file=out)
+                print(
+                    f&#34;{acct}/{region}: role={role} total={total} private={total-public} public={public}&#34;,
+                    file=out,
+                )
 
         return out.getvalue()</code></pre>
 </details>
@@ -297,7 +313,7 @@ def _is_public(fn):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

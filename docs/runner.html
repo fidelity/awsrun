@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.1" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>awsrun.runner API documentation</title>
 <meta name="description" content="Executes a `Command` across one or more accounts concurrently …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -579,11 +579,11 @@ class Command:
         trace at WARN log level.
         &#34;&#34;&#34;
         try:
-            print(get_result(), end=&#39;&#39;, flush=True)
+            print(get_result(), end=&#34;&#34;, flush=True)
 
         except Exception as e:  # pylint: disable=broad-except
             LOG.warning(&#34;%s: error: %s&#34;, acct, e, exc_info=True)
-            print(f&#39;{acct}: error: {e}&#39;, flush=True, file=sys.stderr)
+            print(f&#34;{acct}: error: {e}&#34;, flush=True, file=sys.stderr)
 
 
 class RegionalCommand(Command):
@@ -617,17 +617,20 @@ class RegionalCommand(Command):
     examples on how to write custom regional commands, refer to the built-in
     commands included in the `awsrun.commands` module.
     &#34;&#34;&#34;
+
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         # If the user does not provide their own from_cli method, we make sure
         # that we invoke parse_args and add the --region flag on their behalf.
         parser.add_argument(
-            &#39;--region&#39;, &#39;-r&#39;,
+            &#34;--region&#34;,
+            &#34;-r&#34;,
             action=AppendWithoutDefault,
-            default=cfg(&#39;region&#39;, type=List(Str), default=[]),
-            dest=&#39;regions&#39;,
-            metavar=&#39;REGION&#39;,
-            help=&#39;region in which to run commands&#39;)
+            default=cfg(&#34;region&#34;, type=List(Str), default=[]),
+            dest=&#34;regions&#34;,
+            metavar=&#34;REGION&#34;,
+            help=&#34;region in which to run commands&#34;,
+        )
 
         # Delegate out to the user defining their command
         command = cls.regional_from_cli(parser, argv, cfg)
@@ -639,7 +642,7 @@ class RegionalCommand(Command):
         # default value to be provided via the user config file. So, we check to
         # see if this is an empty list here, and if so, then complain and exit.
         if not command.regions:
-            parser.error(&#39;No regions specified&#39;)
+            parser.error(&#34;No regions specified&#34;)
 
         return command
 
@@ -687,7 +690,10 @@ class RegionalCommand(Command):
         self.regions = regions
 
     def execute(self, session, acct):
-        return [(r, _wrap_result(self.regional_execute, session, acct, r)) for r in self.regions]
+        return [
+            (r, _wrap_result(self.regional_execute, session, acct, r))
+            for r in self.regions
+        ]
 
     def regional_execute(self, session, acct, region):
         &#34;&#34;&#34;Invoked by `AccountRunner.run` to process an account / region pair.
@@ -751,7 +757,7 @@ class RegionalCommand(Command):
 
         except Exception as e:  # pylint: disable=broad-except
             LOG.warning(&#34;%s: error: %s&#34;, acct, e, exc_info=True)
-            print(f&#39;{acct}: error: {e}&#39;, flush=True, file=sys.stderr)
+            print(f&#34;{acct}: error: {e}&#34;, flush=True, file=sys.stderr)
 
     def regional_collect_results(self, acct, region, get_result):
         &#34;&#34;&#34;Invoked by `AccountRunner.run` after processing an account and region.
@@ -777,11 +783,11 @@ class RegionalCommand(Command):
         standard error and logs the stack trace at WARN log level.
         &#34;&#34;&#34;
         try:
-            print(get_result(), end=&#39;&#39;, flush=True)
+            print(get_result(), end=&#34;&#34;, flush=True)
 
         except Exception as e:  # pylint: disable=broad-except
             LOG.warning(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
-            print(f&#39;{acct}/{region}: error: {e}&#39;, flush=True, file=sys.stderr)
+            print(f&#34;{acct}/{region}: error: {e}&#34;, flush=True, file=sys.stderr)
 
 
 class AccountRunner:
@@ -802,9 +808,12 @@ class AccountRunner:
     caught to prevent the termination of other threads. The result of the
     execute method, or exceptions raised, are made available to the command.
     &#34;&#34;&#34;
+
     def __init__(self, session_provider, max_workers=10):
         if not isinstance(session_provider, SessionProvider):
-            raise TypeError(f&#34;&#39;{session_provider}&#39; must be a subclass of awsrun.session.SessionProvider&#34;)
+            raise TypeError(
+                f&#34;&#39;{session_provider}&#39; must be a subclass of awsrun.session.SessionProvider&#34;
+            )
 
         self.session_provider = session_provider
         self.max_workers = max_workers
@@ -926,14 +935,16 @@ def _valid_key_fn(fn):
     `InvalidAccountIDError` is raised when the returned function is invoked,
     otherwise the original result of `fn` is returned.
     &#34;&#34;&#34;
+
     def new_key_fn(*args, **kwargs):
         try:
             result = fn(*args, **kwargs)
         except Exception as e:
-            raise InvalidAccountIDError(f&#39;The key function threw an exception: {e}&#39;)
+            raise InvalidAccountIDError(f&#34;The key function threw an exception: {e}&#34;)
         if not isinstance(result, str):
-            raise InvalidAccountIDError(f&#39;Account ID is not a string: {result}&#39;)
+            raise InvalidAccountIDError(f&#34;Account ID is not a string: {result}&#34;)
         return result
+
     return new_key_fn
 
 
@@ -973,8 +984,10 @@ def _wrap_result(fn, *args, **kwargs):
 
 def _wrap_exception(exception):
     &#34;&#34;&#34;Returns a function that when invoked will raise `exception`.&#34;&#34;&#34;
+
     def fn():
         raise exception
+
     return fn</code></pre>
 </details>
 </section>
@@ -1213,11 +1226,11 @@ built-in commands included in the <a title="awsrun.commands" href="commands/inde
         trace at WARN log level.
         &#34;&#34;&#34;
         try:
-            print(get_result(), end=&#39;&#39;, flush=True)
+            print(get_result(), end=&#34;&#34;, flush=True)
 
         except Exception as e:  # pylint: disable=broad-except
             LOG.warning(&#34;%s: error: %s&#34;, acct, e, exc_info=True)
-            print(f&#39;{acct}: error: {e}&#39;, flush=True, file=sys.stderr)</code></pre>
+            print(f&#34;{acct}: error: {e}&#34;, flush=True, file=sys.stderr)</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -1617,11 +1630,11 @@ trace at WARN log level.</p></section>
     trace at WARN log level.
     &#34;&#34;&#34;
     try:
-        print(get_result(), end=&#39;&#39;, flush=True)
+        print(get_result(), end=&#34;&#34;, flush=True)
 
     except Exception as e:  # pylint: disable=broad-except
         LOG.warning(&#34;%s: error: %s&#34;, acct, e, exc_info=True)
-        print(f&#39;{acct}: error: {e}&#39;, flush=True, file=sys.stderr)</code></pre>
+        print(f&#34;{acct}: error: {e}&#34;, flush=True, file=sys.stderr)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1692,17 +1705,20 @@ commands included in the <a title="awsrun.commands" href="commands/index.html"><
     examples on how to write custom regional commands, refer to the built-in
     commands included in the `awsrun.commands` module.
     &#34;&#34;&#34;
+
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         # If the user does not provide their own from_cli method, we make sure
         # that we invoke parse_args and add the --region flag on their behalf.
         parser.add_argument(
-            &#39;--region&#39;, &#39;-r&#39;,
+            &#34;--region&#34;,
+            &#34;-r&#34;,
             action=AppendWithoutDefault,
-            default=cfg(&#39;region&#39;, type=List(Str), default=[]),
-            dest=&#39;regions&#39;,
-            metavar=&#39;REGION&#39;,
-            help=&#39;region in which to run commands&#39;)
+            default=cfg(&#34;region&#34;, type=List(Str), default=[]),
+            dest=&#34;regions&#34;,
+            metavar=&#34;REGION&#34;,
+            help=&#34;region in which to run commands&#34;,
+        )
 
         # Delegate out to the user defining their command
         command = cls.regional_from_cli(parser, argv, cfg)
@@ -1714,7 +1730,7 @@ commands included in the <a title="awsrun.commands" href="commands/index.html"><
         # default value to be provided via the user config file. So, we check to
         # see if this is an empty list here, and if so, then complain and exit.
         if not command.regions:
-            parser.error(&#39;No regions specified&#39;)
+            parser.error(&#34;No regions specified&#34;)
 
         return command
 
@@ -1762,7 +1778,10 @@ commands included in the <a title="awsrun.commands" href="commands/index.html"><
         self.regions = regions
 
     def execute(self, session, acct):
-        return [(r, _wrap_result(self.regional_execute, session, acct, r)) for r in self.regions]
+        return [
+            (r, _wrap_result(self.regional_execute, session, acct, r))
+            for r in self.regions
+        ]
 
     def regional_execute(self, session, acct, region):
         &#34;&#34;&#34;Invoked by `AccountRunner.run` to process an account / region pair.
@@ -1826,7 +1845,7 @@ commands included in the <a title="awsrun.commands" href="commands/index.html"><
 
         except Exception as e:  # pylint: disable=broad-except
             LOG.warning(&#34;%s: error: %s&#34;, acct, e, exc_info=True)
-            print(f&#39;{acct}: error: {e}&#39;, flush=True, file=sys.stderr)
+            print(f&#34;{acct}: error: {e}&#34;, flush=True, file=sys.stderr)
 
     def regional_collect_results(self, acct, region, get_result):
         &#34;&#34;&#34;Invoked by `AccountRunner.run` after processing an account and region.
@@ -1852,11 +1871,11 @@ commands included in the <a title="awsrun.commands" href="commands/index.html"><
         standard error and logs the stack trace at WARN log level.
         &#34;&#34;&#34;
         try:
-            print(get_result(), end=&#39;&#39;, flush=True)
+            print(get_result(), end=&#34;&#34;, flush=True)
 
         except Exception as e:  # pylint: disable=broad-except
             LOG.warning(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
-            print(f&#39;{acct}/{region}: error: {e}&#39;, flush=True, file=sys.stderr)</code></pre>
+            print(f&#34;{acct}/{region}: error: {e}&#34;, flush=True, file=sys.stderr)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2131,11 +2150,11 @@ standard error and logs the stack trace at WARN log level.</p></section>
     standard error and logs the stack trace at WARN log level.
     &#34;&#34;&#34;
     try:
-        print(get_result(), end=&#39;&#39;, flush=True)
+        print(get_result(), end=&#34;&#34;, flush=True)
 
     except Exception as e:  # pylint: disable=broad-except
         LOG.warning(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
-        print(f&#39;{acct}/{region}: error: {e}&#39;, flush=True, file=sys.stderr)</code></pre>
+        print(f&#34;{acct}/{region}: error: {e}&#34;, flush=True, file=sys.stderr)</code></pre>
 </details>
 </dd>
 </dl>
@@ -2192,9 +2211,12 @@ execute method, or exceptions raised, are made available to the command.</p></se
     caught to prevent the termination of other threads. The result of the
     execute method, or exceptions raised, are made available to the command.
     &#34;&#34;&#34;
+
     def __init__(self, session_provider, max_workers=10):
         if not isinstance(session_provider, SessionProvider):
-            raise TypeError(f&#34;&#39;{session_provider}&#39; must be a subclass of awsrun.session.SessionProvider&#34;)
+            raise TypeError(
+                f&#34;&#39;{session_provider}&#39; must be a subclass of awsrun.session.SessionProvider&#34;
+            )
 
         self.session_provider = session_provider
         self.max_workers = max_workers
@@ -2522,7 +2544,7 @@ object, so this account cannot be processed.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

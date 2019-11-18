@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.1" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>awsrun.commands.aws.list_iam_roles API documentation</title>
 <meta name="description" content="Display the IAM roles in an account and its trust relationships …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -164,15 +164,19 @@ class CLICommand(Command):
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#39;--role&#39;, &#39;-r&#39;,
-            action=&#39;append&#39;,
-            help=&#39;Limit results to role name&#39;,
-            default=cfg(&#39;role&#39;, type=List(Str), default=[]))
+            &#34;--role&#34;,
+            &#34;-r&#34;,
+            action=&#34;append&#34;,
+            help=&#34;Limit results to role name&#34;,
+            default=cfg(&#34;role&#34;, type=List(Str), default=[]),
+        )
         parser.add_argument(
-            &#39;--trust&#39;, &#39;-t&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;List trust relationships for each role&#39;,
-            default=cfg(&#39;trust&#39;, type=Bool))
+            &#34;--trust&#34;,
+            &#34;-t&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;List trust relationships for each role&#34;,
+            default=cfg(&#34;trust&#34;, type=Bool),
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -183,16 +187,16 @@ class CLICommand(Command):
 
     def execute(self, session, acct):
         out = io.StringIO()
-        iam = session.resource(&#39;iam&#39;)
+        iam = session.resource(&#34;iam&#34;)
 
         for role in iam.roles.all():
             if self.role_filter and role.name not in self.role_filter:
                 continue
 
-            output = f&#39;{acct}: arn={role.arn}&#39;
+            output = f&#34;{acct}: arn={role.arn}&#34;
             if self.trust:
                 arns = _trusted_arns(role.assume_role_policy_document)
-                output += &#39; trusted=&#39; + &#34;, &#34;.join(arns)
+                output += &#34; trusted=&#34; + &#34;, &#34;.join(arns)
             print(output, file=out)
 
         return out.getvalue()
@@ -204,10 +208,10 @@ def _trusted_arns(policy):
         return []
 
     arns = []
-    for statement in policy.get(&#39;Statement&#39;, []):
-        if not statement.get(&#39;Effect&#39;, &#39;&#39;) == &#39;Allow&#39;:
+    for statement in policy.get(&#34;Statement&#34;, []):
+        if not statement.get(&#34;Effect&#34;, &#34;&#34;) == &#34;Allow&#34;:
             continue
-        for arn in statement.get(&#39;Principal&#39;, {}).values():
+        for arn in statement.get(&#34;Principal&#34;, {}).values():
             if isinstance(arn, list):
                 arns.extend(arn)
             else:
@@ -241,15 +245,19 @@ def _trusted_arns(policy):
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#39;--role&#39;, &#39;-r&#39;,
-            action=&#39;append&#39;,
-            help=&#39;Limit results to role name&#39;,
-            default=cfg(&#39;role&#39;, type=List(Str), default=[]))
+            &#34;--role&#34;,
+            &#34;-r&#34;,
+            action=&#34;append&#34;,
+            help=&#34;Limit results to role name&#34;,
+            default=cfg(&#34;role&#34;, type=List(Str), default=[]),
+        )
         parser.add_argument(
-            &#39;--trust&#39;, &#39;-t&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;List trust relationships for each role&#39;,
-            default=cfg(&#39;trust&#39;, type=Bool))
+            &#34;--trust&#34;,
+            &#34;-t&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;List trust relationships for each role&#34;,
+            default=cfg(&#34;trust&#34;, type=Bool),
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -260,16 +268,16 @@ def _trusted_arns(policy):
 
     def execute(self, session, acct):
         out = io.StringIO()
-        iam = session.resource(&#39;iam&#39;)
+        iam = session.resource(&#34;iam&#34;)
 
         for role in iam.roles.all():
             if self.role_filter and role.name not in self.role_filter:
                 continue
 
-            output = f&#39;{acct}: arn={role.arn}&#39;
+            output = f&#34;{acct}: arn={role.arn}&#34;
             if self.trust:
                 arns = _trusted_arns(role.assume_role_policy_document)
-                output += &#39; trusted=&#39; + &#34;, &#34;.join(arns)
+                output += &#34; trusted=&#34; + &#34;, &#34;.join(arns)
             print(output, file=out)
 
         return out.getvalue()</code></pre>
@@ -324,7 +332,7 @@ def _trusted_arns(policy):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

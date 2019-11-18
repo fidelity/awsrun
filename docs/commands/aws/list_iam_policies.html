@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.1" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>awsrun.commands.aws.list_iam_policies API documentation</title>
 <meta name="description" content="Display the IAM policies (inline and attached) in an account …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -515,97 +515,132 @@ class CLICommand(Command):
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#39;--verbose&#39;, &#39;-v&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;include JSON policy body&#39;,
-            default=cfg(&#39;verbose&#39;, type=Bool))
+            &#34;--verbose&#34;,
+            &#34;-v&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;include JSON policy body&#34;,
+            default=cfg(&#34;verbose&#34;, type=Bool),
+        )
 
-        include_group = parser.add_argument_group(&#39;limit flags&#39;, &#39;Search only these identity and policy types&#39;)
+        include_group = parser.add_argument_group(
+            &#34;limit flags&#34;, &#34;Search only these identity and policy types&#34;
+        )
         include_group.add_argument(
-            &#39;--roles&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;search role policies only&#39;,
-            default=cfg(&#39;roles&#39;, type=Bool))
+            &#34;--roles&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;search role policies only&#34;,
+            default=cfg(&#34;roles&#34;, type=Bool),
+        )
         include_group.add_argument(
-            &#39;--users&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;search user policies only&#39;,
-            default=cfg(&#39;users&#39;, type=Bool))
+            &#34;--users&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;search user policies only&#34;,
+            default=cfg(&#34;users&#34;, type=Bool),
+        )
         include_group.add_argument(
-            &#39;--groups&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;search group policies only&#39;,
-            default=cfg(&#39;groups&#39;, type=Bool))
+            &#34;--groups&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;search group policies only&#34;,
+            default=cfg(&#34;groups&#34;, type=Bool),
+        )
         include_group.add_argument(
-            &#39;--inline&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;search inline policies only&#39;,
-            default=cfg(&#39;inline&#39;, type=Bool))
+            &#34;--inline&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;search inline policies only&#34;,
+            default=cfg(&#34;inline&#34;, type=Bool),
+        )
         include_group.add_argument(
-            &#39;--attached&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;search attached policies only&#39;,
-            default=cfg(&#39;attached&#39;, type=Bool))
+            &#34;--attached&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;search attached policies only&#34;,
+            default=cfg(&#34;attached&#34;, type=Bool),
+        )
 
-        search_group = parser.add_argument_group(&#39;filter flags&#39;, &#39;Search only policies associated with identity name&#39;)
+        search_group = parser.add_argument_group(
+            &#34;filter flags&#34;, &#34;Search only policies associated with identity name&#34;
+        )
         search_group.add_argument(
-            &#39;--role-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;role_names&#39;,
-            help=&#39;filter on role name&#39;,
-            default=cfg(&#39;role_name&#39;, type=List(Str), default=[]))
+            &#34;--role-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;role_names&#34;,
+            help=&#34;filter on role name&#34;,
+            default=cfg(&#34;role_name&#34;, type=List(Str), default=[]),
+        )
         search_group.add_argument(
-            &#39;--user-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;user_names&#39;,
-            help=&#39;filter on user name&#39;,
-            default=cfg(&#39;user_name&#39;, type=List(Str), default=[]))
+            &#34;--user-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;user_names&#34;,
+            help=&#34;filter on user name&#34;,
+            default=cfg(&#34;user_name&#34;, type=List(Str), default=[]),
+        )
         search_group.add_argument(
-            &#39;--group-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;group_names&#39;,
-            help=&#39;filter on group name&#39;,
-            default=cfg(&#39;group_name&#39;, type=List(Str), default=[]))
+            &#34;--group-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;group_names&#34;,
+            help=&#34;filter on group name&#34;,
+            default=cfg(&#34;group_name&#34;, type=List(Str), default=[]),
+        )
 
-        other_group = parser.add_argument_group(&#39;other filters&#39;, &#39;Search only policies matching these other options&#39;)
+        other_group = parser.add_argument_group(
+            &#34;other filters&#34;, &#34;Search only policies matching these other options&#34;
+        )
         action_group = other_group.add_mutually_exclusive_group()
         action_group.add_argument(
-            &#39;--action-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;action_names&#39;,
-            help=&#39;include policy if it contains the action&#39;,
-            default=cfg(&#39;action_name&#39;, type=List(Str), default=[]))
+            &#34;--action-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;action_names&#34;,
+            help=&#34;include policy if it contains the action&#34;,
+            default=cfg(&#34;action_name&#34;, type=List(Str), default=[]),
+        )
         action_group.add_argument(
-            &#39;--not-action-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;not_action_names&#39;,
-            help=&#39;include policy if it does not contains the action&#39;,
-            default=cfg(&#39;not_action_name&#39;, type=List(Str), default=[]))
+            &#34;--not-action-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;not_action_names&#34;,
+            help=&#34;include policy if it does not contains the action&#34;,
+            default=cfg(&#34;not_action_name&#34;, type=List(Str), default=[]),
+        )
         policy_group = other_group.add_mutually_exclusive_group()
         policy_group.add_argument(
-            &#39;--policy-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;policy_names&#39;,
-            help=&#39;include if policy name starts with&#39;,
-            default=cfg(&#39;policy_name&#39;, type=List(Str), default=[]))
+            &#34;--policy-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;policy_names&#34;,
+            help=&#34;include if policy name starts with&#34;,
+            default=cfg(&#34;policy_name&#34;, type=List(Str), default=[]),
+        )
         policy_group.add_argument(
-            &#39;--not-policy-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;not_policy_names&#39;,
-            help=&#39;exclude if policy name starts with&#39;,
-            default=cfg(&#39;not_policy_name&#39;, type=List(Str), default=[]))
+            &#34;--not-policy-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;not_policy_names&#34;,
+            help=&#34;exclude if policy name starts with&#34;,
+            default=cfg(&#34;not_policy_name&#34;, type=List(Str), default=[]),
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
 
-    def __init__(self, verbose, roles, users, groups, inline, attached, role_names, user_names, group_names, action_names, not_action_names, policy_names, not_policy_names):
+    def __init__(
+        self,
+        verbose,
+        roles,
+        users,
+        groups,
+        inline,
+        attached,
+        role_names,
+        user_names,
+        group_names,
+        action_names,
+        not_action_names,
+        policy_names,
+        not_policy_names,
+    ):
         self.verbose = verbose
 
         # This set of flags is used to include identity and policy types
@@ -637,24 +672,26 @@ class CLICommand(Command):
 
     def execute(self, session, acct):
         out = io.StringIO()
-        iam = session.resource(&#39;iam&#39;)
+        iam = session.resource(&#34;iam&#34;)
 
         # Will be a dict containing all the policies associated with users,
         # groups, and roles keyed by the identity type.
         identities = {}
 
         if self.include_users:
-            identities[&#39;user&#39;] = get_identities(iam.users, iam.User, self.search_users)
+            identities[&#34;user&#34;] = get_identities(iam.users, iam.User, self.search_users)
 
         if self.include_groups:
-            identities[&#39;group&#39;] = get_identities(iam.groups, iam.Group, self.search_groups)
+            identities[&#34;group&#34;] = get_identities(
+                iam.groups, iam.Group, self.search_groups
+            )
 
         if self.include_roles:
-            identities[&#39;role&#39;] = get_identities(iam.roles, iam.Role, self.search_roles)
+            identities[&#34;role&#34;] = get_identities(iam.roles, iam.Role, self.search_roles)
 
         for i_type in identities:
             for identity in identities[i_type]:
-                ip = IdentityPrinter(out, f&#39;{acct}: identity={i_type}:{identity.name}&#39;)
+                ip = IdentityPrinter(out, f&#34;{acct}: identity={i_type}:{identity.name}&#34;)
                 self.show_inline_policies(identity, ip)
                 self.show_attached_policies(identity, ip)
 
@@ -666,14 +703,15 @@ class CLICommand(Command):
             return
 
         for inline in identity.policies.all():
+            # pylint: disable=cell-var-from-loop
             # We wrap the policy_document in a lambda so boto3 resource is not
             # fetched unless it is really needed. Although pylint complains
             # about wrapping the looping var in a lambda, we use the lambda
             # immediately if needed.
-            if self.should_skip(inline.policy_name, lambda: inline.policy_document):  # pylint: disable=cell-var-from-loop
+            if self.should_skip(inline.policy_name, lambda: inline.policy_document):
                 continue
 
-            ip.print(f&#39;policy=inline:{inline.policy_name}&#39;)
+            ip.print(f&#34;policy=inline:{inline.policy_name}&#34;)
             if self.verbose:
                 ip.print(json.dumps(inline.policy_document, indent=4), prefix=False)
 
@@ -683,23 +721,33 @@ class CLICommand(Command):
             return
 
         for attached in identity.attached_policies.all():
+            # pylint: disable=cell-var-from-loop
             # We wrap the default_version.document in a lambda so boto3 resource
             # is not fetched unless it is really needed.
-            if self.should_skip(attached.policy_name, lambda: attached.default_version.document):  # pylint: disable=cell-var-from-loop
+            if self.should_skip(
+                attached.policy_name, lambda: attached.default_version.document
+            ):
                 continue
 
-            ip.print(f&#39;policy=attached:{attached.policy_name}&#39;)
+            ip.print(f&#34;policy=attached:{attached.policy_name}&#34;)
             if self.verbose:
-                ip.print(json.dumps(attached.default_version.document, indent=4), prefix=False)
+                ip.print(
+                    json.dumps(attached.default_version.document, indent=4),
+                    prefix=False,
+                )
 
     def should_skip(self, name, get_doc):
         &#34;&#34;&#34;Returns false if the policy with name and policy document should be
         skipped.  For efficiency, the get_doc argument should be a function
         that returns the policy document, so it is only called if needed.&#34;&#34;&#34;
 
-        if self.search_policies and not any(name.startswith(n) for n in self.search_policies):
+        if self.search_policies and not any(
+            name.startswith(n) for n in self.search_policies
+        ):
             return True
-        if self.not_search_policies and any(name.startswith(n) for n in self.not_search_policies):
+        if self.not_search_policies and any(
+            name.startswith(n) for n in self.not_search_policies
+        ):
             return True
 
         # Short-circuit us out of here if we don&#39;t need to search for actions,
@@ -733,6 +781,7 @@ class CLICommand(Command):
 # and will be running concurrently with many other threads!
 class IdentityPrinter:
     &#34;&#34;&#34;Utility class to buffer printing with a prefix.&#34;&#34;&#34;
+
     def __init__(self, out, prefix=None):
         self.out = out
         self.prefix = prefix
@@ -740,13 +789,14 @@ class IdentityPrinter:
     def print(self, msg, prefix=True):
         &#34;&#34;&#34;Print msg to buffer, if prefix is True, prepend the prefix.&#34;&#34;&#34;
         if prefix:
-            print(f&#39;{self.prefix} {msg}&#39;, file=self.out)
+            print(f&#34;{self.prefix} {msg}&#34;, file=self.out)
         else:
             print(msg, file=self.out)
 
 
 # ---------------------------------------------------------------------------
 # Helper Functions
+
 
 def has_actions(policy_doc, search_actions):
     &#34;&#34;&#34;Search a policy document, specifically the Action and NotAction blocks
@@ -755,14 +805,14 @@ def has_actions(policy_doc, search_actions):
     document contains any of the actions in search_actions. Note: this does not
     take into account whether an action is allowed or denied.&#34;&#34;&#34;
 
-    for statement in make_list(policy_doc[&#39;Statement&#39;]):
-        if &#39;Action&#39; in statement:
-            action_block = statement[&#39;Action&#39;]
+    for statement in make_list(policy_doc[&#34;Statement&#34;]):
+        if &#34;Action&#34; in statement:
+            action_block = statement[&#34;Action&#34;]
         else:
-            action_block = statement[&#39;NotAction&#39;]
+            action_block = statement[&#34;NotAction&#34;]
 
         for action in make_list(action_block):
-            pattern = re.compile(&#39;^&#39; + re.escape(action).replace(&#39;\\*&#39;, &#39;.*&#39;) + &#39;$&#39;)
+            pattern = re.compile(&#34;^&#34; + re.escape(action).replace(&#34;\\*&#34;, &#34;.*&#34;) + &#34;$&#34;)
             for search_action in search_actions:
                 if pattern.search(search_action):
                     return True
@@ -804,7 +854,7 @@ def identity_exists(identity):
         identity.load()
         return True
     except ClientError as e:
-        if e.response[&#39;Error&#39;][&#39;Code&#39;] == &#39;NoSuchEntity&#39;:
+        if e.response[&#34;Error&#34;][&#34;Code&#34;] == &#34;NoSuchEntity&#34;:
             return False
         raise e</code></pre>
 </details>
@@ -836,14 +886,14 @@ take into account whether an action is allowed or denied.</p></section>
     document contains any of the actions in search_actions. Note: this does not
     take into account whether an action is allowed or denied.&#34;&#34;&#34;
 
-    for statement in make_list(policy_doc[&#39;Statement&#39;]):
-        if &#39;Action&#39; in statement:
-            action_block = statement[&#39;Action&#39;]
+    for statement in make_list(policy_doc[&#34;Statement&#34;]):
+        if &#34;Action&#34; in statement:
+            action_block = statement[&#34;Action&#34;]
         else:
-            action_block = statement[&#39;NotAction&#39;]
+            action_block = statement[&#34;NotAction&#34;]
 
         for action in make_list(action_block):
-            pattern = re.compile(&#39;^&#39; + re.escape(action).replace(&#39;\\*&#39;, &#39;.*&#39;) + &#39;$&#39;)
+            pattern = re.compile(&#34;^&#34; + re.escape(action).replace(&#34;\\*&#34;, &#34;.*&#34;) + &#34;$&#34;)
             for search_action in search_actions:
                 if pattern.search(search_action):
                     return True
@@ -917,7 +967,7 @@ effect, the identity's resources are loaded.</p></section>
         identity.load()
         return True
     except ClientError as e:
-        if e.response[&#39;Error&#39;][&#39;Code&#39;] == &#39;NoSuchEntity&#39;:
+        if e.response[&#34;Error&#34;][&#34;Code&#34;] == &#34;NoSuchEntity&#34;:
             return False
         raise e</code></pre>
 </details>
@@ -943,97 +993,132 @@ effect, the identity's resources are loaded.</p></section>
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#39;--verbose&#39;, &#39;-v&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;include JSON policy body&#39;,
-            default=cfg(&#39;verbose&#39;, type=Bool))
+            &#34;--verbose&#34;,
+            &#34;-v&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;include JSON policy body&#34;,
+            default=cfg(&#34;verbose&#34;, type=Bool),
+        )
 
-        include_group = parser.add_argument_group(&#39;limit flags&#39;, &#39;Search only these identity and policy types&#39;)
+        include_group = parser.add_argument_group(
+            &#34;limit flags&#34;, &#34;Search only these identity and policy types&#34;
+        )
         include_group.add_argument(
-            &#39;--roles&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;search role policies only&#39;,
-            default=cfg(&#39;roles&#39;, type=Bool))
+            &#34;--roles&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;search role policies only&#34;,
+            default=cfg(&#34;roles&#34;, type=Bool),
+        )
         include_group.add_argument(
-            &#39;--users&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;search user policies only&#39;,
-            default=cfg(&#39;users&#39;, type=Bool))
+            &#34;--users&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;search user policies only&#34;,
+            default=cfg(&#34;users&#34;, type=Bool),
+        )
         include_group.add_argument(
-            &#39;--groups&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;search group policies only&#39;,
-            default=cfg(&#39;groups&#39;, type=Bool))
+            &#34;--groups&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;search group policies only&#34;,
+            default=cfg(&#34;groups&#34;, type=Bool),
+        )
         include_group.add_argument(
-            &#39;--inline&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;search inline policies only&#39;,
-            default=cfg(&#39;inline&#39;, type=Bool))
+            &#34;--inline&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;search inline policies only&#34;,
+            default=cfg(&#34;inline&#34;, type=Bool),
+        )
         include_group.add_argument(
-            &#39;--attached&#39;,
-            action=&#39;store_true&#39;,
-            help=&#39;search attached policies only&#39;,
-            default=cfg(&#39;attached&#39;, type=Bool))
+            &#34;--attached&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;search attached policies only&#34;,
+            default=cfg(&#34;attached&#34;, type=Bool),
+        )
 
-        search_group = parser.add_argument_group(&#39;filter flags&#39;, &#39;Search only policies associated with identity name&#39;)
+        search_group = parser.add_argument_group(
+            &#34;filter flags&#34;, &#34;Search only policies associated with identity name&#34;
+        )
         search_group.add_argument(
-            &#39;--role-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;role_names&#39;,
-            help=&#39;filter on role name&#39;,
-            default=cfg(&#39;role_name&#39;, type=List(Str), default=[]))
+            &#34;--role-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;role_names&#34;,
+            help=&#34;filter on role name&#34;,
+            default=cfg(&#34;role_name&#34;, type=List(Str), default=[]),
+        )
         search_group.add_argument(
-            &#39;--user-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;user_names&#39;,
-            help=&#39;filter on user name&#39;,
-            default=cfg(&#39;user_name&#39;, type=List(Str), default=[]))
+            &#34;--user-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;user_names&#34;,
+            help=&#34;filter on user name&#34;,
+            default=cfg(&#34;user_name&#34;, type=List(Str), default=[]),
+        )
         search_group.add_argument(
-            &#39;--group-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;group_names&#39;,
-            help=&#39;filter on group name&#39;,
-            default=cfg(&#39;group_name&#39;, type=List(Str), default=[]))
+            &#34;--group-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;group_names&#34;,
+            help=&#34;filter on group name&#34;,
+            default=cfg(&#34;group_name&#34;, type=List(Str), default=[]),
+        )
 
-        other_group = parser.add_argument_group(&#39;other filters&#39;, &#39;Search only policies matching these other options&#39;)
+        other_group = parser.add_argument_group(
+            &#34;other filters&#34;, &#34;Search only policies matching these other options&#34;
+        )
         action_group = other_group.add_mutually_exclusive_group()
         action_group.add_argument(
-            &#39;--action-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;action_names&#39;,
-            help=&#39;include policy if it contains the action&#39;,
-            default=cfg(&#39;action_name&#39;, type=List(Str), default=[]))
+            &#34;--action-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;action_names&#34;,
+            help=&#34;include policy if it contains the action&#34;,
+            default=cfg(&#34;action_name&#34;, type=List(Str), default=[]),
+        )
         action_group.add_argument(
-            &#39;--not-action-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;not_action_names&#39;,
-            help=&#39;include policy if it does not contains the action&#39;,
-            default=cfg(&#39;not_action_name&#39;, type=List(Str), default=[]))
+            &#34;--not-action-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;not_action_names&#34;,
+            help=&#34;include policy if it does not contains the action&#34;,
+            default=cfg(&#34;not_action_name&#34;, type=List(Str), default=[]),
+        )
         policy_group = other_group.add_mutually_exclusive_group()
         policy_group.add_argument(
-            &#39;--policy-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;policy_names&#39;,
-            help=&#39;include if policy name starts with&#39;,
-            default=cfg(&#39;policy_name&#39;, type=List(Str), default=[]))
+            &#34;--policy-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;policy_names&#34;,
+            help=&#34;include if policy name starts with&#34;,
+            default=cfg(&#34;policy_name&#34;, type=List(Str), default=[]),
+        )
         policy_group.add_argument(
-            &#39;--not-policy-name&#39;,
-            metavar=&#39;NAME&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;not_policy_names&#39;,
-            help=&#39;exclude if policy name starts with&#39;,
-            default=cfg(&#39;not_policy_name&#39;, type=List(Str), default=[]))
+            &#34;--not-policy-name&#34;,
+            metavar=&#34;NAME&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;not_policy_names&#34;,
+            help=&#34;exclude if policy name starts with&#34;,
+            default=cfg(&#34;not_policy_name&#34;, type=List(Str), default=[]),
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
 
-    def __init__(self, verbose, roles, users, groups, inline, attached, role_names, user_names, group_names, action_names, not_action_names, policy_names, not_policy_names):
+    def __init__(
+        self,
+        verbose,
+        roles,
+        users,
+        groups,
+        inline,
+        attached,
+        role_names,
+        user_names,
+        group_names,
+        action_names,
+        not_action_names,
+        policy_names,
+        not_policy_names,
+    ):
         self.verbose = verbose
 
         # This set of flags is used to include identity and policy types
@@ -1065,24 +1150,26 @@ effect, the identity's resources are loaded.</p></section>
 
     def execute(self, session, acct):
         out = io.StringIO()
-        iam = session.resource(&#39;iam&#39;)
+        iam = session.resource(&#34;iam&#34;)
 
         # Will be a dict containing all the policies associated with users,
         # groups, and roles keyed by the identity type.
         identities = {}
 
         if self.include_users:
-            identities[&#39;user&#39;] = get_identities(iam.users, iam.User, self.search_users)
+            identities[&#34;user&#34;] = get_identities(iam.users, iam.User, self.search_users)
 
         if self.include_groups:
-            identities[&#39;group&#39;] = get_identities(iam.groups, iam.Group, self.search_groups)
+            identities[&#34;group&#34;] = get_identities(
+                iam.groups, iam.Group, self.search_groups
+            )
 
         if self.include_roles:
-            identities[&#39;role&#39;] = get_identities(iam.roles, iam.Role, self.search_roles)
+            identities[&#34;role&#34;] = get_identities(iam.roles, iam.Role, self.search_roles)
 
         for i_type in identities:
             for identity in identities[i_type]:
-                ip = IdentityPrinter(out, f&#39;{acct}: identity={i_type}:{identity.name}&#39;)
+                ip = IdentityPrinter(out, f&#34;{acct}: identity={i_type}:{identity.name}&#34;)
                 self.show_inline_policies(identity, ip)
                 self.show_attached_policies(identity, ip)
 
@@ -1094,14 +1181,15 @@ effect, the identity's resources are loaded.</p></section>
             return
 
         for inline in identity.policies.all():
+            # pylint: disable=cell-var-from-loop
             # We wrap the policy_document in a lambda so boto3 resource is not
             # fetched unless it is really needed. Although pylint complains
             # about wrapping the looping var in a lambda, we use the lambda
             # immediately if needed.
-            if self.should_skip(inline.policy_name, lambda: inline.policy_document):  # pylint: disable=cell-var-from-loop
+            if self.should_skip(inline.policy_name, lambda: inline.policy_document):
                 continue
 
-            ip.print(f&#39;policy=inline:{inline.policy_name}&#39;)
+            ip.print(f&#34;policy=inline:{inline.policy_name}&#34;)
             if self.verbose:
                 ip.print(json.dumps(inline.policy_document, indent=4), prefix=False)
 
@@ -1111,23 +1199,33 @@ effect, the identity's resources are loaded.</p></section>
             return
 
         for attached in identity.attached_policies.all():
+            # pylint: disable=cell-var-from-loop
             # We wrap the default_version.document in a lambda so boto3 resource
             # is not fetched unless it is really needed.
-            if self.should_skip(attached.policy_name, lambda: attached.default_version.document):  # pylint: disable=cell-var-from-loop
+            if self.should_skip(
+                attached.policy_name, lambda: attached.default_version.document
+            ):
                 continue
 
-            ip.print(f&#39;policy=attached:{attached.policy_name}&#39;)
+            ip.print(f&#34;policy=attached:{attached.policy_name}&#34;)
             if self.verbose:
-                ip.print(json.dumps(attached.default_version.document, indent=4), prefix=False)
+                ip.print(
+                    json.dumps(attached.default_version.document, indent=4),
+                    prefix=False,
+                )
 
     def should_skip(self, name, get_doc):
         &#34;&#34;&#34;Returns false if the policy with name and policy document should be
         skipped.  For efficiency, the get_doc argument should be a function
         that returns the policy document, so it is only called if needed.&#34;&#34;&#34;
 
-        if self.search_policies and not any(name.startswith(n) for n in self.search_policies):
+        if self.search_policies and not any(
+            name.startswith(n) for n in self.search_policies
+        ):
             return True
-        if self.not_search_policies and any(name.startswith(n) for n in self.not_search_policies):
+        if self.not_search_policies and any(
+            name.startswith(n) for n in self.not_search_policies
+        ):
             return True
 
         # Short-circuit us out of here if we don&#39;t need to search for actions,
@@ -1168,14 +1266,15 @@ effect, the identity's resources are loaded.</p></section>
         return
 
     for inline in identity.policies.all():
+        # pylint: disable=cell-var-from-loop
         # We wrap the policy_document in a lambda so boto3 resource is not
         # fetched unless it is really needed. Although pylint complains
         # about wrapping the looping var in a lambda, we use the lambda
         # immediately if needed.
-        if self.should_skip(inline.policy_name, lambda: inline.policy_document):  # pylint: disable=cell-var-from-loop
+        if self.should_skip(inline.policy_name, lambda: inline.policy_document):
             continue
 
-        ip.print(f&#39;policy=inline:{inline.policy_name}&#39;)
+        ip.print(f&#34;policy=inline:{inline.policy_name}&#34;)
         if self.verbose:
             ip.print(json.dumps(inline.policy_document, indent=4), prefix=False)</code></pre>
 </details>
@@ -1195,14 +1294,20 @@ effect, the identity's resources are loaded.</p></section>
         return
 
     for attached in identity.attached_policies.all():
+        # pylint: disable=cell-var-from-loop
         # We wrap the default_version.document in a lambda so boto3 resource
         # is not fetched unless it is really needed.
-        if self.should_skip(attached.policy_name, lambda: attached.default_version.document):  # pylint: disable=cell-var-from-loop
+        if self.should_skip(
+            attached.policy_name, lambda: attached.default_version.document
+        ):
             continue
 
-        ip.print(f&#39;policy=attached:{attached.policy_name}&#39;)
+        ip.print(f&#34;policy=attached:{attached.policy_name}&#34;)
         if self.verbose:
-            ip.print(json.dumps(attached.default_version.document, indent=4), prefix=False)</code></pre>
+            ip.print(
+                json.dumps(attached.default_version.document, indent=4),
+                prefix=False,
+            )</code></pre>
 </details>
 </dd>
 <dt id="awsrun.commands.aws.list_iam_policies.CLICommand.should_skip"><code class="name flex">
@@ -1222,9 +1327,13 @@ that returns the policy document, so it is only called if needed.</p></section>
     skipped.  For efficiency, the get_doc argument should be a function
     that returns the policy document, so it is only called if needed.&#34;&#34;&#34;
 
-    if self.search_policies and not any(name.startswith(n) for n in self.search_policies):
+    if self.search_policies and not any(
+        name.startswith(n) for n in self.search_policies
+    ):
         return True
-    if self.not_search_policies and any(name.startswith(n) for n in self.not_search_policies):
+    if self.not_search_policies and any(
+        name.startswith(n) for n in self.not_search_policies
+    ):
         return True
 
     # Short-circuit us out of here if we don&#39;t need to search for actions,
@@ -1271,6 +1380,7 @@ that returns the policy document, so it is only called if needed.</p></section>
 </summary>
 <pre><code class="python">class IdentityPrinter:
     &#34;&#34;&#34;Utility class to buffer printing with a prefix.&#34;&#34;&#34;
+
     def __init__(self, out, prefix=None):
         self.out = out
         self.prefix = prefix
@@ -1278,7 +1388,7 @@ that returns the policy document, so it is only called if needed.</p></section>
     def print(self, msg, prefix=True):
         &#34;&#34;&#34;Print msg to buffer, if prefix is True, prepend the prefix.&#34;&#34;&#34;
         if prefix:
-            print(f&#39;{self.prefix} {msg}&#39;, file=self.out)
+            print(f&#34;{self.prefix} {msg}&#34;, file=self.out)
         else:
             print(msg, file=self.out)</code></pre>
 </details>
@@ -1296,7 +1406,7 @@ that returns the policy document, so it is only called if needed.</p></section>
 <pre><code class="python">def print(self, msg, prefix=True):
     &#34;&#34;&#34;Print msg to buffer, if prefix is True, prepend the prefix.&#34;&#34;&#34;
     if prefix:
-        print(f&#39;{self.prefix} {msg}&#39;, file=self.out)
+        print(f&#34;{self.prefix} {msg}&#34;, file=self.out)
     else:
         print(msg, file=self.out)</code></pre>
 </details>
@@ -1355,7 +1465,7 @@ that returns the policy document, so it is only called if needed.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

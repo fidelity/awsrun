@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.1" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>awsrun.config API documentation</title>
 <meta name="description" content="Provides a YAML/JSON config file reader with type-checked values …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -191,6 +191,7 @@ class Config:
     registry of configuration parsers based on file extensions, so users can
     load configs from files.
     &#34;&#34;&#34;
+
     _filetypes = {}
 
     @classmethod
@@ -218,11 +219,11 @@ class Config:
 
         if not path.is_file():
             if must_exist:
-                raise FileNotFoundError(f&#39;Config file not found: {filename}&#39;)
+                raise FileNotFoundError(f&#34;Config file not found: {filename}&#34;)
             return Config({})
 
         if path.suffix not in cls._filetypes:
-            raise ValueError(f&#39;Unregistered file type extension: {path.suffix}&#39;)
+            raise ValueError(f&#34;Unregistered file type extension: {path.suffix}&#34;)
 
         with path.open() as f:
             return cls._filetypes[path.suffix](f)
@@ -230,7 +231,7 @@ class Config:
     def __init__(self, d):
         self.conf = d
 
-    def get(self, *keys, default=None, type=None, must_exist=False):  # pylint: disable=redefined-builtin
+    def get(self, *keys, default=None, type=None, must_exist=False):
         &#34;&#34;&#34;Return the specified value from the `Config`.
 
         Specify the value to read by providing the keys required to reach the
@@ -258,6 +259,7 @@ class Config:
             c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=And(StrMatch(r&#39;\\d+&#39;), StrMatch(r&#39;[A-Z]&#39;)))
             c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Not(Or(Int, Float)))
         &#34;&#34;&#34;
+        # pylint: disable=redefined-builtin
 
         # This one-liner will recursively follow a list of keys into a
         # dictionary and return the value. If a key does not exist, return an
@@ -265,7 +267,9 @@ class Config:
         try:
             value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
         except AttributeError:
-            raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;)
+            raise ValueError(
+                f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;
+            )
 
         # If value is {} that means the key doesn&#39;t exist. If the must_exist
         # flag was passed, then we raise a descriptive ValueError, otherwise we
@@ -290,7 +294,9 @@ class Config:
             return value
 
         # Finally, all other cases indicate a type error.
-        raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: not a {type}: {repr(value)}&#34;)
+        raise TypeError(
+            f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: not a {type}: {repr(value)}&#34;
+        )
 
 
 EmptyConfig = Config({})
@@ -299,18 +305,20 @@ EmptyConfig = Config({})
 
 class YAMLConfig(Config):
     &#34;&#34;&#34;Loads a YAML configuration from a stream.&#34;&#34;&#34;
+
     def __init__(self, stream):
         super().__init__(yaml.safe_load(stream))
 
 
 class JSONConfig(Config):
     &#34;&#34;&#34;Loads a JSON configuration from a stream.&#34;&#34;&#34;
+
     def __init__(self, stream):
         super().__init__(json.load(stream))
 
 
-Config.register_filetype(JSONConfig, &#39;.json&#39;, &#39;.jsn&#39;)
-Config.register_filetype(YAMLConfig, &#39;.yaml&#39;, &#39;.yml&#39;)
+Config.register_filetype(JSONConfig, &#34;.json&#34;, &#34;.jsn&#34;)
+Config.register_filetype(YAMLConfig, &#34;.yaml&#34;, &#34;.yml&#34;)
 
 
 class Type:
@@ -342,7 +350,7 @@ class Not(Type):
         return not self.config_type.type_check(obj)
 
     def __str__(self):
-        return &#39;not &#39; + str(self.config_type)
+        return &#34;not &#34; + str(self.config_type)
 
 
 class Or(Type):
@@ -353,6 +361,7 @@ class Or(Type):
         Or(Int, Float)
         Or(StrMatch(r&#39;^file:&#39;), StrMatch(r&#39;^https?:&#39;))
     &#34;&#34;&#34;
+
     def __init__(self, *config_types):
         self.config_types = config_types
 
@@ -360,8 +369,8 @@ class Or(Type):
         return any(t.type_check(obj) for t in self.config_types)
 
     def __str__(self):
-        s = &#39; or &#39;.join(str(t) for t in self.config_types)
-        return &#39;(&#39; + s + &#39;)&#39;
+        s = &#34; or &#34;.join(str(t) for t in self.config_types)
+        return &#34;(&#34; + s + &#34;)&#34;
 
 
 class And(Type):
@@ -371,6 +380,7 @@ class And(Type):
 
         And(StrMatch(r&#39;\\d&#39;), StrMatch(r&#39;[!@#$%^&amp;*()]&#39;))
     &#34;&#34;&#34;
+
     def __init__(self, *config_types):
         self.config_types = config_types
 
@@ -378,8 +388,8 @@ class And(Type):
         return all(t.type_check(obj) for t in self.config_types)
 
     def __str__(self):
-        s = &#39; and &#39;.join(str(t) for t in self.config_types)
-        return &#39;(&#39; + s + &#39;)&#39;
+        s = &#34; and &#34;.join(str(t) for t in self.config_types)
+        return &#34;(&#34; + s + &#34;)&#34;
 
 
 class Const(Type):
@@ -419,8 +429,8 @@ class Scalar(Type):
         Scalar(bool)
     &#34;&#34;&#34;
 
-    def __init__(self, type):  # pylint: disable=redefined-builtin
-        self.type = type
+    def __init__(self, type_):
+        self.type = type_
 
     def type_check(self, obj):
         return type(obj) == self.type
@@ -460,7 +470,7 @@ class IpAddress(Type):
             return False
 
     def __str__(self):
-        return &#39;IPv4 or IPv6 address&#39;
+        return &#34;IPv4 or IPv6 address&#34;
 
 
 class IpNetwork(Type):
@@ -476,7 +486,7 @@ class IpNetwork(Type):
             return False
 
     def __str__(self):
-        return &#39;IPv4 or IPv6 network&#39;
+        return &#34;IPv4 or IPv6 network&#34;
 
 
 class FileType(Type):
@@ -488,7 +498,7 @@ class FileType(Type):
         return Path(obj).exists()
 
     def __str__(self):
-        return &#39;existing file&#39;
+        return &#34;existing file&#34;
 
 
 class AnyType(Type):
@@ -498,7 +508,7 @@ class AnyType(Type):
         return True
 
     def __str__(self):
-        return &#39;any type&#39;
+        return &#34;any type&#34;
 
 
 Str = Scalar(str)
@@ -525,10 +535,10 @@ IP = IpAddress()
 IPNet = IpNetwork()
 &#34;&#34;&#34;Singleton representing an IP network (v4 or v6).&#34;&#34;&#34;
 
-Dotted = StrMatch(r&#39;^[^.]+(\.[^.]+)*$&#39;)
+Dotted = StrMatch(r&#34;^[^.]+(\.[^.]+)*$&#34;)
 &#34;&#34;&#34;Singleton representing a dotted Python path.&#34;&#34;&#34;
 
-URL = StrMatch(r&#39;^[^:]+://&#39;)
+URL = StrMatch(r&#34;^[^:]+://&#34;)
 &#34;&#34;&#34;Singleton representing a URL in the form of xxxx://.&#34;&#34;&#34;
 
 
@@ -542,6 +552,7 @@ class List(Type):
         List(Dict(Str, Int))
         List(StrMatch(r&#39;^https?://&#39;))
     &#34;&#34;&#34;
+
     def __init__(self, element_type):
         self.element_type = element_type
 
@@ -551,7 +562,7 @@ class List(Type):
         return all(self.element_type.type_check(e) for e in obj)
 
     def __str__(self):
-        return f&#39;list of {self.element_type}&#39;
+        return f&#34;list of {self.element_type}&#34;
 
 
 class Dict(Type):
@@ -563,6 +574,7 @@ class Dict(Type):
         Dict(Str, List(IP))
         Dict(Str, List(Or(Int, Float)))
     &#34;&#34;&#34;
+
     def __init__(self, key_type, value_type):
         self.key_type = key_type
         self.value_type = value_type
@@ -570,11 +582,12 @@ class Dict(Type):
     def type_check(self, obj):
         if type(obj) != dict:
             return False
-        return (all(self.key_type.type_check(k) for k in obj.keys())
-                and all(self.value_type.type_check(v) for v in obj.values()))
+        return all(self.key_type.type_check(k) for k in obj.keys()) and all(
+            self.value_type.type_check(v) for v in obj.values()
+        )
 
     def __str__(self):
-        return f&#39;dict with {self.key_type} keys and {self.value_type} values&#39;</code></pre>
+        return f&#34;dict with {self.key_type} keys and {self.value_type} values&#34;</code></pre>
 </details>
 </section>
 <section>
@@ -659,6 +672,7 @@ load configs from files.</p></section>
     registry of configuration parsers based on file extensions, so users can
     load configs from files.
     &#34;&#34;&#34;
+
     _filetypes = {}
 
     @classmethod
@@ -686,11 +700,11 @@ load configs from files.</p></section>
 
         if not path.is_file():
             if must_exist:
-                raise FileNotFoundError(f&#39;Config file not found: {filename}&#39;)
+                raise FileNotFoundError(f&#34;Config file not found: {filename}&#34;)
             return Config({})
 
         if path.suffix not in cls._filetypes:
-            raise ValueError(f&#39;Unregistered file type extension: {path.suffix}&#39;)
+            raise ValueError(f&#34;Unregistered file type extension: {path.suffix}&#34;)
 
         with path.open() as f:
             return cls._filetypes[path.suffix](f)
@@ -698,7 +712,7 @@ load configs from files.</p></section>
     def __init__(self, d):
         self.conf = d
 
-    def get(self, *keys, default=None, type=None, must_exist=False):  # pylint: disable=redefined-builtin
+    def get(self, *keys, default=None, type=None, must_exist=False):
         &#34;&#34;&#34;Return the specified value from the `Config`.
 
         Specify the value to read by providing the keys required to reach the
@@ -726,6 +740,7 @@ load configs from files.</p></section>
             c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=And(StrMatch(r&#39;\\d+&#39;), StrMatch(r&#39;[A-Z]&#39;)))
             c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Not(Or(Int, Float)))
         &#34;&#34;&#34;
+        # pylint: disable=redefined-builtin
 
         # This one-liner will recursively follow a list of keys into a
         # dictionary and return the value. If a key does not exist, return an
@@ -733,7 +748,9 @@ load configs from files.</p></section>
         try:
             value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
         except AttributeError:
-            raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;)
+            raise ValueError(
+                f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;
+            )
 
         # If value is {} that means the key doesn&#39;t exist. If the must_exist
         # flag was passed, then we raise a descriptive ValueError, otherwise we
@@ -758,7 +775,9 @@ load configs from files.</p></section>
             return value
 
         # Finally, all other cases indicate a type error.
-        raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: not a {type}: {repr(value)}&#34;)</code></pre>
+        raise TypeError(
+            f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: not a {type}: {repr(value)}&#34;
+        )</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -819,11 +838,11 @@ def from_file(cls, filename, must_exist=False):
 
     if not path.is_file():
         if must_exist:
-            raise FileNotFoundError(f&#39;Config file not found: {filename}&#39;)
+            raise FileNotFoundError(f&#34;Config file not found: {filename}&#34;)
         return Config({})
 
     if path.suffix not in cls._filetypes:
-        raise ValueError(f&#39;Unregistered file type extension: {path.suffix}&#39;)
+        raise ValueError(f&#34;Unregistered file type extension: {path.suffix}&#34;)
 
     with path.open() as f:
         return cls._filetypes[path.suffix](f)</code></pre>
@@ -864,7 +883,7 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get(self, *keys, default=None, type=None, must_exist=False):  # pylint: disable=redefined-builtin
+<pre><code class="python">def get(self, *keys, default=None, type=None, must_exist=False):
     &#34;&#34;&#34;Return the specified value from the `Config`.
 
     Specify the value to read by providing the keys required to reach the
@@ -892,6 +911,7 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
         c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=And(StrMatch(r&#39;\\d+&#39;), StrMatch(r&#39;[A-Z]&#39;)))
         c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Not(Or(Int, Float)))
     &#34;&#34;&#34;
+    # pylint: disable=redefined-builtin
 
     # This one-liner will recursively follow a list of keys into a
     # dictionary and return the value. If a key does not exist, return an
@@ -899,7 +919,9 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
     try:
         value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
     except AttributeError:
-        raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;)
+        raise ValueError(
+            f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;
+        )
 
     # If value is {} that means the key doesn&#39;t exist. If the must_exist
     # flag was passed, then we raise a descriptive ValueError, otherwise we
@@ -924,7 +946,9 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
         return value
 
     # Finally, all other cases indicate a type error.
-    raise TypeError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: not a {type}: {repr(value)}&#34;)</code></pre>
+    raise TypeError(
+        f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: not a {type}: {repr(value)}&#34;
+    )</code></pre>
 </details>
 </dd>
 </dl>
@@ -941,6 +965,7 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
 </summary>
 <pre><code class="python">class YAMLConfig(Config):
     &#34;&#34;&#34;Loads a YAML configuration from a stream.&#34;&#34;&#34;
+
     def __init__(self, stream):
         super().__init__(yaml.safe_load(stream))</code></pre>
 </details>
@@ -971,6 +996,7 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
 </summary>
 <pre><code class="python">class JSONConfig(Config):
     &#34;&#34;&#34;Loads a JSON configuration from a stream.&#34;&#34;&#34;
+
     def __init__(self, stream):
         super().__init__(json.load(stream))</code></pre>
 </details>
@@ -1076,7 +1102,7 @@ Not(List(Int))
         return not self.config_type.type_check(obj)
 
     def __str__(self):
-        return &#39;not &#39; + str(self.config_type)</code></pre>
+        return &#34;not &#34; + str(self.config_type)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1114,6 +1140,7 @@ Or(StrMatch(r'^file:'), StrMatch(r'^https?:'))
         Or(Int, Float)
         Or(StrMatch(r&#39;^file:&#39;), StrMatch(r&#39;^https?:&#39;))
     &#34;&#34;&#34;
+
     def __init__(self, *config_types):
         self.config_types = config_types
 
@@ -1121,8 +1148,8 @@ Or(StrMatch(r'^file:'), StrMatch(r'^https?:'))
         return any(t.type_check(obj) for t in self.config_types)
 
     def __str__(self):
-        s = &#39; or &#39;.join(str(t) for t in self.config_types)
-        return &#39;(&#39; + s + &#39;)&#39;</code></pre>
+        s = &#34; or &#34;.join(str(t) for t in self.config_types)
+        return &#34;(&#34; + s + &#34;)&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1162,6 +1189,7 @@ For example:</p>
 
         And(StrMatch(r&#39;\\d&#39;), StrMatch(r&#39;[!@#$%^&amp;*()]&#39;))
     &#34;&#34;&#34;
+
     def __init__(self, *config_types):
         self.config_types = config_types
 
@@ -1169,8 +1197,8 @@ For example:</p>
         return all(t.type_check(obj) for t in self.config_types)
 
     def __str__(self):
-        s = &#39; and &#39;.join(str(t) for t in self.config_types)
-        return &#39;(&#39; + s + &#39;)&#39;</code></pre>
+        s = &#34; and &#34;.join(str(t) for t in self.config_types)
+        return &#34;(&#34; + s + &#34;)&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1259,7 +1287,7 @@ For example:</p>
 </dd>
 <dt id="awsrun.config.Scalar"><code class="flex name class">
 <span>class <span class="ident">Scalar</span></span>
-<span>(</span><span>type)</span>
+<span>(</span><span>type_)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Represents a type that is a scalar matching <code>type</code>.</p>
@@ -1282,8 +1310,8 @@ Scalar(bool)
         Scalar(bool)
     &#34;&#34;&#34;
 
-    def __init__(self, type):  # pylint: disable=redefined-builtin
-        self.type = type
+    def __init__(self, type_):
+        self.type = type_
 
     def type_check(self, obj):
         return type(obj) == self.type
@@ -1368,7 +1396,7 @@ Scalar(bool)
             return False
 
     def __str__(self):
-        return &#39;IPv4 or IPv6 address&#39;</code></pre>
+        return &#34;IPv4 or IPv6 address&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1406,7 +1434,7 @@ Scalar(bool)
             return False
 
     def __str__(self):
-        return &#39;IPv4 or IPv6 network&#39;</code></pre>
+        return &#34;IPv4 or IPv6 network&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1440,7 +1468,7 @@ Scalar(bool)
         return Path(obj).exists()
 
     def __str__(self):
-        return &#39;existing file&#39;</code></pre>
+        return &#34;existing file&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1472,7 +1500,7 @@ Scalar(bool)
         return True
 
     def __str__(self):
-        return &#39;any type&#39;</code></pre>
+        return &#34;any type&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1513,6 +1541,7 @@ List(StrMatch(r'^https?://'))
         List(Dict(Str, Int))
         List(StrMatch(r&#39;^https?://&#39;))
     &#34;&#34;&#34;
+
     def __init__(self, element_type):
         self.element_type = element_type
 
@@ -1522,7 +1551,7 @@ List(StrMatch(r'^https?://'))
         return all(self.element_type.type_check(e) for e in obj)
 
     def __str__(self):
-        return f&#39;list of {self.element_type}&#39;</code></pre>
+        return f&#34;list of {self.element_type}&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1561,6 +1590,7 @@ Dict(Str, List(Or(Int, Float)))
         Dict(Str, List(IP))
         Dict(Str, List(Or(Int, Float)))
     &#34;&#34;&#34;
+
     def __init__(self, key_type, value_type):
         self.key_type = key_type
         self.value_type = value_type
@@ -1568,11 +1598,12 @@ Dict(Str, List(Or(Int, Float)))
     def type_check(self, obj):
         if type(obj) != dict:
             return False
-        return (all(self.key_type.type_check(k) for k in obj.keys())
-                and all(self.value_type.type_check(v) for v in obj.values()))
+        return all(self.key_type.type_check(k) for k in obj.keys()) and all(
+            self.value_type.type_check(v) for v in obj.values()
+        )
 
     def __str__(self):
-        return f&#39;dict with {self.key_type} keys and {self.value_type} values&#39;</code></pre>
+        return f&#34;dict with {self.key_type} keys and {self.value_type} values&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1687,7 +1718,7 @@ Dict(Str, List(Or(Int, Float)))
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

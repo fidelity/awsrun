@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.1" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>awsrun.cache API documentation</title>
 <meta name="description" content="Provides the ability to cache single values …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -112,6 +112,7 @@ class AbstractExpiringValue:
     method is called. This class is thread-safe. Subclasses must provide
     implementations for `is_expired`, `load`, and `save`.
     &#34;&#34;&#34;
+
     def __init__(self, refresh_fn, max_age):
         self._refresh_fn = refresh_fn
         self._max_age = max_age
@@ -132,7 +133,7 @@ class AbstractExpiringValue:
 
             value = self._refresh_fn()
             self.save(value)
-            LOG.info(&#39;refreshed data and saved in cache&#39;)
+            LOG.info(&#34;refreshed data and saved in cache&#34;)
             return value
 
     def is_expired(self):
@@ -177,6 +178,7 @@ class ExpiringValue(AbstractExpiringValue):
     not refreshed at the time it expires, but only the next time the value
     method is called. This class is thread-safe.
     &#34;&#34;&#34;
+
     def __init__(self, refresh_fn, max_age):
         super().__init__(refresh_fn, max_age)
         self._value = None
@@ -210,6 +212,7 @@ class PersistentExpiringValue(ExpiringValue):
     method is called. This class is thread-safe. If the value cannot be
     persisted as JSON, a TypeError is thrown.
     &#34;&#34;&#34;
+
     def __init__(self, refresh_fn, path, max_age):
         super().__init__(refresh_fn, max_age)
         self._path = path if isinstance(path, Path) else Path(path)
@@ -221,8 +224,8 @@ class PersistentExpiringValue(ExpiringValue):
         return time.time() &gt; last_modification + self._max_age
 
     def load(self):
-        LOG.debug(&#39;Loading cached data from %s&#39;, self._path)
-        with self._path.open(&#39;r&#39;) as file:
+        LOG.debug(&#34;Loading cached data from %s&#34;, self._path)
+        with self._path.open(&#34;r&#34;) as file:
             return json.load(file)
 
     def save(self, value):
@@ -230,9 +233,9 @@ class PersistentExpiringValue(ExpiringValue):
         if self._max_age == 0:
             return
 
-        LOG.debug(&#39;Saving data to cache file %s&#39;, self._path)
-        tmp = self._path.with_suffix(&#39;.tmp&#39;)
-        with tmp.open(&#39;w&#39;) as file:
+        LOG.debug(&#34;Saving data to cache file %s&#34;, self._path)
+        tmp = self._path.with_suffix(&#34;.tmp&#34;)
+        with tmp.open(&#34;w&#34;) as file:
             json.dump(value, file)
 
         # Pathlib.replace uses os.replace which is atomic on POSIX systems
@@ -279,6 +282,7 @@ implementations for <code>is_expired</code>, <code>load</code>, and <code>save</
     method is called. This class is thread-safe. Subclasses must provide
     implementations for `is_expired`, `load`, and `save`.
     &#34;&#34;&#34;
+
     def __init__(self, refresh_fn, max_age):
         self._refresh_fn = refresh_fn
         self._max_age = max_age
@@ -299,7 +303,7 @@ implementations for <code>is_expired</code>, <code>load</code>, and <code>save</
 
             value = self._refresh_fn()
             self.save(value)
-            LOG.info(&#39;refreshed data and saved in cache&#39;)
+            LOG.info(&#34;refreshed data and saved in cache&#34;)
             return value
 
     def is_expired(self):
@@ -365,7 +369,7 @@ refreshed and the expiration will be reset before being returned.</p></section>
 
         value = self._refresh_fn()
         self.save(value)
-        LOG.info(&#39;refreshed data and saved in cache&#39;)
+        LOG.info(&#34;refreshed data and saved in cache&#34;)
         return value</code></pre>
 </details>
 </dd>
@@ -470,6 +474,7 @@ method is called. This class is thread-safe.</p></section>
     not refreshed at the time it expires, but only the next time the value
     method is called. This class is thread-safe.
     &#34;&#34;&#34;
+
     def __init__(self, refresh_fn, max_age):
         super().__init__(refresh_fn, max_age)
         self._value = None
@@ -542,6 +547,7 @@ persisted as JSON, a TypeError is thrown.</p></section>
     method is called. This class is thread-safe. If the value cannot be
     persisted as JSON, a TypeError is thrown.
     &#34;&#34;&#34;
+
     def __init__(self, refresh_fn, path, max_age):
         super().__init__(refresh_fn, max_age)
         self._path = path if isinstance(path, Path) else Path(path)
@@ -553,8 +559,8 @@ persisted as JSON, a TypeError is thrown.</p></section>
         return time.time() &gt; last_modification + self._max_age
 
     def load(self):
-        LOG.debug(&#39;Loading cached data from %s&#39;, self._path)
-        with self._path.open(&#39;r&#39;) as file:
+        LOG.debug(&#34;Loading cached data from %s&#34;, self._path)
+        with self._path.open(&#34;r&#34;) as file:
             return json.load(file)
 
     def save(self, value):
@@ -562,9 +568,9 @@ persisted as JSON, a TypeError is thrown.</p></section>
         if self._max_age == 0:
             return
 
-        LOG.debug(&#39;Saving data to cache file %s&#39;, self._path)
-        tmp = self._path.with_suffix(&#39;.tmp&#39;)
-        with tmp.open(&#39;w&#39;) as file:
+        LOG.debug(&#34;Saving data to cache file %s&#34;, self._path)
+        tmp = self._path.with_suffix(&#34;.tmp&#34;)
+        with tmp.open(&#34;w&#34;) as file:
             json.dump(value, file)
 
         # Pathlib.replace uses os.replace which is atomic on POSIX systems
@@ -626,7 +632,7 @@ persisted as JSON, a TypeError is thrown.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

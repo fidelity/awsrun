@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.1" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>awsrun.commands.aws.cidr_overlap API documentation</title>
 <meta name="description" content="Display overlapping CIDR blocks between VPCs …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -146,7 +146,7 @@ class _CIDR:
         self.block = ip_network(block)
 
     def __str__(self):
-        return f&#39;{self.acct}/{self.region}/{self.vpc}/{self.block}&#39;
+        return f&#34;{self.acct}/{self.region}/{self.vpc}/{self.block}&#34;
 
     def __lt__(self, other):
         return self.block &lt; other.block
@@ -164,11 +164,12 @@ class CLICommand(RegionalCommand):
     @classmethod
     def regional_from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#39;--exclude-block&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;exclude_blocks&#39;,
-            default=cfg(&#39;exclude_block&#39;, type=List(IPNet), default=[]),
-            help=&#39;exclude CIDR blocks from check&#39;)
+            &#34;--exclude-block&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;exclude_blocks&#34;,
+            default=cfg(&#34;exclude_block&#34;, type=List(IPNet), default=[]),
+            help=&#34;exclude CIDR blocks from check&#34;,
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -179,15 +180,19 @@ class CLICommand(RegionalCommand):
         self.cidrs = []
 
     def regional_execute(self, session, acct, region):
-        ec2 = session.resource(&#39;ec2&#39;, region_name=region)
-        return [(c[&#39;CidrBlock&#39;], vpc.id) for vpc in ec2.vpcs.all() for c in vpc.cidr_block_association_set]
+        ec2 = session.resource(&#34;ec2&#34;, region_name=region)
+        return [
+            (c[&#34;CidrBlock&#34;], vpc.id)
+            for vpc in ec2.vpcs.all()
+            for c in vpc.cidr_block_association_set
+        ]
 
     def regional_collect_results(self, acct, region, get_result):
         for block, vpc_id in get_result():
             if block not in self.exclude_blocks:
                 cidr = _CIDR(acct, region, vpc_id, block)
                 self.cidrs.append(cidr)
-                print(f&#39;Found CIDR {cidr}&#39;, flush=True)
+                print(f&#34;Found CIDR {cidr}&#34;, flush=True)
 
     def post_hook(self):
         overlap = []
@@ -200,7 +205,7 @@ class CLICommand(RegionalCommand):
                     overlap.append(sorted((c1, c2)))
 
         for c1, c2 in sorted(overlap, key=lambda x: x[0]):
-            print(f&#39;OVERLAP! {c1} &lt;&lt;&lt;&gt;&gt;&gt; {c2}&#39;)</code></pre>
+            print(f&#34;OVERLAP! {c1} &lt;&lt;&lt;&gt;&gt;&gt; {c2}&#34;)</code></pre>
 </details>
 </section>
 <section>
@@ -228,11 +233,12 @@ class CLICommand(RegionalCommand):
     @classmethod
     def regional_from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#39;--exclude-block&#39;,
-            action=&#39;append&#39;,
-            dest=&#39;exclude_blocks&#39;,
-            default=cfg(&#39;exclude_block&#39;, type=List(IPNet), default=[]),
-            help=&#39;exclude CIDR blocks from check&#39;)
+            &#34;--exclude-block&#34;,
+            action=&#34;append&#34;,
+            dest=&#34;exclude_blocks&#34;,
+            default=cfg(&#34;exclude_block&#34;, type=List(IPNet), default=[]),
+            help=&#34;exclude CIDR blocks from check&#34;,
+        )
 
         args = parser.parse_args(argv)
         return cls(**vars(args))
@@ -243,15 +249,19 @@ class CLICommand(RegionalCommand):
         self.cidrs = []
 
     def regional_execute(self, session, acct, region):
-        ec2 = session.resource(&#39;ec2&#39;, region_name=region)
-        return [(c[&#39;CidrBlock&#39;], vpc.id) for vpc in ec2.vpcs.all() for c in vpc.cidr_block_association_set]
+        ec2 = session.resource(&#34;ec2&#34;, region_name=region)
+        return [
+            (c[&#34;CidrBlock&#34;], vpc.id)
+            for vpc in ec2.vpcs.all()
+            for c in vpc.cidr_block_association_set
+        ]
 
     def regional_collect_results(self, acct, region, get_result):
         for block, vpc_id in get_result():
             if block not in self.exclude_blocks:
                 cidr = _CIDR(acct, region, vpc_id, block)
                 self.cidrs.append(cidr)
-                print(f&#39;Found CIDR {cidr}&#39;, flush=True)
+                print(f&#34;Found CIDR {cidr}&#34;, flush=True)
 
     def post_hook(self):
         overlap = []
@@ -264,7 +274,7 @@ class CLICommand(RegionalCommand):
                     overlap.append(sorted((c1, c2)))
 
         for c1, c2 in sorted(overlap, key=lambda x: x[0]):
-            print(f&#39;OVERLAP! {c1} &lt;&lt;&lt;&gt;&gt;&gt; {c2}&#39;)</code></pre>
+            print(f&#34;OVERLAP! {c1} &lt;&lt;&lt;&gt;&gt;&gt; {c2}&#34;)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -320,7 +330,7 @@ class CLICommand(RegionalCommand):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

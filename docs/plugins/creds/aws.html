@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.1" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>awsrun.plugins.creds.aws API documentation</title>
 <meta name="description" content="Plug-ins for AWS credential loading …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -118,13 +118,9 @@ from awsrun.plugmgr import Plugin
 # This is only used to prevent pdoc (the doc generator) from exposing
 # AbstractCrossAccount in the module&#39;s documentation, which is intended for CLI
 # users and not programmers as this module deals with plugin configurations.
-__all__ = [&#39;Profile&#39;, &#39;SAML&#39;, &#39;ProfileCrossAccount&#39;, &#39;SAMLCrossAccount&#39;]
+__all__ = [&#34;Profile&#34;, &#34;SAML&#34;, &#34;ProfileCrossAccount&#34;, &#34;SAMLCrossAccount&#34;]
 
-_AUTH_CLASSES = {
-    &#39;basic&#39;: HTTPBasicAuth,
-    &#39;digest&#39;: HTTPDigestAuth,
-    &#39;ntlm&#39;: HttpNtlmAuth
-}
+_AUTH_CLASSES = {&#34;basic&#34;: HTTPBasicAuth, &#34;digest&#34;: HTTPDigestAuth, &#34;ntlm&#34;: HttpNtlmAuth}
 
 
 class Profile(Plugin):
@@ -171,6 +167,7 @@ class Profile(Plugin):
 
     There are no options for this plug-in.
     &#34;&#34;&#34;
+
     def instantiate(self, args):
         return CredsViaProfile()
 
@@ -263,6 +260,7 @@ class SAML(Plugin):
     IdP is cached in memory. The default value is `300` seconds (5 minutes).
     Caching can be disabled by specifying `0` seconds.
     &#34;&#34;&#34;
+
     def __init__(self, parser, cfg):
         super().__init__(parser, cfg)
 
@@ -270,44 +268,52 @@ class SAML(Plugin):
         # main CLI. Any CLI args added via add_argument will be commingled with
         # the main awsrun args, so they are prefixed with &#39;--saml-&#39; to lessen
         # chance of a name collision.
-        group = parser.add_argument_group(&#39;SAML options&#39;)
+        group = parser.add_argument_group(&#34;SAML options&#34;)
         group.add_argument(
-            &#39;--saml-username&#39;,
-            metavar=&#39;USER&#39;,
-            default=self.cfg(&#39;username&#39;, type=Str, default=getpass.getuser()),
-            help=&#39;username for SAML authentication&#39;)
+            &#34;--saml-username&#34;,
+            metavar=&#34;USER&#34;,
+            default=self.cfg(&#34;username&#34;, type=Str, default=getpass.getuser()),
+            help=&#34;username for SAML authentication&#34;,
+        )
 
         group.add_argument(
-            &#39;--saml-password&#39;,
-            metavar=&#39;PASS&#39;,
-            default=self.cfg(&#39;password&#39;, type=Str, default=os.environ.get(&#39;PASSWORD&#39;, None)),
-            help=&#39;password for SAML authentication&#39;)
+            &#34;--saml-password&#34;,
+            metavar=&#34;PASS&#34;,
+            default=self.cfg(
+                &#34;password&#34;, type=Str, default=os.environ.get(&#34;PASSWORD&#34;, None)
+            ),
+            help=&#34;password for SAML authentication&#34;,
+        )
 
         group.add_argument(
-            &#39;--saml-role&#39;,
-            metavar=&#39;ROLE&#39;,
-            default=self.cfg(&#39;role&#39;, type=Str, must_exist=True),
-            help=&#39;base role to assume via SAML&#39;)
+            &#34;--saml-role&#34;,
+            metavar=&#34;ROLE&#34;,
+            default=self.cfg(&#34;role&#34;, type=Str, must_exist=True),
+            help=&#34;base role to assume via SAML&#34;,
+        )
 
         group.add_argument(
-            &#39;--saml-duration&#39;,
-            metavar=&#39;SECS&#39;,
+            &#34;--saml-duration&#34;,
+            metavar=&#34;SECS&#34;,
             type=int,
-            default=cfg(&#39;duration&#39;, type=Int, default=3600),
-            help=&#39;duration when requesting aws credentials in assume_role*&#39;)
+            default=cfg(&#34;duration&#34;, type=Int, default=3600),
+            help=&#34;duration when requesting aws credentials in assume_role*&#34;,
+        )
 
         group.add_argument(
-            &#39;--saml-assertion-duration&#39;,
-            metavar=&#39;SECS&#39;,
+            &#34;--saml-assertion-duration&#34;,
+            metavar=&#34;SECS&#34;,
             type=int,
-            default=cfg(&#39;assertion_duration&#39;, type=Int, default=300),
-            help=&#39;length of time to cache SAML assertion from IdP&#39;)
+            default=cfg(&#34;assertion_duration&#34;, type=Int, default=300),
+            help=&#34;length of time to cache SAML assertion from IdP&#34;,
+        )
 
         group.add_argument(
-            &#39;--saml-no-verify&#39;,
-            action=&#39;store_true&#39;,
-            default=cfg(&#39;no_verify&#39;, type=Bool, default=False),
-            help=&#39;disable cert verification for HTTP requests&#39;)
+            &#34;--saml-no-verify&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;no_verify&#34;, type=Bool, default=False),
+            help=&#34;disable cert verification for HTTP requests&#34;,
+        )
 
     def instantiate(self, args):
         cfg = self.cfg
@@ -316,22 +322,27 @@ class SAML(Plugin):
         # environment as we wouldn&#39;t have access to the username. which should
         # be included in the prompt to the user to remind them of the username
         # being used.
-        args.saml_password = args.saml_password or getpass.getpass(f&#39;Password for {args.saml_username}? &#39;)
+        args.saml_password = args.saml_password or getpass.getpass(
+            f&#34;Password for {args.saml_username}? &#34;
+        )
 
         # Look up the requests compatible HTTP Auth classes by type specified.
-        auth = _AUTH_CLASSES[cfg(&#39;auth_type&#39;, type=Choice(&#39;basic&#39;, &#39;digest&#39;, &#39;ntlm&#39;), default=&#39;basic&#39;)]
+        auth = _AUTH_CLASSES[
+            cfg(&#34;auth_type&#34;, type=Choice(&#34;basic&#34;, &#34;digest&#34;, &#34;ntlm&#34;), default=&#34;basic&#34;)
+        ]
 
         # Build a session provider using the combination of options that have
         # been specified in the user&#39;s configuration file or have been
         # overridden on the command line.
         session_provider = CredsViaSAML(
             role=args.saml_role,
-            url=cfg(&#39;url&#39;, type=URL, must_exist=True),
+            url=cfg(&#34;url&#34;, type=URL, must_exist=True),
             auth=auth(args.saml_username, args.saml_password),
-            headers=cfg(&#39;http_headers&#39;, type=Dict(Str, Str), default={}),
+            headers=cfg(&#34;http_headers&#34;, type=Dict(Str, Str), default={}),
             duration=args.saml_duration,
             saml_duration=args.saml_assertion_duration,
-            no_verify=args.saml_no_verify)
+            no_verify=args.saml_no_verify,
+        )
 
         # Test if password provided is correct. If the wrong password is used and
         # one cannot be authenticated, then AccountRunner might inadvertently lock
@@ -349,6 +360,7 @@ class AbstractCrossAccount(Plugin):
     access such as the base account, role, and external id. Subclasses must
     implement the `_get_base_auth` method.
     &#34;&#34;&#34;
+
     def __init__(self, parser, cfg):
         super().__init__(parser, cfg)
 
@@ -356,31 +368,35 @@ class AbstractCrossAccount(Plugin):
         # CLI. Any CLI args added via add_argument will be commingled with the main
         # awsrun args, so they are prefixed with &#39;--creds-&#39; to lessen chance of a
         # name collision.
-        group = parser.add_argument_group(&#39;cross-account options&#39;)
+        group = parser.add_argument_group(&#34;cross-account options&#34;)
         group.add_argument(
-            &#39;--x-acct-base&#39;,
-            metavar=&#39;ACCT&#39;,
-            default=cfg(&#39;x_acct&#39;, &#39;base&#39;, type=Str, must_exist=True),
-            help=&#39;base account to assume role from&#39;)
+            &#34;--x-acct-base&#34;,
+            metavar=&#34;ACCT&#34;,
+            default=cfg(&#34;x_acct&#34;, &#34;base&#34;, type=Str, must_exist=True),
+            help=&#34;base account to assume role from&#34;,
+        )
 
         group.add_argument(
-            &#39;--x-acct-role&#39;,
-            metavar=&#39;ROLE&#39;,
-            default=cfg(&#39;x_acct&#39;, &#39;role&#39;, type=Str, must_exist=True),
-            help=&#39;cross-account role to assume&#39;)
+            &#34;--x-acct-role&#34;,
+            metavar=&#34;ROLE&#34;,
+            default=cfg(&#34;x_acct&#34;, &#34;role&#34;, type=Str, must_exist=True),
+            help=&#34;cross-account role to assume&#34;,
+        )
 
         group.add_argument(
-            &#39;--x-acct-external-id&#39;,
-            metavar=&#39;ID&#39;,
-            default=cfg(&#39;x_acct&#39;, &#39;external_id&#39;, type=Str),
-            help=&#39;external id to use when assuming role in cross-account&#39;)
+            &#34;--x-acct-external-id&#34;,
+            metavar=&#34;ID&#34;,
+            default=cfg(&#34;x_acct&#34;, &#34;external_id&#34;, type=Str),
+            help=&#34;external id to use when assuming role in cross-account&#34;,
+        )
 
         group.add_argument(
-            &#39;--x-acct-duration&#39;,
-            metavar=&#39;SECS&#39;,
+            &#34;--x-acct-duration&#34;,
+            metavar=&#34;SECS&#34;,
             type=int,
-            default=cfg(&#39;x_acct&#39;, &#39;duration&#39;, type=Int, default=3600),
-            help=&#39;duration when requesting aws credentials in assume_role*&#39;)
+            default=cfg(&#34;x_acct&#34;, &#34;duration&#34;, type=Int, default=3600),
+            help=&#34;duration when requesting aws credentials in assume_role*&#34;,
+        )
 
     # Normally I would not use &#34;get&#34; in a method name as I find it redundant,
     # but I needed to make this private (even though subclasses must implement
@@ -402,7 +418,8 @@ class AbstractCrossAccount(Plugin):
             base_acct=args.x_acct_base,
             role=args.x_acct_role,
             external_id=args.x_acct_external_id,
-            duration=args.x_acct_duration)
+            duration=args.x_acct_duration,
+        )
 
         return session_provider
 
@@ -465,6 +482,7 @@ class ProfileCrossAccount(AbstractCrossAccount):
     seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
     credentials are expired sooner by a local IAM policy, then lower the value.
     &#34;&#34;&#34;
+
     def __init__(self, parser, cfg):
         self._base_auth = Profile(parser, cfg)
         super().__init__(parser, cfg)
@@ -596,6 +614,7 @@ class SAMLCrossAccount(AbstractCrossAccount):
     seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
     credentials are expired sooner by a local IAM policy, then lower the value.
     &#34;&#34;&#34;
+
     def __init__(self, parser, cfg):
         self._base_auth = SAML(parser, cfg)
         super().__init__(parser, cfg)
@@ -700,6 +719,7 @@ configure them.</p>
 
     There are no options for this plug-in.
     &#34;&#34;&#34;
+
     def instantiate(self, args):
         return CredsViaProfile()</code></pre>
 </details>
@@ -886,6 +906,7 @@ Caching can be disabled by specifying <code>0</code> seconds.</dd>
     IdP is cached in memory. The default value is `300` seconds (5 minutes).
     Caching can be disabled by specifying `0` seconds.
     &#34;&#34;&#34;
+
     def __init__(self, parser, cfg):
         super().__init__(parser, cfg)
 
@@ -893,44 +914,52 @@ Caching can be disabled by specifying <code>0</code> seconds.</dd>
         # main CLI. Any CLI args added via add_argument will be commingled with
         # the main awsrun args, so they are prefixed with &#39;--saml-&#39; to lessen
         # chance of a name collision.
-        group = parser.add_argument_group(&#39;SAML options&#39;)
+        group = parser.add_argument_group(&#34;SAML options&#34;)
         group.add_argument(
-            &#39;--saml-username&#39;,
-            metavar=&#39;USER&#39;,
-            default=self.cfg(&#39;username&#39;, type=Str, default=getpass.getuser()),
-            help=&#39;username for SAML authentication&#39;)
+            &#34;--saml-username&#34;,
+            metavar=&#34;USER&#34;,
+            default=self.cfg(&#34;username&#34;, type=Str, default=getpass.getuser()),
+            help=&#34;username for SAML authentication&#34;,
+        )
 
         group.add_argument(
-            &#39;--saml-password&#39;,
-            metavar=&#39;PASS&#39;,
-            default=self.cfg(&#39;password&#39;, type=Str, default=os.environ.get(&#39;PASSWORD&#39;, None)),
-            help=&#39;password for SAML authentication&#39;)
+            &#34;--saml-password&#34;,
+            metavar=&#34;PASS&#34;,
+            default=self.cfg(
+                &#34;password&#34;, type=Str, default=os.environ.get(&#34;PASSWORD&#34;, None)
+            ),
+            help=&#34;password for SAML authentication&#34;,
+        )
 
         group.add_argument(
-            &#39;--saml-role&#39;,
-            metavar=&#39;ROLE&#39;,
-            default=self.cfg(&#39;role&#39;, type=Str, must_exist=True),
-            help=&#39;base role to assume via SAML&#39;)
+            &#34;--saml-role&#34;,
+            metavar=&#34;ROLE&#34;,
+            default=self.cfg(&#34;role&#34;, type=Str, must_exist=True),
+            help=&#34;base role to assume via SAML&#34;,
+        )
 
         group.add_argument(
-            &#39;--saml-duration&#39;,
-            metavar=&#39;SECS&#39;,
+            &#34;--saml-duration&#34;,
+            metavar=&#34;SECS&#34;,
             type=int,
-            default=cfg(&#39;duration&#39;, type=Int, default=3600),
-            help=&#39;duration when requesting aws credentials in assume_role*&#39;)
+            default=cfg(&#34;duration&#34;, type=Int, default=3600),
+            help=&#34;duration when requesting aws credentials in assume_role*&#34;,
+        )
 
         group.add_argument(
-            &#39;--saml-assertion-duration&#39;,
-            metavar=&#39;SECS&#39;,
+            &#34;--saml-assertion-duration&#34;,
+            metavar=&#34;SECS&#34;,
             type=int,
-            default=cfg(&#39;assertion_duration&#39;, type=Int, default=300),
-            help=&#39;length of time to cache SAML assertion from IdP&#39;)
+            default=cfg(&#34;assertion_duration&#34;, type=Int, default=300),
+            help=&#34;length of time to cache SAML assertion from IdP&#34;,
+        )
 
         group.add_argument(
-            &#39;--saml-no-verify&#39;,
-            action=&#39;store_true&#39;,
-            default=cfg(&#39;no_verify&#39;, type=Bool, default=False),
-            help=&#39;disable cert verification for HTTP requests&#39;)
+            &#34;--saml-no-verify&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;no_verify&#34;, type=Bool, default=False),
+            help=&#34;disable cert verification for HTTP requests&#34;,
+        )
 
     def instantiate(self, args):
         cfg = self.cfg
@@ -939,22 +968,27 @@ Caching can be disabled by specifying <code>0</code> seconds.</dd>
         # environment as we wouldn&#39;t have access to the username. which should
         # be included in the prompt to the user to remind them of the username
         # being used.
-        args.saml_password = args.saml_password or getpass.getpass(f&#39;Password for {args.saml_username}? &#39;)
+        args.saml_password = args.saml_password or getpass.getpass(
+            f&#34;Password for {args.saml_username}? &#34;
+        )
 
         # Look up the requests compatible HTTP Auth classes by type specified.
-        auth = _AUTH_CLASSES[cfg(&#39;auth_type&#39;, type=Choice(&#39;basic&#39;, &#39;digest&#39;, &#39;ntlm&#39;), default=&#39;basic&#39;)]
+        auth = _AUTH_CLASSES[
+            cfg(&#34;auth_type&#34;, type=Choice(&#34;basic&#34;, &#34;digest&#34;, &#34;ntlm&#34;), default=&#34;basic&#34;)
+        ]
 
         # Build a session provider using the combination of options that have
         # been specified in the user&#39;s configuration file or have been
         # overridden on the command line.
         session_provider = CredsViaSAML(
             role=args.saml_role,
-            url=cfg(&#39;url&#39;, type=URL, must_exist=True),
+            url=cfg(&#34;url&#34;, type=URL, must_exist=True),
             auth=auth(args.saml_username, args.saml_password),
-            headers=cfg(&#39;http_headers&#39;, type=Dict(Str, Str), default={}),
+            headers=cfg(&#34;http_headers&#34;, type=Dict(Str, Str), default={}),
             duration=args.saml_duration,
             saml_duration=args.saml_assertion_duration,
-            no_verify=args.saml_no_verify)
+            no_verify=args.saml_no_verify,
+        )
 
         # Test if password provided is correct. If the wrong password is used and
         # one cannot be authenticated, then AccountRunner might inadvertently lock
@@ -1093,6 +1127,7 @@ credentials are expired sooner by a local IAM policy, then lower the value.</dd>
     seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
     credentials are expired sooner by a local IAM policy, then lower the value.
     &#34;&#34;&#34;
+
     def __init__(self, parser, cfg):
         self._base_auth = Profile(parser, cfg)
         super().__init__(parser, cfg)
@@ -1350,6 +1385,7 @@ credentials are expired sooner by a local IAM policy, then lower the value.</dd>
     seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
     credentials are expired sooner by a local IAM policy, then lower the value.
     &#34;&#34;&#34;
+
     def __init__(self, parser, cfg):
         self._base_auth = SAML(parser, cfg)
         super().__init__(parser, cfg)
@@ -1405,7 +1441,7 @@ credentials are expired sooner by a local IAM policy, then lower the value.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
