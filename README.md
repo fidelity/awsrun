@@ -76,15 +76,16 @@ the AWS CLI via the MSI provided by AWS.
 ## Quick Start
 
 Out of the box, the utility of awsrun is limited as most of its power comes from
-the configuration an account loader plug-in and credential loader plug-in. With 
-that said, however, you can still use it out of the box as it will default to 
-loading credentials from your $HOME/.aws/credentials file. While not convenient
+the configuration of an account loader plug-in and a credential loader plug-in.
+With that said, however, you can still use it out of the box, as it will default
+to loading credentials from your $HOME/.aws/credentials file. While not convenient
 when managing hundreds of accounts, it will suffice to get you started.
 
 To list the VPC information for accounts 100200300400 and 200300400100, we need to
 create two profiles, `[100200300400]` and `[200300400100]`, in our AWS credentials
-file, or we need to have a `[default]` profile which is used as a fallback. With
-those defined, you can then run the following command to list VPCs:
+file, or we need to have a `[default]` profile, which is used as a fallback. With
+those defined, you can then run the following command to list VPCs in the two
+regions specified:
 
     $ awsrun --account 100200300400 --account 200300400100 aws ec2 describe-vpcs --region us-east-1 --region us-west-2
     2 accounts selected:
