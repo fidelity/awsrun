@@ -598,6 +598,54 @@ class RegionalCommand(Command):
             print(f"{acct}/{region}: error: {e}", flush=True, file=sys.stderr)
 
 
+class CommandFunctionAdapter(Command):
+    def __init__(self, func):
+        super().__init__()
+        self.func = func
+        self.results = list()
+        self.errors = list()
+
+    def execute(self, session, account):
+        return self.func(session, account)
+
+    def collect_results(self, account, get_result):
+        try:
+            self.results.append({"account": account, "result": get_result()})
+        except Exception as exc:
+            self.errors.append({"account": account, "error": exc})
+
+
+def execute_function(session_provider, accounts, func):
+    command = CommandFunctionAdapter(func)
+    AccountRunner(session_provider).run(command, accounts)
+    return (command.results, command.errors)
+
+
+class RegionalCommandFunctionAdapter(RegionalCommand):
+    def __init__(self, regions, func):
+        super().__init__(regions)
+        self.func = func
+        self.results = list()
+        self.errors = list()
+
+    def regional_execute(self, session, account, region):
+        return self.func(session, account, region)
+
+    def regional_collect_results(self, account, region, get_result):
+        try:
+            self.results.append(
+                {"account": account, "region": region, "result": get_result()}
+            )
+        except Exception as exc:
+            self.errors.append({"account": account, "region": region, "error": exc})
+
+
+def regional_execute_function(session_provider, accounts, regions, func):
+    command = RegionalCommandFunctionAdapter(regions, func)
+    AccountRunner(session_provider).run(command, accounts)
+    return (command.results, command.errors)
+
+
 class AccountRunner:
     """Runs a `Command` across one or more accounts.
 
