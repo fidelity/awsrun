@@ -146,8 +146,11 @@ the method.
 The above example can also be rewritten using `RegionalCommand` like the prior
 section to abstract away the explicit looping over regions and the accumulation
 of results, which simplifies the implementation of this command intended for
-AWS. As before, the main difference is the new region parameter on
-`RegionalCommand.regional_execute` and `RegionalCommand.regional_collect_results`:
+AWS. When subclassing `RegionalCommand`, if the constructor is overridden, you
+must invoke the parent's constructor passing it the list of `regions` to
+process. In addition, the other difference is the region parameter on the
+`RegionalCommand.regional_execute` and
+`RegionalCommand.regional_collect_results` methods:
 
     from collections import defaultdict
     from awsrun.runner import AccountRunner, RegionalCommand
@@ -599,50 +602,114 @@ class RegionalCommand(Command):
 
 
 class CommandFunctionAdapter(Command):
+    """Function adapter for a `Command`.
+
+    This adapter wraps `func` in a `Command` that collects the results of the
+    function and any exceptions raised in two instance variables. These are
+    available for inspection after the `AccountRunner.run` has returned. The
+    `func` should have the same signature as `Command.execute` sans the self
+    parameter.
+    """
+
     def __init__(self, func):
         super().__init__()
         self.func = func
-        self.results = list()
-        self.errors = list()
 
-    def execute(self, session, account):
-        return self.func(session, account)
+        self.results = {}
+        """Dict containing results keyed by account."""
 
-    def collect_results(self, account, get_result):
+        self.errors = {}
+        """Dict containing exceptions keyed by account."""
+
+    def execute(self, session, acct):
+        return self.func(session, acct)
+
+    def collect_results(self, acct, get_result):
         try:
-            self.results.append({"account": account, "result": get_result()})
-        except Exception as exc:
-            self.errors.append({"account": account, "error": exc})
+            self.results[acct] = get_result()
+        except Exception as e:  # pylint: disable=broad-except
+            self.errors[acct] = e
 
 
-def execute_function(session_provider, accounts, func):
+def execute_function(session_provider, accounts, func, key=lambda x: x, max_workers=10):
+    """Executes a function across one or more accounts concurrently.
+
+    This is a convenience function that instantiates an `AccountRunner`, wraps a
+    `func` in a `CommandFunctionAdapter`, runs the command across a list of
+    `accounts`, and then returns a tuple of dicts representing the results and
+    errors after all accounts have been processed. The returned dicts are keyed
+    by the account.
+
+    The list of `accounts` can be a simple list of strings of account IDs or it
+    can be a list of objects that represent accounts. Passing objects can be
+    useful as each object is passed to `func` when processing an account. When
+    using account objects, you must provide a `key` function that returns the
+    account ID as a string from the account object.
+
+    Accounts are processed concurrently using a worker pool. The default number
+    of workers is specified by the `max_workers` argument, which defaults to 10.
+    """
     command = CommandFunctionAdapter(func)
-    AccountRunner(session_provider).run(command, accounts)
+    AccountRunner(session_provider, max_workers=max_workers).run(
+        command, accounts, key=key
+    )
     return (command.results, command.errors)
 
 
 class RegionalCommandFunctionAdapter(RegionalCommand):
+    """Function adapter for a `RegionalCommand`.
+
+    This adapter wraps `func` in a `RegionalCommand` that collects the results
+    of the function and any exceptions raised in two instance variables. These
+    are available for inspection after the `AccountRunner.run` has returned. The
+    `func` should have the same signature as `RegionalCommand.execute` sans the
+    self parameter.
+    """
+
     def __init__(self, regions, func):
         super().__init__(regions)
         self.func = func
-        self.results = list()
-        self.errors = list()
 
-    def regional_execute(self, session, account, region):
-        return self.func(session, account, region)
+        self.results = {}
+        """Dict containing results keyed by the tuple of account and region."""
 
-    def regional_collect_results(self, account, region, get_result):
+        self.errors = {}
+        """Dict containing exceptions keyed by tuple of account and region."""
+
+    def regional_execute(self, session, acct, region):
+        return self.func(session, acct, region)
+
+    def regional_collect_results(self, acct, region, get_result):
         try:
-            self.results.append(
-                {"account": account, "region": region, "result": get_result()}
-            )
-        except Exception as exc:
-            self.errors.append({"account": account, "region": region, "error": exc})
+            self.results[(acct, region)] = get_result()
+        except Exception as e:  # pylint: disable=broad-except
+            self.errors[(acct, region)] = e
 
 
-def regional_execute_function(session_provider, accounts, regions, func):
+def regional_execute_function(
+    session_provider, accounts, regions, func, key=lambda x: x, max_workers=10
+):
+    """Executes a function across one or more accounts and regions concurrently.
+
+    This is a convenience function that instantiates an `AccountRunner`, wraps a
+    `func` in a `RegionalCommandFunctionAdapter`, runs the command across a list
+    of `accounts` and `regions`, and then returns a tuple of dicts representing
+    the results and errors after all accounts have been processed. The returned
+    dicts are keyed by a tuple of account and region.
+
+    The list of `accounts` can be a simple list of strings of account IDs or it
+    can be a list of objects that represent accounts. Passing objects can be
+    useful as each object is passed to `func` when processing an account. When
+    using account objects, you must provide a `key` function that returns the
+    account ID as a string from the account object.
+
+    Accounts are processed concurrently using a worker pool. The default number
+    of workers is specified by the `max_workers` argument, which defaults to 10.
+    """
     command = RegionalCommandFunctionAdapter(regions, func)
-    AccountRunner(session_provider).run(command, accounts)
+    AccountRunner(session_provider, max_workers=max_workers).run(
+        command, accounts, key=key
+    )
     return (command.results, command.errors)
 
 

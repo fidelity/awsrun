@@ -158,8 +158,11 @@ the method.</p>
 <p>The above example can also be rewritten using <a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a> like the prior
 section to abstract away the explicit looping over regions and the accumulation
 of results, which simplifies the implementation of this command intended for
-AWS. As before, the main difference is the new region parameter on
-<a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute"><code>RegionalCommand.regional_execute()</code></a> and <a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results"><code>RegionalCommand.regional_collect_results()</code></a>:</p>
+AWS. When subclassing <a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a>, if the constructor is overridden, you
+must invoke the parent's constructor passing it the list of <code>regions</code> to
+process. In addition, the other difference is the region parameter on the
+<a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute"><code>RegionalCommand.regional_execute()</code></a> and
+<a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results"><code>RegionalCommand.regional_collect_results()</code></a> methods:</p>
 <pre><code>from collections import defaultdict
 from awsrun.runner import AccountRunner, RegionalCommand
 from awsrun.session import CredsViaProfile
@@ -333,8 +336,11 @@ the method.
 The above example can also be rewritten using `RegionalCommand` like the prior
 section to abstract away the explicit looping over regions and the accumulation
 of results, which simplifies the implementation of this command intended for
-AWS. As before, the main difference is the new region parameter on
-`RegionalCommand.regional_execute` and `RegionalCommand.regional_collect_results`:
+AWS. When subclassing `RegionalCommand`, if the constructor is overridden, you
+must invoke the parent&#39;s constructor passing it the list of `regions` to
+process. In addition, the other difference is the region parameter on the
+`RegionalCommand.regional_execute` and
+`RegionalCommand.regional_collect_results` methods:
 
     from collections import defaultdict
     from awsrun.runner import AccountRunner, RegionalCommand
@@ -785,6 +791,118 @@ class RegionalCommand(Command):
             print(f&#34;{acct}/{region}: error: {e}&#34;, flush=True, file=sys.stderr)
 
 
+class CommandFunctionAdapter(Command):
+    &#34;&#34;&#34;Function adapter for a `Command`.
+
+    This adapter wraps `func` in a `Command` that collects the results of the
+    function and any exceptions raised in two instance variables. These are
+    available for inspection after the `AccountRunner.run` has returned. The
+    `func` should have the same signature as `Command.execute` sans the self
+    parameter.
+    &#34;&#34;&#34;
+
+    def __init__(self, func):
+        super().__init__()
+        self.func = func
+
+        self.results = {}
+        &#34;&#34;&#34;Dict containing results keyed by account.&#34;&#34;&#34;
+
+        self.errors = {}
+        &#34;&#34;&#34;Dict containing exceptions keyed by account.&#34;&#34;&#34;
+
+    def execute(self, session, acct):
+        return self.func(session, acct)
+
+    def collect_results(self, acct, get_result):
+        try:
+            self.results[acct] = get_result()
+        except Exception as e:  # pylint: disable=broad-except
+            self.errors[acct] = e
+
+
+def execute_function(session_provider, accounts, func, key=lambda x: x, max_workers=10):
+    &#34;&#34;&#34;Executes a function across one or more accounts concurrently.
+
+    This is a convenience function that instantiates an `AccountRunner`, wraps a
+    `func` in a `CommandFunctionAdapter`, runs the command across a list of
+    `accounts`, and then returns a tuple of dicts representing the results and
+    errors after all accounts have been processed. The returned dicts are keyed
+    by the account.
+
+    The list of `accounts` can be a simple list of strings of account IDs or it
+    can be a list of objects that represent accounts. Passing objects can be
+    useful as each object is passed to `func` when processing an account. When
+    using account objects, you must provide a `key` function that returns the
+    account ID as a string from the account object.
+
+    Accounts are processed concurrently using a worker pool. The default number
+    of workers is specified by the `max_workers` argument, which defaults to 10.
+    &#34;&#34;&#34;
+    command = CommandFunctionAdapter(func)
+    AccountRunner(session_provider, max_workers=max_workers).run(
+        command, accounts, key=key
+    )
+    return (command.results, command.errors)
+
+
+class RegionalCommandFunctionAdapter(RegionalCommand):
+    &#34;&#34;&#34;Function adapter for a `RegionalCommand`.
+
+    This adapter wraps `func` in a `RegionalCommand` that collects the results
+    of the function and any exceptions raised in two instance variables. These
+    are available for inspection after the `AccountRunner.run` has returned. The
+    `func` should have the same signature as `RegionalCommand.execute` sans the
+    self parameter.
+    &#34;&#34;&#34;
+
+    def __init__(self, regions, func):
+        super().__init__(regions)
+        self.func = func
+
+        self.results = {}
+        &#34;&#34;&#34;Dict containing results keyed by the tuple of account and region.&#34;&#34;&#34;
+
+        self.errors = {}
+        &#34;&#34;&#34;Dict containing exceptions keyed by tuple of account and region.&#34;&#34;&#34;
+
+    def regional_execute(self, session, acct, region):
+        return self.func(session, acct, region)
+
+    def regional_collect_results(self, acct, region, get_result):
+        try:
+            self.results[(acct, region)] = get_result()
+        except Exception as e:  # pylint: disable=broad-except
+            self.errors[(acct, region)] = e
+
+
+def regional_execute_function(
+    session_provider, accounts, regions, func, key=lambda x: x, max_workers=10
+):
+    &#34;&#34;&#34;Executes a function across one or more accounts and regions concurrently.
+
+    This is a convenience function that instantiates an `AccountRunner`, wraps a
+    `func` in a `RegionalCommandFunctionAdapter`, runs the command across a list
+    of `accounts` and `regions`, and then returns a tuple of dicts representing
+    the results and errors after all accounts have been processed. The returned
+    dicts are keyed by a tuple of account and region.
+
+    The list of `accounts` can be a simple list of strings of account IDs or it
+    can be a list of objects that represent accounts. Passing objects can be
+    useful as each object is passed to `func` when processing an account. When
+    using account objects, you must provide a `key` function that returns the
+    account ID as a string from the account object.
+
+    Accounts are processed concurrently using a worker pool. The default number
+    of workers is specified by the `max_workers` argument, which defaults to 10.
+    &#34;&#34;&#34;
+    command = RegionalCommandFunctionAdapter(regions, func)
+    AccountRunner(session_provider, max_workers=max_workers).run(
+        command, accounts, key=key
+    )
+    return (command.results, command.errors)
+
+
 class AccountRunner:
     &#34;&#34;&#34;Runs a `Command` across one or more accounts.
 
@@ -991,6 +1109,103 @@ def _wrap_exception(exception):
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="awsrun.runner.execute_function"><code class="name flex">
+<span>def <span class="ident">execute_function</span></span>(<span>session_provider, accounts, func, key=&lt;function &lt;lambda&gt;&gt;, max_workers=10)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Executes a function across one or more accounts concurrently.</p>
+<p>This is a convenience function that instantiates an <a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a>, wraps a
+<code>func</code> in a <a title="awsrun.runner.CommandFunctionAdapter" href="#awsrun.runner.CommandFunctionAdapter"><code>CommandFunctionAdapter</code></a>, runs the command across a list of
+<code>accounts</code>, and then returns a tuple of dicts representing the results and
+errors after all accounts have been processed. The returned dicts are keyed
+by the account.</p>
+<p>The list of <code>accounts</code> can be a simple list of strings of account IDs or it
+can be a list of objects that represent accounts. Passing objects can be
+useful as each object is passed to <code>func</code> when processing an account. When
+using account objects, you must provide a <code>key</code> function that returns the
+account ID as a string from the account object.</p>
+<p>Accounts are processed concurrently using a worker pool. The default number
+of workers is specified by the <code>max_workers</code> argument, which defaults to 10.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute_function(session_provider, accounts, func, key=lambda x: x, max_workers=10):
+    &#34;&#34;&#34;Executes a function across one or more accounts concurrently.
+
+    This is a convenience function that instantiates an `AccountRunner`, wraps a
+    `func` in a `CommandFunctionAdapter`, runs the command across a list of
+    `accounts`, and then returns a tuple of dicts representing the results and
+    errors after all accounts have been processed. The returned dicts are keyed
+    by the account.
+
+    The list of `accounts` can be a simple list of strings of account IDs or it
+    can be a list of objects that represent accounts. Passing objects can be
+    useful as each object is passed to `func` when processing an account. When
+    using account objects, you must provide a `key` function that returns the
+    account ID as a string from the account object.
+
+    Accounts are processed concurrently using a worker pool. The default number
+    of workers is specified by the `max_workers` argument, which defaults to 10.
+    &#34;&#34;&#34;
+    command = CommandFunctionAdapter(func)
+    AccountRunner(session_provider, max_workers=max_workers).run(
+        command, accounts, key=key
+    )
+    return (command.results, command.errors)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.runner.regional_execute_function"><code class="name flex">
+<span>def <span class="ident">regional_execute_function</span></span>(<span>session_provider, accounts, regions, func, key=&lt;function &lt;lambda&gt;&gt;, max_workers=10)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Executes a function across one or more accounts and regions concurrently.</p>
+<p>This is a convenience function that instantiates an <a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a>, wraps a
+<code>func</code> in a <a title="awsrun.runner.RegionalCommandFunctionAdapter" href="#awsrun.runner.RegionalCommandFunctionAdapter"><code>RegionalCommandFunctionAdapter</code></a>, runs the command across a list
+of <code>accounts</code> and <code>regions</code>, and then returns a tuple of dicts representing
+the results and errors after all accounts have been processed. The returned
+dicts are keyed by a tuple of account and region.</p>
+<p>The list of <code>accounts</code> can be a simple list of strings of account IDs or it
+can be a list of objects that represent accounts. Passing objects can be
+useful as each object is passed to <code>func</code> when processing an account. When
+using account objects, you must provide a <code>key</code> function that returns the
+account ID as a string from the account object.</p>
+<p>Accounts are processed concurrently using a worker pool. The default number
+of workers is specified by the <code>max_workers</code> argument, which defaults to 10.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def regional_execute_function(
+    session_provider, accounts, regions, func, key=lambda x: x, max_workers=10
+):
+    &#34;&#34;&#34;Executes a function across one or more accounts and regions concurrently.
+
+    This is a convenience function that instantiates an `AccountRunner`, wraps a
+    `func` in a `RegionalCommandFunctionAdapter`, runs the command across a list
+    of `accounts` and `regions`, and then returns a tuple of dicts representing
+    the results and errors after all accounts have been processed. The returned
+    dicts are keyed by a tuple of account and region.
+
+    The list of `accounts` can be a simple list of strings of account IDs or it
+    can be a list of objects that represent accounts. Passing objects can be
+    useful as each object is passed to `func` when processing an account. When
+    using account objects, you must provide a `key` function that returns the
+    account ID as a string from the account object.
+
+    Accounts are processed concurrently using a worker pool. The default number
+    of workers is specified by the `max_workers` argument, which defaults to 10.
+    &#34;&#34;&#34;
+    command = RegionalCommandFunctionAdapter(regions, func)
+    AccountRunner(session_provider, max_workers=max_workers).run(
+        command, accounts, key=key
+    )
+    return (command.results, command.errors)</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -1232,6 +1447,7 @@ built-in commands included in the <a title="awsrun.commands" href="commands/inde
 <li><a title="awsrun.commands.aws.access_report.CLICommand" href="commands/aws/access_report.html#awsrun.commands.aws.access_report.CLICommand">CLICommand</a></li>
 <li><a title="awsrun.commands.aws.list_iam_policies.CLICommand" href="commands/aws/list_iam_policies.html#awsrun.commands.aws.list_iam_policies.CLICommand">CLICommand</a></li>
 <li><a title="awsrun.commands.aws.list_iam_roles.CLICommand" href="commands/aws/list_iam_roles.html#awsrun.commands.aws.list_iam_roles.CLICommand">CLICommand</a></li>
+<li><a title="awsrun.runner.CommandFunctionAdapter" href="#awsrun.runner.CommandFunctionAdapter">CommandFunctionAdapter</a></li>
 <li><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></li>
 </ul>
 <h3>Static methods</h3>
@@ -1886,6 +2102,7 @@ commands included in the <a title="awsrun.commands" href="commands/index.html"><
 <li><a title="awsrun.commands.aws.list_public_ips.CLICommand" href="commands/aws/list_public_ips.html#awsrun.commands.aws.list_public_ips.CLICommand">CLICommand</a></li>
 <li><a title="awsrun.commands.aws.list_vpc_attribute.CLICommand" href="commands/aws/list_vpc_attribute.html#awsrun.commands.aws.list_vpc_attribute.CLICommand">CLICommand</a></li>
 <li><a title="awsrun.commands.aws.list_vpcs.CLICommand" href="commands/aws/list_vpcs.html#awsrun.commands.aws.list_vpcs.CLICommand">CLICommand</a></li>
+<li><a title="awsrun.runner.RegionalCommandFunctionAdapter" href="#awsrun.runner.RegionalCommandFunctionAdapter">RegionalCommandFunctionAdapter</a></li>
 </ul>
 <h3>Static methods</h3>
 <dl>
@@ -2162,6 +2379,154 @@ standard error and logs the stack trace at WARN log level.</p></section>
 <li><code><a title="awsrun.runner.Command.from_cli" href="#awsrun.runner.Command.from_cli">from_cli</a></code></li>
 <li><code><a title="awsrun.runner.Command.post_hook" href="#awsrun.runner.Command.post_hook">post_hook</a></code></li>
 <li><code><a title="awsrun.runner.Command.pre_hook" href="#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.runner.CommandFunctionAdapter"><code class="flex name class">
+<span>class <span class="ident">CommandFunctionAdapter</span></span>
+<span>(</span><span>func)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Function adapter for a <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a>.</p>
+<p>This adapter wraps <code>func</code> in a <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a> that collects the results of the
+function and any exceptions raised in two instance variables. These are
+available for inspection after the <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> has returned. The
+<code>func</code> should have the same signature as <a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a> sans the self
+parameter.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CommandFunctionAdapter(Command):
+    &#34;&#34;&#34;Function adapter for a `Command`.
+
+    This adapter wraps `func` in a `Command` that collects the results of the
+    function and any exceptions raised in two instance variables. These are
+    available for inspection after the `AccountRunner.run` has returned. The
+    `func` should have the same signature as `Command.execute` sans the self
+    parameter.
+    &#34;&#34;&#34;
+
+    def __init__(self, func):
+        super().__init__()
+        self.func = func
+
+        self.results = {}
+        &#34;&#34;&#34;Dict containing results keyed by account.&#34;&#34;&#34;
+
+        self.errors = {}
+        &#34;&#34;&#34;Dict containing exceptions keyed by account.&#34;&#34;&#34;
+
+    def execute(self, session, acct):
+        return self.func(session, acct)
+
+    def collect_results(self, acct, get_result):
+        try:
+            self.results[acct] = get_result()
+        except Exception as e:  # pylint: disable=broad-except
+            self.errors[acct] = e</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="awsrun.runner.CommandFunctionAdapter.results"><code class="name">var <span class="ident">results</span></code></dt>
+<dd>
+<section class="desc"><p>Dict containing results keyed by account.</p></section>
+</dd>
+<dt id="awsrun.runner.CommandFunctionAdapter.errors"><code class="name">var <span class="ident">errors</span></code></dt>
+<dd>
+<section class="desc"><p>Dict containing exceptions keyed by account.</p></section>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.Command.from_cli" href="#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.Command.post_hook" href="#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook" href="#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.runner.RegionalCommandFunctionAdapter"><code class="flex name class">
+<span>class <span class="ident">RegionalCommandFunctionAdapter</span></span>
+<span>(</span><span>regions, func)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Function adapter for a <a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a>.</p>
+<p>This adapter wraps <code>func</code> in a <a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a> that collects the results
+of the function and any exceptions raised in two instance variables. These
+are available for inspection after the <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> has returned. The
+<code>func</code> should have the same signature as <a title="awsrun.runner.RegionalCommand.execute" href="#awsrun.runner.Command.execute"><code>RegionalCommand.execute()</code></a> sans the
+self parameter.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RegionalCommandFunctionAdapter(RegionalCommand):
+    &#34;&#34;&#34;Function adapter for a `RegionalCommand`.
+
+    This adapter wraps `func` in a `RegionalCommand` that collects the results
+    of the function and any exceptions raised in two instance variables. These
+    are available for inspection after the `AccountRunner.run` has returned. The
+    `func` should have the same signature as `RegionalCommand.execute` sans the
+    self parameter.
+    &#34;&#34;&#34;
+
+    def __init__(self, regions, func):
+        super().__init__(regions)
+        self.func = func
+
+        self.results = {}
+        &#34;&#34;&#34;Dict containing results keyed by the tuple of account and region.&#34;&#34;&#34;
+
+        self.errors = {}
+        &#34;&#34;&#34;Dict containing exceptions keyed by tuple of account and region.&#34;&#34;&#34;
+
+    def regional_execute(self, session, acct, region):
+        return self.func(session, acct, region)
+
+    def regional_collect_results(self, acct, region, get_result):
+        try:
+            self.results[(acct, region)] = get_result()
+        except Exception as e:  # pylint: disable=broad-except
+            self.errors[(acct, region)] = e</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></li>
+<li><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="awsrun.runner.RegionalCommandFunctionAdapter.results"><code class="name">var <span class="ident">results</span></code></dt>
+<dd>
+<section class="desc"><p>Dict containing results keyed by the tuple of account and region.</p></section>
+</dd>
+<dt id="awsrun.runner.RegionalCommandFunctionAdapter.errors"><code class="name">var <span class="ident">errors</span></code></dt>
+<dd>
+<section class="desc"><p>Dict containing exceptions keyed by tuple of account and region.</p></section>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.RegionalCommand.collect_results" href="#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.execute" href="#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.from_cli" href="#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.post_hook" href="#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.pre_hook" href="#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results">regional_collect_results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">regional_execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_from_cli" href="#awsrun.runner.RegionalCommand.regional_from_cli">regional_from_cli</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2504,6 +2869,12 @@ object, so this account cannot be processed.</p></section>
 <li><code><a title="awsrun" href="index.html">awsrun</a></code></li>
 </ul>
 </li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="awsrun.runner.execute_function" href="#awsrun.runner.execute_function">execute_function</a></code></li>
+<li><code><a title="awsrun.runner.regional_execute_function" href="#awsrun.runner.regional_execute_function">regional_execute_function</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
@@ -2522,6 +2893,20 @@ object, so this account cannot be processed.</p></section>
 <li><code><a title="awsrun.runner.RegionalCommand.regional_from_cli" href="#awsrun.runner.RegionalCommand.regional_from_cli">regional_from_cli</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">regional_execute</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results">regional_collect_results</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.runner.CommandFunctionAdapter" href="#awsrun.runner.CommandFunctionAdapter">CommandFunctionAdapter</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.runner.CommandFunctionAdapter.results" href="#awsrun.runner.CommandFunctionAdapter.results">results</a></code></li>
+<li><code><a title="awsrun.runner.CommandFunctionAdapter.errors" href="#awsrun.runner.CommandFunctionAdapter.errors">errors</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.runner.RegionalCommandFunctionAdapter" href="#awsrun.runner.RegionalCommandFunctionAdapter">RegionalCommandFunctionAdapter</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.runner.RegionalCommandFunctionAdapter.results" href="#awsrun.runner.RegionalCommandFunctionAdapter.results">results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommandFunctionAdapter.errors" href="#awsrun.runner.RegionalCommandFunctionAdapter.errors">errors</a></code></li>
 </ul>
 </li>
 <li>
