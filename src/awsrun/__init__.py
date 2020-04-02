@@ -301,7 +301,7 @@ line, we can add it to the user configuration instead as follows:
     Credentials:
       plugin: awsrun.plugins.creds.aws.SAML
       options:
-        username: dmn\\pete
+        username: "dmn\\pete"
         role: OperationsStaff
         url: 'https://adfs.example.com/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices'
         auth_type: ntlm
@@ -342,7 +342,7 @@ to our configuration:
     Credentials:
       plugin: awsrun.plugins.creds.aws.SAMLCrossAccount
       options:
-        username: dmn\\pete
+        username: "dmn\\pete"
         role: OperationsStaff
         url: 'https://adfs.example.com/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices'
         auth_type: ntlm
@@ -362,7 +362,7 @@ credentials via SAML for the base account, and then uses those credentials to
 obtain a temporary credentials for each account being processed by awsrun all
 without any hassle:
 
-    $ awsrun --account 100200300400 --saml-username dmn\\pete aws ec2 describe-vpcs --region us-east-1
+    $ awsrun --account 100200300400 --saml-username "dmn\\pete" aws ec2 describe-vpcs --region us-east-1
     Password for dmn\\pete?
     ...
 

@@ -94,7 +94,7 @@ class Profile(Plugin):
     ## Configuration
 
         Credentials:
-          plugin: awsrun.plugins.creds.Profile
+          plugin: awsrun.plugins.creds.aws.Profile
 
     ## Plug-in Options
 
@@ -126,7 +126,7 @@ class SAML(Plugin):
     Options with an asterisk are mandatory and must be provided:
 
         Credentials:
-          plugin: awsrun.plugins.creds.SAML
+          plugin: awsrun.plugins.creds.aws.SAML
           options:
             username: STRING
             password: STRING
@@ -378,7 +378,7 @@ class ProfileCrossAccount(AbstractCrossAccount):
     ## Configuration
 
         Credentials:
-          plugin: awsrun.plugins.creds.ProfileCrossAccount
+          plugin: awsrun.plugins.creds.aws.ProfileCrossAccount
           options:
             x_acct:
               base: STRING*
@@ -447,7 +447,7 @@ class SAMLCrossAccount(AbstractCrossAccount):
     Options with an asterisk are mandatory and must be provided:
 
         Credentials:
-          plugin: awsrun.plugins.creds.SAMLCrossAccount
+          plugin: awsrun.plugins.creds.aws.SAMLCrossAccount
           options:
             username: STRING
             password: STRING
