@@ -18,4 +18,5 @@ rmdir ${OUTDIR}/awsrun
 
 # Move static content into place
 cp screencast/demo.svg ${OUTDIR}
+cp webfonts/webfonts.css ${OUTDIR}
 
