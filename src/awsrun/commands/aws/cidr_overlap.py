@@ -64,7 +64,7 @@ class _CIDR:
         self.acct = acct
         self.region = region
         self.vpc = vpc
-        self.block = ip_network(block)
+        self.block = block
 
     def __str__(self):
         return f"{self.acct}/{self.region}/{self.vpc}/{self.block}"
@@ -97,7 +97,7 @@ class CLICommand(RegionalCommand):
 
     def __init__(self, regions, exclude_blocks):
         super().__init__(regions)
-        self.exclude_blocks = exclude_blocks
+        self.exclude_blocks = [ip_network(b) for b in exclude_blocks]
         self.cidrs = []
 
     def regional_execute(self, session, acct, region):
@@ -110,10 +110,12 @@ class CLICommand(RegionalCommand):
 
     def regional_collect_results(self, acct, region, get_result):
         for block, vpc_id in get_result():
-            if block not in self.exclude_blocks:
-                cidr = _CIDR(acct, region, vpc_id, block)
-                self.cidrs.append(cidr)
-                print(f"Found CIDR {cidr}", flush=True)
+            block = ip_network(block)
+            if any(block.overlaps(e) for e in self.exclude_blocks):
+                continue
+            cidr = _CIDR(acct, region, vpc_id, block)
+            self.cidrs.append(cidr)
+            print(f"Found CIDR {cidr}", flush=True)
 
     def post_hook(self):
         overlap = []
