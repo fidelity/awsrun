@@ -64,7 +64,7 @@ access.""",
     keywords=["awsrun", "aws", "cli"],
     install_requires=[
         "requests",
-        "boto3",
+        "boto3>=1.12.39",
         "awscli",
         "bs4",
         "requests_file",
