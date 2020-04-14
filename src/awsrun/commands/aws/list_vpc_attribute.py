@@ -88,7 +88,11 @@ class CLICommand(RegionalCommand):
         ec2 = session.resource("ec2", region_name=region)
 
         for vpc in ec2.vpcs.all():
-            print(f"{acct}/{region}: vpc={vpc.vpc_id} ", end="", file=out)
+            print(
+                f"{acct}/{region}: id={vpc.vpc_id} owner={vpc.owner_id} ",
+                end="",
+                file=out,
+            )
             for attr in self.attributes:
                 flag = _vpc_attribute(attr, vpc)
                 print(f"{attr}={flag} ", end="", file=out)

@@ -76,6 +76,11 @@ class _CIDR:
         return self.block == other.block
 
     def overlaps(self, other):
+        # If the VPCs are the same, then there is no overlap. This can happen
+        # when a VPC is shared between accounts. Each account will have the
+        # same CDIR block, so we make sure they aren't the same VPC.
+        if self.vpc == other.vpc:
+            return False
         return self.block.overlaps(other.block)
 
 

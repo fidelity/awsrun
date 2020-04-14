@@ -55,6 +55,9 @@ class CLICommand(RegionalCommand):
 
         for vpc in ec2.vpcs.all():
             cidrs = ", ".join(c["CidrBlock"] for c in vpc.cidr_block_association_set)
-            print(f"{acct}/{region}: id={vpc.id} cidrs={cidrs}", file=out)
+            print(
+                f"{acct}/{region}: id={vpc.id} owner={vpc.owner_id} cidrs={cidrs}",
+                file=out,
+            )
 
         return out.getvalue()

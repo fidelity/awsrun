@@ -12,8 +12,8 @@ both elastic IPs owned by an account and public IPs owned by Amazon
 (non-elastic):
 
     $ awsrun -r us-east-1 -a 100200300400 list_public_ips
-    100200300400/us-east-1/vpc-aabbccdd: 18.xx.xx.xx, 18.xx.xx.xx
-    100200300400/us-east-1/vpc-bbccddaa: 34.xx.xx.xx, 54.xx.xx.xx
+    100200300400/us-east-1: id=vpc-aabbccdd owner=100200300400: 18.xx.xx.xx, 18.xx.xx.xx
+    100200300400/us-east-1: id=vpc-bbccddaa owner=100200300400: 34.xx.xx.xx, 54.xx.xx.xx
 
 ## Reference
 
@@ -42,7 +42,6 @@ values on the command line, use multiple flags for each value.
 """
 
 import io
-
 from collections import defaultdict
 
 from awsrun.runner import RegionalCommand
@@ -69,9 +68,17 @@ class CLICommand(RegionalCommand):
                 #     public_ips[vpc.id].append(ni.association.public_ip)
 
                 if ni.association_attribute:
-                    public_ips[vpc.id].append(ni.association_attribute["PublicIp"])
+                    ip = ni.association_attribute.get("PublicIp")
+                    if ip:
+                        public_ips[(vpc.id, vpc.owner_id)].append(ip)
 
-        for vpc_id, ips in public_ips.items():
-            print(f'{acct}/{region}/{vpc_id}: {", ".join(ips)}', file=out)
+        # We include the owner id in the output as sometimes a VPC has been
+        # shared, so the owner is not necessarily the same as the account we
+        # are processing.
+        for (vpc_id, owner_id), ips in public_ips.items():
+            print(
+                f'{acct}/{region}: id={vpc_id} owner={owner_id} ips={", ".join(ips)}',
+                file=out,
+            )
 
         return out.getvalue()
