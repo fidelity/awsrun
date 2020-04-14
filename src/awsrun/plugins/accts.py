@@ -249,7 +249,7 @@ class JSON(_CachingLoaderPlugin):
     or object of accounts. If specified, this must be a list of key names to
     traverse the JSON. The default assumes the accounts are at the top-level.
 
-    `str_template`
+    `str_template`, `--loader-str-template`
     : Controls how accounts are formatted as strings. This is a [Python format
     string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
     that can include any of the included attributes. For example, `"{id}:{env}"`
@@ -429,7 +429,7 @@ class YAML(_CachingLoaderPlugin):
     or object of accounts. If specified, this must be a list of key names to
     traverse the YAML. The default assumes the accounts are at the top-level.
 
-    `str_template`
+    `str_template`, `--loader-str-template`
     : Controls how accounts are formatted as strings. This is a [Python format
     string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
     that can include any of the included attributes. For example, `"{id}:{env}"`
@@ -554,7 +554,7 @@ class CSV(_CachingLoaderPlugin):
     value **must** be provided so awsrun can identify the account number
     associated with each row of account data.
 
-    `str_template`
+    `str_template`, `--loader-str-template`
     : Controls how accounts are formatted as strings. This is a [Python format
     string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
     that can include any of the included attributes. For example, `"{id}:{env}"`

@@ -328,7 +328,7 @@ class JSON(_CachingLoaderPlugin):
     or object of accounts. If specified, this must be a list of key names to
     traverse the JSON. The default assumes the accounts are at the top-level.
 
-    `str_template`
+    `str_template`, `--loader-str-template`
     : Controls how accounts are formatted as strings. This is a [Python format
     string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
     that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
@@ -508,7 +508,7 @@ class YAML(_CachingLoaderPlugin):
     or object of accounts. If specified, this must be a list of key names to
     traverse the YAML. The default assumes the accounts are at the top-level.
 
-    `str_template`
+    `str_template`, `--loader-str-template`
     : Controls how accounts are formatted as strings. This is a [Python format
     string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
     that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
@@ -633,7 +633,7 @@ class CSV(_CachingLoaderPlugin):
     value **must** be provided so awsrun can identify the account number
     associated with each row of account data.
 
-    `str_template`
+    `str_template`, `--loader-str-template`
     : Controls how accounts are formatted as strings. This is a [Python format
     string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
     that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
@@ -870,7 +870,7 @@ associated with each account in the JSON.</dd>
 <dd>Specifies the location within the JSON that contains the array of accounts
 or object of accounts. If specified, this must be a list of key names to
 traverse the JSON. The default assumes the accounts are at the top-level.</dd>
-<dt><code>str_template</code></dt>
+<dt><code>str_template</code>, <code>--loader-str-template</code></dt>
 <dd>Controls how accounts are formatted as strings. This is a <a href="https://docs.python.org/3.7/library/string.html#format-string-syntax">Python format
 string</a>
 that can include any of the included attributes. For example, <code>"{id}:{env}"</code>
@@ -1017,7 +1017,7 @@ value is <code>false</code>.</dd>
     or object of accounts. If specified, this must be a list of key names to
     traverse the JSON. The default assumes the accounts are at the top-level.
 
-    `str_template`
+    `str_template`, `--loader-str-template`
     : Controls how accounts are formatted as strings. This is a [Python format
     string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
     that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
@@ -1198,7 +1198,7 @@ associated with each account in the YAML.</dd>
 <dd>Specifies the location within the YAML that contains the array of accounts
 or object of accounts. If specified, this must be a list of key names to
 traverse the YAML. The default assumes the accounts are at the top-level.</dd>
-<dt><code>str_template</code></dt>
+<dt><code>str_template</code>, <code>--loader-str-template</code></dt>
 <dd>Controls how accounts are formatted as strings. This is a <a href="https://docs.python.org/3.7/library/string.html#format-string-syntax">Python format
 string</a>
 that can include any of the included attributes. For example, <code>"{id}:{env}"</code>
@@ -1361,7 +1361,7 @@ value is <code>false</code>.</dd>
     or object of accounts. If specified, this must be a list of key names to
     traverse the YAML. The default assumes the accounts are at the top-level.
 
-    `str_template`
+    `str_template`, `--loader-str-template`
     : Controls how accounts are formatted as strings. This is a [Python format
     string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
     that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
@@ -1490,7 +1490,7 @@ servers that are slow to generate the account list.</dd>
 <dd>Identifies the CSV column name that contains the AWS account ID. This
 value <strong>must</strong> be provided so awsrun can identify the account number
 associated with each row of account data.</dd>
-<dt><code>str_template</code></dt>
+<dt><code>str_template</code>, <code>--loader-str-template</code></dt>
 <dd>Controls how accounts are formatted as strings. This is a <a href="https://docs.python.org/3.7/library/string.html#format-string-syntax">Python format
 string</a>
 that can include any of the included attributes. For example, <code>"{id}:{env}"</code>
@@ -1598,7 +1598,7 @@ value is <code>false</code>.</dd>
     value **must** be provided so awsrun can identify the account number
     associated with each row of account data.
 
-    `str_template`
+    `str_template`, `--loader-str-template`
     : Controls how accounts are formatted as strings. This is a [Python format
     string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
     that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`

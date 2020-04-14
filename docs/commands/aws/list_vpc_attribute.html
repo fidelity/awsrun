@@ -177,7 +177,11 @@ class CLICommand(RegionalCommand):
         ec2 = session.resource(&#34;ec2&#34;, region_name=region)
 
         for vpc in ec2.vpcs.all():
-            print(f&#34;{acct}/{region}: vpc={vpc.vpc_id} &#34;, end=&#34;&#34;, file=out)
+            print(
+                f&#34;{acct}/{region}: id={vpc.vpc_id} owner={vpc.owner_id} &#34;,
+                end=&#34;&#34;,
+                file=out,
+            )
             for attr in self.attributes:
                 flag = _vpc_attribute(attr, vpc)
                 print(f&#34;{attr}={flag} &#34;, end=&#34;&#34;, file=out)
@@ -244,7 +248,11 @@ def _vpc_attribute(attr, vpc):
         ec2 = session.resource(&#34;ec2&#34;, region_name=region)
 
         for vpc in ec2.vpcs.all():
-            print(f&#34;{acct}/{region}: vpc={vpc.vpc_id} &#34;, end=&#34;&#34;, file=out)
+            print(
+                f&#34;{acct}/{region}: id={vpc.vpc_id} owner={vpc.owner_id} &#34;,
+                end=&#34;&#34;,
+                file=out,
+            )
             for attr in self.attributes:
                 flag = _vpc_attribute(attr, vpc)
                 print(f&#34;{attr}={flag} &#34;, end=&#34;&#34;, file=out)

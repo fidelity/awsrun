@@ -131,7 +131,10 @@ class CLICommand(RegionalCommand):
 
         for vpc in ec2.vpcs.all():
             cidrs = &#34;, &#34;.join(c[&#34;CidrBlock&#34;] for c in vpc.cidr_block_association_set)
-            print(f&#34;{acct}/{region}: id={vpc.id} cidrs={cidrs}&#34;, file=out)
+            print(
+                f&#34;{acct}/{region}: id={vpc.id} owner={vpc.owner_id} cidrs={cidrs}&#34;,
+                file=out,
+            )
 
         return out.getvalue()</code></pre>
 </details>
@@ -164,7 +167,10 @@ class CLICommand(RegionalCommand):
 
         for vpc in ec2.vpcs.all():
             cidrs = &#34;, &#34;.join(c[&#34;CidrBlock&#34;] for c in vpc.cidr_block_association_set)
-            print(f&#34;{acct}/{region}: id={vpc.id} cidrs={cidrs}&#34;, file=out)
+            print(
+                f&#34;{acct}/{region}: id={vpc.id} owner={vpc.owner_id} cidrs={cidrs}&#34;,
+                file=out,
+            )
 
         return out.getvalue()</code></pre>
 </details>
