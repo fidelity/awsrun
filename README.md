@@ -68,10 +68,15 @@ To install from source, clone the repo and run pip install:
 
 Python 3.6 or higher is required.
 
-In order to use the built-in awsrun "aws" command, Windows users must make sure
-that the AWS CLI tool is installed in their PATH. When pip installs the AWS CLI,
-it does not set the appropriate PATH variables, so it may be easier to install
-the AWS CLI via the MSI provided by AWS.
+In order to use the built-in awsrun "aws" command, the AWS CLI tool must be
+installed and available in the PATH. It is no longer installed as part of the
+awsrun installation to allow users the choice of installing v1 or v2 of the AWS
+CLI tool.
+
+If installing AWS CLI v1 on Windows via pip, users must make sure that the AWS
+CLI tool is included in their PATH. When pip installs the AWS CLI, it does not
+set the appropriate PATH variables on Windows, so it may be easier to install
+the AWS CLI via the MSIs provided by AWS.
 
 ## Quick Start
 
