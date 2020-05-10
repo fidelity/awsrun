@@ -1,5 +1,7 @@
 """Display the status of Direct Connects and VIFs.
 
+## Overview
+
 The `dx_status` command displays a list of Direct Connects found as well as a
 summary of each including a sparkline showing the past 1 hour 95th percentile.
 
@@ -88,6 +90,75 @@ y-axis, use the `--auto-scale` option:
     96,655,708   ┼╯╰╯ ╰╯╰╯                 ╰╯ ╰╯    ╰╯               ╰─╯    ╰
     48,327,854   ┤
     0            ┤                                                             ConnectionBpsEgress
+
+
+## Reference
+
+### Synopsis
+
+    $ awsrun [options] dx_status [command options]
+
+### Configuration
+
+The following is the syntax for the options that can be specified in the user
+configuration file:
+
+    Commands:
+      dx_status:
+        verbose: BOOLEAN
+        stat: ("Average" | "Minimum" | "Maximum" | "p90" | "p95" | "p99" | "p99.9")
+        height: INT
+        auto_scale: BOOLEAN
+        hours: INT
+        days: INT
+        region:
+          - STRING
+
+### Command Options
+Some options can be overridden on the awsrun CLI via command line flags. In
+those cases, the CLI flags are specified next to the option name below:
+
+`verbose`, `--verbose`
+: Include a line of output for each VIF associated with the Direct Connect,
+which contains the VIF ID, VLAN, owning account, and the Direct Connect it is
+associated with. The default value is False.
+
+`stat`, `--stat STRING`
+: Specifies the aggregation function for the bandwidth utilization sparklines
+and charts. By default, the 95th percentile is used, but this can be one of the
+values specified in the configuration section above.
+
+`height`, `--height INT`
+: Controls how Direct Connect utilization is shown. A value of `0` will prevent
+any utilization information from being shown (and is faster as it avoids making
+CloudWatch calls). A value of `1`, the default, will display utilization as a
+sparkline that consumes one line of output. To use an ASCII-based chart instead,
+specify a value greater than `1` to indicate how many rows in height the charts
+should occupy.
+
+`auto_scale`, `--auto-scale`
+: By default, the maximum y-axis value for the bandwidth utilization sparklines
+and charts is the total bandwidth of the Direct Connect. This makes it easy to
+compare multiple circuits as the graphs are all based on the percentage of the
+bandwidth being used. Alternatively, specifying this option will result in a
+y-axis that is set to the maximum value for each sparkline/chart. While useful
+to get more precise graphs, it makes comparing mulitple circuits more difficult.
+
+`hours`, `--hours INT`
+: Specifies how many hours of utilization data to retrieve from CloudWatch. The
+default value is 1-hour. This option is mutually exclusive with the `days`
+option discussed next.
+
+`days`, `--days INT`
+: Specifies how many days of utilization days to retrieve from CloudWatch. This
+option is mutually exclusive with the `hours` option. There is no default value
+as `hours` is used instead.
+
+`region`, `--region REGION`
+: Run the command in the specified regions. When specifying multiple values on
+the command line, use multiple flags for each value.
+
+
 """
 import io
 import re

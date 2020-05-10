@@ -2,6 +2,11 @@
 
 ## Overview
 
+`last` provides an easier way to review CloudTrail events in either an
+interactive or non-interactive manner depending on whether or not the
+`--interactive` flag was supplied. In both cases, the events are grouped
+together by the user that caused them.
+
 With no addition arguments besides specification of `--region`, the last
 command retrieves the past one hour of write events up to a maximum of 1,000
 events per account/region pair. Newest events are shown at the top. If output
@@ -88,7 +93,6 @@ configuration file:
 Some options can be overridden on the awsrun CLI via command line flags. In
 those cases, the CLI flags are specified next to the option name below:
 
-
 `hours`, `--hours INT`
 : Specifies the how many hours of events to retrieve. The default value is 1
 hour. Note: The number of events retrieved will not exceed `max_events`.
@@ -115,14 +119,7 @@ This option is mutually exclusive with the `all` and `attributes` options.
 possible key values are: `EventId`, `EventName`, `ReadOnly`, `Username`,
 `ResourceType`, `ResourceName`, `EventSource`, and `AccessKeyId`. Due to
 limitations in the CloudTrail API, only one attribute can be specified. This
-option is mutually exclusive with the `all` and `console` options. For example,
-to add a permanent filter in your configuration file for `DeleteStack` events:
-
-    Commands:
-      last:
-        attributes:
-          EventName:
-            - DeleteStack
+option is mutually exclusive with the `all` and `console` options.
 
 `interactive`, `--interactive`
 : Open an interactive TUI (terminal user interface) instead of printing events
@@ -137,6 +134,17 @@ value is False.
 : Specify a color scheme to use when in interactive mode. Possible values
 include: white, yellow, red, cyan, magenta, green, blue. The default value is
 cyan.
+
+The following is a sample configuration to add a permanent filter in your
+configuration file for `DeleteStack` events using the `attributes` configuration
+option:
+
+    Commands:
+      last:
+        attributes:
+          EventName:
+            - DeleteStack
+
 """
 
 import json
