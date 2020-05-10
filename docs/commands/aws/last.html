@@ -1,0 +1,1130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>awsrun.commands.aws.last API documentation</title>
+<meta name="description" content="Display the last CloudTrail events in an account …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<link href="/awsrun/webfonts.css" rel="stylesheet">
+<style>
+body {
+font-size: 17px;
+font-family: Charter-Racket, serif;
+}
+code {
+font-family: Fira-Mono, monospace;
+}
+/* `Text` size and code blocks in main body */
+section code {
+font-size: 15px;
+}
+/* "expand source code" text */
+details {
+font-size: 14px;
+}
+ul li code a {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.commands.aws.last</code></h1>
+</header>
+<section id="section-intro">
+<p>Display the last CloudTrail events in an account.</p>
+<p>With no addition arguments besides specification of <code>--region</code>, the last
+command retrieves the past one hour of write events up to a maximum of 1,000
+events per account/region pair. Newest events are shown at the top. If output
+is not being redirected, events from the same user are displayed in the same
+color.</p>
+<pre><code>$ awsrun --account 100200300400 last --region us-east-1
+Loading events, 1000 max per acct/region, use --max-events to change
+100200300400/us-east-1:  2020-04-08 00:43:43-05:00  logs.amazonaws.com  CreateLogGroup  ECSClusterRole/i-XXXXXXXXXXXXXXXXX
+100200300400/us-east-1:  2020-04-08 00:43:39-05:00  logs.amazonaws.com  CreateLogGroup  ECSClusterRole/i-XXXXXXXXXXXXXXXXX
+100200300400/us-east-1:  2020-04-08 00:43:38-05:00  logs.amazonaws.com  CreateLogGroup  ECSClusterRole/i-XXXXXXXXXXXXXXXXX
+100200300400/us-east-1:  2020-04-08 00:43:35-05:00  logs.amazonaws.com  CreateLogGroup  ECSClusterRole/i-XXXXXXXXXXXXXXXXX
+</code></pre>
+<p>The first column of output is the account/region where the event was
+collected. The second column is the event timestamp. The third column is the
+event source. The fourth column is the event name. And the last column is the
+"user" that generated the event.</p>
+<p>Users can specify time ranges using <code>--start</code> and <code>--end</code> flags. These take
+ISO 8601 formatted dates: <code>2020-04-07T22:30:00-0500</code>.
+When specifying a time
+range, use either <code>--last</code> HOURS or <code>--start</code>/<code>--end</code> flags, but not both at
+same time. If none of these flags are specified, the past hour of events is
+retrieved by default. For example, the following command retrieves a 1-minute
+window of write events:</p>
+<pre><code>$ awsrun --account 100200300400 last --region us-east-1 --start 2020-04-07T00:20:00-0500 --end 2020-04-07T00:21:00-0500
+</code></pre>
+<p>As stated before, only write events are retrieved, but Users can filter events
+by any of the supported lookup attributes in CloudTrail via the <code>--attribute</code>:
+EventId, EventName, ReadOnly, Username, ResourceType, ResourceName,
+EventSource, or AccessKeyId. To filter on console logins for the past 12
+hours:</p>
+<pre><code>$ awsrun --account 100200300400 last --region us-east-1 --hours 12 --attribute EventName=ConsoleLogin
+Loading events, 1000 max per acct/region, use --max-events to change
+100200300400/us-east-1:  2020-04-08 00:56:17-05:00  signin.amazonaws.com  ConsoleLogin  Operator/user@example.com
+</code></pre>
+<p>Two shorthand attribute filters exist. The <code>--all</code> flag will select all events
+including the read-only events.
+The <code>--console</code> flag will filter on console
+logins as above:</p>
+<pre><code>$ awsrun --account 100200300400 last --region us-east-1 --hours 12 --console
+Loading events, 1000 max per acct/region, use --max-events to change
+100200300400/us-east-1:  2020-04-08 00:56:17-05:00  signin.amazonaws.com  ConsoleLogin  Operator/user@example.com
+</code></pre>
+<p>To minimize memory footprint and load on AWS servers, a maximum of 1,000
+events are pulled from an account/region pair. Use the <code>--max-events</code> flag to
+override the value.</p>
+<p>Finally, for a TUI (terminal user interface) that lets you interactively
+explore events, specify the <code>--interactive</code> flag. Follow the on-screen
+instructions to interact with the TUI. By default, the TUI uses a horizontal
+layout. Specify the <code>--vertical</code> option to change to a vertical layout. The
+color used in the TUI can be changed via the <code>--color</code> option. Valid choices
+include blue, green, cyan, magenta, red, and white.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Display the last CloudTrail events in an account.
+
+With no addition arguments besides specification of `--region`, the last
+command retrieves the past one hour of write events up to a maximum of 1,000
+events per account/region pair. Newest events are shown at the top. If output
+is not being redirected, events from the same user are displayed in the same
+color.
+
+    $ awsrun --account 100200300400 last --region us-east-1
+    Loading events, 1000 max per acct/region, use --max-events to change
+    100200300400/us-east-1:  2020-04-08 00:43:43-05:00  logs.amazonaws.com  CreateLogGroup  ECSClusterRole/i-XXXXXXXXXXXXXXXXX
+    100200300400/us-east-1:  2020-04-08 00:43:39-05:00  logs.amazonaws.com  CreateLogGroup  ECSClusterRole/i-XXXXXXXXXXXXXXXXX
+    100200300400/us-east-1:  2020-04-08 00:43:38-05:00  logs.amazonaws.com  CreateLogGroup  ECSClusterRole/i-XXXXXXXXXXXXXXXXX
+    100200300400/us-east-1:  2020-04-08 00:43:35-05:00  logs.amazonaws.com  CreateLogGroup  ECSClusterRole/i-XXXXXXXXXXXXXXXXX
+
+The first column of output is the account/region where the event was
+collected. The second column is the event timestamp. The third column is the
+event source. The fourth column is the event name. And the last column is the
+&#34;user&#34; that generated the event.
+
+Users can specify time ranges using `--start` and `--end` flags. These take
+ISO 8601 formatted dates: `2020-04-07T22:30:00-0500`.  When specifying a time
+range, use either `--last` HOURS or `--start`/`--end` flags, but not both at
+same time. If none of these flags are specified, the past hour of events is
+retrieved by default. For example, the following command retrieves a 1-minute
+window of write events:
+
+    $ awsrun --account 100200300400 last --region us-east-1 --start 2020-04-07T00:20:00-0500 --end 2020-04-07T00:21:00-0500
+
+As stated before, only write events are retrieved, but Users can filter events
+by any of the supported lookup attributes in CloudTrail via the `--attribute`:
+EventId, EventName, ReadOnly, Username, ResourceType, ResourceName,
+EventSource, or AccessKeyId. To filter on console logins for the past 12
+hours:
+
+    $ awsrun --account 100200300400 last --region us-east-1 --hours 12 --attribute EventName=ConsoleLogin
+    Loading events, 1000 max per acct/region, use --max-events to change
+    100200300400/us-east-1:  2020-04-08 00:56:17-05:00  signin.amazonaws.com  ConsoleLogin  Operator/user@example.com
+
+Two shorthand attribute filters exist. The `--all` flag will select all events
+including the read-only events.  The `--console` flag will filter on console
+logins as above:
+
+    $ awsrun --account 100200300400 last --region us-east-1 --hours 12 --console
+    Loading events, 1000 max per acct/region, use --max-events to change
+    100200300400/us-east-1:  2020-04-08 00:56:17-05:00  signin.amazonaws.com  ConsoleLogin  Operator/user@example.com
+
+To minimize memory footprint and load on AWS servers, a maximum of 1,000
+events are pulled from an account/region pair. Use the `--max-events` flag to
+override the value.
+
+Finally, for a TUI (terminal user interface) that lets you interactively
+explore events, specify the `--interactive` flag. Follow the on-screen
+instructions to interact with the TUI. By default, the TUI uses a horizontal
+layout. Specify the `--vertical` option to change to a vertical layout. The
+color used in the TUI can be changed via the `--color` option. Valid choices
+include blue, green, cyan, magenta, red, and white.
+&#34;&#34;&#34;
+
+import json
+import sys
+from collections import defaultdict
+from datetime import datetime, timedelta, timezone
+from functools import partial
+from itertools import chain, cycle
+
+import py_cui
+from colorama import Fore, Style, init
+
+from awsrun.argparse import AppendAttributeValuePair
+from awsrun.config import Bool, Choice, Dict, Int, Str
+from awsrun.runner import RegionalCommand
+
+
+# Lookup attributes supported by AWS CloudTrail
+LOOKUP_ATTRIBUTES = [
+    &#34;EventId&#34;,
+    &#34;EventName&#34;,
+    &#34;ReadOnly&#34;,
+    &#34;Username&#34;,
+    &#34;ResourceType&#34;,
+    &#34;ResourceName&#34;,
+    &#34;EventSource&#34;,
+    &#34;AccessKeyId&#34;,
+]
+
+
+class CLICommand(RegionalCommand):
+    &#34;&#34;&#34;Displays the last CloudTrail events in an account.&#34;&#34;&#34;
+
+    @classmethod
+    def regional_from_cli(cls, parser, argv, cfg):
+        time_spec = parser.add_argument_group(&#34;Time specification&#34;)
+        time_spec.add_argument(
+            &#34;--hours&#34;,
+            metavar=&#34;N&#34;,
+            type=int,
+            default=cfg(&#34;hours&#34;, type=Int, default=1),
+            help=&#34;retrieve the last N hours of events&#34;,
+        )
+        time_spec.add_argument(
+            &#34;--start&#34;,
+            type=_isodate,
+            help=&#34;lookup events starting at YYYY-MM-DDTHH:MM:SS-00:00&#34;,
+        )
+        time_spec.add_argument(
+            &#34;--end&#34;,
+            type=_isodate,
+            help=&#34;lookup events ending at YYYY-MM-DDTHH:MM:SS-00:00&#34;,
+        )
+
+        parser.add_argument(
+            &#34;--max-events&#34;,
+            metavar=&#34;N&#34;,
+            type=int,
+            default=cfg(&#34;max_events&#34;, type=Int, default=1000),
+            help=&#34;limit # of events retrieved&#34;,
+        )
+
+        filters = parser.add_argument_group(&#34;Event filters&#34;)
+        mut_excl = filters.add_mutually_exclusive_group()
+        mut_excl.add_argument(
+            &#34;--all&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;all&#34;, type=Bool, default=False),
+            help=&#34;include read-only events&#34;,
+        )
+        mut_excl.add_argument(
+            &#34;--console&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;console&#34;, type=Bool, default=False),
+            help=&#34;include only ConsoleLogin events&#34;,
+        )
+        mut_excl.add_argument(
+            &#34;--attribute&#34;,
+            &#34;-a&#34;,
+            dest=&#34;attributes&#34;,
+            action=AppendAttributeValuePair,
+            default=cfg(&#34;attributes&#34;, type=Dict(Str, Str), default={}),
+            help=&#34;filter using attribute in form of ATTR=VALUE&#34;,
+        )
+
+        tui = parser.add_argument_group(&#34;TUI options&#34;)
+        tui.add_argument(
+            &#34;--interactive&#34;,
+            &#34;-i&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;interactive&#34;, type=Bool, default=False),
+            help=&#34;enter interactive mode to view results&#34;,
+        )
+        tui.add_argument(
+            &#34;--vertical&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;vertical&#34;, type=Bool, default=False),
+            help=&#34;use vertical layout for TUI&#34;,
+        )
+        tui.add_argument(
+            &#34;--color&#34;,
+            choices=TUI_COLOR_THEMES,
+            default=cfg(&#34;color&#34;, type=Choice(*TUI_COLOR_THEMES), default=&#34;cyan&#34;),
+            help=f&#34;use color scheme: {&#39;, &#39;.join(TUI_COLOR_THEMES)}&#34;,
+        )
+
+        args = parser.parse_args(argv)
+
+        # If user doesn&#39;t specify any filters, then exclude the read-only
+        # events as there are far too many of these typically. While our
+        # argument parser can support multipe key and values, the AWS
+        # CloudTrail API is lacking considerably in ability to specify
+        # filters. One can only use a single lookup attribute and that
+        # attribute can only have a single value. We allow the user to
+        # explicity set their own filter or use one of our the shorthand
+        # filters such as --all or --console.
+
+        if not (args.all or args.console or args.attributes):
+            args.attributes[&#34;ReadOnly&#34;] = [&#34;false&#34;]
+
+        elif args.console:
+            args.attributes[&#34;EventName&#34;] = [&#34;ConsoleLogin&#34;]
+
+        elif len(args.attributes) &gt; 1:
+            parser.error(f&#34;only one lookup attribute may be used per AWS&#34;)
+
+        elif any(len(v) &gt; 1 for v in args.attributes.values()):
+            parser.error(f&#34;only one lookup value may be specified per AWS&#34;)
+
+        elif any(a not in LOOKUP_ATTRIBUTES for a in args.attributes):
+            parser.error(
+                f&#34;invalid attribute, must be one of {&#39;, &#39;.join(LOOKUP_ATTRIBUTES)}&#34;
+            )
+
+        # If no time spec flags provided, default to last of 1 hour of events.
+        if not (args.hours or args.start or args.end):
+            args.hours = 1
+
+        # If only --hours was specified, then compute a start and end time as
+        # our CLICommand doesn&#39;t support --last.
+        if args.hours and not (args.start or args.end):
+            args.end = datetime.now(timezone.utc)
+            args.start = args.end - timedelta(hours=args.hours)
+
+        elif args.hours and (args.start or args.end):
+            parser.error(&#34;must specify either --hours OR --start/--end flags&#34;)
+
+        elif not (args.start and args.end):
+            parser.error(&#34;must specify both --start and --end flags&#34;)
+
+        # Only allow use of TUI options with --interactive flag
+        if args.vertical and not args.interactive:
+            parser.error(&#34;can only use --vertical with --interactive mode&#34;)
+
+        del args.all
+        del args.hours
+        del args.console
+        return cls(**vars(args))
+
+    def __init__(
+        self,
+        regions,
+        start=None,
+        end=None,
+        attributes=None,
+        max_events=1000,
+        interactive=False,
+        vertical=False,
+        color=&#34;blue&#34;,
+    ):
+        super().__init__(regions)
+
+        # Event settings
+        self.start = start
+        self.end = end
+        self.max_events = max_events
+        self.attributes = {} if attributes is None else attributes
+
+        # TUI settings
+        self.interactive = interactive
+        self.vertical = vertical
+        self.color = TUI_COLOR_THEMES.get(color, py_cui.WHITE_ON_BLACK)
+
+        # Dict of events by &#34;username&#34;, which we&#39;ll define as the unique
+        # identifier for a particular session.
+        self.events_by_user = defaultdict(list)
+
+        # List of all events in reverse chronological order. We wouldn&#39;t have
+        # to keep this list if event timestamps were more granular than a
+        # second. Given that they are not, it&#39;s not possible to accurately
+        # reconstruct the series of events from a dict of events by user.
+        self.events = []
+
+    def pre_hook(self):
+        print(
+            f&#34;Loading events, {self.max_events} max per acct/region, use --max-events to change&#34;,
+            file=sys.stderr,
+        )
+
+        if not self.interactive:
+            init()  # colorama only needed for the noninteractive version
+
+    def regional_execute(self, session, acct, region):
+        ct = session.client(&#34;cloudtrail&#34;, region_name=region)
+        events = self._retrieve_events(ct)
+
+        if self.interactive:
+            events_by_user = defaultdict(list)
+            for e in events:
+                events_by_user[e.username()].append(e)
+            return events, events_by_user
+
+        cf_map = defaultdict(lambda: next(COLOR_FUNCTIONS))
+        return &#34;&#34;.join(cf_map[e.username()](f&#34;{acct}/{region}:  {e}\n&#34;) for e in events)
+
+    def _retrieve_events(self, ct):
+        events = []
+        for page in _lookup_events(
+            ct, start=self.start, end=self.end, attrs=self.attributes
+        ):
+            for event in page[&#34;Events&#34;]:
+                event[&#34;CloudTrailEvent&#34;] = json.loads(event[&#34;CloudTrailEvent&#34;])
+                events.append(_UserIdentityType.new(event))
+                if self.interactive:
+                    print(&#34;.&#34;, end=&#34;&#34;, file=sys.stderr, flush=True)
+                if len(events) &gt;= self.max_events:
+                    return events
+        return events
+
+    def regional_collect_results(self, acct, region, get_result):
+        if not self.interactive:
+            return super().regional_collect_results(acct, region, get_result)
+
+        events, events_by_user = get_result()
+        self.events.append(events)
+        for username, events in events_by_user.items():
+            self.events_by_user[username].extend(events)
+
+    def post_hook(self):
+        if not self.interactive:
+            return
+
+        # User wants the TUI, so let&#39;s fire it up! Keep in mind, the Python
+        # library I found to make the TUI is barely alpha, so I&#39;ve had to work
+        # around many of its limitations that I will submit to the author.
+        if self.vertical:
+            root = _MyCUI(4, 1)
+            user_list = root.add_my_scroll_menu(f&#34;Usernames&#34;, 0, 0)
+            event_list = root.add_my_scroll_menu(&#34;Events&#34;, 1, 0)
+            event_detail = root.add_my_scroll_menu(&#34;Event Detail&#34;, 2, 0, row_span=2)
+
+        else:  # Default hybrid layout
+            root = _MyCUI(3, 4)
+            user_list = root.add_my_scroll_menu(f&#34;Usernames&#34;, 0, 0, column_span=2)
+            event_list = root.add_my_scroll_menu(
+                &#34;Events&#34;, 1, 0, row_span=2, column_span=2
+            )
+            event_detail = root.add_my_scroll_menu(
+                &#34;Event Detail&#34;, 0, 2, row_span=3, column_span=2
+            )
+
+        root.toggle_unicode_borders()
+        root.set_title(&#34;CloudTrail Events&#34;)
+        root.set_status_bar_text(&#34;Press - q - to exit. TAB to move between widgets.&#34;)
+
+        # Override the default behavior and allow TAB to switch between
+        # widgets and activate widgets.
+        focus = cycle(root.widgets.values())
+
+        def select_next_widget():
+            root.move_focus(next(focus))
+
+        root.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+
+        # Configure our user list
+        def update_event_list():
+            event_list.clear()
+            event_list.add_item_list(self.events_by_user[user_list.get()])
+            event_list.title = f&#34;Events ({len(event_list.get_item_list())})&#34;
+            update_event_detail()
+
+        def unfilter_event_list():
+            event_list.clear()
+            all_events = sorted(
+                chain(*self.events), reverse=True, key=lambda e: e.event[&#34;EventTime&#34;]
+            )
+            event_list.add_item_list(all_events)
+            event_list.title = f&#34;Events ({len(all_events)})&#34;
+            update_event_detail()
+
+        user_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+        user_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_list)
+        user_list.add_key_command(py_cui.keys.KEY_BACKSPACE, unfilter_event_list)
+        user_list.add_key_command(py_cui.keys.KEY_PAGE_UP, user_list.page_up)
+        user_list.add_key_command(py_cui.keys.KEY_PAGE_DOWN, user_list.page_down)
+        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        user_list.title = f&#34;Usernames ({len(self.events_by_user.keys())})&#34;
+        user_list.set_focus_text(
+            &#34;Press - q - to exit. TAB to move between widgets. ENTER to filter events. BACKSPACE to show all.&#34;
+        )
+        user_list.set_selected_color(self.color)
+        user_list.add_item_list(
+            sorted(self.events_by_user.keys(), key=lambda s: s.lower())
+        )
+
+        # Configure our event list
+        def update_event_detail():
+            event_detail.clear()
+            event_detail.add_item_list(event_list.get().to_json().split(&#34;\n&#34;))
+
+        event_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+        event_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_detail)
+        event_list.add_key_command(py_cui.keys.KEY_PAGE_UP, event_list.page_up)
+        event_list.add_key_command(py_cui.keys.KEY_PAGE_DOWN, event_list.page_down)
+        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_list.set_focus_text(
+            &#34;Press - q - to exit. TAB to move between widgets. ENTER to display event detail.&#34;
+        )
+        event_list.set_selected_color(self.color)
+        if user_list.get():
+            update_event_list()
+
+        # Configure our event detail
+        event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+        event_detail.add_key_command(py_cui.keys.KEY_PAGE_UP, event_detail.page_up)
+        event_detail.add_key_command(py_cui.keys.KEY_PAGE_DOWN, event_detail.page_down)
+        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_detail.set_focus_text(&#34;Press - q - to exit. TAB to move between widgets.&#34;)
+        event_detail.set_selected_color(self.color)
+        if event_list.get():
+            update_event_detail()
+
+        select_next_widget()
+
+        # Fire up the main event loop
+        root.start()
+
+
+class _UserIdentityType:
+    &#34;&#34;&#34;Represents a custom event object based on the user identity type.
+
+    The event object wraps an event dict with a convenience method to compute
+    the username for a given event. CloudTrail events seem to be a mess when it
+    comes to normalizing the username (at least in our environment). The purpose
+    of this class is to provide a means to extract a reasonable username from an
+    event that can be used to group events together via the `username` method.
+
+    The factory method `new` should be used to create instances of this type. It
+    will dispatch to a custom subclass based on the user type. If no custom
+    subclass exists, an instance of this class is created. If one wants to add
+    new user types, just follow the patterns of the existing subclasses.
+    &#34;&#34;&#34;
+
+    @classmethod
+    def new(cls, event):
+        user_type = event[&#34;CloudTrailEvent&#34;][&#34;userIdentity&#34;][&#34;type&#34;]
+        klass = globals().get(f&#34;_{user_type}Type&#34;, cls)
+        return klass(event)
+
+    def __init__(self, event):
+        self.event = event
+        self.ct_event = event[&#34;CloudTrailEvent&#34;]
+        self.user_identity = self.ct_event[&#34;userIdentity&#34;]
+
+    def type(self):
+        &#34;&#34;&#34;Return the user identity type if present, otherwise NO_TYPE.&#34;&#34;&#34;
+        return self.user_identity.get(&#34;type&#34;, &#34;NO_TYPE&#34;)
+
+    def username(self):
+        &#34;&#34;&#34;Return a the username associated with an event.&#34;&#34;&#34;
+        if self.event[&#34;EventName&#34;].startswith(&#34;AssumeRole&#34;):
+            user = self._parse_username_from_request_params()
+            if user:
+                return user
+        return self._parse_username()
+
+    def _parse_username(self):
+        return self.event.get(
+            &#34;Username&#34;, self.user_identity.get(&#34;userName&#34;, &#34;NO_USERNAME&#34;)
+        )
+
+    def _find_resource(self, type_, default=None):
+        for resource in self.event[&#34;Resources&#34;]:
+            if resource[&#34;ResourceType&#34;] == type_:
+                return resource[&#34;ResourceName&#34;]
+        return default
+
+    def _parse_username_from_request_params(self):
+        params = self.ct_event.get(&#34;requestParameters&#34;, {})
+        arn = params.get(&#34;roleArn&#34;)
+        session_name = params.get(&#34;roleSessionName&#34;)
+        if arn and session_name:
+            return _strip_to(&#34;/&#34;, arn, greedy=True) + &#34;/&#34; + session_name
+
+    def to_json(self):
+        return json.dumps(self.event, default=str, indent=4)
+
+    def __str__(self):
+        src = self.event.get(&#34;EventSource&#34;, &#34;&#34;)
+        time = self.event.get(&#34;EventTime&#34;, &#34;&#34;)
+        name = self.event.get(&#34;EventName&#34;, &#34;&#34;)
+        return f&#34;{time}  {src:25.25} {name:30.30} {self.username()}&#34;
+
+
+#############################################################################
+# These classes are for custom handling of different user identity types. you
+# want to provide a custom username for a cloudtrail user identity type,
+# define your subclass below following the naming convention.
+#############################################################################
+
+
+class _RootType(_UserIdentityType):
+    def _parse_username(self):
+        # Docs state that Root does not have a username unless an alias has
+        # been set for the account, so we try to print the username, if not,
+        # we return &#34;ROOT&#34;.
+        return self.user_identity.get(&#34;userName&#34;, &#34;ROOT&#34;)
+
+
+class _AWSAccountType(_UserIdentityType):
+    def _parse_username(self):
+        acct = self.user_identity.get(&#34;accountId&#34;, &#34;NO_ACCOUNT_ID&#34;)
+        principal = self.user_identity.get(&#34;principalId&#34;, &#34;NO_PRINCIPAL_ID&#34;)
+        return f&#34;{acct}/{_strip_to(&#39;:&#39;, principal)}&#34;
+
+
+class _AWSServiceType(_UserIdentityType):
+    def _parse_username(self):
+        return self.user_identity.get(&#34;invokedBy&#34;, &#34;NO_USERNAME&#34;)
+
+
+class _AssumedRoleType(_UserIdentityType):
+    def _parse_username(self):
+        # For an assumed role type, we get username from the arn because it&#39;s
+        # the only thing consistent throughout the other type of events, which
+        # allows us to match a sequence of events.
+        arn = self.user_identity.get(&#34;arn&#34;)
+        if arn:
+            return _strip_to(&#34;/&#34;, arn)
+        return self.event.get(&#34;Username&#34;)
+
+
+#############################################################################
+# Helper functions
+#############################################################################
+
+
+def _isodate(string):
+    return datetime.strptime(string, &#34;%Y-%m-%dT%H:%M:%S%z&#34;)
+
+
+def _strip_to(char, string, greedy=False):
+    pos = string.rfind(char) if greedy else string.find(char)
+    return string[pos + 1 :]
+
+
+def _strip_after(char, string, greedy=False):
+    pos = string.rfind(char) if greedy else string.find(char)
+    return string if pos == -1 else string[:pos]
+
+
+def _lookup_events(ct, start, end, attrs=None):
+    attrs = {} if attrs is None else attrs
+    return ct.get_paginator(&#34;lookup_events&#34;).paginate(
+        LookupAttributes=[
+            {&#34;AttributeKey&#34;: k, &#34;AttributeValue&#34;: v}
+            for k, vs in attrs.items()
+            for v in vs
+        ],
+        StartTime=start,
+        EndTime=end,
+    )
+
+
+def _colorize(color, string):
+    return f&#34;{color}{string}{Style.RESET_ALL}&#34;
+
+
+# An infinite list of partially applied colorize functions
+COLOR_FUNCTIONS = cycle(
+    [
+        partial(_colorize, f&#34;{s}{c}&#34;)
+        for s in (&#34;&#34;, Style.DIM, Style.BRIGHT)
+        for c in (
+            Fore.BLUE,
+            Fore.GREEN,
+            Fore.YELLOW,
+            Fore.RED,
+            Fore.MAGENTA,
+            Fore.CYAN,
+            Fore.WHITE,
+        )
+    ]
+)
+
+# Make available any of the colors defined in py_cui
+TUI_COLOR_THEMES = {
+    _strip_after(&#34;_&#34;, k).lower(): v
+    for k, v in vars(py_cui).items()
+    if k.endswith(&#34;_ON_BLACK&#34;)
+}
+
+
+#############################################################################
+# This code is for deficiencies in the py_cui library. I will actually make a
+# PR for the author of that project at some point.
+#############################################################################
+
+
+class _MyCUI(py_cui.PyCUI):
+    def add_my_scroll_menu(
+        self, title, row, column, row_span=1, column_span=1, padx=1, pady=0
+    ):
+        id = &#34;Widget{}&#34;.format(len(self.widgets.keys()))
+        new_scroll_menu = _MyScrollMenu(
+            id, title, self.grid, row, column, row_span, column_span, padx, pady
+        )
+        self.widgets[id] = new_scroll_menu
+        if self.selected_widget is None:
+            self.set_selected_widget(id)
+        return new_scroll_menu
+
+
+class _MyScrollMenu(py_cui.widgets.ScrollMenu):
+    def __init__(
+        self,
+        id,
+        title,
+        grid,
+        row,
+        column,
+        row_span,
+        column_span,
+        padx,
+        pady,
+        to_str=str,
+    ):
+        super().__init__(
+            id, title, grid, row, column, row_span, column_span, padx, pady
+        )
+        self.to_str = to_str
+
+    def page_up(self):
+        shift_by = self.height - (2 * self.pady) - 3
+
+        new_top_view = self.top_view - shift_by
+        new_selected_item = self.selected_item - shift_by
+
+        self.top_view = 0 if new_top_view &lt; 0 else new_top_view
+        self.selected_item = 0 if new_selected_item &lt; 0 else new_selected_item
+
+    def page_down(self):
+        shift_by = self.height - (2 * self.pady) - 3
+        last_item_idx = len(self.view_items) - 1
+
+        new_top_view = self.top_view + shift_by
+        new_selected_item = self.selected_item + shift_by
+
+        self.top_view = (
+            new_top_view - shift_by if new_top_view &gt; last_item_idx else new_top_view
+        )
+        self.selected_item = (
+            last_item_idx if new_selected_item &gt; last_item_idx else new_selected_item
+        )
+
+    def draw(self):
+        super(py_cui.widgets.ScrollMenu, self).draw()
+
+        self.renderer.set_color_mode(
+            self.selected_color if self.selected else self.color
+        )
+        self.renderer.draw_border(self)
+
+        counter = self.pady + 1
+        line_counter = 0
+        for line in (self.to_str(i) for i in self.view_items):
+            if line_counter &lt; self.top_view:
+                line_counter = line_counter + 1
+            else:
+                if counter &gt;= self.height - self.pady - 1:
+                    break
+                if line_counter == self.selected_item:
+                    self.renderer.draw_text(
+                        self, line, self.start_y + counter, selected=True
+                    )
+                else:
+                    self.renderer.draw_text(self, line, self.start_y + counter)
+                counter = counter + 1
+                line_counter = line_counter + 1
+
+        self.renderer.unset_color_mode(
+            self.selected_color if self.selected else self.color
+        )
+        self.renderer.reset_cursor(self)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.commands.aws.last.CLICommand"><code class="flex name class">
+<span>class <span class="ident">CLICommand</span></span>
+<span>(</span><span>regions, start=None, end=None, attributes=None, max_events=1000, interactive=False, vertical=False, color='blue')</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Displays the last CloudTrail events in an account.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CLICommand(RegionalCommand):
+    &#34;&#34;&#34;Displays the last CloudTrail events in an account.&#34;&#34;&#34;
+
+    @classmethod
+    def regional_from_cli(cls, parser, argv, cfg):
+        time_spec = parser.add_argument_group(&#34;Time specification&#34;)
+        time_spec.add_argument(
+            &#34;--hours&#34;,
+            metavar=&#34;N&#34;,
+            type=int,
+            default=cfg(&#34;hours&#34;, type=Int, default=1),
+            help=&#34;retrieve the last N hours of events&#34;,
+        )
+        time_spec.add_argument(
+            &#34;--start&#34;,
+            type=_isodate,
+            help=&#34;lookup events starting at YYYY-MM-DDTHH:MM:SS-00:00&#34;,
+        )
+        time_spec.add_argument(
+            &#34;--end&#34;,
+            type=_isodate,
+            help=&#34;lookup events ending at YYYY-MM-DDTHH:MM:SS-00:00&#34;,
+        )
+
+        parser.add_argument(
+            &#34;--max-events&#34;,
+            metavar=&#34;N&#34;,
+            type=int,
+            default=cfg(&#34;max_events&#34;, type=Int, default=1000),
+            help=&#34;limit # of events retrieved&#34;,
+        )
+
+        filters = parser.add_argument_group(&#34;Event filters&#34;)
+        mut_excl = filters.add_mutually_exclusive_group()
+        mut_excl.add_argument(
+            &#34;--all&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;all&#34;, type=Bool, default=False),
+            help=&#34;include read-only events&#34;,
+        )
+        mut_excl.add_argument(
+            &#34;--console&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;console&#34;, type=Bool, default=False),
+            help=&#34;include only ConsoleLogin events&#34;,
+        )
+        mut_excl.add_argument(
+            &#34;--attribute&#34;,
+            &#34;-a&#34;,
+            dest=&#34;attributes&#34;,
+            action=AppendAttributeValuePair,
+            default=cfg(&#34;attributes&#34;, type=Dict(Str, Str), default={}),
+            help=&#34;filter using attribute in form of ATTR=VALUE&#34;,
+        )
+
+        tui = parser.add_argument_group(&#34;TUI options&#34;)
+        tui.add_argument(
+            &#34;--interactive&#34;,
+            &#34;-i&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;interactive&#34;, type=Bool, default=False),
+            help=&#34;enter interactive mode to view results&#34;,
+        )
+        tui.add_argument(
+            &#34;--vertical&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;vertical&#34;, type=Bool, default=False),
+            help=&#34;use vertical layout for TUI&#34;,
+        )
+        tui.add_argument(
+            &#34;--color&#34;,
+            choices=TUI_COLOR_THEMES,
+            default=cfg(&#34;color&#34;, type=Choice(*TUI_COLOR_THEMES), default=&#34;cyan&#34;),
+            help=f&#34;use color scheme: {&#39;, &#39;.join(TUI_COLOR_THEMES)}&#34;,
+        )
+
+        args = parser.parse_args(argv)
+
+        # If user doesn&#39;t specify any filters, then exclude the read-only
+        # events as there are far too many of these typically. While our
+        # argument parser can support multipe key and values, the AWS
+        # CloudTrail API is lacking considerably in ability to specify
+        # filters. One can only use a single lookup attribute and that
+        # attribute can only have a single value. We allow the user to
+        # explicity set their own filter or use one of our the shorthand
+        # filters such as --all or --console.
+
+        if not (args.all or args.console or args.attributes):
+            args.attributes[&#34;ReadOnly&#34;] = [&#34;false&#34;]
+
+        elif args.console:
+            args.attributes[&#34;EventName&#34;] = [&#34;ConsoleLogin&#34;]
+
+        elif len(args.attributes) &gt; 1:
+            parser.error(f&#34;only one lookup attribute may be used per AWS&#34;)
+
+        elif any(len(v) &gt; 1 for v in args.attributes.values()):
+            parser.error(f&#34;only one lookup value may be specified per AWS&#34;)
+
+        elif any(a not in LOOKUP_ATTRIBUTES for a in args.attributes):
+            parser.error(
+                f&#34;invalid attribute, must be one of {&#39;, &#39;.join(LOOKUP_ATTRIBUTES)}&#34;
+            )
+
+        # If no time spec flags provided, default to last of 1 hour of events.
+        if not (args.hours or args.start or args.end):
+            args.hours = 1
+
+        # If only --hours was specified, then compute a start and end time as
+        # our CLICommand doesn&#39;t support --last.
+        if args.hours and not (args.start or args.end):
+            args.end = datetime.now(timezone.utc)
+            args.start = args.end - timedelta(hours=args.hours)
+
+        elif args.hours and (args.start or args.end):
+            parser.error(&#34;must specify either --hours OR --start/--end flags&#34;)
+
+        elif not (args.start and args.end):
+            parser.error(&#34;must specify both --start and --end flags&#34;)
+
+        # Only allow use of TUI options with --interactive flag
+        if args.vertical and not args.interactive:
+            parser.error(&#34;can only use --vertical with --interactive mode&#34;)
+
+        del args.all
+        del args.hours
+        del args.console
+        return cls(**vars(args))
+
+    def __init__(
+        self,
+        regions,
+        start=None,
+        end=None,
+        attributes=None,
+        max_events=1000,
+        interactive=False,
+        vertical=False,
+        color=&#34;blue&#34;,
+    ):
+        super().__init__(regions)
+
+        # Event settings
+        self.start = start
+        self.end = end
+        self.max_events = max_events
+        self.attributes = {} if attributes is None else attributes
+
+        # TUI settings
+        self.interactive = interactive
+        self.vertical = vertical
+        self.color = TUI_COLOR_THEMES.get(color, py_cui.WHITE_ON_BLACK)
+
+        # Dict of events by &#34;username&#34;, which we&#39;ll define as the unique
+        # identifier for a particular session.
+        self.events_by_user = defaultdict(list)
+
+        # List of all events in reverse chronological order. We wouldn&#39;t have
+        # to keep this list if event timestamps were more granular than a
+        # second. Given that they are not, it&#39;s not possible to accurately
+        # reconstruct the series of events from a dict of events by user.
+        self.events = []
+
+    def pre_hook(self):
+        print(
+            f&#34;Loading events, {self.max_events} max per acct/region, use --max-events to change&#34;,
+            file=sys.stderr,
+        )
+
+        if not self.interactive:
+            init()  # colorama only needed for the noninteractive version
+
+    def regional_execute(self, session, acct, region):
+        ct = session.client(&#34;cloudtrail&#34;, region_name=region)
+        events = self._retrieve_events(ct)
+
+        if self.interactive:
+            events_by_user = defaultdict(list)
+            for e in events:
+                events_by_user[e.username()].append(e)
+            return events, events_by_user
+
+        cf_map = defaultdict(lambda: next(COLOR_FUNCTIONS))
+        return &#34;&#34;.join(cf_map[e.username()](f&#34;{acct}/{region}:  {e}\n&#34;) for e in events)
+
+    def _retrieve_events(self, ct):
+        events = []
+        for page in _lookup_events(
+            ct, start=self.start, end=self.end, attrs=self.attributes
+        ):
+            for event in page[&#34;Events&#34;]:
+                event[&#34;CloudTrailEvent&#34;] = json.loads(event[&#34;CloudTrailEvent&#34;])
+                events.append(_UserIdentityType.new(event))
+                if self.interactive:
+                    print(&#34;.&#34;, end=&#34;&#34;, file=sys.stderr, flush=True)
+                if len(events) &gt;= self.max_events:
+                    return events
+        return events
+
+    def regional_collect_results(self, acct, region, get_result):
+        if not self.interactive:
+            return super().regional_collect_results(acct, region, get_result)
+
+        events, events_by_user = get_result()
+        self.events.append(events)
+        for username, events in events_by_user.items():
+            self.events_by_user[username].extend(events)
+
+    def post_hook(self):
+        if not self.interactive:
+            return
+
+        # User wants the TUI, so let&#39;s fire it up! Keep in mind, the Python
+        # library I found to make the TUI is barely alpha, so I&#39;ve had to work
+        # around many of its limitations that I will submit to the author.
+        if self.vertical:
+            root = _MyCUI(4, 1)
+            user_list = root.add_my_scroll_menu(f&#34;Usernames&#34;, 0, 0)
+            event_list = root.add_my_scroll_menu(&#34;Events&#34;, 1, 0)
+            event_detail = root.add_my_scroll_menu(&#34;Event Detail&#34;, 2, 0, row_span=2)
+
+        else:  # Default hybrid layout
+            root = _MyCUI(3, 4)
+            user_list = root.add_my_scroll_menu(f&#34;Usernames&#34;, 0, 0, column_span=2)
+            event_list = root.add_my_scroll_menu(
+                &#34;Events&#34;, 1, 0, row_span=2, column_span=2
+            )
+            event_detail = root.add_my_scroll_menu(
+                &#34;Event Detail&#34;, 0, 2, row_span=3, column_span=2
+            )
+
+        root.toggle_unicode_borders()
+        root.set_title(&#34;CloudTrail Events&#34;)
+        root.set_status_bar_text(&#34;Press - q - to exit. TAB to move between widgets.&#34;)
+
+        # Override the default behavior and allow TAB to switch between
+        # widgets and activate widgets.
+        focus = cycle(root.widgets.values())
+
+        def select_next_widget():
+            root.move_focus(next(focus))
+
+        root.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+
+        # Configure our user list
+        def update_event_list():
+            event_list.clear()
+            event_list.add_item_list(self.events_by_user[user_list.get()])
+            event_list.title = f&#34;Events ({len(event_list.get_item_list())})&#34;
+            update_event_detail()
+
+        def unfilter_event_list():
+            event_list.clear()
+            all_events = sorted(
+                chain(*self.events), reverse=True, key=lambda e: e.event[&#34;EventTime&#34;]
+            )
+            event_list.add_item_list(all_events)
+            event_list.title = f&#34;Events ({len(all_events)})&#34;
+            update_event_detail()
+
+        user_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+        user_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_list)
+        user_list.add_key_command(py_cui.keys.KEY_BACKSPACE, unfilter_event_list)
+        user_list.add_key_command(py_cui.keys.KEY_PAGE_UP, user_list.page_up)
+        user_list.add_key_command(py_cui.keys.KEY_PAGE_DOWN, user_list.page_down)
+        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        user_list.title = f&#34;Usernames ({len(self.events_by_user.keys())})&#34;
+        user_list.set_focus_text(
+            &#34;Press - q - to exit. TAB to move between widgets. ENTER to filter events. BACKSPACE to show all.&#34;
+        )
+        user_list.set_selected_color(self.color)
+        user_list.add_item_list(
+            sorted(self.events_by_user.keys(), key=lambda s: s.lower())
+        )
+
+        # Configure our event list
+        def update_event_detail():
+            event_detail.clear()
+            event_detail.add_item_list(event_list.get().to_json().split(&#34;\n&#34;))
+
+        event_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+        event_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_detail)
+        event_list.add_key_command(py_cui.keys.KEY_PAGE_UP, event_list.page_up)
+        event_list.add_key_command(py_cui.keys.KEY_PAGE_DOWN, event_list.page_down)
+        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_list.set_focus_text(
+            &#34;Press - q - to exit. TAB to move between widgets. ENTER to display event detail.&#34;
+        )
+        event_list.set_selected_color(self.color)
+        if user_list.get():
+            update_event_list()
+
+        # Configure our event detail
+        event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+        event_detail.add_key_command(py_cui.keys.KEY_PAGE_UP, event_detail.page_up)
+        event_detail.add_key_command(py_cui.keys.KEY_PAGE_DOWN, event_detail.page_down)
+        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_detail.set_focus_text(&#34;Press - q - to exit. TAB to move between widgets.&#34;)
+        event_detail.set_selected_color(self.color)
+        if event_list.get():
+            update_event_detail()
+
+        select_next_widget()
+
+        # Fire up the main event loop
+        root.start()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></li>
+<li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.RegionalCommand.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="../../runner.html#awsrun.runner.RegionalCommand.regional_collect_results">regional_collect_results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_execute" href="../../runner.html#awsrun.runner.RegionalCommand.regional_execute">regional_execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_from_cli" href="../../runner.html#awsrun.runner.RegionalCommand.regional_from_cli">regional_from_cli</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun.commands.aws" href="index.html">awsrun.commands.aws</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.commands.aws.last.CLICommand" href="#awsrun.commands.aws.last.CLICommand">CLICommand</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

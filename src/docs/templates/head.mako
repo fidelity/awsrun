@@ -7,7 +7,7 @@ body {
 }
 
 code {
-    font-family: Fira-Mono, sans-serif;
+    font-family: Fira-Mono, monospace;
 }
 
 /* `Text` size and code blocks in main body */

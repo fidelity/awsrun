@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.7.5" />
-<title>awsrun.commands.aws.access_report API documentation</title>
-<meta name="description" content="Test role access to the accounts specified …" />
+<title>awsrun.commands.aws.console API documentation</title>
+<meta name="description" content="Obtain a signin URL for the AWS Console …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
@@ -38,160 +38,99 @@ font-size: .9em;
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>awsrun.commands.aws.access_report</code></h1>
+<h1 class="title">Module <code>awsrun.commands.aws.console</code></h1>
 </header>
 <section id="section-intro">
-<p>Test role access to the accounts specified.</p>
-<h2 id="overview">Overview</h2>
-<p>The access_report command will display the number of accounts that the IAM
-role does not have access to.
-For example:</p>
-<pre><code>$ awsrun --account 100200300400 --account 200300400100 access_report
-Success: 2, Failures: 0
+<p>Obtain a signin URL for the AWS Console.</p>
+<p>The URL returned is only valid for 15 minutes. The session duration for the URL
+can be adjusted via the awsrun credential plug-in parameter <code>--saml-duration</code>
+and <code>--x-acct-duration</code> flags depending on which mechanism is being used to
+authenticate.</p>
+<p>Use the <code>--region</code> option to specify a region for the console login. To specify
+an exact landing page, a <code>path</code> can be provided as well. For example, to land on
+the routing table page in us-west-2:</p>
+<pre><code>$ awsrun --account 100200300400 console --region us-west-2 "/vpc/home#RouteTables:sort=routeTableId"
 </code></pre>
-<p>Note: no output is generated until all accounts have been tested, so it may look
-like the command is hanging when processing a large number of accounts. With the
-<code>--verbose</code> option, a success message is generated for each account as soon as
-it has been processed:</p>
-<pre><code>$ awsrun --include Env=DEV access_report --verbose
-400100200300: successful
-100200300400: successful
-200300400100: successful
-Success: 3, Failures: 2
-
-Unsuccessful attempts:
-300200100400
-300100400200
-</code></pre>
-<h2 id="reference">Reference</h2>
-<h3 id="synopsis">Synopsis</h3>
-<pre><code>$ awsrun [options] access_report [command options]
-</code></pre>
-<h3 id="configuration">Configuration</h3>
-<p>The following is the syntax for the options that can be specified in the user
-configuration file:</p>
-<pre><code>Commands:
-  access_report:
-    verbose: BOOLEAN
-</code></pre>
-<h3 id="command-options">Command Options</h3>
-<p>Some options can be overridden on the awsrun CLI via command line flags. In
-those cases, the CLI flags are specified next to the option name below:</p>
-<dl>
-<dt><code>verbose</code>, <code>--verbose</code></dt>
-<dd>Display a message as each account is tested. By default, no output is
-generated until all accounts have been processed.</dd>
-</dl>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">#
-# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
-#
-# SPDX-License-Identifier: MIT
-#
-&#34;&#34;&#34;Test role access to the accounts specified.
+<pre><code class="python">&#34;&#34;&#34;Obtain a signin URL for the AWS Console.
 
-## Overview
+The URL returned is only valid for 15 minutes. The session duration for the URL
+can be adjusted via the awsrun credential plug-in parameter `--saml-duration`
+and `--x-acct-duration` flags depending on which mechanism is being used to
+authenticate.
 
-The access_report command will display the number of accounts that the IAM
-role does not have access to.  For example:
+Use the `--region` option to specify a region for the console login. To specify
+an exact landing page, a `path` can be provided as well. For example, to land on
+the routing table page in us-west-2:
 
-    $ awsrun --account 100200300400 --account 200300400100 access_report
-    Success: 2, Failures: 0
-
-Note: no output is generated until all accounts have been tested, so it may look
-like the command is hanging when processing a large number of accounts. With the
-`--verbose` option, a success message is generated for each account as soon as
-it has been processed:
-
-    $ awsrun --include Env=DEV access_report --verbose
-    400100200300: successful
-    100200300400: successful
-    200300400100: successful
-    Success: 3, Failures: 2
-
-    Unsuccessful attempts:
-    300200100400
-    300100400200
-
-## Reference
-
-### Synopsis
-
-    $ awsrun [options] access_report [command options]
-
-### Configuration
-
-The following is the syntax for the options that can be specified in the user
-configuration file:
-
-    Commands:
-      access_report:
-        verbose: BOOLEAN
-
-### Command Options
-
-Some options can be overridden on the awsrun CLI via command line flags. In
-those cases, the CLI flags are specified next to the option name below:
-
-`verbose`, `--verbose`
-:  Display a message as each account is tested. By default, no output is
-generated until all accounts have been processed.
+    $ awsrun --account 100200300400 console --region us-west-2 &#34;/vpc/home#RouteTables:sort=routeTableId&#34;
 &#34;&#34;&#34;
 
-from awsrun.config import Bool
+import json
+
+import requests
+
 from awsrun.runner import Command
 
 
 class CLICommand(Command):
-    &#34;&#34;&#34;Test role access to the accounts specified.&#34;&#34;&#34;
+    &#34;&#34;&#34;Obtain a signin URL for the AWS Console&#34;&#34;&#34;
 
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#34;--verbose&#34;,
-            &#34;-v&#34;,
-            action=&#34;store_true&#34;,
-            default=cfg(&#34;verbose&#34;, type=Bool, default=False),
-            help=&#34;display accounts while being processed&#34;,
+            &#34;--region&#34;,
+            default=cfg(&#34;region&#34;, default=&#34;us-east-1&#34;),
+            help=&#34;generate URL for REGION&#34;,
         )
-
+        parser.add_argument(
+            &#34;path&#34;,
+            nargs=&#34;?&#34;,
+            default=cfg(&#34;path&#34;, default=&#34;/console/home&#34;),
+            help=&#34;Optional path to append to AWS url&#34;,
+        )
         args = parser.parse_args(argv)
         return cls(**vars(args))
 
-    def __init__(self, verbose=False):
-        self.verbose = verbose
-        self.total = 0
-        self.no_access = []
+    def __init__(self, region, path):
+        self.region = region
+        self.path = path
 
     def execute(self, session, acct):
-        if self.verbose:
-            return f&#34;{acct}: successful\n&#34;
-        return None
+        creds = session.get_credentials()
 
-    def collect_results(self, acct, get_result):
-        self.total += 1
         try:
-            result = get_result()
-        except Exception:  # pylint: disable=broad-except
-            self.no_access.append(acct)
-            return
+            session_creds = {}
+            session_creds[&#34;sessionId&#34;] = creds.access_key
+            session_creds[&#34;sessionKey&#34;] = creds.secret_key
+            session_creds[&#34;sessionToken&#34;] = creds.token
+        except AttributeError:
+            return f&#34;{acct}: can only be used with federated auth types&#34;
 
-        if result:
-            print(result, end=&#34;&#34;, flush=True)
+        # Retrieve a signin token from AWS federation service
+        r = requests.get(
+            &#34;https://signin.aws.amazon.com/federation&#34;,
+            params={&#34;Action&#34;: &#34;getSigninToken&#34;, &#34;Session&#34;: json.dumps(session_creds)},
+        )
+        r.raise_for_status()
+        signin_token = r.json()[&#34;SigninToken&#34;]
 
-    def post_hook(self):
-        unsuccessful = len(self.no_access)
-        successful = self.total - unsuccessful
+        # Use Request to create well-formed URL that we return to user
+        r = requests.Request(
+            &#34;GET&#34;,
+            &#34;https://signin.aws.amazon.com/federation&#34;,
+            params={
+                &#34;Action&#34;: &#34;login&#34;,
+                &#34;Issuer&#34;: &#34;fmr.com&#34;,
+                &#34;Destination&#34;: f&#34;https://console.aws.amazon.com{self.path}?region={self.region}&#34;,
+                &#34;SigninToken&#34;: signin_token,
+            },
+        )
 
-        print(f&#34;Success: {successful}, Failures: {unsuccessful}&#34;)
-
-        if unsuccessful:
-            print(f&#34;\nUnsuccessful attempts:&#34;)
-            for acct in self.no_access:
-                print(acct)</code></pre>
+        return f&#34;{acct}: {r.prepare().url}\n&#34;</code></pre>
 </details>
 </section>
 <section>
@@ -203,63 +142,71 @@ class CLICommand(Command):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="awsrun.commands.aws.access_report.CLICommand"><code class="flex name class">
+<dt id="awsrun.commands.aws.console.CLICommand"><code class="flex name class">
 <span>class <span class="ident">CLICommand</span></span>
-<span>(</span><span>verbose=False)</span>
+<span>(</span><span>region, path)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Test role access to the accounts specified.</p></section>
+<section class="desc"><p>Obtain a signin URL for the AWS Console</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class CLICommand(Command):
-    &#34;&#34;&#34;Test role access to the accounts specified.&#34;&#34;&#34;
+    &#34;&#34;&#34;Obtain a signin URL for the AWS Console&#34;&#34;&#34;
 
     @classmethod
     def from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#34;--verbose&#34;,
-            &#34;-v&#34;,
-            action=&#34;store_true&#34;,
-            default=cfg(&#34;verbose&#34;, type=Bool, default=False),
-            help=&#34;display accounts while being processed&#34;,
+            &#34;--region&#34;,
+            default=cfg(&#34;region&#34;, default=&#34;us-east-1&#34;),
+            help=&#34;generate URL for REGION&#34;,
         )
-
+        parser.add_argument(
+            &#34;path&#34;,
+            nargs=&#34;?&#34;,
+            default=cfg(&#34;path&#34;, default=&#34;/console/home&#34;),
+            help=&#34;Optional path to append to AWS url&#34;,
+        )
         args = parser.parse_args(argv)
         return cls(**vars(args))
 
-    def __init__(self, verbose=False):
-        self.verbose = verbose
-        self.total = 0
-        self.no_access = []
+    def __init__(self, region, path):
+        self.region = region
+        self.path = path
 
     def execute(self, session, acct):
-        if self.verbose:
-            return f&#34;{acct}: successful\n&#34;
-        return None
+        creds = session.get_credentials()
 
-    def collect_results(self, acct, get_result):
-        self.total += 1
         try:
-            result = get_result()
-        except Exception:  # pylint: disable=broad-except
-            self.no_access.append(acct)
-            return
+            session_creds = {}
+            session_creds[&#34;sessionId&#34;] = creds.access_key
+            session_creds[&#34;sessionKey&#34;] = creds.secret_key
+            session_creds[&#34;sessionToken&#34;] = creds.token
+        except AttributeError:
+            return f&#34;{acct}: can only be used with federated auth types&#34;
 
-        if result:
-            print(result, end=&#34;&#34;, flush=True)
+        # Retrieve a signin token from AWS federation service
+        r = requests.get(
+            &#34;https://signin.aws.amazon.com/federation&#34;,
+            params={&#34;Action&#34;: &#34;getSigninToken&#34;, &#34;Session&#34;: json.dumps(session_creds)},
+        )
+        r.raise_for_status()
+        signin_token = r.json()[&#34;SigninToken&#34;]
 
-    def post_hook(self):
-        unsuccessful = len(self.no_access)
-        successful = self.total - unsuccessful
+        # Use Request to create well-formed URL that we return to user
+        r = requests.Request(
+            &#34;GET&#34;,
+            &#34;https://signin.aws.amazon.com/federation&#34;,
+            params={
+                &#34;Action&#34;: &#34;login&#34;,
+                &#34;Issuer&#34;: &#34;fmr.com&#34;,
+                &#34;Destination&#34;: f&#34;https://console.aws.amazon.com{self.path}?region={self.region}&#34;,
+                &#34;SigninToken&#34;: signin_token,
+            },
+        )
 
-        print(f&#34;Success: {successful}, Failures: {unsuccessful}&#34;)
-
-        if unsuccessful:
-            print(f&#34;\nUnsuccessful attempts:&#34;)
-            for acct in self.no_access:
-                print(acct)</code></pre>
+        return f&#34;{acct}: {r.prepare().url}\n&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -284,15 +231,7 @@ class CLICommand(Command):
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul>
-<li><a href="#overview">Overview</a></li>
-<li><a href="#reference">Reference</a><ul>
-<li><a href="#synopsis">Synopsis</a></li>
-<li><a href="#configuration">Configuration</a></li>
-<li><a href="#command-options">Command Options</a></li>
-</ul>
-</li>
-</ul>
+<ul></ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
@@ -303,7 +242,7 @@ class CLICommand(Command):
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="awsrun.commands.aws.access_report.CLICommand" href="#awsrun.commands.aws.access_report.CLICommand">CLICommand</a></code></h4>
+<h4><code><a title="awsrun.commands.aws.console.CLICommand" href="#awsrun.commands.aws.console.CLICommand">CLICommand</a></code></h4>
 </li>
 </ul>
 </li>

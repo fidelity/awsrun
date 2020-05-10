@@ -44,17 +44,45 @@ use metadata to select accounts to process rather than explicitly listing each
 account on the command line. In addition, command authors have access to this
 metadata, so it can be accessed while processing an account if needed.
 
-## Demo
+## Demo and Screenshots
 
-Let's gather information on the VPCs in an account. We could gather this
-information using only AWS's native CLI, but that limits us to processing one
-account at a time. Instead, we'll use awsrun and the `awsrun.commands.aws.aws`
-command to execute an AWS CLI command across multiple accounts concurrently.
-We'll also make use of the awsrun's metadata explorer to select accounts for
-command execution. When the command is run, 58 accounts are selected by the
-metadata filter, and then processed in about 13 seconds:
+The following examples demonstrate the wide-range of possibilities when building
+your awsrun commands. Nothing is special about these commands other than the
+fact they are included in the base install. You could have built these yourself.
 
-![Example](demo.svg)
+### `aws` Demo
+The following screencast illustrates the power of awsrun once it has been
+configured to your environment. In this demo, we use awsrun to gather VPC
+information. We could do the same using only AWS's native CLI, but that limits
+us to processing one account at a time. Instead, we'll use awsrun and the
+built-in [`aws`](https://fmr-llc.github.io/awsrun/commands/aws/aws.html) command
+to execute an AWS CLI command across multiple accounts concurrently. We'll also
+make use of the awsrun's metadata explorer to select accounts for command
+execution. As you are about to observe, 58 accounts were selected by the
+metadata filter and then processed in 13 seconds.
+
+![aws command](https://fmr-llc.github.io/awsrun/demo.svg)
+
+Note: The output has been obfuscated with random account numbers and
+identifiers.
+
+### `last` Screenshot
+The next screenshot shows how we can use the
+[`last`](https://fmr-llc.github.io/awsrun/commands/aws/last.html) command to
+interactively explore CloudTrail events.
+
+![last command](https://fmr-llc.github.io/awsrun/last.jpg)
+
+### `dx_status` Screenshots
+The last screenshots show two variants of output from the
+[`dx_status`](https://fmr-llc.github.io/awsrun/commands/aws/dx_status.html)
+command, which provides an overview of any Direct Connects in an account. This
+includes pulling CloudWatch metrics and generating terminal-based graphs using
+[sparklines](https://en.wikipedia.org/wiki/Sparkline) and ASCII-based charts.
+
+![dx_status spark command](https://fmr-llc.github.io/awsrun/dx_status-spark.jpg)
+
+![dx_status chart command](https://fmr-llc.github.io/awsrun/dx_status-chart.jpg)
 
 ## Installation
 
@@ -66,10 +94,13 @@ To install from source, clone the repo and run pip install:
 
 Python 3.6 or higher is required.
 
-In order to use the built-in awsrun "aws" command, the AWS CLI tool must be
-installed and available in the PATH. It is no longer installed as part of the
-awsrun installation to allow users the choice of installing v1 or v2 of the AWS
-CLI tool.
+In order to use the built-in awsrun
+[`aws`](https://fmr-llc.github.io/awsrun/commands/aws/aws.html) command, the AWS
+CLI tool must be
+[installed](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
+and available in your PATH. It is no longer installed as part of the awsrun
+installation to allow users the choice of installing v1 or v2 of the AWS CLI
+tool.
 
 If installing AWS CLI v1 on Windows via pip, users must make sure that the AWS
 CLI tool is included in their PATH. When pip installs the AWS CLI, it does not
@@ -1186,4 +1217,4 @@ additional guidance on how to build your own.
 """
 
 name = "awsrun"
-__version__ = "2.1.0"
+__version__ = "2.2.0"

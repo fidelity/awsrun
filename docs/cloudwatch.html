@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>awsrun.cloudwatch API documentation</title>
+<meta name="description" content="Provides a means of retrieving metrics from AWS CloudWatch …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<link href="/awsrun/webfonts.css" rel="stylesheet">
+<style>
+body {
+font-size: 17px;
+font-family: Charter-Racket, serif;
+}
+code {
+font-family: Fira-Mono, monospace;
+}
+/* `Text` size and code blocks in main body */
+section code {
+font-size: 15px;
+}
+/* "expand source code" text */
+details {
+font-size: 14px;
+}
+ul li code a {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.cloudwatch</code></h1>
+</header>
+<section id="section-intro">
+<p>Provides a means of retrieving metrics from AWS CloudWatch.</p>
+<p>This module provides the <a title="awsrun.cloudwatch.CWMetrics" href="#awsrun.cloudwatch.CWMetrics"><code>CWMetrics</code></a> class that can be used to retrieve up to
+500 metrics in a single AWS CloudWatch API call. Queue one or more metrics for
+retrieval via <a title="awsrun.cloudwatch.CWMetrics.add_metric" href="#awsrun.cloudwatch.CWMetrics.add_metric"><code>CWMetrics.add_metric()</code></a>, and then invoke <a title="awsrun.cloudwatch.CWMetrics.bulk_load" href="#awsrun.cloudwatch.CWMetrics.bulk_load"><code>CWMetrics.bulk_load()</code></a> to
+make the request to AWS. The results for each metric can be retrieved by
+invoking the callable returned by <a title="awsrun.cloudwatch.CWMetrics.add_metric" href="#awsrun.cloudwatch.CWMetrics.add_metric"><code>CWMetrics.add_metric()</code></a>. For example:</p>
+<pre><code>client = session.client("cloudwatch", region_name="us-east-1")
+cwm = CWMetrics(client, last=3600 * 16, samples=8)
+get_avg = cwm.add_metric("AWS/DX", "ConnectionBpsEgress", {"ConnectionId": "dxcon-xxxxxxx"}, "Average")
+get_p95 = cwm.add_metric("AWS/DX", "ConnectionBpsEgress", {"ConnectionId": "dxcon-xxxxxxx"}, "p95")
+get_max = cwm.add_metric("AWS/DX", "ConnectionBpsEgress", {"ConnectionId": "dxcon-xxxxxxx"}, "Maximum")
+
+# Make a single call to AWS to retrieve all metric data
+cwm.bulk_load()
+
+# All data has been loaded, let's print it out
+print("AVERAGE")
+for datetime, value in get_avg():
+    print(datetime, value)
+
+print("P95")
+for datetime, value in get_p95():
+    print(datetime, value)
+
+print("Maximum")
+for datetime, value in get_max():
+    print(datetime, value)
+</code></pre>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Provides a means of retrieving metrics from AWS CloudWatch.
+
+This module provides the `CWMetrics` class that can be used to retrieve up to
+500 metrics in a single AWS CloudWatch API call. Queue one or more metrics for
+retrieval via `CWMetrics.add_metric`, and then invoke `CWMetrics.bulk_load` to
+make the request to AWS. The results for each metric can be retrieved by
+invoking the callable returned by `CWMetrics.add_metric`. For example:
+
+    client = session.client(&#34;cloudwatch&#34;, region_name=&#34;us-east-1&#34;)
+    cwm = CWMetrics(client, last=3600 * 16, samples=8)
+    get_avg = cwm.add_metric(&#34;AWS/DX&#34;, &#34;ConnectionBpsEgress&#34;, {&#34;ConnectionId&#34;: &#34;dxcon-xxxxxxx&#34;}, &#34;Average&#34;)
+    get_p95 = cwm.add_metric(&#34;AWS/DX&#34;, &#34;ConnectionBpsEgress&#34;, {&#34;ConnectionId&#34;: &#34;dxcon-xxxxxxx&#34;}, &#34;p95&#34;)
+    get_max = cwm.add_metric(&#34;AWS/DX&#34;, &#34;ConnectionBpsEgress&#34;, {&#34;ConnectionId&#34;: &#34;dxcon-xxxxxxx&#34;}, &#34;Maximum&#34;)
+
+    # Make a single call to AWS to retrieve all metric data
+    cwm.bulk_load()
+
+    # All data has been loaded, let&#39;s print it out
+    print(&#34;AVERAGE&#34;)
+    for datetime, value in get_avg():
+        print(datetime, value)
+
+    print(&#34;P95&#34;)
+    for datetime, value in get_p95():
+        print(datetime, value)
+
+    print(&#34;Maximum&#34;)
+    for datetime, value in get_max():
+        print(datetime, value)
+
+&#34;&#34;&#34;
+import math
+import logging
+from collections import defaultdict
+from datetime import datetime, timedelta, timezone
+
+_LOG = logging.getLogger(__name__)
+
+# AWS limits the number of metric requets per call to get_metric_data.
+_MAX_METRICS = 500
+
+
+class _MetricResult:
+    &#34;&#34;&#34;Lightweight container to hold metric results.&#34;&#34;&#34;
+
+    __slots__ = (&#34;timestamps&#34;, &#34;values&#34;)
+
+    def __init__(self, timestamps=None, values=None):
+        self.timestamps = [] if timestamps is None else timestamps
+        self.values = [] if values is None else values
+
+
+class CWMetrics:
+    &#34;&#34;&#34;Retrieve one or more AWS CloudWatch metrics efficiently.
+
+    This class uses the AWS CloudWatch get_metrics_data() API to retrieve up
+    to 500 different metrics in a single API call. `client` must be a valid
+    boto3 CloudWatch client. `last` is the number of seconds of data to
+    retrieve. `samples` is the number of data points requested. By default,
+    the `ingestion_interval` is 60 seconds. Note: this class does not support
+    metrics with ingestion intervals less than 60 seconds.
+    &#34;&#34;&#34;
+
+    def __init__(self, client, last=3600, samples=60, ingestion_interval=60):
+        self._client = client
+        self._last = last
+        self._samples = samples
+        self._ingestion_interval = ingestion_interval
+        self._period = self._compute_period()
+
+        _LOG.info(
+            &#34;CWMetrics(client, last=%d, samples=%d, ingestion_interval=%d)&#34;,
+            last,
+            samples,
+            ingestion_interval,
+        )
+        _LOG.info(&#34;Computed period: %d secs&#34;, self._period)
+
+        # The list of metrics that have been added/requested
+        self._queries = []
+
+        # Provides a unique id for each metric (required by the CW API)
+        self._counter = 0
+
+        # Stores the results of the last bulk_load, keyed by the unique ID
+        self._results = defaultdict(_MetricResult)
+
+    def add_metric(self, namespace, name, dimensions, statistic):
+        &#34;&#34;&#34;Queue the specified CloudWatch metric for bulk loading.
+
+        Use this method to register a metric for future retrieval via
+        `CWMetric.bulk_load`. Up to 500 metrics can be added. Once a metric
+        has been added, subsequent calls to `CWMetric.bulk_load` will retrieve
+        it again.
+
+        Returns a function that can be invoked after a bulk load has
+        completed. It will return a generator object that yields a tuple
+        containing a datetime object and a corresponding value at that time.
+        Values are returned in ascending chronological order. The generator
+        will yield a value for each time interval even if CloudWatch has
+        missing data points. In that case, the value in the tuple will be a
+        `math.nan`.
+        &#34;&#34;&#34;
+        # We need to keep track of how many metrics are being retrieved as AWS
+        # only permits up to 500 in a single get_metric_data call. We also
+        # need a unique ID for each metric added as that is how we will match
+        # the response from the CW API.
+        self._counter += 1
+        if self._counter &gt; _MAX_METRICS:
+            raise ValueError(f&#34;number of metrics exceeded {_MAX_METRICS}&#34;)
+
+        # The AWS get_metric_data call requires a unique ID for each metric
+        # being retrieved. This ID is provided with the results, so the caller
+        # is able to match request with response. The ID only needs to be
+        # unique per call to get_metric_data, so we just use a simple counter
+        # as we&#39;ll never expose this ID to callers.
+        metric_id = f&#34;id{self._counter}&#34;
+
+        # Convert a dict in form of {&#34;connId&#34;: &#34;dxcon-aaa&#34;} to the form
+        # required by AWS: [{&#34;Name&#34;: &#34;connId&#34;, &#34;Value&#34;: &#34;dxcon-aaa&#34;}].
+        dimensions = [{&#34;Name&#34;: n, &#34;Value&#34;: v} for n, v in dimensions.items()]
+
+        # Create the query dict and append to the list of queries. The query
+        # is not executed until later when the user calls bulk_load().
+        self._queries.append(
+            {
+                &#34;Id&#34;: metric_id,
+                &#34;MetricStat&#34;: {
+                    &#34;Metric&#34;: {
+                        &#34;Namespace&#34;: namespace,
+                        &#34;MetricName&#34;: name,
+                        &#34;Dimensions&#34;: dimensions,
+                    },
+                    &#34;Period&#34;: int(self._period),
+                    &#34;Stat&#34;: statistic,
+                },
+                &#34;ReturnData&#34;: True,
+            }
+        )
+
+        # Return a closure to make it easy to retrieve results. After the user
+        # has called bulk_load, this function can be executed to obtain the
+        # results of the API call.
+        return lambda: self._get_metric_generator(metric_id)
+
+    def bulk_load(self):
+        &#34;&#34;&#34;Retrieve the metrics that have been queued.
+
+        This method will make a single API call to AWS to request all of the
+        requested metrics. This method may be called one or more times. Each
+        call will retrieve the metrics that were requested replacing the
+        results of a prior invocation.
+
+        Returns nothing. Results for each metric can be obtained by invoking
+        the callable returned from `CWMetric.add_metric`, which will return
+        the data associated with the last bulk load.
+        &#34;&#34;&#34;
+        if not self._queries:
+            return
+
+        self._results = defaultdict(_MetricResult)
+        self._beg, self._end = self._compute_datetime_range()
+
+        for page in self._client.get_paginator(&#34;get_metric_data&#34;).paginate(
+            MetricDataQueries=self._queries,
+            StartTime=self._beg.isoformat(),
+            EndTime=self._end.isoformat(),
+            ScanBy=&#34;TimestampAscending&#34;,
+        ):
+            for mdr in page[&#34;MetricDataResults&#34;]:
+                _LOG.info(&#34;Total results: %d&#34;, len(mdr[&#34;Values&#34;]))
+                _LOG.info(&#34; [0]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][0], mdr[&#34;Values&#34;][0])
+                _LOG.info(&#34; [1]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][1], mdr[&#34;Values&#34;][1])
+                _LOG.info(&#34;[-2]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][-2], mdr[&#34;Values&#34;][-2])
+                _LOG.info(&#34;[-1]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][-1], mdr[&#34;Values&#34;][-1])
+
+                # We use extend here because results can span multiple pages,
+                # so we just keep extending to the existing lists.
+                result = self._results[mdr[&#34;Id&#34;]]
+                result.values.extend(mdr[&#34;Values&#34;])
+                result.timestamps.extend(mdr[&#34;Timestamps&#34;])
+
+    def _get_metric_generator(self, metric_id):
+        &#34;&#34;&#34;Returns a generator to iterate over metric results.
+
+        The generator yields (datetime, value) tuples for the results
+        associated with the `metric_id`. This method is not called directly by
+        users, but rather returned via a closure so we don&#39;t have to expose
+        the `metric_id`.
+        &#34;&#34;&#34;
+        result = self._results[metric_id]
+        if not result.timestamps:
+            return
+
+        index = 0
+        count = len(result.timestamps)
+        clock = self._beg
+
+        while clock &lt; self._end:
+            if index &gt;= count or result.timestamps[index] != clock:
+                yield clock, math.nan
+            else:
+                yield clock, result.values[index]
+                index += 1
+
+            clock += timedelta(seconds=self._period)
+
+    def _compute_datetime_range(self):
+        &#34;&#34;&#34;Return aligned start and end datetime objects.
+
+        Based the `last` number of seconds, the total number of `samples`, and a
+        `period` in seconds, compute aligned start and end datetimes for efficient
+        retrieval of metrics from CloudWatch based on the AWS API documentation.
+        &#34;&#34;&#34;
+
+        end = datetime.now(timezone.utc)
+        _LOG.info(&#34;Current time: %s&#34;, end)
+
+        # We go back in time by the ingestion period of the stat to give
+        # CloudWatch time to process the last metric because we don&#39;t want to
+        # include an interval that has missing data.
+        end -= timedelta(seconds=self._ingestion_interval)
+
+        # We go back in time by an additional half-period so we make sure we
+        # have enough data when aggregating a large number of data points.
+        # It&#39;s unclear what data points are aggregated by AWS at time T1. Does
+        # it include all points from T1 - period to T1? Or does it include all
+        # points from T1 - period/2 to T1 + period/2? I believe it is the
+        # latter, so we go back by half a period.
+        end -= timedelta(seconds=self._period / 2)
+
+        # Finally, we align this start time appropriately based on the period.
+        end = self._align_datetime(end)
+        _LOG.info(&#34;Timestamp for last metric: %s&#34;, end)
+
+        # Add one period to the end because the end time is exclusive per AWS
+        # docs and will not be included in results.
+        end = end + timedelta(seconds=self._period)
+        _LOG.info(&#34;Timestamp for CW end time: %s&#34;, end)
+
+        # Compute the start time for CloudWatch, which is inclusive per AWS
+        # docs, so we don&#39;t need to do any extra padding.
+        beg = end - timedelta(seconds=self._period * self._samples)
+        _LOG.info(&#34;Timestamp for CW beg time: %s&#34;, beg)
+
+        return beg, end
+
+    def _compute_period(self):
+        &#34;&#34;&#34;Return an aligned period/interval in seconds.
+
+        Based the `last` number of seconds and the total number of `samples`
+        requested, compute a valid period/interval that is aligned based on the
+        AWS CloudWatch documentation.
+        &#34;&#34;&#34;
+        period = self._last // self._samples
+
+        if period &lt; self._ingestion_interval:
+            raise ValueError(f&#34;{period}s period is less than ingestion interval&#34;)
+
+        if self._last &lt; 86400 * 15:
+            return period - period % max(60, self._ingestion_interval)
+
+        if self._last &lt; 86400 * 63:
+            return period - period % 300
+
+        return period - period % 3600
+
+    def _align_datetime(self, dt):
+        &#34;&#34;&#34;Return an aligned datetime based on last number of seconds requested.
+
+        The AWS CloudWatch API datetimes should be aligned based on a minute,
+        5-minute, or 1-hour mark depending on start time.
+        &#34;&#34;&#34;
+
+        if self._last &lt; 86400 * 15 and self._ingestion_interval &lt;= 60:
+            # Round down to the 1-minute
+            dt = dt.replace(second=0, microsecond=0)
+
+        elif self._last &lt; 86400 * 63 and self._ingestion_interval &lt;= 300:
+            # Round down to the 5-minute
+            dt = (dt - timedelta(minutes=dt.minute % 5)).replace(
+                second=0, microsecond=0
+            )
+        else:
+            # Round down to the hour
+            dt = dt.replace(minute=0, second=0, microsecond=0)
+
+        # AWS suggests aligning start and end times based on a multiple of the
+        # period. So, with a period of 5 mins, start and end times should be
+        # 12:05 and 12:35 versus 12:07 and 12:37.
+        period_minute = (self._period // 60) % 60
+        return dt - timedelta(
+            minutes=(dt.minute % period_minute) if period_minute else dt.minute
+        )
+
+
+def get_metric(client, namespace, name, dimensions, statistic, last=3600, samples=60):
+    &#34;&#34;&#34;Fetch data for the specified CloudWatch metric immediately.
+
+    This is a convenience method that should only be used if retrieving a
+    single metric. If multiple metrics are desired, it is more efficient to
+    use `CWMetric` instead.
+
+    Returns a generator object that yields a tuple containing a datetime
+    object and a corresponding value at that time. Values are returned in
+    ascending chronological order. The generator will yield a value for each
+    time interval even if CloudWatch has missing data points. In that case,
+    the value in the tuple will be a `math.nan`.
+    &#34;&#34;&#34;
+    cwm = CWMetrics(client, last, samples)
+    get_values = cwm.add_metric(namespace, name, dimensions, statistic)
+    cwm.bulk_load()
+    return get_values()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="awsrun.cloudwatch.get_metric"><code class="name flex">
+<span>def <span class="ident">get_metric</span></span>(<span>client, namespace, name, dimensions, statistic, last=3600, samples=60)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Fetch data for the specified CloudWatch metric immediately.</p>
+<p>This is a convenience method that should only be used if retrieving a
+single metric. If multiple metrics are desired, it is more efficient to
+use <code>CWMetric</code> instead.</p>
+<p>Returns a generator object that yields a tuple containing a datetime
+object and a corresponding value at that time. Values are returned in
+ascending chronological order. The generator will yield a value for each
+time interval even if CloudWatch has missing data points. In that case,
+the value in the tuple will be a <code>math.nan</code>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_metric(client, namespace, name, dimensions, statistic, last=3600, samples=60):
+    &#34;&#34;&#34;Fetch data for the specified CloudWatch metric immediately.
+
+    This is a convenience method that should only be used if retrieving a
+    single metric. If multiple metrics are desired, it is more efficient to
+    use `CWMetric` instead.
+
+    Returns a generator object that yields a tuple containing a datetime
+    object and a corresponding value at that time. Values are returned in
+    ascending chronological order. The generator will yield a value for each
+    time interval even if CloudWatch has missing data points. In that case,
+    the value in the tuple will be a `math.nan`.
+    &#34;&#34;&#34;
+    cwm = CWMetrics(client, last, samples)
+    get_values = cwm.add_metric(namespace, name, dimensions, statistic)
+    cwm.bulk_load()
+    return get_values()</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.cloudwatch.CWMetrics"><code class="flex name class">
+<span>class <span class="ident">CWMetrics</span></span>
+<span>(</span><span>client, last=3600, samples=60, ingestion_interval=60)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Retrieve one or more AWS CloudWatch metrics efficiently.</p>
+<p>This class uses the AWS CloudWatch get_metrics_data() API to retrieve up
+to 500 different metrics in a single API call. <code>client</code> must be a valid
+boto3 CloudWatch client. <code>last</code> is the number of seconds of data to
+retrieve. <code>samples</code> is the number of data points requested. By default,
+the <code>ingestion_interval</code> is 60 seconds. Note: this class does not support
+metrics with ingestion intervals less than 60 seconds.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CWMetrics:
+    &#34;&#34;&#34;Retrieve one or more AWS CloudWatch metrics efficiently.
+
+    This class uses the AWS CloudWatch get_metrics_data() API to retrieve up
+    to 500 different metrics in a single API call. `client` must be a valid
+    boto3 CloudWatch client. `last` is the number of seconds of data to
+    retrieve. `samples` is the number of data points requested. By default,
+    the `ingestion_interval` is 60 seconds. Note: this class does not support
+    metrics with ingestion intervals less than 60 seconds.
+    &#34;&#34;&#34;
+
+    def __init__(self, client, last=3600, samples=60, ingestion_interval=60):
+        self._client = client
+        self._last = last
+        self._samples = samples
+        self._ingestion_interval = ingestion_interval
+        self._period = self._compute_period()
+
+        _LOG.info(
+            &#34;CWMetrics(client, last=%d, samples=%d, ingestion_interval=%d)&#34;,
+            last,
+            samples,
+            ingestion_interval,
+        )
+        _LOG.info(&#34;Computed period: %d secs&#34;, self._period)
+
+        # The list of metrics that have been added/requested
+        self._queries = []
+
+        # Provides a unique id for each metric (required by the CW API)
+        self._counter = 0
+
+        # Stores the results of the last bulk_load, keyed by the unique ID
+        self._results = defaultdict(_MetricResult)
+
+    def add_metric(self, namespace, name, dimensions, statistic):
+        &#34;&#34;&#34;Queue the specified CloudWatch metric for bulk loading.
+
+        Use this method to register a metric for future retrieval via
+        `CWMetric.bulk_load`. Up to 500 metrics can be added. Once a metric
+        has been added, subsequent calls to `CWMetric.bulk_load` will retrieve
+        it again.
+
+        Returns a function that can be invoked after a bulk load has
+        completed. It will return a generator object that yields a tuple
+        containing a datetime object and a corresponding value at that time.
+        Values are returned in ascending chronological order. The generator
+        will yield a value for each time interval even if CloudWatch has
+        missing data points. In that case, the value in the tuple will be a
+        `math.nan`.
+        &#34;&#34;&#34;
+        # We need to keep track of how many metrics are being retrieved as AWS
+        # only permits up to 500 in a single get_metric_data call. We also
+        # need a unique ID for each metric added as that is how we will match
+        # the response from the CW API.
+        self._counter += 1
+        if self._counter &gt; _MAX_METRICS:
+            raise ValueError(f&#34;number of metrics exceeded {_MAX_METRICS}&#34;)
+
+        # The AWS get_metric_data call requires a unique ID for each metric
+        # being retrieved. This ID is provided with the results, so the caller
+        # is able to match request with response. The ID only needs to be
+        # unique per call to get_metric_data, so we just use a simple counter
+        # as we&#39;ll never expose this ID to callers.
+        metric_id = f&#34;id{self._counter}&#34;
+
+        # Convert a dict in form of {&#34;connId&#34;: &#34;dxcon-aaa&#34;} to the form
+        # required by AWS: [{&#34;Name&#34;: &#34;connId&#34;, &#34;Value&#34;: &#34;dxcon-aaa&#34;}].
+        dimensions = [{&#34;Name&#34;: n, &#34;Value&#34;: v} for n, v in dimensions.items()]
+
+        # Create the query dict and append to the list of queries. The query
+        # is not executed until later when the user calls bulk_load().
+        self._queries.append(
+            {
+                &#34;Id&#34;: metric_id,
+                &#34;MetricStat&#34;: {
+                    &#34;Metric&#34;: {
+                        &#34;Namespace&#34;: namespace,
+                        &#34;MetricName&#34;: name,
+                        &#34;Dimensions&#34;: dimensions,
+                    },
+                    &#34;Period&#34;: int(self._period),
+                    &#34;Stat&#34;: statistic,
+                },
+                &#34;ReturnData&#34;: True,
+            }
+        )
+
+        # Return a closure to make it easy to retrieve results. After the user
+        # has called bulk_load, this function can be executed to obtain the
+        # results of the API call.
+        return lambda: self._get_metric_generator(metric_id)
+
+    def bulk_load(self):
+        &#34;&#34;&#34;Retrieve the metrics that have been queued.
+
+        This method will make a single API call to AWS to request all of the
+        requested metrics. This method may be called one or more times. Each
+        call will retrieve the metrics that were requested replacing the
+        results of a prior invocation.
+
+        Returns nothing. Results for each metric can be obtained by invoking
+        the callable returned from `CWMetric.add_metric`, which will return
+        the data associated with the last bulk load.
+        &#34;&#34;&#34;
+        if not self._queries:
+            return
+
+        self._results = defaultdict(_MetricResult)
+        self._beg, self._end = self._compute_datetime_range()
+
+        for page in self._client.get_paginator(&#34;get_metric_data&#34;).paginate(
+            MetricDataQueries=self._queries,
+            StartTime=self._beg.isoformat(),
+            EndTime=self._end.isoformat(),
+            ScanBy=&#34;TimestampAscending&#34;,
+        ):
+            for mdr in page[&#34;MetricDataResults&#34;]:
+                _LOG.info(&#34;Total results: %d&#34;, len(mdr[&#34;Values&#34;]))
+                _LOG.info(&#34; [0]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][0], mdr[&#34;Values&#34;][0])
+                _LOG.info(&#34; [1]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][1], mdr[&#34;Values&#34;][1])
+                _LOG.info(&#34;[-2]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][-2], mdr[&#34;Values&#34;][-2])
+                _LOG.info(&#34;[-1]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][-1], mdr[&#34;Values&#34;][-1])
+
+                # We use extend here because results can span multiple pages,
+                # so we just keep extending to the existing lists.
+                result = self._results[mdr[&#34;Id&#34;]]
+                result.values.extend(mdr[&#34;Values&#34;])
+                result.timestamps.extend(mdr[&#34;Timestamps&#34;])
+
+    def _get_metric_generator(self, metric_id):
+        &#34;&#34;&#34;Returns a generator to iterate over metric results.
+
+        The generator yields (datetime, value) tuples for the results
+        associated with the `metric_id`. This method is not called directly by
+        users, but rather returned via a closure so we don&#39;t have to expose
+        the `metric_id`.
+        &#34;&#34;&#34;
+        result = self._results[metric_id]
+        if not result.timestamps:
+            return
+
+        index = 0
+        count = len(result.timestamps)
+        clock = self._beg
+
+        while clock &lt; self._end:
+            if index &gt;= count or result.timestamps[index] != clock:
+                yield clock, math.nan
+            else:
+                yield clock, result.values[index]
+                index += 1
+
+            clock += timedelta(seconds=self._period)
+
+    def _compute_datetime_range(self):
+        &#34;&#34;&#34;Return aligned start and end datetime objects.
+
+        Based the `last` number of seconds, the total number of `samples`, and a
+        `period` in seconds, compute aligned start and end datetimes for efficient
+        retrieval of metrics from CloudWatch based on the AWS API documentation.
+        &#34;&#34;&#34;
+
+        end = datetime.now(timezone.utc)
+        _LOG.info(&#34;Current time: %s&#34;, end)
+
+        # We go back in time by the ingestion period of the stat to give
+        # CloudWatch time to process the last metric because we don&#39;t want to
+        # include an interval that has missing data.
+        end -= timedelta(seconds=self._ingestion_interval)
+
+        # We go back in time by an additional half-period so we make sure we
+        # have enough data when aggregating a large number of data points.
+        # It&#39;s unclear what data points are aggregated by AWS at time T1. Does
+        # it include all points from T1 - period to T1? Or does it include all
+        # points from T1 - period/2 to T1 + period/2? I believe it is the
+        # latter, so we go back by half a period.
+        end -= timedelta(seconds=self._period / 2)
+
+        # Finally, we align this start time appropriately based on the period.
+        end = self._align_datetime(end)
+        _LOG.info(&#34;Timestamp for last metric: %s&#34;, end)
+
+        # Add one period to the end because the end time is exclusive per AWS
+        # docs and will not be included in results.
+        end = end + timedelta(seconds=self._period)
+        _LOG.info(&#34;Timestamp for CW end time: %s&#34;, end)
+
+        # Compute the start time for CloudWatch, which is inclusive per AWS
+        # docs, so we don&#39;t need to do any extra padding.
+        beg = end - timedelta(seconds=self._period * self._samples)
+        _LOG.info(&#34;Timestamp for CW beg time: %s&#34;, beg)
+
+        return beg, end
+
+    def _compute_period(self):
+        &#34;&#34;&#34;Return an aligned period/interval in seconds.
+
+        Based the `last` number of seconds and the total number of `samples`
+        requested, compute a valid period/interval that is aligned based on the
+        AWS CloudWatch documentation.
+        &#34;&#34;&#34;
+        period = self._last // self._samples
+
+        if period &lt; self._ingestion_interval:
+            raise ValueError(f&#34;{period}s period is less than ingestion interval&#34;)
+
+        if self._last &lt; 86400 * 15:
+            return period - period % max(60, self._ingestion_interval)
+
+        if self._last &lt; 86400 * 63:
+            return period - period % 300
+
+        return period - period % 3600
+
+    def _align_datetime(self, dt):
+        &#34;&#34;&#34;Return an aligned datetime based on last number of seconds requested.
+
+        The AWS CloudWatch API datetimes should be aligned based on a minute,
+        5-minute, or 1-hour mark depending on start time.
+        &#34;&#34;&#34;
+
+        if self._last &lt; 86400 * 15 and self._ingestion_interval &lt;= 60:
+            # Round down to the 1-minute
+            dt = dt.replace(second=0, microsecond=0)
+
+        elif self._last &lt; 86400 * 63 and self._ingestion_interval &lt;= 300:
+            # Round down to the 5-minute
+            dt = (dt - timedelta(minutes=dt.minute % 5)).replace(
+                second=0, microsecond=0
+            )
+        else:
+            # Round down to the hour
+            dt = dt.replace(minute=0, second=0, microsecond=0)
+
+        # AWS suggests aligning start and end times based on a multiple of the
+        # period. So, with a period of 5 mins, start and end times should be
+        # 12:05 and 12:35 versus 12:07 and 12:37.
+        period_minute = (self._period // 60) % 60
+        return dt - timedelta(
+            minutes=(dt.minute % period_minute) if period_minute else dt.minute
+        )</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.cloudwatch.CWMetrics.add_metric"><code class="name flex">
+<span>def <span class="ident">add_metric</span></span>(<span>self, namespace, name, dimensions, statistic)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Queue the specified CloudWatch metric for bulk loading.</p>
+<p>Use this method to register a metric for future retrieval via
+<code>CWMetric.bulk_load</code>. Up to 500 metrics can be added. Once a metric
+has been added, subsequent calls to <code>CWMetric.bulk_load</code> will retrieve
+it again.</p>
+<p>Returns a function that can be invoked after a bulk load has
+completed. It will return a generator object that yields a tuple
+containing a datetime object and a corresponding value at that time.
+Values are returned in ascending chronological order. The generator
+will yield a value for each time interval even if CloudWatch has
+missing data points. In that case, the value in the tuple will be a
+<code>math.nan</code>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_metric(self, namespace, name, dimensions, statistic):
+    &#34;&#34;&#34;Queue the specified CloudWatch metric for bulk loading.
+
+    Use this method to register a metric for future retrieval via
+    `CWMetric.bulk_load`. Up to 500 metrics can be added. Once a metric
+    has been added, subsequent calls to `CWMetric.bulk_load` will retrieve
+    it again.
+
+    Returns a function that can be invoked after a bulk load has
+    completed. It will return a generator object that yields a tuple
+    containing a datetime object and a corresponding value at that time.
+    Values are returned in ascending chronological order. The generator
+    will yield a value for each time interval even if CloudWatch has
+    missing data points. In that case, the value in the tuple will be a
+    `math.nan`.
+    &#34;&#34;&#34;
+    # We need to keep track of how many metrics are being retrieved as AWS
+    # only permits up to 500 in a single get_metric_data call. We also
+    # need a unique ID for each metric added as that is how we will match
+    # the response from the CW API.
+    self._counter += 1
+    if self._counter &gt; _MAX_METRICS:
+        raise ValueError(f&#34;number of metrics exceeded {_MAX_METRICS}&#34;)
+
+    # The AWS get_metric_data call requires a unique ID for each metric
+    # being retrieved. This ID is provided with the results, so the caller
+    # is able to match request with response. The ID only needs to be
+    # unique per call to get_metric_data, so we just use a simple counter
+    # as we&#39;ll never expose this ID to callers.
+    metric_id = f&#34;id{self._counter}&#34;
+
+    # Convert a dict in form of {&#34;connId&#34;: &#34;dxcon-aaa&#34;} to the form
+    # required by AWS: [{&#34;Name&#34;: &#34;connId&#34;, &#34;Value&#34;: &#34;dxcon-aaa&#34;}].
+    dimensions = [{&#34;Name&#34;: n, &#34;Value&#34;: v} for n, v in dimensions.items()]
+
+    # Create the query dict and append to the list of queries. The query
+    # is not executed until later when the user calls bulk_load().
+    self._queries.append(
+        {
+            &#34;Id&#34;: metric_id,
+            &#34;MetricStat&#34;: {
+                &#34;Metric&#34;: {
+                    &#34;Namespace&#34;: namespace,
+                    &#34;MetricName&#34;: name,
+                    &#34;Dimensions&#34;: dimensions,
+                },
+                &#34;Period&#34;: int(self._period),
+                &#34;Stat&#34;: statistic,
+            },
+            &#34;ReturnData&#34;: True,
+        }
+    )
+
+    # Return a closure to make it easy to retrieve results. After the user
+    # has called bulk_load, this function can be executed to obtain the
+    # results of the API call.
+    return lambda: self._get_metric_generator(metric_id)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.cloudwatch.CWMetrics.bulk_load"><code class="name flex">
+<span>def <span class="ident">bulk_load</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Retrieve the metrics that have been queued.</p>
+<p>This method will make a single API call to AWS to request all of the
+requested metrics. This method may be called one or more times. Each
+call will retrieve the metrics that were requested replacing the
+results of a prior invocation.</p>
+<p>Returns nothing. Results for each metric can be obtained by invoking
+the callable returned from <code>CWMetric.add_metric</code>, which will return
+the data associated with the last bulk load.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bulk_load(self):
+    &#34;&#34;&#34;Retrieve the metrics that have been queued.
+
+    This method will make a single API call to AWS to request all of the
+    requested metrics. This method may be called one or more times. Each
+    call will retrieve the metrics that were requested replacing the
+    results of a prior invocation.
+
+    Returns nothing. Results for each metric can be obtained by invoking
+    the callable returned from `CWMetric.add_metric`, which will return
+    the data associated with the last bulk load.
+    &#34;&#34;&#34;
+    if not self._queries:
+        return
+
+    self._results = defaultdict(_MetricResult)
+    self._beg, self._end = self._compute_datetime_range()
+
+    for page in self._client.get_paginator(&#34;get_metric_data&#34;).paginate(
+        MetricDataQueries=self._queries,
+        StartTime=self._beg.isoformat(),
+        EndTime=self._end.isoformat(),
+        ScanBy=&#34;TimestampAscending&#34;,
+    ):
+        for mdr in page[&#34;MetricDataResults&#34;]:
+            _LOG.info(&#34;Total results: %d&#34;, len(mdr[&#34;Values&#34;]))
+            _LOG.info(&#34; [0]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][0], mdr[&#34;Values&#34;][0])
+            _LOG.info(&#34; [1]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][1], mdr[&#34;Values&#34;][1])
+            _LOG.info(&#34;[-2]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][-2], mdr[&#34;Values&#34;][-2])
+            _LOG.info(&#34;[-1]: %s %.2f&#34;, mdr[&#34;Timestamps&#34;][-1], mdr[&#34;Values&#34;][-1])
+
+            # We use extend here because results can span multiple pages,
+            # so we just keep extending to the existing lists.
+            result = self._results[mdr[&#34;Id&#34;]]
+            result.values.extend(mdr[&#34;Values&#34;])
+            result.timestamps.extend(mdr[&#34;Timestamps&#34;])</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun" href="index.html">awsrun</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="awsrun.cloudwatch.get_metric" href="#awsrun.cloudwatch.get_metric">get_metric</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.cloudwatch.CWMetrics" href="#awsrun.cloudwatch.CWMetrics">CWMetrics</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.cloudwatch.CWMetrics.add_metric" href="#awsrun.cloudwatch.CWMetrics.add_metric">add_metric</a></code></li>
+<li><code><a title="awsrun.cloudwatch.CWMetrics.bulk_load" href="#awsrun.cloudwatch.CWMetrics.bulk_load">bulk_load</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>awsrun.commands.aws.dx_status API documentation</title>
+<meta name="description" content="Display the status of Direct Connects and VIFs …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<link href="/awsrun/webfonts.css" rel="stylesheet">
+<style>
+body {
+font-size: 17px;
+font-family: Charter-Racket, serif;
+}
+code {
+font-family: Fira-Mono, monospace;
+}
+/* `Text` size and code blocks in main body */
+section code {
+font-size: 15px;
+}
+/* "expand source code" text */
+details {
+font-size: 14px;
+}
+ul li code a {
+font-size: .9em;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.commands.aws.dx_status</code></h1>
+</header>
+<section id="section-intro">
+<p>Display the status of Direct Connects and VIFs.</p>
+<p>The <code>dx_status</code> command displays a list of Direct Connects found as well as a
+summary of each including a sparkline showing the past 1 hour 95th percentile.</p>
+<pre><code>$ awsrun --account 100200300400 dx_status --region us-west-2
+100200300400/us-west-2: dxcon-xxxxxx00 DC1 to US-WEST         AVAILABLE  1 Gbps  234 VIFs (2 down)
+100200300400/us-west-2: ▂▂▂▃▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▁▂▁▂▂ ConnectionBpsIngress
+100200300400/us-west-2: ▁▁▁▂▂▁▂▂▁▂▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▂▂▁▁▁▁▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsEgress
+100200300400/us-west-2: ▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██▁▁█▁▁▁▁▁▁▁ ConnectionState
+
+100200300400/us-west-2: dxcon-xxxxxx01 DC1 to US-WEST         AVAILABLE  1 Gbps  143 VIFs (6 down)
+100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsIngress
+100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsEgress
+100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionState
+...
+</code></pre>
+<p>For a larger visualization with more detail, use <code>--height</code> options to specify
+the number of lines to use. For example:</p>
+<pre><code>$ awsrun --account 100200300400 dx_status --region us-west-2 --height 5
+100200300400/us-west-2: dxcon-xxxxxx00 DC1 to US-WEST         AVAILABLE  1 Gbps  234 VIFs (2 down)
+1,000,000,000 ┼
+800,000,000   ┤
+600,000,000   ┤            ╭╮
+400,000,000   ┤╭╮  ╭──╮  ╭╮│╰╮╭╮╭╮╭─────╮╭─╮╭╮  ╭─╮╭╮ ╭──╮╭─╮  ╭╮       ╭╮
+200,000,000   ┼╯╰──╯  ╰──╯╰╯ ╰╯╰╯╰╯     ╰╯ ╰╯╰──╯ ╰╯╰─╯  ╰╯ ╰──╯╰───────╯│
+          0   ┤                                                          ╰  ConnectionBpsIngress
+1,000,000,000 ┼
+800,000,000   ┤
+600,000,000   ┤
+400,000,000   ┤                      ╭╮
+200,000,000   ┤╭──────╮╭─────────────╯╰╮╭──────╮╭───────────╮╭───╮     ╭─╮
+          0   ┼╯      ╰╯               ╰╯      ╰╯           ╰╯   ╰─────╯ ╰  ConnectionBpsEgress
+...
+</code></pre>
+<p>To disable the visualization altogether, specify a <code>0</code> height:</p>
+<pre><code>$ awsrun --account 100200300400 dx_status --region us-west-2 --height 0
+100200300400/us-west-2: dxcon-xxxxxx00 DC1 to US-WEST         AVAILABLE  1 Gbps  234 VIFs (2 down)
+100200300400/us-west-2: dxcon-xxxxxx01 DC1 to US-WEST         AVAILABLE  1 Gbps  143 VIFs (6 down)
+100200300400/us-west-2: dxcon-xxxxxx02 DC2 to US-WEST         AVAILABLE  1 Gbps  233 VIFs (1 down)
+100200300400/us-west-2: dxcon-xxxxxx03 DC2 to US-WEST         AVAILABLE  1 Gbps  143 VIFs (2 down)
+</code></pre>
+<p>Use the <code>--hours</code> or <code>--days</code> flags to specify the range for the graphs. In
+addition, by default, the 95th percentile is used as an aggregation, but the
+<code>--stat</code> flag can specify either "Average", "Mimimum", "Maximum", "p90",
+"p95", "p99", "p99.9". For example, to view the 99th percentile over the past
+week:</p>
+<pre><code>$ awsrun --account 100200300400 dx_status --region us-west-2 --days 7 --stat p99.9
+100200300400/us-west-2: dxcon-xxxxxx00 DC1 to US-WEST         AVAILABLE  1 Gbps  234 VIFs (2 down)
+100200300400/us-west-2: ▂▃▃▃▂▃▄▃▃▂▃▄▃▅▃▃▄▃▃▃▃▃▃▃▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▃▃▃▃▄▃▃▃▃▂▂▃▂▂▂▂▃▃▂ ConnectionBpsIngress
+100200300400/us-west-2: ▂▂▂▂▂▂▂▂▂▂▃▃▂▂▂▂▂▂▂▂▂▂▂▃▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▃▂▂▂▂▂▂▂▂▂▂▁▂▂▂▂▂▂▂▁ ConnectionBpsEgress
+100200300400/us-west-2: ▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██▁▁█▁▁▁▁▁▁▁ ConnectionState
+
+100200300400/us-west-2: dxcon-xxxxxx01 DC1 to US-WEST         AVAILABLE  1 Gbps  143 VIFs (6 down)
+100200300400/us-west-2: ▄▄▄▄▄▄▄▄▄▄▄▃▄▁▁▁▁▁▁▄▃▁▁▁▁▁▁▄▄▄▄▄▄▄▄▄▃▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsIngress
+100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsEgress
+100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionState
+
+100200300400/us-west-2: dxcon-xxxxxx02 DC2 to US-WEST         AVAILABLE  1 Gbps  233 VIFs (1 down)
+100200300400/us-west-2: ▂▄▃▅▇▃▃▃▂▆▄▄▃▆▆▃▃▅▄▃▃▃▂▂▂▂▅▄▄▃▂▃▄▂▅▃▃▂▂▂▃▂▂▂▃▂▃▂▃▂▃▂▂▂▂▂▂▃▂▂ ConnectionBpsIngress
+100200300400/us-west-2: ▁▂▂▂▂▁▁▁▁▂▂▂▂▂▃▃▂▃▃▂▂▂▁▁▁▁▁▁▂▁▁▁▁▁▁▂▂▂▂▁▁▁▁▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsEgress
+100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionState
+
+100200300400/us-west-2: dxcon-xxxxxx03 DC2 to US-WEST         AVAILABLE  1 Gbps  143 VIFs (2 down)
+100200300400/us-west-2: ▃▆▄▃▃▃▃▃▃▃▃▃▅▂▁▂▁▁▁▄▃▂▂▂▃▁▁▃▄▃▅▄▃▃▃▃▃▂▂▁▂▁▁▁▁▁▁▁▁▂▁▁▁▂▂▁▁▁▁▁ ConnectionBpsIngress
+100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsEgress
+100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionState
+</code></pre>
+<p>By default, the scale of the y-axis is fixed to the bandwidth of the circuit
+regardless of utilization, so it is easy to distinguish a lightly utilized
+circuit from a heavily utilized circuit. To use a variable scale on the
+y-axis, use the <code>--auto-scale</code> option:</p>
+<pre><code>$ awsrun --account 100200300400 dx_status --region us-west-2 --height 5 --auto-scale
+100200300400/us-west-2: dxcon-xxxxxx00 DC1 to US-WEST         AVAILABLE  1 Gbps  234 VIFs (2 down)
+387,713,776  ┼                           ╭╮               ╭╮
+310,171,021  ┤    ╭╮     ╭╮   ╭────╮   ╭╮││       ╭─╮ ╭─╮╭╯│
+232,628,266  ┼───╮│╰─────╯╰╮╭─╯    ╰───╯╰╯╰───────╯ ╰╮│ ╰╯ ╰───╮╭────────
+155,085,510  ┤   ╰╯        ╰╯                        ╰╯        ╰╯
+77,542,755   ┤
+0            ┤                                                             ConnectionBpsIngress
+241,639,270  ┼           ╭╮
+193,311,416  ┤       ╭───╯│╭───────╮ ╭╮  ╭╮           ╭─╮ ╭╮
+144,983,562  ┤╭╮╭─╮╭╮│    ╰╯       ╰─╯╰╮╭╯│╭────╮╭────╯ ╰─╯╰─────╮ ╭────╮
+96,655,708   ┼╯╰╯ ╰╯╰╯                 ╰╯ ╰╯    ╰╯               ╰─╯    ╰
+48,327,854   ┤
+0            ┤                                                             ConnectionBpsEgress
+</code></pre>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Display the status of Direct Connects and VIFs.
+
+The `dx_status` command displays a list of Direct Connects found as well as a
+summary of each including a sparkline showing the past 1 hour 95th percentile.
+
+    $ awsrun --account 100200300400 dx_status --region us-west-2
+    100200300400/us-west-2: dxcon-xxxxxx00 DC1 to US-WEST         AVAILABLE  1 Gbps  234 VIFs (2 down)
+    100200300400/us-west-2: ▂▂▂▃▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▁▂▁▂▂ ConnectionBpsIngress
+    100200300400/us-west-2: ▁▁▁▂▂▁▂▂▁▂▁▁▁▁▁▁▁▂▁▁▁▁▁▁▁▂▂▁▁▁▁▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsEgress
+    100200300400/us-west-2: ▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██▁▁█▁▁▁▁▁▁▁ ConnectionState
+
+    100200300400/us-west-2: dxcon-xxxxxx01 DC1 to US-WEST         AVAILABLE  1 Gbps  143 VIFs (6 down)
+    100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsIngress
+    100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsEgress
+    100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionState
+    ...
+
+For a larger visualization with more detail, use `--height` options to specify
+the number of lines to use. For example:
+
+    $ awsrun --account 100200300400 dx_status --region us-west-2 --height 5
+    100200300400/us-west-2: dxcon-xxxxxx00 DC1 to US-WEST         AVAILABLE  1 Gbps  234 VIFs (2 down)
+    1,000,000,000 ┼
+    800,000,000   ┤
+    600,000,000   ┤            ╭╮
+    400,000,000   ┤╭╮  ╭──╮  ╭╮│╰╮╭╮╭╮╭─────╮╭─╮╭╮  ╭─╮╭╮ ╭──╮╭─╮  ╭╮       ╭╮
+    200,000,000   ┼╯╰──╯  ╰──╯╰╯ ╰╯╰╯╰╯     ╰╯ ╰╯╰──╯ ╰╯╰─╯  ╰╯ ╰──╯╰───────╯│
+              0   ┤                                                          ╰  ConnectionBpsIngress
+    1,000,000,000 ┼
+    800,000,000   ┤
+    600,000,000   ┤
+    400,000,000   ┤                      ╭╮
+    200,000,000   ┤╭──────╮╭─────────────╯╰╮╭──────╮╭───────────╮╭───╮     ╭─╮
+              0   ┼╯      ╰╯               ╰╯      ╰╯           ╰╯   ╰─────╯ ╰  ConnectionBpsEgress
+    ...
+
+To disable the visualization altogether, specify a `0` height:
+
+    $ awsrun --account 100200300400 dx_status --region us-west-2 --height 0
+    100200300400/us-west-2: dxcon-xxxxxx00 DC1 to US-WEST         AVAILABLE  1 Gbps  234 VIFs (2 down)
+    100200300400/us-west-2: dxcon-xxxxxx01 DC1 to US-WEST         AVAILABLE  1 Gbps  143 VIFs (6 down)
+    100200300400/us-west-2: dxcon-xxxxxx02 DC2 to US-WEST         AVAILABLE  1 Gbps  233 VIFs (1 down)
+    100200300400/us-west-2: dxcon-xxxxxx03 DC2 to US-WEST         AVAILABLE  1 Gbps  143 VIFs (2 down)
+
+Use the `--hours` or `--days` flags to specify the range for the graphs. In
+addition, by default, the 95th percentile is used as an aggregation, but the
+`--stat` flag can specify either &#34;Average&#34;, &#34;Mimimum&#34;, &#34;Maximum&#34;, &#34;p90&#34;,
+&#34;p95&#34;, &#34;p99&#34;, &#34;p99.9&#34;. For example, to view the 99th percentile over the past
+week:
+
+    $ awsrun --account 100200300400 dx_status --region us-west-2 --days 7 --stat p99.9
+    100200300400/us-west-2: dxcon-xxxxxx00 DC1 to US-WEST         AVAILABLE  1 Gbps  234 VIFs (2 down)
+    100200300400/us-west-2: ▂▃▃▃▂▃▄▃▃▂▃▄▃▅▃▃▄▃▃▃▃▃▃▃▄▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▄▃▃▃▃▄▃▃▃▃▂▂▃▂▂▂▂▃▃▂ ConnectionBpsIngress
+    100200300400/us-west-2: ▂▂▂▂▂▂▂▂▂▂▃▃▂▂▂▂▂▂▂▂▂▂▂▃▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▃▂▂▂▂▂▂▂▂▂▂▁▂▂▂▂▂▂▂▁ ConnectionBpsEgress
+    100200300400/us-west-2: ▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁██▁▁█▁▁▁▁▁▁▁ ConnectionState
+
+    100200300400/us-west-2: dxcon-xxxxxx01 DC1 to US-WEST         AVAILABLE  1 Gbps  143 VIFs (6 down)
+    100200300400/us-west-2: ▄▄▄▄▄▄▄▄▄▄▄▃▄▁▁▁▁▁▁▄▃▁▁▁▁▁▁▄▄▄▄▄▄▄▄▄▃▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsIngress
+    100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsEgress
+    100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionState
+
+    100200300400/us-west-2: dxcon-xxxxxx02 DC2 to US-WEST         AVAILABLE  1 Gbps  233 VIFs (1 down)
+    100200300400/us-west-2: ▂▄▃▅▇▃▃▃▂▆▄▄▃▆▆▃▃▅▄▃▃▃▂▂▂▂▅▄▄▃▂▃▄▂▅▃▃▂▂▂▃▂▂▂▃▂▃▂▃▂▃▂▂▂▂▂▂▃▂▂ ConnectionBpsIngress
+    100200300400/us-west-2: ▁▂▂▂▂▁▁▁▁▂▂▂▂▂▃▃▂▃▃▂▂▂▁▁▁▁▁▁▂▁▁▁▁▁▁▂▂▂▂▁▁▁▁▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsEgress
+    100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionState
+
+    100200300400/us-west-2: dxcon-xxxxxx03 DC2 to US-WEST         AVAILABLE  1 Gbps  143 VIFs (2 down)
+    100200300400/us-west-2: ▃▆▄▃▃▃▃▃▃▃▃▃▅▂▁▂▁▁▁▄▃▂▂▂▃▁▁▃▄▃▅▄▃▃▃▃▃▂▂▁▂▁▁▁▁▁▁▁▁▂▁▁▁▂▂▁▁▁▁▁ ConnectionBpsIngress
+    100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionBpsEgress
+    100200300400/us-west-2: ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁█▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ConnectionState
+
+By default, the scale of the y-axis is fixed to the bandwidth of the circuit
+regardless of utilization, so it is easy to distinguish a lightly utilized
+circuit from a heavily utilized circuit. To use a variable scale on the
+y-axis, use the `--auto-scale` option:
+
+    $ awsrun --account 100200300400 dx_status --region us-west-2 --height 5 --auto-scale
+    100200300400/us-west-2: dxcon-xxxxxx00 DC1 to US-WEST         AVAILABLE  1 Gbps  234 VIFs (2 down)
+    387,713,776  ┼                           ╭╮               ╭╮
+    310,171,021  ┤    ╭╮     ╭╮   ╭────╮   ╭╮││       ╭─╮ ╭─╮╭╯│
+    232,628,266  ┼───╮│╰─────╯╰╮╭─╯    ╰───╯╰╯╰───────╯ ╰╮│ ╰╯ ╰───╮╭────────
+    155,085,510  ┤   ╰╯        ╰╯                        ╰╯        ╰╯
+    77,542,755   ┤
+    0            ┤                                                             ConnectionBpsIngress
+    241,639,270  ┼           ╭╮
+    193,311,416  ┤       ╭───╯│╭───────╮ ╭╮  ╭╮           ╭─╮ ╭╮
+    144,983,562  ┤╭╮╭─╮╭╮│    ╰╯       ╰─╯╰╮╭╯│╭────╮╭────╯ ╰─╯╰─────╮ ╭────╮
+    96,655,708   ┼╯╰╯ ╰╯╰╯                 ╰╯ ╰╯    ╰╯               ╰─╯    ╰
+    48,327,854   ┤
+    0            ┤                                                             ConnectionBpsEgress
+&#34;&#34;&#34;
+import io
+import re
+import sys
+from collections import defaultdict
+
+import colorama
+from asciichartpy import plot
+from colorama import Fore, Style
+from sparkline import sparkify
+
+from awsrun.cloudwatch import CWMetrics
+from awsrun.config import Bool, Choice, Type
+from awsrun.runner import RegionalCommand
+
+
+class CLICommand(RegionalCommand):
+    &#34;&#34;&#34;Display the status of Direct Connects and VIFs.&#34;&#34;&#34;
+
+    @classmethod
+    def regional_from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            &#34;--verbose&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;include each VIF and its status in output&#34;,
+            default=cfg(&#34;verbose&#34;, type=Bool),
+        )
+
+        stats = [&#34;Average&#34;, &#34;Minimum&#34;, &#34;Maximum&#34;, &#34;p90&#34;, &#34;p95&#34;, &#34;p99&#34;, &#34;p99.9&#34;]
+        parser.add_argument(
+            &#34;--stat&#34;,
+            metavar=&#34;STAT&#34;,
+            choices=stats,
+            help=&#34;aggregate on STAT: &#34; + &#34;, &#34;.join(stats),
+            default=cfg(&#34;stat&#34;, type=Choice(*stats), default=&#34;p95&#34;),
+        )
+
+        parser.add_argument(
+            &#34;--height&#34;,
+            type=int,
+            metavar=&#34;LINES&#34;,
+            help=&#34;height of chart in LINES, a sparkline is used if 1, no charts if 0&#34;,
+            default=cfg(&#34;height&#34;, type=PosInt, default=1),
+        )
+
+        parser.add_argument(
+            &#34;--auto-scale&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;do not use the maximum circuit b/w as height of y-axis&#34;,
+            default=cfg(&#34;auto_scale&#34;, type=Bool, default=False),
+        )
+
+        timespec = parser.add_mutually_exclusive_group()
+        timespec.add_argument(
+            &#34;--hours&#34;,
+            type=int,
+            help=&#34;retrieve metrics from HOURS ago&#34;,
+            default=cfg(&#34;hours&#34;, type=PosInt),
+        )
+        timespec.add_argument(
+            &#34;--days&#34;,
+            type=int,
+            help=&#34;retrieve metrics from DAYS ago&#34;,
+            default=cfg(&#34;days&#34;, type=PosInt),
+        )
+
+        args = parser.parse_args(argv)
+        return cls(**vars(args))
+
+    def __init__(self, regions, height, hours, days, stat, auto_scale, verbose):
+        super().__init__(regions)
+
+        if hours is None and days is None:
+            hours = 1
+
+        self.last = hours * 3600 if hours else days * 3600 * 24
+        self.stat = stat
+        self.height = height
+        self.auto_scale = auto_scale
+        self.verbose = verbose
+
+        colorama.init()
+
+    def regional_execute(self, session, acct, region):
+        out = io.StringIO()
+        prefix = f&#34;{acct}/{region}:&#34;
+        cw = session.client(&#34;cloudwatch&#34;, region_name=region)
+        dx = session.client(&#34;directconnect&#34;, region_name=region)
+
+        # Build a map of connections keyed by the connection ID. This will be
+        # used in our code below when we need to look up connection details.
+        conn_by_id = {}
+        for c in dx.describe_connections()[&#34;connections&#34;]:
+            conn_by_id[c[&#34;connectionId&#34;]] = c
+
+        # If there are no connections, then return with an empty string so
+        # nothing is displayed to the user. Remember, the execute method must
+        # return a string that the default collector prints to the console.
+        if not conn_by_id:
+            return &#34;&#34;
+
+        # Build a map of vifs keyed by the connection ID. For each connection,
+        # there can zero or more VIFs associated with it, so the values of
+        # this dict are lists.
+        vifs_by_conn = defaultdict(list)
+        for vif in dx.describe_virtual_interfaces()[&#34;virtualInterfaces&#34;]:
+            c_id = vif[&#34;connectionId&#34;]
+            vifs_by_conn[c_id].append(vif)
+
+        # Only load the metrics from CloudWatch if a chart is being requested.
+        # Recall, the height parameter states how many lines to use for the
+        # chart. If the value is zero, the does not want a chart, so no need
+        # to load data. We load all data at once, instead of as we loop over
+        # each connection, because CloudWatch has much more efficient APIs for
+        # bulk data loads.
+        if self.height &gt; 0:
+            metrics = self._load_dx_metrics(cw, conn_by_id.keys())
+
+        # With all of the data loaded, let&#39;s now iterate over the list of
+        # connections sorted by name, and start printing stuff to the screen.
+        for c_id, conn in sorted(
+            conn_by_id.items(), key=lambda c: c[1][&#34;connectionName&#34;]
+        ):
+            vifs = vifs_by_conn[c_id]
+
+            if self.verbose:
+                for vif in vifs:
+                    print(f&#34;{prefix} {_vif2str(vif, conn)}&#34;, file=out)
+
+            print(f&#34;{prefix} {_conn2str(conn, vifs)}&#34;, file=out)
+
+            if self.height &gt; 0:
+                _print_conn_metrics(
+                    conn,
+                    metrics[c_id],
+                    height=self.height,
+                    auto_yaxis=self.auto_scale,
+                    prefix=prefix,
+                    file=out,
+                )
+
+        return out.getvalue()
+
+    def _load_dx_metrics(self, cw, connections):
+        &#34;&#34;&#34;Load the dx metrics for connections from CloudWatch.
+
+        The ingress bps, egress bps, and connection state are loaded.
+
+        `cw` is a CloudWatch client and `connections` is a list of Direct
+        Connect connection IDs. Returns a nested map with c_id and then
+        metric_name as keys. The values are functions, which when invoked,
+        will return a generator of (datetime, metric_value) tuples.
+        &#34;&#34;&#34;
+        cwm = CWMetrics(cw, last=self.last)
+
+        metrics = defaultdict(dict)
+        for c_id in connections:
+            dimension = {&#34;ConnectionId&#34;: c_id}
+
+            for name in [&#34;ConnectionBpsIngress&#34;, &#34;ConnectionBpsEgress&#34;]:
+                get_values = cwm.add_metric(&#34;AWS/DX&#34;, name, dimension, self.stat)
+                metrics[c_id][name] = get_values
+
+            # This metric must use Minimum or you&#39;ll never see outages
+            for name in [&#34;ConnectionState&#34;]:
+                get_values = cwm.add_metric(&#34;AWS/DX&#34;, name, dimension, &#34;Minimum&#34;)
+                # Due to late binding of closure, we capture in default arg
+                metrics[c_id][name] = lambda f=get_values: (
+                    (t, invert(v)) for t, v in f()
+                )
+
+        cwm.bulk_load()
+        return metrics
+
+
+def invert(n):
+    &#34;&#34;&#34;Return 1 if n is 0, 0 if n is 1, otherwise n.&#34;&#34;&#34;
+    if n == 0:
+        return 1
+    elif n == 1:
+        return 0
+    else:  # NaN case
+        return n
+
+
+def bps(bandwidth):
+    &#34;&#34;&#34;Convert the bandwidth string to an integer in bits per second.
+
+    The supported units include: Gbps, Mbps, Kbps, and bps (all case
+    insenstive). If the bandwidth string does not have a numeric component or
+    uses an unsuppored unit, a ValueError is raised.
+    &#34;&#34;&#34;
+    match = re.match(r&#34;(\d+)\s*(\w+)&#34;, bandwidth)
+    if not match:
+        raise ValueError(&#34;bandwidth not in form of 10Mbps&#34;)
+
+    bw, units = match.groups()
+    bw = int(bw)
+    units = units.lower()
+
+    if units == &#34;gbps&#34;:
+        return bw * 1000000000
+    if units == &#34;mbps&#34;:
+        return bw * 1000000
+    if units == &#34;kbps&#34;:
+        return bw * 1000
+    if units == &#34;bps&#34;:
+        return bw
+
+    raise ValueError(&#34;unsupported unit, must be Gbps, Mbps, Kbps, Bps&#34;)
+
+
+def _vif2str(vif, conn):
+    c_name = conn[&#34;connectionName&#34;]
+    v_id = vif[&#34;virtualInterfaceId&#34;]
+    v_owner = vif[&#34;ownerAccount&#34;]
+    v_state = vif[&#34;virtualInterfaceState&#34;].upper()
+    v_vlan = vif[&#34;vlan&#34;]
+
+    return f&#34;{v_id} vlan {v_vlan} owned by {v_owner} on {c_name} is {v_state}&#34;
+
+
+def _conn2str(conn, vifs):
+    c_id = conn[&#34;connectionId&#34;]
+    c_name = conn[&#34;connectionName&#34;]
+    c_state = conn[&#34;connectionState&#34;].upper()
+    c_bandwidth = &#34; &#34;.join(re.findall(r&#34;[A-Za-z]+|\d+&#34;, conn[&#34;bandwidth&#34;]))
+    v_down = sum(1 for v in vifs if v[&#34;virtualInterfaceState&#34;] == &#34;down&#34;)
+
+    return &#34;&#34;.join(
+        [
+            Style.DIM,
+            f&#34;{c_id} &#34;,
+            Style.RESET_ALL,
+            Style.BRIGHT,
+            Fore.YELLOW,
+            f&#34;{c_name:22.22} &#34;,
+            Style.RESET_ALL,
+            (Fore.GREEN if c_state == &#34;AVAILABLE&#34; else Fore.RED),
+            f&#34;{c_state:10} &#34;,
+            Fore.BLUE,
+            f&#34;{c_bandwidth:7} &#34;,
+            Fore.MAGENTA,
+            f&#34;{len(vifs):3} VIFs &#34;,
+            (Fore.RED + f&#34;({v_down} down)&#34; if v_down &gt; 0 else &#34;&#34;),
+            Fore.RESET,
+        ]
+    )
+
+
+def _print_conn_metrics(
+    conn, metrics, height=1, prefix=&#34;&#34;, auto_yaxis=True, file=sys.stdout
+):
+    colors = [Fore.RED, Fore.CYAN, Fore.CYAN]
+
+    for name, get_values in metrics.items():
+        values = [value for timestamp, value in get_values()]
+
+        if name == &#34;ConnectionState&#34;:
+            max_yaxis = 1
+        elif auto_yaxis:
+            max_yaxis = None
+        else:
+            max_yaxis = bps(conn[&#34;bandwidth&#34;])
+
+        if height == 1:
+            chart = sparkify(values, minimum=0, maximum=max_yaxis)
+            print(prefix, end=&#34; &#34;, file=file)
+
+        elif height &gt; 1:
+            opts = {
+                &#34;minimum&#34;: 0,
+                &#34;height&#34;: height,
+                &#34;format&#34;: &#34;{:14,.0f} &#34;,
+            }
+            # The asciichartpy module is a bit wonky and not really idiomatic
+            # python as they just pass a giant dictionary of options (typical of
+            # javascript land). Do not provide a &#34;maximum&#34; key with a value of
+            # None. If use wants auto-scaling, don&#39;t provide the key at all.
+            if max_yaxis is not None:
+                opts[&#34;maximum&#34;] = max_yaxis
+
+            chart = plot(values, opts)
+        print(_format_metric(name, chart, color=colors.pop()), file=file)
+    print(file=file)
+
+
+def _format_metric(name, chart, color=Fore.BLACK):
+    return f&#34;{Style.DIM}{color}{chart} {name}{Style.RESET_ALL}&#34;
+
+
+# Type definition for awsrun.config to validate positive numbers.
+class PositiveInt(Type):
+    def type_check(self, obj):
+        return isinstance(obj, int) and obj &gt; 0
+
+    def __str__(self):
+        return &#34;positive non-zero integer&#34;
+
+
+PosInt = PositiveInt()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="awsrun.commands.aws.dx_status.invert"><code class="name flex">
+<span>def <span class="ident">invert</span></span>(<span>n)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Return 1 if n is 0, 0 if n is 1, otherwise n.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def invert(n):
+    &#34;&#34;&#34;Return 1 if n is 0, 0 if n is 1, otherwise n.&#34;&#34;&#34;
+    if n == 0:
+        return 1
+    elif n == 1:
+        return 0
+    else:  # NaN case
+        return n</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.dx_status.bps"><code class="name flex">
+<span>def <span class="ident">bps</span></span>(<span>bandwidth)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convert the bandwidth string to an integer in bits per second.</p>
+<p>The supported units include: Gbps, Mbps, Kbps, and bps (all case
+insenstive). If the bandwidth string does not have a numeric component or
+uses an unsuppored unit, a ValueError is raised.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bps(bandwidth):
+    &#34;&#34;&#34;Convert the bandwidth string to an integer in bits per second.
+
+    The supported units include: Gbps, Mbps, Kbps, and bps (all case
+    insenstive). If the bandwidth string does not have a numeric component or
+    uses an unsuppored unit, a ValueError is raised.
+    &#34;&#34;&#34;
+    match = re.match(r&#34;(\d+)\s*(\w+)&#34;, bandwidth)
+    if not match:
+        raise ValueError(&#34;bandwidth not in form of 10Mbps&#34;)
+
+    bw, units = match.groups()
+    bw = int(bw)
+    units = units.lower()
+
+    if units == &#34;gbps&#34;:
+        return bw * 1000000000
+    if units == &#34;mbps&#34;:
+        return bw * 1000000
+    if units == &#34;kbps&#34;:
+        return bw * 1000
+    if units == &#34;bps&#34;:
+        return bw
+
+    raise ValueError(&#34;unsupported unit, must be Gbps, Mbps, Kbps, Bps&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.commands.aws.dx_status.CLICommand"><code class="flex name class">
+<span>class <span class="ident">CLICommand</span></span>
+<span>(</span><span>regions, height, hours, days, stat, auto_scale, verbose)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Display the status of Direct Connects and VIFs.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CLICommand(RegionalCommand):
+    &#34;&#34;&#34;Display the status of Direct Connects and VIFs.&#34;&#34;&#34;
+
+    @classmethod
+    def regional_from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            &#34;--verbose&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;include each VIF and its status in output&#34;,
+            default=cfg(&#34;verbose&#34;, type=Bool),
+        )
+
+        stats = [&#34;Average&#34;, &#34;Minimum&#34;, &#34;Maximum&#34;, &#34;p90&#34;, &#34;p95&#34;, &#34;p99&#34;, &#34;p99.9&#34;]
+        parser.add_argument(
+            &#34;--stat&#34;,
+            metavar=&#34;STAT&#34;,
+            choices=stats,
+            help=&#34;aggregate on STAT: &#34; + &#34;, &#34;.join(stats),
+            default=cfg(&#34;stat&#34;, type=Choice(*stats), default=&#34;p95&#34;),
+        )
+
+        parser.add_argument(
+            &#34;--height&#34;,
+            type=int,
+            metavar=&#34;LINES&#34;,
+            help=&#34;height of chart in LINES, a sparkline is used if 1, no charts if 0&#34;,
+            default=cfg(&#34;height&#34;, type=PosInt, default=1),
+        )
+
+        parser.add_argument(
+            &#34;--auto-scale&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;do not use the maximum circuit b/w as height of y-axis&#34;,
+            default=cfg(&#34;auto_scale&#34;, type=Bool, default=False),
+        )
+
+        timespec = parser.add_mutually_exclusive_group()
+        timespec.add_argument(
+            &#34;--hours&#34;,
+            type=int,
+            help=&#34;retrieve metrics from HOURS ago&#34;,
+            default=cfg(&#34;hours&#34;, type=PosInt),
+        )
+        timespec.add_argument(
+            &#34;--days&#34;,
+            type=int,
+            help=&#34;retrieve metrics from DAYS ago&#34;,
+            default=cfg(&#34;days&#34;, type=PosInt),
+        )
+
+        args = parser.parse_args(argv)
+        return cls(**vars(args))
+
+    def __init__(self, regions, height, hours, days, stat, auto_scale, verbose):
+        super().__init__(regions)
+
+        if hours is None and days is None:
+            hours = 1
+
+        self.last = hours * 3600 if hours else days * 3600 * 24
+        self.stat = stat
+        self.height = height
+        self.auto_scale = auto_scale
+        self.verbose = verbose
+
+        colorama.init()
+
+    def regional_execute(self, session, acct, region):
+        out = io.StringIO()
+        prefix = f&#34;{acct}/{region}:&#34;
+        cw = session.client(&#34;cloudwatch&#34;, region_name=region)
+        dx = session.client(&#34;directconnect&#34;, region_name=region)
+
+        # Build a map of connections keyed by the connection ID. This will be
+        # used in our code below when we need to look up connection details.
+        conn_by_id = {}
+        for c in dx.describe_connections()[&#34;connections&#34;]:
+            conn_by_id[c[&#34;connectionId&#34;]] = c
+
+        # If there are no connections, then return with an empty string so
+        # nothing is displayed to the user. Remember, the execute method must
+        # return a string that the default collector prints to the console.
+        if not conn_by_id:
+            return &#34;&#34;
+
+        # Build a map of vifs keyed by the connection ID. For each connection,
+        # there can zero or more VIFs associated with it, so the values of
+        # this dict are lists.
+        vifs_by_conn = defaultdict(list)
+        for vif in dx.describe_virtual_interfaces()[&#34;virtualInterfaces&#34;]:
+            c_id = vif[&#34;connectionId&#34;]
+            vifs_by_conn[c_id].append(vif)
+
+        # Only load the metrics from CloudWatch if a chart is being requested.
+        # Recall, the height parameter states how many lines to use for the
+        # chart. If the value is zero, the does not want a chart, so no need
+        # to load data. We load all data at once, instead of as we loop over
+        # each connection, because CloudWatch has much more efficient APIs for
+        # bulk data loads.
+        if self.height &gt; 0:
+            metrics = self._load_dx_metrics(cw, conn_by_id.keys())
+
+        # With all of the data loaded, let&#39;s now iterate over the list of
+        # connections sorted by name, and start printing stuff to the screen.
+        for c_id, conn in sorted(
+            conn_by_id.items(), key=lambda c: c[1][&#34;connectionName&#34;]
+        ):
+            vifs = vifs_by_conn[c_id]
+
+            if self.verbose:
+                for vif in vifs:
+                    print(f&#34;{prefix} {_vif2str(vif, conn)}&#34;, file=out)
+
+            print(f&#34;{prefix} {_conn2str(conn, vifs)}&#34;, file=out)
+
+            if self.height &gt; 0:
+                _print_conn_metrics(
+                    conn,
+                    metrics[c_id],
+                    height=self.height,
+                    auto_yaxis=self.auto_scale,
+                    prefix=prefix,
+                    file=out,
+                )
+
+        return out.getvalue()
+
+    def _load_dx_metrics(self, cw, connections):
+        &#34;&#34;&#34;Load the dx metrics for connections from CloudWatch.
+
+        The ingress bps, egress bps, and connection state are loaded.
+
+        `cw` is a CloudWatch client and `connections` is a list of Direct
+        Connect connection IDs. Returns a nested map with c_id and then
+        metric_name as keys. The values are functions, which when invoked,
+        will return a generator of (datetime, metric_value) tuples.
+        &#34;&#34;&#34;
+        cwm = CWMetrics(cw, last=self.last)
+
+        metrics = defaultdict(dict)
+        for c_id in connections:
+            dimension = {&#34;ConnectionId&#34;: c_id}
+
+            for name in [&#34;ConnectionBpsIngress&#34;, &#34;ConnectionBpsEgress&#34;]:
+                get_values = cwm.add_metric(&#34;AWS/DX&#34;, name, dimension, self.stat)
+                metrics[c_id][name] = get_values
+
+            # This metric must use Minimum or you&#39;ll never see outages
+            for name in [&#34;ConnectionState&#34;]:
+                get_values = cwm.add_metric(&#34;AWS/DX&#34;, name, dimension, &#34;Minimum&#34;)
+                # Due to late binding of closure, we capture in default arg
+                metrics[c_id][name] = lambda f=get_values: (
+                    (t, invert(v)) for t, v in f()
+                )
+
+        cwm.bulk_load()
+        return metrics</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></li>
+<li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.RegionalCommand.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="../../runner.html#awsrun.runner.RegionalCommand.regional_collect_results">regional_collect_results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_execute" href="../../runner.html#awsrun.runner.RegionalCommand.regional_execute">regional_execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_from_cli" href="../../runner.html#awsrun.runner.RegionalCommand.regional_from_cli">regional_from_cli</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.commands.aws.dx_status.PositiveInt"><code class="flex name class">
+<span>class <span class="ident">PositiveInt</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a type that can be used in type-check comparisons.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PositiveInt(Type):
+    def type_check(self, obj):
+        return isinstance(obj, int) and obj &gt; 0
+
+    def __str__(self):
+        return &#34;positive non-zero integer&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.config.Type" href="../../config.html#awsrun.config.Type">Type</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.config.Type" href="../../config.html#awsrun.config.Type">Type</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.config.Type.type_check" href="../../config.html#awsrun.config.Type.type_check">type_check</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun.commands.aws" href="index.html">awsrun.commands.aws</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.dx_status.invert" href="#awsrun.commands.aws.dx_status.invert">invert</a></code></li>
+<li><code><a title="awsrun.commands.aws.dx_status.bps" href="#awsrun.commands.aws.dx_status.bps">bps</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.commands.aws.dx_status.CLICommand" href="#awsrun.commands.aws.dx_status.CLICommand">CLICommand</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.dx_status.PositiveInt" href="#awsrun.commands.aws.dx_status.PositiveInt">PositiveInt</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
