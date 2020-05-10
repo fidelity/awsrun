@@ -1,5 +1,7 @@
 """Display the last CloudTrail events in an account.
 
+## Overview
+
 With no addition arguments besides specification of `--region`, the last
 command retrieves the past one hour of write events up to a maximum of 1,000
 events per account/region pair. Newest events are shown at the top. If output
@@ -55,6 +57,86 @@ instructions to interact with the TUI. By default, the TUI uses a horizontal
 layout. Specify the `--vertical` option to change to a vertical layout. The
 color used in the TUI can be changed via the `--color` option. Valid choices
 include blue, green, cyan, magenta, red, and white.
+
+## Reference
+
+### Synopsis
+
+    $ awsrun [options] last [command options]
+
+### Configuration
+
+The following is the syntax for the options that can be specified in the user
+configuration file:
+
+    Commands:
+      last:
+        hours: INT
+        max_events: INT
+        region:
+          - STRING
+        all: BOOLEAN
+        console: BOOLEAN
+        attributes:
+          STRING:
+            - STRING
+        interactive: BOOLEAN
+        vertical: BOOLEAN
+        color: STRING
+
+### Command Options
+Some options can be overridden on the awsrun CLI via command line flags. In
+those cases, the CLI flags are specified next to the option name below:
+
+
+`hours`, `--hours INT`
+: Specifies the how many hours of events to retrieve. The default value is 1
+hour. Note: The number of events retrieved will not exceed `max_events`.
+
+`max_events`, `--max-events INT`
+: Specifies the upper limit on the number of events to retrieve on a per account
+per region basis. The default value is 1,000 events.
+
+`region`, `--region REGION`
+: Run the command in the specified regions. When specifying multiple values on
+the command line, use multiple flags for each value.
+
+`all`, `--all`
+: Retrieve all CloudTrail events including read-only events. The default value
+is False. This option is mutually exclusive with the `console` and `attributes`
+options.
+
+`console`, `--console`
+: Retrieve only console login CloudTrail events. The default is value is False.
+This option is mutually exclusive with the `all` and `attributes` options.
+
+`attributes`, `--attribute KEY=VALUE`
+: Retrieve only CloudTrail events matching the attribute key and value. The
+possible key values are: `EventId`, `EventName`, `ReadOnly`, `Username`,
+`ResourceType`, `ResourceName`, `EventSource`, and `AccessKeyId`. Due to
+limitations in the CloudTrail API, only one attribute can be specified. This
+option is mutually exclusive with the `all` and `console` options. For example,
+to add a permanent filter in your configuration file for `DeleteStack` events:
+
+    Commands:
+      last:
+        attributes:
+          EventName:
+            - DeleteStack
+
+`interactive`, `--interactive`
+: Open an interactive TUI (terminal user interface) instead of printing events
+to the console. The default value is False.
+
+`vertical`, `--vertical`
+: When using the `interactive` mode in a taller but narrow terminal, place the
+event detail widget under the other for a single column grid layout. The default
+value is False.
+
+`color`, `--color COLOR`
+: Specify a color scheme to use when in interactive mode. Possible values
+include: white, yellow, red, cyan, magenta, green, blue. The default value is
+cyan.
 """
 
 import json
@@ -68,7 +150,7 @@ import py_cui
 from colorama import Fore, Style, init
 
 from awsrun.argparse import AppendAttributeValuePair
-from awsrun.config import Bool, Choice, Dict, Int, Str
+from awsrun.config import Bool, Choice, Dict, Int, Str, List
 from awsrun.runner import RegionalCommand
 
 
@@ -136,7 +218,7 @@ class CLICommand(RegionalCommand):
             "-a",
             dest="attributes",
             action=AppendAttributeValuePair,
-            default=cfg("attributes", type=Dict(Str, Str), default={}),
+            default=cfg("attributes", type=Dict(Str, List(Str)), default={}),
             help="filter using attribute in form of ATTR=VALUE",
         )
 
