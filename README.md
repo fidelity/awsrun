@@ -27,7 +27,7 @@ use SAML? Build profiles in your AWS credentials file instead.
 **Built-in Command for AWS CLI**:
 Ever wish you could run the standard AWS CLI tool across multiple accounts? Now
 you can using the included
-[`aws`](https://fmr-llc.github.io/commands/aws/aws.html) command. This command
+[`aws`]https://fmr-llc.github.io/awsrun/commands/aws/aws.html) command. This command
 is a simple wrapper for AWS's CLI, but with the added benefits of using metadata
 to select multiple accounts as well as simplified credential handling.
 
@@ -55,34 +55,34 @@ The following screencast illustrates the power of awsrun once it has been
 configured to your environment. In this demo, we use awsrun to gather VPC
 information. We could do the same using only AWS's native CLI, but that limits
 us to processing one account at a time. Instead, we'll use awsrun and the
-built-in [`aws`](https://fmr-llc.github.io/commands/aws/aws.html) command to
+built-in [`aws`]https://fmr-llc.github.io/awsrun/commands/aws/aws.html) command to
 execute an AWS CLI command across multiple accounts concurrently. We'll also
 make use of the awsrun's metadata explorer to select accounts for command
 execution. As you are about to observe, 58 accounts were selected by the
 metadata filter and then processed in 13 seconds.
 
-![aws command](https://fmr-llc.github.io/demo.svg)
+![aws command]https://fmr-llc.github.io/awsrun/demo.svg)
 
 Note: The output has been obfuscated with random account numbers and
 identifiers.
 
 ### `last` Screenshot
 The next screenshot shows how we can use the
-[`last`](https://fmr-llc.github.io/commands/aws/last.html) command to
+[`last`]https://fmr-llc.github.io/awsrun/commands/aws/last.html) command to
 interactively explore CloudTrail events.
 
-![last command](https://fmr-llc.github.io/last.jpg)
+![last command]https://fmr-llc.github.io/awsrun/last.jpg)
 
 ### `dx_status` Screenshots
 The last screenshots show two variants of output from the
-[`dx_status`](https://fmr-llc.github.io/commands/aws/dx_status.html) command,
+[`dx_status`]https://fmr-llc.github.io/awsrun/commands/aws/dx_status.html) command,
 which provides an overview of any Direct Connects in an account. This includes
 pulling CloudWatch metrics and generating terminal-based graphs using
 [sparklines](https://en.wikipedia.org/wiki/Sparkline) and ASCII-based charts.
 
-![dx_status spark command](https://fmr-llc.github.io/dx_status-spark.jpg)
+![dx_status spark command]https://fmr-llc.github.io/awsrun/dx_status-spark.jpg)
 
-![dx_status chart command](https://fmr-llc.github.io/dx_status-chart.jpg)
+![dx_status chart command]https://fmr-llc.github.io/awsrun/dx_status-chart.jpg)
 
 ## Installation
 
@@ -95,7 +95,7 @@ To install from source, clone the repo and run pip install:
 Python 3.6 or higher is required.
 
 In order to use the built-in awsrun
-[`aws`](https://fmr-llc.github.io/commands/aws/aws.html) command, the AWS CLI
+[`aws`]https://fmr-llc.github.io/awsrun/commands/aws/aws.html) command, the AWS CLI
 tool must be
 [installed](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
 and available in your PATH. It is no longer installed as part of the awsrun
@@ -111,15 +111,15 @@ the AWS CLI via the MSIs provided by AWS.
 
 Out of the box, the utility of awsrun is limited as most of its power comes from
 the configuration of an [account loader
-plug-in](https://fmr-llc.github.io/#account-plug-ins) and a [credential loader
-plug-in](https://fmr-llc.github.io/#credential-plug-ins). With that said,
+plug-in]https://fmr-llc.github.io/awsrun/#account-plug-ins) and a [credential loader
+plug-in]https://fmr-llc.github.io/awsrun/#credential-plug-ins). With that said,
 however, you can still use it, as it will default to loading credentials from
 your `$HOME/.aws/credentials` file. While not convenient when managing hundreds
 of accounts, it will suffice to get you started.
 
 Let's assume you wanted to list the EC2 instances in two accounts: 100200300400
 and 200300400100. We can use the built-in
-[`aws`](https://fmr-llc.github.io/commands/aws/aws.html) command to execute any
+[`aws`]https://fmr-llc.github.io/awsrun/commands/aws/aws.html) command to execute any
 [AWS CLI
 command](https://docs.aws.amazon.com/cli/latest/reference/index.html#cli-aws)
 across one or more accounts concurrently. Be sure you have followed the
@@ -130,7 +130,7 @@ named for the specific account, it will fallback to the `[default]` profile.
 
 Note: The AWS credentials file is not part of awsrun, but it is used as the
 default mechanism to obtain credentials if more [advanced
-options](https://fmr-llc.github.io/#credential-plug-ins) have not been
+options]https://fmr-llc.github.io/awsrun/#credential-plug-ins) have not been
 configured. For help on the configuration of the AWS credential file, refer to
 [AWS CLI Named
 Profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html).
@@ -157,38 +157,38 @@ If, instead, you want to list lambda functions in those accounts:
     ...
 
 There are several other [built-in
-commands](https://fmr-llc.github.io/commands/aws/index.html) that have been
+commands]https://fmr-llc.github.io/awsrun/commands/aws/index.html) that have been
 included in awsrun. The more interesting ones include the
-[`last`](https://fmr-llc.github.io/commands/aws/last.html) command to inspect
+[`last`]https://fmr-llc.github.io/awsrun/commands/aws/last.html) command to inspect
 CloudTrail events as well as the
-[`dx_status`](https://fmr-llc.github.io/commands/aws/dx_status.html) command to
+[`dx_status`]https://fmr-llc.github.io/awsrun/commands/aws/dx_status.html) command to
 check the status of Direct Connect circuits. Remember, you are encouraged to
 build your own custom commands. These have been provided to show you how to do
 so.
 
 ## Documentation
 
-awsrun includes extensive [documentation](https://fmr-llc.github.io/), which
+awsrun includes extensive [documentation]https://fmr-llc.github.io/awsrun/), which
 includes the following:
 
-* The [CLI User Guide](https://fmr-llc.github.io/#cli-usage) includes basic
+* The [CLI User Guide]https://fmr-llc.github.io/awsrun/#cli-usage) includes basic
   usage, configuration, and how to use the account loader and credential loader
   plug-ins.
 
 * The [How-to Write Your Own
-  Commands](https://fmr-llc.github.io/#user-defined-commands) guide provides
+  Commands]https://fmr-llc.github.io/awsrun/#user-defined-commands) guide provides
   everything you need to write your own custom awsrun commands. This is where
   you'll spend a lot of time once you become familiar with the capabilities of
   awsrun.
 
-* The [API User Guide](https://fmr-llc.github.io/#api-usage) includes pointers
+* The [API User Guide]https://fmr-llc.github.io/awsrun/#api-usage) includes pointers
   to the key documentation required to use awsrun programmatically instead of
   via the CLI. All of the awsrun
-  [modules](https://fmr-llc.github.io/#header-submodules) are also extensively
+  [modules]https://fmr-llc.github.io/awsrun/#header-submodules) are also extensively
   documented.
   
 * The [How-to Write Your Own
-  Plug-ins](https://fmr-llc.github.io/#user-defined-plug-ins) section includes
+  Plug-ins]https://fmr-llc.github.io/awsrun/#user-defined-plug-ins) section includes
   pointers to the documentation required to build your own account loader
   plug-in and credential plug-in if the included ones are not suitable to your
   environment.
@@ -197,18 +197,18 @@ includes the following:
 
 ### v2.2.0
 * Add three new built-in commands:
-  [`console`](https://fmr-llc.github.io/commands/aws/console.html),
-  [`dx_status`](https://fmr-llc.github.io/commands/aws/dx_status.html), and
-  [`last`](https://fmr-llc.github.io/commands/aws/last.html). Console generates
+  [`console`]https://fmr-llc.github.io/awsrun/commands/aws/console.html),
+  [`dx_status`]https://fmr-llc.github.io/awsrun/commands/aws/dx_status.html), and
+  [`last`]https://fmr-llc.github.io/awsrun/commands/aws/last.html). Console generates
   sign-in URLs for the AWS Console using credentials from awsrun. Dx_status
   shows the status of Direct Connect circuits (terminal graphs too!). Last
   provides an easier way to review CloudTrail events in both an interactive and
   non-interactive manner.
   
-* Add the [`cloudwatch`](https://fmr-llc.github.io/cloudwatch.html) module to
+* Add the [`cloudwatch`]https://fmr-llc.github.io/awsrun/cloudwatch.html) module to
   simplify the retrieval of CloudWatch metrics using bulk retrieval for
   efficiency. This module is used be the new
-  [`dx_status`](https://fmr-llc.github.io/commands/aws/dx_status.html) command.
+  [`dx_status`]https://fmr-llc.github.io/awsrun/commands/aws/dx_status.html) command.
   
 * Update the included built-in commands that iterate over VPCs to filter out
   VPCs that have been shared with an account as generally that is the behavior
