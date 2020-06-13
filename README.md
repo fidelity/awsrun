@@ -238,7 +238,7 @@ includes the following:
   made as part of this reorganization. Hopefully, things are easier to find with
   the new layout.
   
-* Fonts used in documentation have been updated to use Charter and Fire Mono.
+* Fonts used in documentation have been updated to use Charter and Fira Mono.
 
 ### v2.1.0
 
