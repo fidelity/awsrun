@@ -131,4 +131,4 @@ plug-ins for AWS have been included. The plan is to add Azure support next.
 """
 
 name = "awsrun"
-__version__ = "2.2.0"
+__version__ = "2.2.1"

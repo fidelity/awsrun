@@ -205,7 +205,16 @@ includes the following:
   
 ## Change Log
 
+### v2.2.1
+
+* Reorganized the documentation. The CLI user guide and reference are now part
+  of the `awsrun.cli` module documentation. The user guide on writing commands
+  has been moved to the `awsrun.commands` module. Lots of other minor edits were
+  made as part of this reorganization. Hopefully, things are easier to find with
+  the new layout.
+
 ### v2.2.0
+
 * Add three new built-in commands:
   [`console`](https://fmr-llc.github.io/awsrun/commands/aws/console.html),
   [`dx_status`](https://fmr-llc.github.io/awsrun/commands/aws/dx_status.html),
@@ -231,12 +240,6 @@ includes the following:
   v2 is via their own bundled package installers. What does this mean for awsrun
   users? Install the AWS CLI on your own if you plan on using the built-in `aws`
   command.
-  
-* Reorganized the documentation. The CLI user guide and reference are now part
-  of the `awsrun.cli` module documentation. The user guide on writing commands
-  has been moved to the `awsrun.commands` module. Lots of other minor edits were
-  made as part of this reorganization. Hopefully, things are easier to find with
-  the new layout.
   
 * Fonts used in documentation have been updated to use Charter and Fira Mono.
 
