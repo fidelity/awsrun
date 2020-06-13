@@ -32,7 +32,7 @@ setup(
     description="CLI to execute user-defined commands across one or more AWS accounts",
     long_description="""`awsrun` is both a CLI and API to execute commands over one or more AWS accounts
 concurrently. Commands are user-defined Python modules that implement a simple
-interface to abstract away the complications of obtaining credentials for Boto 3
+interface to abstract away the complications of obtaining credentials for Boto3
 sessions - especially when using SAML authentication and/or cross-account
 access.""",
     long_description_content_type="text/markdown",

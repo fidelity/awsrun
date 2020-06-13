@@ -24,4 +24,11 @@ ul li code a {
     font-size: .9em;
 }
 
+dt {
+    font-weight: bold;
+}
+
+h4 {
+    font-weight: bold;
+}
 </style>
