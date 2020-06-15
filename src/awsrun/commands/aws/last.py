@@ -505,7 +505,7 @@ class _UserIdentityType:
 
     @classmethod
     def new(cls, event):
-        user_type = event["CloudTrailEvent"]["userIdentity"]["type"]
+        user_type = event["CloudTrailEvent"]["userIdentity"].get("type", "AWSService")
         klass = globals().get(f"_{user_type}Type", cls)
         return klass(event)
 
