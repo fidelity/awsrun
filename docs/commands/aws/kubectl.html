@@ -1,0 +1,1042 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>awsrun.commands.aws.kubectl API documentation</title>
+<meta name="description" content="Execute kubectl commands on EKS clusters …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<link href="/awsrun/webfonts.css" rel="stylesheet">
+<style>
+body {
+font-size: 17px;
+font-family: Charter-Racket, serif;
+}
+code {
+font-family: Fira-Mono, monospace;
+}
+/* `Text` size and code blocks in main body */
+section code {
+font-size: 15px;
+}
+/* "expand source code" text */
+details {
+font-size: 14px;
+}
+ul li code a {
+font-size: .9em;
+}
+dt {
+font-weight: bold;
+}
+h4 {
+font-weight: bold;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.commands.aws.kubectl</code></h1>
+</header>
+<section id="section-intro">
+<p>Execute kubectl commands on EKS clusters.</p>
+<p>This awsrun command is a thin wrapper around the kubectl command. It adapts
+kubectl for use with awsrun CLI tool allowing one to execute kubectl commands
+across one or more AWS accounts, clusters, and namespaces. Let's walk through a
+simple tutorial on its use.</p>
+<p>To list all pods within all namespaces within all clusters in an account in
+a region, we can use the standard <code>get pods</code> kubectl command:</p>
+<pre><code>$ awsrun --account 100200300400 kubectl get pods --all-namespaces --region us-east-1
+</code></pre>
+<p>As with all awsrun commands, you can specify mulitple accounts via multiple
+<code>--account</code> flags, via <code>--account-file</code>, or via the use of the <code>--include</code> and
+<code>--exclude</code> account filters using an account loader. Likewise, multiple regions
+may be specified via multiple <code>--region</code> flags. Refer to the awsrun
+documentation for more information.</p>
+<p>You can use one or more <code>--cluster</code> flags to target specific clusters. By
+default, all clusters are targeted as shown in the prior example. To list all
+pods in all namespaces for a specific cluster named <code>my-cluster</code>:</p>
+<pre><code>$ awsrun --account 100200300400 kubectl get pods --cluster my-cluster --all-namespaces --region us-east-1
+</code></pre>
+<p>You can also use one or more <code>--namespace</code> flags to target specific namespaces.
+By default, if no namespaces are specified, the <code>default</code> namespace is used. For
+example, to list the pods in only the <code>kube-system</code> namespace in all clusters:</p>
+<pre><code>$ awsrun --account 100200300400 kubectl get pods --namespace kube-system --region us-east-1
+</code></pre>
+<p>To list the EKS clusters in an account, use the <code>--list-clusters</code> argument.
+Note: this is not a standard kubectl flag, but rather an awsrun addition to
+simplify identifying cluster names in an account:</p>
+<pre><code>$ awsrun --account 100200300400 kubectl --list-clusters --region us-east-1
+my-cluster-1
+my-cluster-2
+Processed 1 account in 0:00:01.496644
+</code></pre>
+<p>The awsrun kubectl command also supports annotation of output. This can be
+helpful when running a command against multiple accounts, regions, clusters, and
+namespaces. Without annotations, it is not possible to identify which output
+belongs to which cluster. For example, the command below lists the pods within
+the <code>kube-system</code> namespace in a single account across multiple regions:</p>
+<pre><code>$ awsrun --account 100200300400 kubectl get pods --namespace kube-system --region us-east-1 --region us-east-2
+NAME                       READY     STATUS    RESTARTS   AGE
+aws-node-6pjq4             1/1       Running   0          1d
+aws-node-8bc8w             1/1       Running   0          1d
+coredns-56b5694569-m4zzn   1/1       Running   0          1d
+coredns-56b5694569-p7x7r   1/1       Running   0          1d
+kube-proxy-69nhw           1/1       Running   0          1d
+kube-proxy-ft5g8           1/1       Running   0          1d
+NAME                      READY     STATUS    RESTARTS   AGE
+aws-node-8w2gp            1/1       Running   2          9d
+aws-node-gmksn            1/1       Running   0          9d
+coredns-6f74b9cc4-8m8gb   1/1       Running   0          9d
+coredns-6f74b9cc4-djlds   1/1       Running   0          9d
+kube-proxy-8tpl4          1/1       Running   0          9d
+kube-proxy-fmtbn          1/1       Running   0          9d
+</code></pre>
+<p>Using the <code>--awsrun-annotate text</code> option will prefix each line with the
+account, region, cluster name, and namespace:</p>
+<pre><code>$ awsrun --account 100200300400 kubectl get pods --namespace kube-system --region us-east-1 --region us-east-2 --awsrun-annotate text
+100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: NAME                       READY     STATUS    RESTARTS   AGE
+100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: aws-node-6pjq4             1/1       Running   0          1d
+100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: aws-node-8bc8w             1/1       Running   0          1d
+100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: coredns-56b5694569-m4zzn   1/1       Running   0          1d
+100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: coredns-56b5694569-p7x7r   1/1       Running   0          1d
+100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: kube-proxy-69nhw           1/1       Running   0          1d
+100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: kube-proxy-ft5g8           1/1       Running   0          1d
+100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: NAME                      READY     STATUS    RESTARTS   AGE
+100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: aws-node-8w2gp            1/1       Running   2          9d
+100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: aws-node-gmksn            1/1       Running   0          9d
+100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: coredns-6f74b9cc4-8m8gb   1/1       Running   0          9d
+100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: coredns-6f74b9cc4-djlds   1/1       Running   0          9d
+100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: kube-proxy-8tpl4          1/1       Running   0          9d
+100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: kube-proxy-fmtbn          1/1       Running   0          9d
+</code></pre>
+<p>You can also annotate JSON and YAML output from kubectl commands. For example,
+without annotation:</p>
+<pre><code>$ awsrun --account 100200300400 kubectl get pods --namespace kube-system --region us-east-1 --region us-east-2
+apiVersion: v1
+items:
+-   apiVersion: v1
+    kind: Pod
+    metadata:
+...
+apiVersion: v1
+items:
+-   apiVersion: v1
+    kind: Pod
+    metadata:
+...
+</code></pre>
+<p>With the <code>--awsrun-annotate yaml</code> option:</p>
+<pre><code>$ awsrun --account 100200300400 kubectl get pods --namespace kube-system --region us-east-1 --region us-east-2 --awsrun-annotate yaml
+Account: '100200300400'
+Cluster: ecc-pe2-us-east-1
+Namespace: kube-system
+Region: us-east-1
+Results:
+    apiVersion: v1
+    items:
+    -   apiVersion: v1
+        kind: Pod
+        metadata:
+...
+Account: '100200300400'
+Cluster: ecc-pe2-us-east-2
+Namespace: kube-system
+Region: us-east-2
+Results:
+    apiVersion: v1
+    items:
+    -   apiVersion: v1
+        kind: Pod
+        metadata:
+...
+</code></pre>
+<p>Finally, you can also use this wrapper to simply download a valid kubeconfig
+file for an EKS cluster that has AWS STS credential embedded in the file. This
+file can then be used with your system kubectl command to execute commands on a
+cluster. For example, to create kubeconfig files for the <code>kube-system</code> namespace
+all clusters within an account:</p>
+<pre><code>$ awsrun --account 100200300400 kubectl --namespace kube-system --region us-east-1
+kubeconfig saved to /Users/pete/.kube/awsrun-100200300400-us-east-1-ecc-pe2-us-east-1-kube-system
+</code></pre>
+<p>This file contains a valid kubeconfig that can be used kubectl via the
+<code>--kubeconfig</code> option:</p>
+<pre><code>$ kubectl --kubeconfig /Users/pete/.kube/awsrun-100200300400-us-east-1-ecc-pe2-us-east-1-kube-system get pods
+</code></pre>
+<p>Again, as with all awsrun commands, you can target multiple accounts and
+regions allowing you to create valid kubeconfig files for many clusters in a
+single awsrun command.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Execute kubectl commands on EKS clusters.
+
+This awsrun command is a thin wrapper around the kubectl command. It adapts
+kubectl for use with awsrun CLI tool allowing one to execute kubectl commands
+across one or more AWS accounts, clusters, and namespaces. Let&#39;s walk through a
+simple tutorial on its use.
+
+To list all pods within all namespaces within all clusters in an account in
+a region, we can use the standard `get pods` kubectl command:
+
+    $ awsrun --account 100200300400 kubectl get pods --all-namespaces --region us-east-1
+
+As with all awsrun commands, you can specify mulitple accounts via multiple
+`--account` flags, via `--account-file`, or via the use of the `--include` and
+`--exclude` account filters using an account loader. Likewise, multiple regions
+may be specified via multiple `--region` flags. Refer to the awsrun
+documentation for more information.
+
+You can use one or more `--cluster` flags to target specific clusters. By
+default, all clusters are targeted as shown in the prior example. To list all
+pods in all namespaces for a specific cluster named `my-cluster`:
+
+    $ awsrun --account 100200300400 kubectl get pods --cluster my-cluster --all-namespaces --region us-east-1
+
+You can also use one or more `--namespace` flags to target specific namespaces.
+By default, if no namespaces are specified, the `default` namespace is used. For
+example, to list the pods in only the `kube-system` namespace in all clusters:
+
+    $ awsrun --account 100200300400 kubectl get pods --namespace kube-system --region us-east-1
+
+To list the EKS clusters in an account, use the `--list-clusters` argument.
+Note: this is not a standard kubectl flag, but rather an awsrun addition to
+simplify identifying cluster names in an account:
+
+    $ awsrun --account 100200300400 kubectl --list-clusters --region us-east-1
+    my-cluster-1
+    my-cluster-2
+    Processed 1 account in 0:00:01.496644
+
+The awsrun kubectl command also supports annotation of output. This can be
+helpful when running a command against multiple accounts, regions, clusters, and
+namespaces. Without annotations, it is not possible to identify which output
+belongs to which cluster. For example, the command below lists the pods within
+the `kube-system` namespace in a single account across multiple regions:
+
+    $ awsrun --account 100200300400 kubectl get pods --namespace kube-system --region us-east-1 --region us-east-2
+    NAME                       READY     STATUS    RESTARTS   AGE
+    aws-node-6pjq4             1/1       Running   0          1d
+    aws-node-8bc8w             1/1       Running   0          1d
+    coredns-56b5694569-m4zzn   1/1       Running   0          1d
+    coredns-56b5694569-p7x7r   1/1       Running   0          1d
+    kube-proxy-69nhw           1/1       Running   0          1d
+    kube-proxy-ft5g8           1/1       Running   0          1d
+    NAME                      READY     STATUS    RESTARTS   AGE
+    aws-node-8w2gp            1/1       Running   2          9d
+    aws-node-gmksn            1/1       Running   0          9d
+    coredns-6f74b9cc4-8m8gb   1/1       Running   0          9d
+    coredns-6f74b9cc4-djlds   1/1       Running   0          9d
+    kube-proxy-8tpl4          1/1       Running   0          9d
+    kube-proxy-fmtbn          1/1       Running   0          9d
+
+Using the `--awsrun-annotate text` option will prefix each line with the
+account, region, cluster name, and namespace:
+
+    $ awsrun --account 100200300400 kubectl get pods --namespace kube-system --region us-east-1 --region us-east-2 --awsrun-annotate text
+    100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: NAME                       READY     STATUS    RESTARTS   AGE
+    100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: aws-node-6pjq4             1/1       Running   0          1d
+    100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: aws-node-8bc8w             1/1       Running   0          1d
+    100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: coredns-56b5694569-m4zzn   1/1       Running   0          1d
+    100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: coredns-56b5694569-p7x7r   1/1       Running   0          1d
+    100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: kube-proxy-69nhw           1/1       Running   0          1d
+    100200300400/us-east-1/ecc-pe2-us-east-1/kube-system: kube-proxy-ft5g8           1/1       Running   0          1d
+    100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: NAME                      READY     STATUS    RESTARTS   AGE
+    100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: aws-node-8w2gp            1/1       Running   2          9d
+    100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: aws-node-gmksn            1/1       Running   0          9d
+    100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: coredns-6f74b9cc4-8m8gb   1/1       Running   0          9d
+    100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: coredns-6f74b9cc4-djlds   1/1       Running   0          9d
+    100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: kube-proxy-8tpl4          1/1       Running   0          9d
+    100200300400/us-east-2/ecc-pe2-us-east-2/kube-system: kube-proxy-fmtbn          1/1       Running   0          9d
+
+You can also annotate JSON and YAML output from kubectl commands. For example,
+without annotation:
+
+    $ awsrun --account 100200300400 kubectl get pods --namespace kube-system --region us-east-1 --region us-east-2
+    apiVersion: v1
+    items:
+    -   apiVersion: v1
+        kind: Pod
+        metadata:
+    ...
+    apiVersion: v1
+    items:
+    -   apiVersion: v1
+        kind: Pod
+        metadata:
+    ...
+
+With the `--awsrun-annotate yaml` option:
+
+    $ awsrun --account 100200300400 kubectl get pods --namespace kube-system --region us-east-1 --region us-east-2 --awsrun-annotate yaml
+    Account: &#39;100200300400&#39;
+    Cluster: ecc-pe2-us-east-1
+    Namespace: kube-system
+    Region: us-east-1
+    Results:
+        apiVersion: v1
+        items:
+        -   apiVersion: v1
+            kind: Pod
+            metadata:
+    ...
+    Account: &#39;100200300400&#39;
+    Cluster: ecc-pe2-us-east-2
+    Namespace: kube-system
+    Region: us-east-2
+    Results:
+        apiVersion: v1
+        items:
+        -   apiVersion: v1
+            kind: Pod
+            metadata:
+    ...
+
+Finally, you can also use this wrapper to simply download a valid kubeconfig
+file for an EKS cluster that has AWS STS credential embedded in the file. This
+file can then be used with your system kubectl command to execute commands on a
+cluster. For example, to create kubeconfig files for the `kube-system` namespace
+all clusters within an account:
+
+    $ awsrun --account 100200300400 kubectl --namespace kube-system --region us-east-1
+    kubeconfig saved to /Users/pete/.kube/awsrun-100200300400-us-east-1-ecc-pe2-us-east-1-kube-system
+
+This file contains a valid kubeconfig that can be used kubectl via the
+`--kubeconfig` option:
+
+    $ kubectl --kubeconfig /Users/pete/.kube/awsrun-100200300400-us-east-1-ecc-pe2-us-east-1-kube-system get pods
+
+Again, as with all awsrun commands, you can target multiple accounts and
+regions allowing you to create valid kubeconfig files for many clusters in a
+single awsrun command.
+&#34;&#34;&#34;
+
+import argparse
+import json
+import logging
+import os
+import re
+import shutil
+import subprocess
+import sys
+import yaml
+from pathlib import Path
+
+from awsrun.argparse import AppendWithoutDefault
+from awsrun.config import List, Str, StrMatch
+from awsrun.runner import RegionalCommand
+from collections import namedtuple
+
+LOG = logging.getLogger(__name__)
+
+
+class CLICommand(RegionalCommand):
+    &#34;&#34;&#34;Execute kubectl commands on EKS clusters&#34;&#34;&#34;
+
+    @classmethod
+    def regional_from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            &#34;--list-clusters&#34;, action=&#34;store_true&#34;, help=&#34;list the EKS cluster&#34;,
+        )
+        parser.add_argument(
+            &#34;--cluster&#34;,
+            dest=&#34;clusters&#34;,
+            action=AppendWithoutDefault,
+            default=cfg(&#34;cluster&#34;, type=List(Str), default=[]),
+            help=&#34;EKS cluster name&#34;,
+        )
+        parser.add_argument(
+            &#34;--namespace&#34;,
+            &#34;-n&#34;,
+            dest=&#34;namespaces&#34;,
+            action=AppendWithoutDefault,
+            default=cfg(&#34;namespace&#34;, type=List(Str), default=[&#34;default&#34;]),
+            help=&#34;EKS cluster namespace&#34;,
+        )
+        parser.add_argument(
+            &#34;--output&#34;,
+            &#34;-o&#34;,
+            default=cfg(&#34;namespace&#34;, type=Str),
+            help=&#34;Specify output format of kubectl&#34;,
+        )
+
+        # Note: normally one would not prefix an awsrun command&#39;s arguments with
+        # &#39;--awsrun-&#39;, but this is a special exception because there could be
+        # valid kubectl args interspersed among the awsrun command flags. To
+        # avoid namespace collisions, the kubectl command args are prefixed.
+        parser.add_argument(
+            &#34;--awsrun-output-dir&#34;,
+            metavar=&#34;DIR&#34;,
+            default=cfg(&#34;awsrun_output_dir&#34;),
+            help=&#34;output directory to write results to separate files&#34;,
+        )
+
+        parser.add_argument(
+            &#34;--awsrun-annotate&#34;,
+            choices=[&#34;json&#34;, &#34;yaml&#34;, &#34;text&#34;],
+            default=cfg(&#34;awsrun_annotate&#34;, type=StrMatch(&#34;^(json|yaml|text)$&#34;)),
+            help=&#34;annotate each result with account/region/cluster/namespace&#34;,
+        )
+
+        # Let&#39;s gobble up any native kubuctl args that should not be used with
+        # this wrapper, which decides the server, context, user, etc ... based
+        # on how the awsrun wrapper is invoked. We also don&#39;t include these
+        # flags in the help message as they are really part of the kubectl tool.
+        # We capture these flags so we can check for their presence later and
+        # remind users not to specify them.
+        prohibited = [
+            &#34;kubeconfig&#34;,
+            &#34;context&#34;,
+            (&#34;server&#34;, &#34;s&#34;),
+            &#34;user&#34;,
+            &#34;username&#34;,
+            &#34;password&#34;,
+            &#34;client-key&#34;,
+            &#34;client-certificate&#34;,
+            &#34;client-authority&#34;,
+            &#34;as&#34;,
+            &#34;as-group&#34;,
+            &#34;token&#34;,
+        ]
+
+        for arg in prohibited:
+            if isinstance(arg, tuple):
+                parser.add_argument(f&#34;--{arg[0]}&#34;, f&#34;-{arg[1]}&#34;, help=argparse.SUPPRESS)
+            else:
+                parser.add_argument(f&#34;--{arg}&#34;, help=argparse.SUPPRESS)
+
+        # We parse the known args and then collect the rest as those will be
+        # passed to the kubectl command later.
+        args, remaining = parser.parse_known_args(argv)
+        args.kubectl_args = remaining
+
+        for arg in (a[0] if isinstance(a, tuple) else a for a in prohibited):
+            attr = arg.replace(&#34;-&#34;, &#34;_&#34;)
+            if getattr(args, attr) is not None:
+                parser.error(&#34;Do not specify --{arg} with awsrun kubectl&#34;)
+            delattr(args, attr)
+
+        if args.awsrun_annotate and args.output:
+            if args.awsrun_annotate != &#34;text&#34;:
+                if args.awsrun_annotate != args.output:
+                    parser.error(
+                        &#34;When specifying --awsrun-annotate, you do not need the --output flag&#34;
+                    )
+
+        return cls(**vars(args))
+
+    def __init__(
+        self,
+        kubectl_args,
+        regions,
+        clusters,
+        namespaces,
+        list_clusters,
+        output,
+        awsrun_output_dir,
+        awsrun_annotate,
+    ):
+        super().__init__(regions)
+        self.clusters = clusters
+        self.list_flag = list_clusters
+        self.namespaces = namespaces
+        self.kubectl_args = kubectl_args
+        self.output = output
+        self.output_dir = awsrun_output_dir
+        self.annotate = awsrun_annotate
+
+    def regional_execute(self, session, acct, region):
+        eks = session.client(&#34;eks&#34;, region_name=region)
+
+        # User only wants to list the clusters in the account/region, so we
+        # print this out and then return immediately.
+        if self.list_flag:
+            if self.annotate == &#34;json&#34;:
+                clusters = json.dumps(_list_clusters(eks))
+            elif self.annotate == &#34;yaml&#34;:
+                clusters = yaml.dump(_list_clusters(eks))
+            else:
+                clusters = &#34;\n&#34;.join(_list_clusters(eks)) + &#34;\n&#34;
+            return [_Result(clusters, None, None, None)]
+
+        results = []
+        for name in self.clusters if self.clusters else _list_clusters(eks):
+            cluster = eks.describe_cluster(name=name)
+            for namespace in self.namespaces:
+                # Write a kubecfg file to ~/.kube/awsrun-ACCT-CLUSTER-NAMESPACE
+                filename = _save_kubecfg(
+                    name, namespace, str(acct), region, cluster, session
+                )
+
+                # If user doesn&#39;t pass any kubectl commands, then just move on
+                if not self.kubectl_args:
+                    text = f&#34;kubeconfig saved to {filename}&#34;
+                    if self.annotate in [&#34;json&#34;, &#34;yaml&#34;]:
+                        text = f&#39;&#34;{text}&#34;&#39;
+                    results.append(_Result(text, None, name, namespace))
+                    continue
+
+                # Invoke kubectl and return results being careful to ensure that
+                # we honor kubectl&#39;s stdout and stderr.
+                cmd = [shutil.which(&#34;kubectl&#34;), &#34;--kubeconfig&#34;, str(filename)]
+                if self.annotate and self.annotate != &#34;text&#34;:
+                    cmd += [&#34;--output&#34;, self.annotate]
+                elif self.output:
+                    cmd += [&#34;--output&#34;, self.output]
+                cmd += self.kubectl_args
+
+                result = subprocess.run(
+                    cmd,
+                    env=os.environ,
+                    check=False,
+                    universal_newlines=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                )
+                results.append(_Result(result.stdout, result.stderr, name, namespace))
+
+        return results
+
+    def regional_collect_results(self, acct, region, get_result):
+        &#34;&#34;&#34;Print the results to the console and files if specified.&#34;&#34;&#34;
+
+        def annotate_lines(result, text, file=sys.stderr):
+            prefix = f&#34;{acct}/{region}&#34;
+            if result.cluster and result.namespace:
+                prefix += f&#34;/{result.cluster}/{result.namespace}&#34;
+            for line in filter(None, text.split(&#34;\n&#34;) if text else &#34;&#34;):
+                print(f&#34;{prefix}: {line}&#34;, file=file, flush=True)
+
+        def annotate_format(result, loader, dumper):
+            try:
+                d = {}
+                d[&#34;Account&#34;] = str(acct)
+                d[&#34;Region&#34;] = region
+                if result.cluster and result.namespace:
+                    d[&#34;Cluster&#34;] = result.cluster
+                    d[&#34;Namespace&#34;] = result.namespace
+                d[&#34;Results&#34;] = loader(result.stdout)
+                dumper(d, sys.stdout, indent=4)
+                print()
+            except Exception as e:
+                annotate_lines(result, f&#34;cannot parse output: {e}&#34;, file=sys.stderr)
+
+        try:
+            # Let&#39;s get the return value from the execute method, which is the
+            # ProcessCompleted object from the subprocess.run() method above ...
+            results = get_result()
+
+        except Exception as e:  # pylint: disable=broad-except
+            # ... unless there was an exception in which case it is raised by
+            # the call to get_result and we handle it here.
+            LOG.info(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
+            print(f&#34;{acct}/{region}: error: {e}&#34;, file=sys.stderr)
+            return
+
+        for result in results:
+            # Print stderr from AWS CLI always annotating the lines
+            annotate_lines(result, result.stderr, file=sys.stderr)
+
+            # Print stdout from AWS CLI annotating when appropriate
+            if not self.annotate:
+                print(result.stdout, end=&#34;&#34;, flush=True)
+            elif self.annotate == &#34;json&#34;:
+                annotate_format(result, json.loads, json.dump)
+            elif self.annotate == &#34;yaml&#34;:
+                annotate_format(result, yaml.safe_load, yaml.dump)
+            elif self.annotate == &#34;text&#34;:
+                annotate_lines(result, result.stdout)
+
+            # Save stdout and stderr from kubectl to disk if requested
+            if self.output_dir and result.cluster and result.namespace:
+                # Recall, the acct object passed to execute() can be anything. The
+                # str() method should provide us a unique means of identifying the
+                # account, but we need to escape any slashes if we use this as part
+                # of a filename so pathlib doesn&#39;t interpret as directories.
+                escaped = re.sub(r&#34;[\\/]&#34;, &#34;_&#34;, str(acct))
+                name = (
+                    self.output_dir
+                    / f&#34;{escaped}-{region}-{result.cluster}-{result.namespace}&#34;
+                )
+
+                def save(suffix, text):
+                    with name.with_suffix(suffix).open(&#34;w&#34;) as out:
+                        out.write(text)
+
+                save(&#34;.stdout.log&#34;, result.stdout)
+                if result.stderr:
+                    save(&#34;.stderr.log&#34;, result.stderr)
+
+
+_Result = namedtuple(&#34;Result&#34;, [&#34;stdout&#34;, &#34;stderr&#34;, &#34;cluster&#34;, &#34;namespace&#34;])
+
+
+_KUBECONFIG = &#34;&#34;&#34;
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: {certificate}
+    server: {endpoint}
+  name: {cluster}
+contexts:
+- context:
+    cluster: {cluster}
+    namespace: {namespace}
+    user: aws
+  name: aws
+current-context: aws
+kind: Config
+preferences: {{}}
+users:
+- name: aws
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1alpha1
+      args:
+      - token
+      - -i
+      - {cluster}
+      command: aws-iam-authenticator
+      env:
+      - name: AWS_ACCESS_KEY_ID
+        value: {access_key}
+      - name: AWS_SECRET_ACCESS_KEY
+        value: {secret_key}
+      - name: AWS_SESSION_TOKEN
+        value: {session_token}
+&#34;&#34;&#34;
+
+
+def _save_kubecfg(name, namespace, account_id, region, cluster, session):
+    creds = session.get_credentials()
+    substitions = {
+        &#34;cluster&#34;: name,
+        &#34;namespace&#34;: namespace,
+        &#34;account_id&#34;: account_id,
+        &#34;endpoint&#34;: cluster[&#34;cluster&#34;][&#34;endpoint&#34;],
+        &#34;certificate&#34;: cluster[&#34;cluster&#34;][&#34;certificateAuthority&#34;][&#34;data&#34;],
+        &#34;access_key&#34;: creds.access_key,
+        &#34;secret_key&#34;: creds.secret_key,
+        &#34;session_token&#34;: creds.token,
+    }
+
+    kubedir = Path.home() / Path(&#34;.kube&#34;)
+    kubedir.mkdir(parents=True, exist_ok=True)
+
+    filename = kubedir / Path(f&#34;awsrun-{account_id}-{region}-{name}-{namespace}&#34;)
+    with filename.open(&#34;w&#34;) as f:
+        f.write(_KUBECONFIG.format(**substitions))
+
+    return filename
+
+
+def _list_clusters(eks):
+    clusters = []
+    for page in eks.get_paginator(&#34;list_clusters&#34;).paginate():
+        for name in page[&#34;clusters&#34;]:
+            clusters.append(name)
+    return clusters</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.commands.aws.kubectl.CLICommand"><code class="flex name class">
+<span>class <span class="ident">CLICommand</span></span>
+<span>(</span><span>kubectl_args, regions, clusters, namespaces, list_clusters, output, awsrun_output_dir, awsrun_annotate)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Execute kubectl commands on EKS clusters</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CLICommand(RegionalCommand):
+    &#34;&#34;&#34;Execute kubectl commands on EKS clusters&#34;&#34;&#34;
+
+    @classmethod
+    def regional_from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            &#34;--list-clusters&#34;, action=&#34;store_true&#34;, help=&#34;list the EKS cluster&#34;,
+        )
+        parser.add_argument(
+            &#34;--cluster&#34;,
+            dest=&#34;clusters&#34;,
+            action=AppendWithoutDefault,
+            default=cfg(&#34;cluster&#34;, type=List(Str), default=[]),
+            help=&#34;EKS cluster name&#34;,
+        )
+        parser.add_argument(
+            &#34;--namespace&#34;,
+            &#34;-n&#34;,
+            dest=&#34;namespaces&#34;,
+            action=AppendWithoutDefault,
+            default=cfg(&#34;namespace&#34;, type=List(Str), default=[&#34;default&#34;]),
+            help=&#34;EKS cluster namespace&#34;,
+        )
+        parser.add_argument(
+            &#34;--output&#34;,
+            &#34;-o&#34;,
+            default=cfg(&#34;namespace&#34;, type=Str),
+            help=&#34;Specify output format of kubectl&#34;,
+        )
+
+        # Note: normally one would not prefix an awsrun command&#39;s arguments with
+        # &#39;--awsrun-&#39;, but this is a special exception because there could be
+        # valid kubectl args interspersed among the awsrun command flags. To
+        # avoid namespace collisions, the kubectl command args are prefixed.
+        parser.add_argument(
+            &#34;--awsrun-output-dir&#34;,
+            metavar=&#34;DIR&#34;,
+            default=cfg(&#34;awsrun_output_dir&#34;),
+            help=&#34;output directory to write results to separate files&#34;,
+        )
+
+        parser.add_argument(
+            &#34;--awsrun-annotate&#34;,
+            choices=[&#34;json&#34;, &#34;yaml&#34;, &#34;text&#34;],
+            default=cfg(&#34;awsrun_annotate&#34;, type=StrMatch(&#34;^(json|yaml|text)$&#34;)),
+            help=&#34;annotate each result with account/region/cluster/namespace&#34;,
+        )
+
+        # Let&#39;s gobble up any native kubuctl args that should not be used with
+        # this wrapper, which decides the server, context, user, etc ... based
+        # on how the awsrun wrapper is invoked. We also don&#39;t include these
+        # flags in the help message as they are really part of the kubectl tool.
+        # We capture these flags so we can check for their presence later and
+        # remind users not to specify them.
+        prohibited = [
+            &#34;kubeconfig&#34;,
+            &#34;context&#34;,
+            (&#34;server&#34;, &#34;s&#34;),
+            &#34;user&#34;,
+            &#34;username&#34;,
+            &#34;password&#34;,
+            &#34;client-key&#34;,
+            &#34;client-certificate&#34;,
+            &#34;client-authority&#34;,
+            &#34;as&#34;,
+            &#34;as-group&#34;,
+            &#34;token&#34;,
+        ]
+
+        for arg in prohibited:
+            if isinstance(arg, tuple):
+                parser.add_argument(f&#34;--{arg[0]}&#34;, f&#34;-{arg[1]}&#34;, help=argparse.SUPPRESS)
+            else:
+                parser.add_argument(f&#34;--{arg}&#34;, help=argparse.SUPPRESS)
+
+        # We parse the known args and then collect the rest as those will be
+        # passed to the kubectl command later.
+        args, remaining = parser.parse_known_args(argv)
+        args.kubectl_args = remaining
+
+        for arg in (a[0] if isinstance(a, tuple) else a for a in prohibited):
+            attr = arg.replace(&#34;-&#34;, &#34;_&#34;)
+            if getattr(args, attr) is not None:
+                parser.error(&#34;Do not specify --{arg} with awsrun kubectl&#34;)
+            delattr(args, attr)
+
+        if args.awsrun_annotate and args.output:
+            if args.awsrun_annotate != &#34;text&#34;:
+                if args.awsrun_annotate != args.output:
+                    parser.error(
+                        &#34;When specifying --awsrun-annotate, you do not need the --output flag&#34;
+                    )
+
+        return cls(**vars(args))
+
+    def __init__(
+        self,
+        kubectl_args,
+        regions,
+        clusters,
+        namespaces,
+        list_clusters,
+        output,
+        awsrun_output_dir,
+        awsrun_annotate,
+    ):
+        super().__init__(regions)
+        self.clusters = clusters
+        self.list_flag = list_clusters
+        self.namespaces = namespaces
+        self.kubectl_args = kubectl_args
+        self.output = output
+        self.output_dir = awsrun_output_dir
+        self.annotate = awsrun_annotate
+
+    def regional_execute(self, session, acct, region):
+        eks = session.client(&#34;eks&#34;, region_name=region)
+
+        # User only wants to list the clusters in the account/region, so we
+        # print this out and then return immediately.
+        if self.list_flag:
+            if self.annotate == &#34;json&#34;:
+                clusters = json.dumps(_list_clusters(eks))
+            elif self.annotate == &#34;yaml&#34;:
+                clusters = yaml.dump(_list_clusters(eks))
+            else:
+                clusters = &#34;\n&#34;.join(_list_clusters(eks)) + &#34;\n&#34;
+            return [_Result(clusters, None, None, None)]
+
+        results = []
+        for name in self.clusters if self.clusters else _list_clusters(eks):
+            cluster = eks.describe_cluster(name=name)
+            for namespace in self.namespaces:
+                # Write a kubecfg file to ~/.kube/awsrun-ACCT-CLUSTER-NAMESPACE
+                filename = _save_kubecfg(
+                    name, namespace, str(acct), region, cluster, session
+                )
+
+                # If user doesn&#39;t pass any kubectl commands, then just move on
+                if not self.kubectl_args:
+                    text = f&#34;kubeconfig saved to {filename}&#34;
+                    if self.annotate in [&#34;json&#34;, &#34;yaml&#34;]:
+                        text = f&#39;&#34;{text}&#34;&#39;
+                    results.append(_Result(text, None, name, namespace))
+                    continue
+
+                # Invoke kubectl and return results being careful to ensure that
+                # we honor kubectl&#39;s stdout and stderr.
+                cmd = [shutil.which(&#34;kubectl&#34;), &#34;--kubeconfig&#34;, str(filename)]
+                if self.annotate and self.annotate != &#34;text&#34;:
+                    cmd += [&#34;--output&#34;, self.annotate]
+                elif self.output:
+                    cmd += [&#34;--output&#34;, self.output]
+                cmd += self.kubectl_args
+
+                result = subprocess.run(
+                    cmd,
+                    env=os.environ,
+                    check=False,
+                    universal_newlines=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                )
+                results.append(_Result(result.stdout, result.stderr, name, namespace))
+
+        return results
+
+    def regional_collect_results(self, acct, region, get_result):
+        &#34;&#34;&#34;Print the results to the console and files if specified.&#34;&#34;&#34;
+
+        def annotate_lines(result, text, file=sys.stderr):
+            prefix = f&#34;{acct}/{region}&#34;
+            if result.cluster and result.namespace:
+                prefix += f&#34;/{result.cluster}/{result.namespace}&#34;
+            for line in filter(None, text.split(&#34;\n&#34;) if text else &#34;&#34;):
+                print(f&#34;{prefix}: {line}&#34;, file=file, flush=True)
+
+        def annotate_format(result, loader, dumper):
+            try:
+                d = {}
+                d[&#34;Account&#34;] = str(acct)
+                d[&#34;Region&#34;] = region
+                if result.cluster and result.namespace:
+                    d[&#34;Cluster&#34;] = result.cluster
+                    d[&#34;Namespace&#34;] = result.namespace
+                d[&#34;Results&#34;] = loader(result.stdout)
+                dumper(d, sys.stdout, indent=4)
+                print()
+            except Exception as e:
+                annotate_lines(result, f&#34;cannot parse output: {e}&#34;, file=sys.stderr)
+
+        try:
+            # Let&#39;s get the return value from the execute method, which is the
+            # ProcessCompleted object from the subprocess.run() method above ...
+            results = get_result()
+
+        except Exception as e:  # pylint: disable=broad-except
+            # ... unless there was an exception in which case it is raised by
+            # the call to get_result and we handle it here.
+            LOG.info(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
+            print(f&#34;{acct}/{region}: error: {e}&#34;, file=sys.stderr)
+            return
+
+        for result in results:
+            # Print stderr from AWS CLI always annotating the lines
+            annotate_lines(result, result.stderr, file=sys.stderr)
+
+            # Print stdout from AWS CLI annotating when appropriate
+            if not self.annotate:
+                print(result.stdout, end=&#34;&#34;, flush=True)
+            elif self.annotate == &#34;json&#34;:
+                annotate_format(result, json.loads, json.dump)
+            elif self.annotate == &#34;yaml&#34;:
+                annotate_format(result, yaml.safe_load, yaml.dump)
+            elif self.annotate == &#34;text&#34;:
+                annotate_lines(result, result.stdout)
+
+            # Save stdout and stderr from kubectl to disk if requested
+            if self.output_dir and result.cluster and result.namespace:
+                # Recall, the acct object passed to execute() can be anything. The
+                # str() method should provide us a unique means of identifying the
+                # account, but we need to escape any slashes if we use this as part
+                # of a filename so pathlib doesn&#39;t interpret as directories.
+                escaped = re.sub(r&#34;[\\/]&#34;, &#34;_&#34;, str(acct))
+                name = (
+                    self.output_dir
+                    / f&#34;{escaped}-{region}-{result.cluster}-{result.namespace}&#34;
+                )
+
+                def save(suffix, text):
+                    with name.with_suffix(suffix).open(&#34;w&#34;) as out:
+                        out.write(text)
+
+                save(&#34;.stdout.log&#34;, result.stdout)
+                if result.stderr:
+                    save(&#34;.stderr.log&#34;, result.stderr)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></li>
+<li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.kubectl.CLICommand.regional_collect_results"><code class="name flex">
+<span>def <span class="ident">regional_collect_results</span></span>(<span>self, acct, region, get_result)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Print the results to the console and files if specified.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def regional_collect_results(self, acct, region, get_result):
+    &#34;&#34;&#34;Print the results to the console and files if specified.&#34;&#34;&#34;
+
+    def annotate_lines(result, text, file=sys.stderr):
+        prefix = f&#34;{acct}/{region}&#34;
+        if result.cluster and result.namespace:
+            prefix += f&#34;/{result.cluster}/{result.namespace}&#34;
+        for line in filter(None, text.split(&#34;\n&#34;) if text else &#34;&#34;):
+            print(f&#34;{prefix}: {line}&#34;, file=file, flush=True)
+
+    def annotate_format(result, loader, dumper):
+        try:
+            d = {}
+            d[&#34;Account&#34;] = str(acct)
+            d[&#34;Region&#34;] = region
+            if result.cluster and result.namespace:
+                d[&#34;Cluster&#34;] = result.cluster
+                d[&#34;Namespace&#34;] = result.namespace
+            d[&#34;Results&#34;] = loader(result.stdout)
+            dumper(d, sys.stdout, indent=4)
+            print()
+        except Exception as e:
+            annotate_lines(result, f&#34;cannot parse output: {e}&#34;, file=sys.stderr)
+
+    try:
+        # Let&#39;s get the return value from the execute method, which is the
+        # ProcessCompleted object from the subprocess.run() method above ...
+        results = get_result()
+
+    except Exception as e:  # pylint: disable=broad-except
+        # ... unless there was an exception in which case it is raised by
+        # the call to get_result and we handle it here.
+        LOG.info(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
+        print(f&#34;{acct}/{region}: error: {e}&#34;, file=sys.stderr)
+        return
+
+    for result in results:
+        # Print stderr from AWS CLI always annotating the lines
+        annotate_lines(result, result.stderr, file=sys.stderr)
+
+        # Print stdout from AWS CLI annotating when appropriate
+        if not self.annotate:
+            print(result.stdout, end=&#34;&#34;, flush=True)
+        elif self.annotate == &#34;json&#34;:
+            annotate_format(result, json.loads, json.dump)
+        elif self.annotate == &#34;yaml&#34;:
+            annotate_format(result, yaml.safe_load, yaml.dump)
+        elif self.annotate == &#34;text&#34;:
+            annotate_lines(result, result.stdout)
+
+        # Save stdout and stderr from kubectl to disk if requested
+        if self.output_dir and result.cluster and result.namespace:
+            # Recall, the acct object passed to execute() can be anything. The
+            # str() method should provide us a unique means of identifying the
+            # account, but we need to escape any slashes if we use this as part
+            # of a filename so pathlib doesn&#39;t interpret as directories.
+            escaped = re.sub(r&#34;[\\/]&#34;, &#34;_&#34;, str(acct))
+            name = (
+                self.output_dir
+                / f&#34;{escaped}-{region}-{result.cluster}-{result.namespace}&#34;
+            )
+
+            def save(suffix, text):
+                with name.with_suffix(suffix).open(&#34;w&#34;) as out:
+                    out.write(text)
+
+            save(&#34;.stdout.log&#34;, result.stdout)
+            if result.stderr:
+                save(&#34;.stderr.log&#34;, result.stderr)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.RegionalCommand.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_execute" href="../../runner.html#awsrun.runner.RegionalCommand.regional_execute">regional_execute</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.regional_from_cli" href="../../runner.html#awsrun.runner.RegionalCommand.regional_from_cli">regional_from_cli</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun.commands.aws" href="index.html">awsrun.commands.aws</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.commands.aws.kubectl.CLICommand" href="#awsrun.commands.aws.kubectl.CLICommand">CLICommand</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.kubectl.CLICommand.regional_collect_results" href="#awsrun.commands.aws.kubectl.CLICommand.regional_collect_results">regional_collect_results</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
