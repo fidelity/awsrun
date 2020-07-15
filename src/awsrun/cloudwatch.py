@@ -168,11 +168,19 @@ class CWMetrics:
             ScanBy="TimestampAscending",
         ):
             for mdr in page["MetricDataResults"]:
-                _LOG.info("Total results: %d", len(mdr["Values"]))
-                _LOG.info(" [0]: %s %.2f", mdr["Timestamps"][0], mdr["Values"][0])
-                _LOG.info(" [1]: %s %.2f", mdr["Timestamps"][1], mdr["Values"][1])
-                _LOG.info("[-2]: %s %.2f", mdr["Timestamps"][-2], mdr["Values"][-2])
-                _LOG.info("[-1]: %s %.2f", mdr["Timestamps"][-1], mdr["Values"][-1])
+                count = len(mdr["Values"])
+                _LOG.info(
+                    "Results for %s (%s): count=%d status=%s",
+                    mdr["Label"],
+                    mdr["Id"],
+                    count,
+                    mdr["StatusCode"],
+                )
+                if count > 1:
+                    _LOG.info(" [0]: %s %.2f", mdr["Timestamps"][0], mdr["Values"][0])
+                    _LOG.info(" [1]: %s %.2f", mdr["Timestamps"][1], mdr["Values"][1])
+                    _LOG.info("[-2]: %s %.2f", mdr["Timestamps"][-2], mdr["Values"][-2])
+                    _LOG.info("[-1]: %s %.2f", mdr["Timestamps"][-1], mdr["Values"][-1])
 
                 # We use extend here because results can span multiple pages,
                 # so we just keep extending to the existing lists.
