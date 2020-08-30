@@ -176,6 +176,8 @@ process. In addition, the other difference is the region parameter on the
 import logging
 import sys
 import time
+import functools
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from awsrun.argparse import AppendWithoutDefault
@@ -711,6 +713,38 @@ def regional_execute_function(
         command, accounts, key=key
     )
     return (command.results, command.errors)
+
+
+def max_thread_limit(count):
+    """Decorator to limit maximum number of concurrent executions.
+
+    In some cases, the author of a `Command` may wish to restrict the number of
+    concurrent executions of a command, regardless of the number of workers the
+    `AccountRunner` has been instantiated with. awsrun CLI users can specify the
+    number of workers via the `--threads` flag, which defaults to 10.
+
+    Use this with `Command.execute` or `RegionalCommand.regional_execute` to
+    guarantee concurrent executions do not exceed the specified `count`. When
+    the number of concurrent executions exceed the value, they will block until
+    an existing execution has completed. For example, the following will limit
+    concurrent executions to one:
+
+        @max_thread_limit(1)
+        def regional_execute(self, session, acct, region):
+           pass
+
+    Note: while this decorator can limit the number of concurrent executions, it
+    will not increase the number of workers in the `AccountRunner` worker pool.
+    This is a rate limiting decorator only.
+    """
+    def decorator(func):
+        sem = threading.BoundedSemaphore(count)
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            with sem:
+                return func(*args, **kwargs)
+        return wrapper
+    return decorator
 
 
 class AccountRunner:

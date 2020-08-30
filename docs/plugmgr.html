@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.5" />
+<meta name="generator" content="pdoc 0.9.1" />
 <title>awsrun.plugmgr API documentation</title>
 <meta name="description" content="Loads and instantiates awsrun plug-ins for the CLI …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <link href="/awsrun/webfonts.css" rel="stylesheet">
 <style>
@@ -55,20 +55,20 @@ these behaviors can be changed via a user's awsrun YAML configuration file.
 There are several plug-ins included for each. Users may, alternatively, provide
 their own implementations, so long as they are installed and available in the
 standard Python path. API users of awsrun will not use this module.</p>
-<p>This module provides a <a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a> which is responsible for loading and
-instantiating a <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a> as well as managing the state associated with CLI
+<p>This module provides a <code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code> which is responsible for loading and
+instantiating a <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code> as well as managing the state associated with CLI
 argument processing as plug-ins can register their own CLI flags. Users specify
 plug-ins and the options to those plugins in their awsrun configuration file.
 Most options can also be overridden via CLI flags if desired. The documentation
 for each plug-in provides details on options available in the configuration file
-as well as CLI flags. Please refer to <a title="awsrun.plugins" href="plugins/index.html"><code>awsrun.plugins</code></a> for details on the
+as well as CLI flags. Please refer to <code><a title="awsrun.plugins" href="plugins/index.html">awsrun.plugins</a></code> for details on the
 pluggable behaviors and included plug-ins.</p>
-<p>For example, one pluggable behavior is the <a title="awsrun.acctload.AccountLoader" href="acctload.html#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a>. By
-default, awsrun will use the <a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity"><code>Identity</code></a> plug-in unless a
+<p>For example, one pluggable behavior is the <code><a title="awsrun.acctload.AccountLoader" href="acctload.html#awsrun.acctload.AccountLoader">AccountLoader</a></code>. By
+default, awsrun will use the <code><a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity">Identity</a></code> plug-in unless a
 user specifies an alternate plug-in in their awsrun configuration. To replace
 the standard account loader, the user would define a plug-in specification block
 in their config called <code>Accounts</code>. This specification block contains a <code>plugin</code>
-key that is a dotted Python path to a <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a> implementation and an <code>options</code>
+key that is a dotted Python path to a <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code> implementation and an <code>options</code>
 block containing the appropriate options for the factory method:</p>
 <pre><code>Accounts:
   plugin: awsrun.plugins.accts.JSON
@@ -76,9 +76,9 @@ block containing the appropriate options for the factory method:</p>
     url: "http://www.example.com/accounts"
     max_age: 86400
 </code></pre>
-<p>To load the above plug-in, create an instance of a <a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a>, invoke
-<a title="awsrun.plugmgr.PluginManager.parse_args" href="#awsrun.plugmgr.PluginManager.parse_args"><code>PluginManager.parse_args()</code></a> to register CLI flags and defaults, and then call
-<a title="awsrun.plugmgr.PluginManager.instantiate" href="#awsrun.plugmgr.PluginManager.instantiate"><code>PluginManager.instantiate()</code></a> to build the instance of the plug-in. The following
+<p>To load the above plug-in, create an instance of a <code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code>, invoke
+<code><a title="awsrun.plugmgr.PluginManager.parse_args" href="#awsrun.plugmgr.PluginManager.parse_args">PluginManager.parse_args()</a></code> to register CLI flags and defaults, and then call
+<code><a title="awsrun.plugmgr.PluginManager.instantiate" href="#awsrun.plugmgr.PluginManager.instantiate">PluginManager.instantiate()</a></code> to build the instance of the plug-in. The following
 illustrates how the manager interoperates with argument processing of the CLI:</p>
 <pre><code># Main CLI arg parser (definition of args omitted)
 parser = argparse.ArgumentParser()
@@ -95,13 +95,13 @@ args = parser.parse_args(pm.remaining_argv, pm.args)
 # Sometime later, instantiate your plug-in
 acct_loader = pm.instantiate('Accounts', must_be=AccountLoader)
 </code></pre>
-<p>The parsing of arguments and the instantiation of a <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a> are two separate
+<p>The parsing of arguments and the instantiation of a <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code> are two separate
 steps by design. This is particularly useful when one wants to complete all of
 the CLI argument processing before doing the heavy lifting of instantiating the
 plug-in. Why bother instantiating one plug-in if a user has not specified the
 correct args to another? This is the reason why the steps are distinct. One can,
 on the other hand, combine both into a single step by omitting the call to
-<a title="awsrun.plugmgr.PluginManager.parse_args" href="#awsrun.plugmgr.PluginManager.parse_args"><code>PluginManager.parse_args()</code></a> as it will be called by <a title="awsrun.plugmgr.PluginManager.instantiate" href="#awsrun.plugmgr.PluginManager.instantiate"><code>PluginManager.instantiate()</code></a>
+<code><a title="awsrun.plugmgr.PluginManager.parse_args" href="#awsrun.plugmgr.PluginManager.parse_args">PluginManager.parse_args()</a></code> as it will be called by <code><a title="awsrun.plugmgr.PluginManager.instantiate" href="#awsrun.plugmgr.PluginManager.instantiate">PluginManager.instantiate()</a></code>
 if it was not already.</p>
 <details class="source">
 <summary>
@@ -552,13 +552,13 @@ cannot be loaded, <code>ImportError</code> is raised.</p></section>
 <section class="desc"><p>Abstract base class for a plug-in that can register flags on the main CLI.</p>
 <p>A plug-in is a wrapper around a Python object that is configured via options
 in a user configuration file or CLI flags. This is abstract base class must
-be subclassed by plug-ins authors as the <a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a> will type check
+be subclassed by plug-ins authors as the <code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code> will type check
 loaded plug-ins.</p>
 <p>Plug-ins can hook into the command line argument processing of the main CLI,
 which is done via the constructor. This allows plug-in author's to define
-options in user configuration files via <a title="awsrun.config.Config" href="config.html#awsrun.config.Config"><code>Config</code></a> as well as
+options in user configuration files via <code><a title="awsrun.config.Config" href="config.html#awsrun.config.Config">Config</a></code> as well as
 flags on the command line using <code>argparse</code> library. The loading and
-instantiation of plug-ins is handled by the <a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a>, which is
+instantiation of plug-ins is handled by the <code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code>, which is
 responsible for managing the state of CLI argument processing.</p>
 <p>The <code>parser</code> argument is an <code>argparse.ArgumentParser</code> that can be used to
 define additional flags on the main awsrun CLI. It is suggested that plug-in
@@ -574,7 +574,7 @@ as that may conflict with a future awsrun argument or another plug-in trying
 to define the same. Instead, use a prefix on all of the plug-in options
 defined to avoid conflicts. E.g., <code>--loader-url</code>.</p>
 <p>The <code>cfg</code> argument is a callable that implements the
-<a title="awsrun.config.Config.get" href="config.html#awsrun.config.Config.get"><code>Config.get()</code></a> interface allowing one to query for type-checked
+<code><a title="awsrun.config.Config.get" href="config.html#awsrun.config.Config.get">Config.get()</a></code> interface allowing one to query for type-checked
 key/value pairs defined in a user configuration file. The keys passed to
 <code>cfg</code> are relative to the <code>options</code> key in the plug-in definition. For
 example, assume the following plug-in specification in a user configuration:</p>
@@ -601,7 +601,7 @@ key in the user configuration file if it exists, otherwise it defaults to 0:</p>
 </code></pre>
 <p><strong>Note:</strong> A plug-in author must not invoke the <code>parse_args</code> or
 <code>parse_known_args</code> on the <code>parser</code> object provided in the constructor. The
-<a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a> is responsible for managing this and maintaining the state
+<code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code> is responsible for managing this and maintaining the state
 associated with argument processing. The constructor should be used to only
 register new CLI arguments and invoke the superclass's constructor.</p></section>
 <details class="source">
@@ -717,7 +717,7 @@ register new CLI arguments and invoke the superclass's constructor.</p></section
 </code></dt>
 <dd>
 <section class="desc"><p>Returns an object created with options and arguments defined by the plug-in.</p>
-<p>The <a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a> will invoke this method after it has completed
+<p>The <code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code> will invoke this method after it has completed
 parsing the command line arguments that the plug-in defined in the
 constructor. The <code>args</code> argument is a populated <code>argparse.Namespace</code>
 object that contains the values of any command line arguments provided
@@ -771,20 +771,20 @@ also terminate the program.</p></section>
 </code></dt>
 <dd>
 <section class="desc"><p>Manages the loading and instantiation of awsrun plug-ins.</p>
-<p>The <a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a> is responsible for loading and instantiating a <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a>
+<p>The <code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code> is responsible for loading and instantiating a <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code>
 as well as managing the state associated with CLI argument processing as
 plug-ins can register their own CLI flags. Users specify plug-ins and the
 options to those plugins in their awsrun configuration file. Most options
-can also be overridden via CLI flags if desired. See the <a title="awsrun.plugmgr" href="#awsrun.plugmgr"><code>awsrun.plugmgr</code></a>
+can also be overridden via CLI flags if desired. See the <code><a title="awsrun.plugmgr" href="#awsrun.plugmgr">awsrun.plugmgr</a></code>
 for example usage.</p>
-<p>The <code>config</code> argument is a <a title="awsrun.config.Config" href="config.html#awsrun.config.Config"><code>Config</code></a> that contains one or more
+<p>The <code>config</code> argument is a <code><a title="awsrun.config.Config" href="config.html#awsrun.config.Config">Config</a></code> that contains one or more
 plug-in specifications (discussed below). <code>parser</code> is a the main CLI
 <code>argparse.ArgumentParser</code> that will be provided to plug-ins so they can
 define new CLI arguments. <code>parsed_args</code> is a <code>argparse.Namespace</code> containing
 the results of CLI argument processing up to this point. And,
 <code>unparsed_argv</code> is a list of unprocessed arguments passed on the command
 line, which might contain arguments destined for a plug-in.</p>
-<p>A plug-in specification identifies the name of the plug-in, the <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a>
+<p>A plug-in specification identifies the name of the plug-in, the <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code>
 implementation, and its options. The format of the specification is as
 follows:</p>
 <pre><code>PLUGIN_NAME:
@@ -802,15 +802,15 @@ follows:</p>
     max_age: 86400
 </code></pre>
 <p>The specification must include the <code>plugin</code> key that identifies, via a
-dotted string, the Python module concatenated with the name of a <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a>
+dotted string, the Python module concatenated with the name of a <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code>
 subclass. Plug-ins must be installed in the standard Python path. In the
-above example, <a title="awsrun.plugins.accts.JSON" href="plugins/accts.html#awsrun.plugins.accts.JSON"><code>JSON</code></a> points to a subclass called
-<code>JSON</code> in the <a title="awsrun.plugins.accts" href="plugins/accts.html"><code>awsrun.plugins.accts</code></a> module. The specification can also
+above example, <code><a title="awsrun.plugins.accts.JSON" href="plugins/accts.html#awsrun.plugins.accts.JSON">JSON</a></code> points to a subclass called
+<code>JSON</code> in the <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code> module. The specification can also
 optionally include the <code>options</code> key that defines options made available
-to the plug-in via an <a title="awsrun.config.Config" href="config.html#awsrun.config.Config"><code>Config</code></a> object, which is passed to the
-constructor of a <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a>. This allows the plug-in to type check values and
+to the plug-in via an <code><a title="awsrun.config.Config" href="config.html#awsrun.config.Config">Config</a></code> object, which is passed to the
+constructor of a <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code>. This allows the plug-in to type check values and
 use other features of the config API.</p>
-<p>Plug-in authors should refer to the documentation for <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a> to understand
+<p>Plug-in authors should refer to the documentation for <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code> to understand
 how the <code>config</code> and <code>parser</code> interact with each other during the
 instantiation of a plug-in.</p></section>
 <details class="source">
@@ -990,19 +990,19 @@ instantiation of a plug-in.</p></section>
 <dt id="awsrun.plugmgr.PluginManager.args"><code class="name">var <span class="ident">args</span></code></dt>
 <dd>
 <section class="desc"><p>A <code>argparse.Namespace</code> that parsed plug-in arguments are added.</p>
-<p>After each call to <a title="awsrun.plugmgr.PluginManager.parse_args" href="#awsrun.plugmgr.PluginManager.parse_args"><code>PluginManager.parse_args()</code></a>, this namespace is updated
-with any unparsed arguments consumed by a <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a>. In addition, when
-the <a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a> instantiates a plug-in, this namespace is provided
+<p>After each call to <code><a title="awsrun.plugmgr.PluginManager.parse_args" href="#awsrun.plugmgr.PluginManager.parse_args">PluginManager.parse_args()</a></code>, this namespace is updated
+with any unparsed arguments consumed by a <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code>. In addition, when
+the <code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code> instantiates a plug-in, this namespace is provided
 to the plug-in, so it has access to its parsed arguments.</p></section>
 </dd>
 <dt id="awsrun.plugmgr.PluginManager.remaining_argv"><code class="name">var <span class="ident">remaining_argv</span></code></dt>
 <dd>
 <section class="desc"><p>A list of unparsed command line arguments remaining to be parsed.</p>
-<p>At the start of the <a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a>, this contains any command line
+<p>At the start of the <code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code>, this contains any command line
 arguments that might be intended for one or more plug-ins. It is updated
-after each successive call to <a title="awsrun.plugmgr.PluginManager.parse_args" href="#awsrun.plugmgr.PluginManager.parse_args"><code>PluginManager.parse_args()</code></a>. If a plug-in
+after each successive call to <code><a title="awsrun.plugmgr.PluginManager.parse_args" href="#awsrun.plugmgr.PluginManager.parse_args">PluginManager.parse_args()</a></code>. If a plug-in
 consumes arguments, they are transferred from this unparsed list to the
-parsed <a title="awsrun.plugmgr.PluginManager.args" href="#awsrun.plugmgr.PluginManager.args"><code>PluginManager.args</code></a> namespace.</p></section>
+parsed <code><a title="awsrun.plugmgr.PluginManager.args" href="#awsrun.plugmgr.PluginManager.args">PluginManager.args</a></code> namespace.</p></section>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1014,21 +1014,21 @@ parsed <a title="awsrun.plugmgr.PluginManager.args" href="#awsrun.plugmgr.Plugin
 <section class="desc"><p>Load the plug-in and parse command line arguments passed via the CLI.</p>
 <p>This method does not return anything, nor does it instantiate the
 plug-in. It only loads the plug-in class and performs command line
-argument processing for the <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a>. It is provided to allow one to
+argument processing for the <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code>. It is provided to allow one to
 separate the parsing of all line arguments from the instantiation of
 plug-ins. If this method is not explicitly called by the user, then it
-will be implicitly called when <a title="awsrun.plugmgr.PluginManager.instantiate" href="#awsrun.plugmgr.PluginManager.instantiate"><code>PluginManager.instantiate()</code></a> is called.
-See the <a title="awsrun.plugmgr" href="#awsrun.plugmgr"><code>awsrun.plugmgr</code></a> documentation for the rationale.</p>
+will be implicitly called when <code><a title="awsrun.plugmgr.PluginManager.instantiate" href="#awsrun.plugmgr.PluginManager.instantiate">PluginManager.instantiate()</a></code> is called.
+See the <code><a title="awsrun.plugmgr" href="#awsrun.plugmgr">awsrun.plugmgr</a></code> documentation for the rationale.</p>
 <p>The <code>keys</code> varargs specifies the path to the plug-in specification
-contained with the configuration. See the <a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a> documentation
+contained with the configuration. See the <code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code> documentation
 for details on the plug-in specification. If the path does not exist,
 then the value of <code>default</code> is used instead. This default value must be
-a dotted string pointing to a subclass of <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a>. For example:</p>
+a dotted string pointing to a subclass of <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code>. For example:</p>
 <pre><code>pm = PluginManager(config, parser, parsed_args, unparsed_argv)
 pm.parse_args('Accounts', default='awsrun.plugins.accts.Identity')
 </code></pre>
 <p>If the <code>Accounts</code> key does not exist in the configuration, then the
-<a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity"><code>Identity</code></a> plug-in will be used instead.</p></section>
+<code><a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity">Identity</a></code> plug-in will be used instead.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1090,18 +1090,18 @@ pm.parse_args('Accounts', default='awsrun.plugins.accts.Identity')
 </code></dt>
 <dd>
 <section class="desc"><p>Returns the instantiated plug-in.</p>
-<p>This method ultimately returns the value from <a title="awsrun.plugmgr.Plugin.instantiate" href="#awsrun.plugmgr.Plugin.instantiate"><code>Plugin.instantiate()</code></a>,
-which is passed a reference to the <a title="awsrun.plugmgr.PluginManager.args" href="#awsrun.plugmgr.PluginManager.args"><code>PluginManager.args</code></a> object, so the
+<p>This method ultimately returns the value from <code><a title="awsrun.plugmgr.Plugin.instantiate" href="#awsrun.plugmgr.Plugin.instantiate">Plugin.instantiate()</a></code>,
+which is passed a reference to the <code><a title="awsrun.plugmgr.PluginManager.args" href="#awsrun.plugmgr.PluginManager.args">PluginManager.args</a></code> object, so the
 plug-in can use any parsed command line arguments it had requested. It
-is usual, but not necessary, to invoke <a title="awsrun.plugmgr.PluginManager.parse_args" href="#awsrun.plugmgr.PluginManager.parse_args"><code>PluginManager.parse_args()</code></a> for
+is usual, but not necessary, to invoke <code><a title="awsrun.plugmgr.PluginManager.parse_args" href="#awsrun.plugmgr.PluginManager.parse_args">PluginManager.parse_args()</a></code> for
 each plug-in before calling this method. This allows all command line
 processing, and more important errors, to be complete before the actual
 instantiation of any plug-ins.</p>
 <p>The <code>keys</code> varargs specifies the path to the plug-in specification
-contained with the configuration. See the <a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager"><code>PluginManager</code></a> documentation
+contained with the configuration. See the <code><a title="awsrun.plugmgr.PluginManager" href="#awsrun.plugmgr.PluginManager">PluginManager</a></code> documentation
 for details on the plug-in specification. If the path does not exist,
 then the value of <code>default</code> is used instead. This default value must be
-a dotted string pointing to a subclass of <a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin"><code>Plugin</code></a>. For example:</p>
+a dotted string pointing to a subclass of <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code>. For example:</p>
 <pre><code>pm = PluginManager(config, parser, parsed_args, unparsed_argv)
 acct_loader = pm.instantiate(
     'Accounts',
@@ -1109,8 +1109,8 @@ acct_loader = pm.instantiate(
     default='awsrun.plugins.accts.Identity')
 </code></pre>
 <p>If the <code>Accounts</code> key does not exist in the configuration, then the
-<a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity"><code>Identity</code></a> plug-in will be used instead. If
-<code>must_be</code> is provided, the returned value from <a title="awsrun.plugmgr.Plugin.instantiate" href="#awsrun.plugmgr.Plugin.instantiate"><code>Plugin.instantiate()</code></a> must
+<code><a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity">Identity</a></code> plug-in will be used instead. If
+<code>must_be</code> is provided, the returned value from <code><a title="awsrun.plugmgr.Plugin.instantiate" href="#awsrun.plugmgr.Plugin.instantiate">Plugin.instantiate()</a></code> must
 be an instance of the type specified, otherwise a <code>TypeError</code> is raised.
 If <code>must_be</code> is not provided, the returned object can be of any type.</p></section>
 <details class="source">
@@ -1205,7 +1205,7 @@ If <code>must_be</code> is not provided, the returned object can be of any type.
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

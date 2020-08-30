@@ -2,7 +2,7 @@
 
 # awsrun
 
-CLI and API to concurrently execute user-defined commands across AWS accounts.
+CLI and library to concurrently execute user-defined commands across AWS accounts.
 
 ## Overview
 
@@ -185,7 +185,7 @@ includes the following:
   loader and credential loader plug-ins to enhance the user experience on the
   CLI.
 
-* The [API User Guide](https://fmr-llc.github.io/awsrun/#api-usage)
+* The [Library User Guide](https://fmr-llc.github.io/awsrun/#api-usage)
   includes pointers to the key documentation required to use awsrun
   programmatically instead of via the CLI. All of the awsrun
   [modules](https://fmr-llc.github.io/awsrun/#header-submodules) are also
@@ -204,6 +204,14 @@ includes the following:
   your environment.
   
 ## Change Log
+
+### v2.2.2
+
+* Add a decorator `awsrun.runner.max_thread_limit` that can be used by command
+  authors to limit the number of concurrent executions. There are some scenarios
+  where a command author may never want their command run concurrently across
+  multiple accounts. By default, awsrun uses a thread pool of ten workers, and
+  users can override, so this gives command authors ability to limit if needed.
 
 ### v2.2.1
 

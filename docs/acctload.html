@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.5" />
+<meta name="generator" content="pdoc 0.9.1" />
 <title>awsrun.acctload API documentation</title>
 <meta name="description" content="Loads account objects and metadata for those accounts …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <link href="/awsrun/webfonts.css" rel="stylesheet">
 <style>
@@ -49,37 +49,37 @@ font-weight: bold;
 <section id="section-intro">
 <p>Loads account objects and metadata for those accounts.</p>
 <h2 id="overview">Overview</h2>
-<p>This module provides an <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> which is responsible for loading objects
+<p>This module provides an <code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code> which is responsible for loading objects
 that represent accounts and attaching metadata associated with those accounts to
 the objects as attributes. Users will pass this list of objects to
-<a title="awsrun.runner.AccountRunner.run" href="runner.html#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>, which schedules the concurrent execution of a
+<code><a title="awsrun.runner.AccountRunner.run" href="runner.html#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>, which schedules the concurrent execution of a
 command across this list of accounts. Each account object is made available to
-the <a title="awsrun.runner.Command.execute" href="runner.html#awsrun.runner.Command.execute"><code>Command.execute()</code></a> method allowing users to pass whatever
+the <code><a title="awsrun.runner.Command.execute" href="runner.html#awsrun.runner.Command.execute">Command.execute()</a></code> method allowing users to pass whatever
 objects and metadata they choose to their commands.</p>
-<p>Several concrete implementations of the <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> abstract base class are
-provided by this module: <a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader"><code>IdentityAccountLoader</code></a>, <a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader"><code>CSVAccountLoader</code></a>,
-<a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader"><code>JSONAccountLoader</code></a>, and <a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader"><code>YAMLAccountLoader</code></a>. These loaders are used by the
-<a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> to obtain the list of accounts and to filter those accounts by
+<p>Several concrete implementations of the <code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code> abstract base class are
+provided by this module: <code><a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader">IdentityAccountLoader</a></code>, <code><a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader">CSVAccountLoader</a></code>,
+<code><a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader">JSONAccountLoader</a></code>, and <code><a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader">YAMLAccountLoader</a></code>. These loaders are used by the
+<code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> to obtain the list of accounts and to filter those accounts by
 metadata attributes specified on the command line. The CLI instantiates a loader
-by calling the the plug-ins defined in <a title="awsrun.plugins.accts" href="plugins/accts.html"><code>awsrun.plugins.accts</code></a>.</p>
-<p>The <a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader"><code>IdentityAccountLoader</code></a> is intended for use when no additional metadata is
+by calling the the plug-ins defined in <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code>.</p>
+<p>The <code><a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader">IdentityAccountLoader</a></code> is intended for use when no additional metadata is
 to be associated with accounts. It simply returns account objects that are
-strings of account IDs. <a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader"><code>CSVAccountLoader</code></a> loads accounts and metadata from CSVs
-while <a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader"><code>JSONAccountLoader</code></a> and <a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader"><code>YAMLAccountLoader</code></a> do so via JSON and YAML
+strings of account IDs. <code><a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader">CSVAccountLoader</a></code> loads accounts and metadata from CSVs
+while <code><a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader">JSONAccountLoader</a></code> and <code><a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader">YAMLAccountLoader</a></code> do so via JSON and YAML
 respectively. Data is loaded from URLs and support file-based URLs for local
-data. The CSV, JSON, and YAML loaders are subclasses of <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>.</p>
-<p>The <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> provides a convenient object wrapper to an account and
+data. The CSV, JSON, and YAML loaders are subclasses of <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code>.</p>
+<p>The <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code> provides a convenient object wrapper to an account and
 its metadata which is made available via attributes on the object. Users can
 utilize this loader to build their own loaders to pull data from databases or
-other CMDBs. The <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> only requires a list of dicts representing
+other CMDBs. The <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code> only requires a list of dicts representing
 accounts and their metadata.
 Under the covers, the loader dynamically creates a
-subclass of <a title="awsrun.acctload.AbstractAccount" href="#awsrun.acctload.AbstractAccount"><code>AbstractAccount</code></a>, which provides a lightweight object interface to
+subclass of <code><a title="awsrun.acctload.AbstractAccount" href="#awsrun.acctload.AbstractAccount">AbstractAccount</a></code>, which provides a lightweight object interface to
 the dict.</p>
-<p>Two exceptions are defined in this module. <a title="awsrun.acctload.AccountsNotFoundError" href="#awsrun.acctload.AccountsNotFoundError"><code>AccountsNotFoundError</code></a> is raised
-when <a title="awsrun.acctload.AccountLoader.accounts" href="#awsrun.acctload.AccountLoader.accounts"><code>AccountLoader.accounts()</code></a> cannot find one of the accounts explicitly
-requested by the caller. The other exception, <a title="awsrun.acctload.InvalidFormatTemplateError" href="#awsrun.acctload.InvalidFormatTemplateError"><code>InvalidFormatTemplateError</code></a>, is
-raised when the format string passed to <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> constructor refers
+<p>Two exceptions are defined in this module. <code><a title="awsrun.acctload.AccountsNotFoundError" href="#awsrun.acctload.AccountsNotFoundError">AccountsNotFoundError</a></code> is raised
+when <code><a title="awsrun.acctload.AccountLoader.accounts" href="#awsrun.acctload.AccountLoader.accounts">AccountLoader.accounts()</a></code> cannot find one of the accounts explicitly
+requested by the caller. The other exception, <code><a title="awsrun.acctload.InvalidFormatTemplateError" href="#awsrun.acctload.InvalidFormatTemplateError">InvalidFormatTemplateError</a></code>, is
+raised when the format string passed to <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code> constructor refers
 to attributes that are not present in the accounts being loaded.</p>
 <details class="source">
 <summary>
@@ -1054,7 +1054,7 @@ def _make_valid_attribute_name(s):
 </code></dt>
 <dd>
 <section class="desc"><p>Abstract base class to load objects representing accounts.</p>
-<p>An <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> is responsible for building objects representing accounts
+<p>An <code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code> is responsible for building objects representing accounts
 and attaching metadata attributes to those accounts as well as providing a
 mechanism to obtain the account ID from one of those objects.</p>
 <p>Subclasses must provide implementations for <code>acct_id</code>, <code>attributes</code>, and
@@ -1160,17 +1160,17 @@ can be specified identifying the keys and matching values.</p></section>
 <span>class <span class="ident">IdentityAccountLoader</span></span>
 </code></dt>
 <dd>
-<section class="desc"><p>An <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> that uses strings of IDs to represent accounts.</p>
+<section class="desc"><p>An <code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code> that uses strings of IDs to represent accounts.</p>
 <p>This class does not load accounts from an external data source such as a
 file, database, or web server. Because the account objects created by this
 class are simple strings, there is no additional metadata associated with an
 account, nor is it possible to filter accounts by metadata.</p>
-<p>This class is used by the <a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> when a user does not provide their
-own <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> via the configuration file. It allows users to use
+<p>This class is used by the <code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> when a user does not provide their
+own <code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code> via the configuration file. It allows users to use
 awsrun without needing an external source of accounts because account
 objects are simply represented as strings of account IDs that can be
 specified on the CLI.</p>
-<p>This is the most basic <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> and is useful if one does not have
+<p>This is the most basic <code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code> and is useful if one does not have
 want to adorn accounts IDs with additional data. It does mean that the
 account object passed to <code>Command.execute</code> is simply a string representing
 the account ID.</p></section>
@@ -1261,7 +1261,7 @@ loaded by this class is the account object itself, thus <code>acct</code> return
 </code></dt>
 <dd>
 <section class="desc"><p>Returns a dict of all metadata attribute names and values.</p>
-<p><a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader"><code>IdentityAccountLoader</code></a> builds account objects that are simply strings
+<p><code><a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader">IdentityAccountLoader</a></code> builds account objects that are simply strings
 representing the ID of an account. Because there is no other metadata
 associated with these objects, this method returns an empty dict.</p></section>
 <details class="source">
@@ -1316,8 +1316,8 @@ raise an AttributeError.</p></section>
 <span>(</span><span>accts, id_attr='id', path=None, str_template=None, include_attrs=None, exclude_attrs=None)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>An <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> that loads account objects from dicts of metadata.</p>
-<p>This class dynamically creates a <a title="awsrun.acctload.AbstractAccount" href="#awsrun.acctload.AbstractAccount"><code>AbstractAccount</code></a> subclass customized to
+<section class="desc"><p>An <code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code> that loads account objects from dicts of metadata.</p>
+<p>This class dynamically creates a <code><a title="awsrun.acctload.AbstractAccount" href="#awsrun.acctload.AbstractAccount">AbstractAccount</a></code> subclass customized to
 represent a group of accounts that share common metadata attributes. For
 each account represented in <code>accts</code>, an object of this subclass is created.
 Each account object is then associated with attributes corresponding to the
@@ -1379,7 +1379,7 @@ accts = {
 loader = MetaAccountLoader(accts, path=['AWS', 'Accounts'])
 </code></pre>
 <p>It is important that the attribute name representing the account ID is
-provided via the <code>id_attr</code> parameter, so <a title="awsrun.acctload.MetaAccountLoader.acct_id" href="#awsrun.acctload.MetaAccountLoader.acct_id"><code>MetaAccountLoader.acct_id()</code></a> can
+provided via the <code>id_attr</code> parameter, so <code><a title="awsrun.acctload.MetaAccountLoader.acct_id" href="#awsrun.acctload.MetaAccountLoader.acct_id">MetaAccountLoader.acct_id()</a></code> can
 return the account ID for a given account object. By default, the value of
 <code>id_attr</code> is the string <code>'id'</code>. The following would require <code>acct</code> to be
 specified as the value of the <code>id_attr</code> argument:</p>
@@ -1926,7 +1926,7 @@ names. In addition, all of the attributes referenced in <code>str_template</code
 <dd>
 <section class="desc"><p>Returns the account ID associated with the <code>acct</code> object.</p>
 <p>The <code>acct</code> parameter must be an account object that was created by an
-instance of this <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> via <a title="awsrun.acctload.MetaAccountLoader.accounts" href="#awsrun.acctload.MetaAccountLoader.accounts"><code>MetaAccountLoader.accounts()</code></a>.
+instance of this <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code> via <code><a title="awsrun.acctload.MetaAccountLoader.accounts" href="#awsrun.acctload.MetaAccountLoader.accounts">MetaAccountLoader.accounts()</a></code>.
 This method returns the string representing the account ID of the
 account object.</p></section>
 <details class="source">
@@ -1950,7 +1950,7 @@ account object.</p></section>
 <dd>
 <section class="desc"><p>Returns a dict of all metadata attribute names and values.</p>
 <p>This method returns the metadata associated with the account objects
-created by this instance of <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>. The keys of the
+created by this instance of <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code>. The keys of the
 returned dict are the attribute names attached to the account objects.
 The value of each key is a set representing all of the possible values
 assigned to that attribute. For example:</p>
@@ -2004,7 +2004,7 @@ assert attrs['id'] == {'100200300400', '200300400100', '300400100200'}
 <p>Without any arguments, account objects for all accounts are returned. A
 list of <code>acct_ids</code> may be provided to limit the list to accounts
 matching the account IDs. If one or more specified account IDs is
-missing, <a title="awsrun.acctload.AccountsNotFoundError" href="#awsrun.acctload.AccountsNotFoundError"><code>AccountsNotFoundError</code></a> is raised.</p>
+missing, <code><a title="awsrun.acctload.AccountsNotFoundError" href="#awsrun.acctload.AccountsNotFoundError">AccountsNotFoundError</a></code> is raised.</p>
 <p>The returned list of accounts can be filtered further by providing dicts
 for <code>include</code> and <code>exclude</code> parameters that specify attributes and a
 list of values for those attributes that must match. For example,
@@ -2125,7 +2125,7 @@ to an invalid attribute name, <code>AttributeError</code> is raised. Finally, if
 <span>(</span><span>url, max_age=0, delimiter=',', id_attr='id', str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Returns an <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> with accounts loaded from a CSV file/url.</p>
+<section class="desc"><p>Returns an <code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code> with accounts loaded from a CSV file/url.</p>
 <p>Loaded accounts will include metadata associated with each account in the
 CSV document retrieved from the <code>url</code>. File based URLs can be used to load
 data from a local file. To cache the CSV results, specify the number of
@@ -2150,11 +2150,11 @@ assert accts[0].id == '100200300400'
 assert accts[0].env == 'prod'
 assert accts[0].status == 'active'
 </code></pre>
-<p>CSVAccountLoader is a subclass of the <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>, which is passed a
+<p>CSVAccountLoader is a subclass of the <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code>, which is passed a
 set of account dicts loaded from the CSV. As such, the remainder of the
 parameters in the constructor &ndash; <code>id_attr</code>, <code>str_template</code>, <code>include_attrs</code>,
 and <code>exclude_attrs</code> &ndash; are defined in the constructor of
-<a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>.</p></section>
+<code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code>.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2251,7 +2251,7 @@ and <code>exclude_attrs</code> &ndash; are defined in the constructor of
 <span>(</span><span>url, max_age=0, id_attr='id', path=None, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Returns an <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> with accounts loaded from JSON.</p>
+<section class="desc"><p>Returns an <code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code> with accounts loaded from JSON.</p>
 <p>Loaded accounts will include metadata associated with each account in the
 JSON document retrieved from the <code>url</code>. File based URLs can be used to load
 data from a local file. To cache the JSON results, specify the number of
@@ -2276,10 +2276,10 @@ assert accts[0].id == '100200300400'
 assert accts[0].env == 'prod'
 assert accts[0].status == 'active'
 </code></pre>
-<p>JSONAccountLoader is a subclass of the <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>, which loads
+<p>JSONAccountLoader is a subclass of the <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code>, which loads
 accounts from a set of dicts. As such, the remainder of the parameters in
 the constructor &ndash; <code>id_attr</code>, <code>path</code>, <code>str_template</code>, <code>include_attrs</code>, and
-<code>exclude_attrs</code> &ndash; are defined in the constructor of <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>.</p></section>
+<code>exclude_attrs</code> &ndash; are defined in the constructor of <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code>.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2375,7 +2375,7 @@ the constructor &ndash; <code>id_attr</code>, <code>path</code>, <code>str_templ
 <span>(</span><span>url, max_age=0, id_attr='id', path=None, str_template=None, include_attrs=None, exclude_attrs=None, no_verify=False)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Returns an <a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader"><code>AccountLoader</code></a> with accounts loaded from YAML.</p>
+<section class="desc"><p>Returns an <code><a title="awsrun.acctload.AccountLoader" href="#awsrun.acctload.AccountLoader">AccountLoader</a></code> with accounts loaded from YAML.</p>
 <p>Loaded accounts will include metadata associated with each account in the
 YAML document retrieved from the <code>url</code>. File based URLs can be used to load
 data from a local file. To cache the YAML results, specify the number of
@@ -2403,10 +2403,10 @@ assert accts[0].id == '100200300400'
 assert accts[0].env == 'prod'
 assert accts[0].status == 'active'
 </code></pre>
-<p>YAMLAccountLoader is a subclass of the <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>, which loads
+<p>YAMLAccountLoader is a subclass of the <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code>, which loads
 accounts from a set of dicts. As such, the remainder of the parameters in
 the constructor &ndash; <code>id_attr</code>, <code>path</code>, <code>str_template</code>, <code>include_attrs</code>, and
-<code>exclude_attrs</code> &ndash; are defined in the constructor of <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>.</p></section>
+<code>exclude_attrs</code> &ndash; are defined in the constructor of <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code>.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2505,12 +2505,12 @@ the constructor &ndash; <code>id_attr</code>, <code>path</code>, <code>str_templ
 <span>(</span><span>attributes)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Abstract base class used by <a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a> to represent an account and its metadata.</p>
+<section class="desc"><p>Abstract base class used by <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code> to represent an account and its metadata.</p>
 <p>This class is dynamically subclassed by the account loader to create a
 unique <code>Account</code> class to hold account data. It is a lightweight subclass
 that contains a single fixed slot called <code>_attrs</code>, which is used to store a
 reference to the original account dicts passed to the constructor of
-<a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader"><code>MetaAccountLoader</code></a>. The subclass allows for direct object access of those
+<code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code>. The subclass allows for direct object access of those
 attributes by providing a <code>__getattr__</code> implementation.
 In addition, a
 customized <code>__str__</code> implementation is provided based on the format string
@@ -2725,7 +2725,7 @@ format string of the Account object.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

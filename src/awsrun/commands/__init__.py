@@ -335,6 +335,12 @@ variable - do not modify without the use of explicit synchronization. If you
 need to update an instance variable, you should define your own collect results
 method as described in the next section.
 
+In the rare case where you, the author of a command, do not want your command to
+be executed concurrently, use the `awsrun.runner.max_thread_limit` decorator on
+your execute method. This will prevent awsrun for exceeding the number of
+concurrent executions specified. Limiting the number of concurrent executions
+shouldn't be done often as it negates one of the primary benefits of awsrun.
+
 Please refer to the documentation for `awsrun.runner.Command.execute` and
 `awsrun.runner.RegionalCommand.regional_execute` for pointers on thread-safety
 when building your own commands that operate in a multi-threaded environment.

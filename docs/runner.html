@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.5" />
+<meta name="generator" content="pdoc 0.9.1" />
 <title>awsrun.runner API documentation</title>
 <meta name="description" content="Executes a `Command` across one or more accounts concurrently …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <link href="/awsrun/webfonts.css" rel="stylesheet">
 <style>
@@ -47,26 +47,26 @@ font-weight: bold;
 <h1 class="title">Module <code>awsrun.runner</code></h1>
 </header>
 <section id="section-intro">
-<p>Executes a <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a> across one or more accounts concurrently.</p>
+<p>Executes a <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code> across one or more accounts concurrently.</p>
 <h2 id="overview">Overview</h2>
-<p>This module defines two core classes: <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a> and <a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a>.
-<a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a>
+<p>This module defines two core classes: <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code> and <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code>.
+<code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code>
 is a user-defined computation to be executed concurrently across one or more
-accounts by the <a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a>. Typically, commands are simply a set of boto3
+accounts by the <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code>. Typically, commands are simply a set of boto3
 calls, or similar cloud SDK calls, to be run within an account using credentials
-provided by a <a title="awsrun.session.SessionProvider" href="session.html#awsrun.session.SessionProvider"><code>SessionProvider</code></a> from the <a title="awsrun.session" href="session.html"><code>awsrun.session</code></a> module.
-All commands must be subclasses of <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a>. For cloud SDKs that have
+provided by a <code><a title="awsrun.session.SessionProvider" href="session.html#awsrun.session.SessionProvider">SessionProvider</a></code> from the <code><a title="awsrun.session" href="session.html">awsrun.session</a></code> module.
+All commands must be subclasses of <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code>. For cloud SDKs that have
 regional-based APIs , such as AWS and its boto3 library, the abstract base class
-<a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a> is provided to simplify the execution of commands across
+<code><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></code> is provided to simplify the execution of commands across
 regions.</p>
-<p><em>Note: When building a <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a> for use via the <a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> tool, the subclass
+<p><em>Note: When building a <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code> for use via the <code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> tool, the subclass
 of the command must be called <code>CLICommand</code> and must be in its own module, so the
-<a title="awsrun.cmdmgr" href="cmdmgr.html"><code>awsrun.cmdmgr</code></a> can find and load it.</em></p>
+<code><a title="awsrun.cmdmgr" href="cmdmgr.html">awsrun.cmdmgr</a></code> can find and load it.</em></p>
 <h2 id="basic-usage">Basic Usage</h2>
 <p>The following is a full example that demonstrates how to use the awsrun API to
-programmatically execute the included <a title="awsrun.commands.aws.access_report" href="commands/aws/access_report.html"><code>awsrun.commands.aws.access_report</code></a>
+programmatically execute the included <code><a title="awsrun.commands.aws.access_report" href="commands/aws/access_report.html">awsrun.commands.aws.access_report</a></code>
 command for two accounts using credentials stored in local config files with the
-<a title="awsrun.session.CredsViaProfile" href="session.html#awsrun.session.CredsViaProfile"><code>CredsViaProfile</code></a> session provider:</p>
+<code><a title="awsrun.session.CredsViaProfile" href="session.html#awsrun.session.CredsViaProfile">CredsViaProfile</a></code> session provider:</p>
 <pre><code>from awsrun.runner import AccountRunner
 from awsrun.session import CredsViaProfile
 from awsrun.commands.aws import access_report
@@ -77,13 +77,13 @@ account_runner = AccountRunner(session_provider)
 cmd = access_report.CLICommand()
 account_runner.run(cmd, ['111222333444', '222333444111'])
 </code></pre>
-<p>The <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> method will block until the command has been executed
-for each account. After the command has finished, the same <a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a> can
+<p>The <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> method will block until the command has been executed
+for each account. After the command has finished, the same <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code> can
 be used to execute additional commands. A new instance is not required for each
 command invocation.</p>
 <h2 id="user-defined-commands">User-Defined Commands</h2>
 <p>Users may define their own custom commands. The next example demonstrates how to
-write a simple <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a> that will print a list of VPCs IDs to the console for
+write a simple <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code> that will print a list of VPCs IDs to the console for
 the same accounts in two AWS regions:</p>
 <pre><code>from awsrun.runner import AccountRunner, Command
 from awsrun.session import CredsViaProfile
@@ -105,15 +105,15 @@ session_provider = CredsViaProfile()
 account_runner = AccountRunner(session_provider)
 account_runner.run(cmd, ['111222333444', '222333444111'])
 </code></pre>
-<p>The returned value from <a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a> is printed to the console because the
-default implementation of <a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results"><code>Command.collect_results()</code></a>. This may be fine for a
-command intended to be run from the included <a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> tool, but is likely
+<p>The returned value from <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code> is printed to the console because the
+default implementation of <code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>. This may be fine for a
+command intended to be run from the included <code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> tool, but is likely
 undesirable for programmatic use. The next section will present other options
 for the collection of results intended for non-CLI uses.</p>
 <p>Because AWS uses regional API calls, the above example can be rewritten using
-<a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a> to abstract away the explicit looping over regions and the
+<code><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></code> to abstract away the explicit looping over regions and the
 accumulation of results, which simplifies the building of commands intended for
-use with AWS. The key differences include <a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute"><code>RegionalCommand.regional_execute()</code></a>,
+use with AWS. The key differences include <code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">RegionalCommand.regional_execute()</a></code>,
 which takes an extra argument containing the name of the region being processed,
 and the elimination of the constructor as the regional command provides a
 default constructor:</p>
@@ -133,9 +133,9 @@ account_runner.run(cmd, ['111222333444', '222333444111'])
 </code></pre>
 <h2 id="collecting-results">Collecting Results</h2>
 <p>The final example demonstrates how to collect the results from all of the
-accounts and invocations of <a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a>, which is common if one wants to
-compute an aggregated value or access to the data after <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> has
-completed processing all accounts. To do so, a custom <a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results"><code>Command.collect_results()</code></a>
+accounts and invocations of <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code>, which is common if one wants to
+compute an aggregated value or access to the data after <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> has
+completed processing all accounts. To do so, a custom <code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>
 must be defined. The following example accumulates the list of VPCs in the
 specified regions:</p>
 <pre><code>from collections import defaultdict
@@ -166,22 +166,22 @@ account_runner.run(cmd, ['111222333444', '222333444111'])
 for region, vpc_ids in cmd.vpcs_by_region.items():
     # Do something with region and list of vpc_ids
 </code></pre>
-<p>This highlights an important aspect of a <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a>. One must not mutate instance
-variables without synchronization from within <a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a>. Remember, the
-<a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a> is concurrently executing the same command across multiple
+<p>This highlights an important aspect of a <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code>. One must not mutate instance
+variables without synchronization from within <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code>. Remember, the
+<code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code> is concurrently executing the same command across multiple
 accounts, so unsynchronized access may lead to data corruption or race
-conditions. Instead, command authors should implement <a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results"><code>Command.collect_results()</code></a>,
+conditions. Instead, command authors should implement <code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>,
 which is guaranteed to be called sequentially after each account has been
 processed, thus allowing users to safely mutate instance variables from within
 the method.</p>
-<p>The above example can also be rewritten using <a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a> like the prior
+<p>The above example can also be rewritten using <code><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></code> like the prior
 section to abstract away the explicit looping over regions and the accumulation
 of results, which simplifies the implementation of this command intended for
-AWS. When subclassing <a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a>, if the constructor is overridden, you
+AWS. When subclassing <code><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></code>, if the constructor is overridden, you
 must invoke the parent's constructor passing it the list of <code>regions</code> to
 process. In addition, the other difference is the region parameter on the
-<a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute"><code>RegionalCommand.regional_execute()</code></a> and
-<a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results"><code>RegionalCommand.regional_collect_results()</code></a> methods:</p>
+<code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">RegionalCommand.regional_execute()</a></code> and
+<code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results">RegionalCommand.regional_collect_results()</a></code> methods:</p>
 <pre><code>from collections import defaultdict
 from awsrun.runner import AccountRunner, RegionalCommand
 from awsrun.session import CredsViaProfile
@@ -385,6 +385,8 @@ process. In addition, the other difference is the region parameter on the
 import logging
 import sys
 import time
+import functools
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from awsrun.argparse import AppendWithoutDefault
@@ -922,6 +924,38 @@ def regional_execute_function(
     return (command.results, command.errors)
 
 
+def max_thread_limit(count):
+    &#34;&#34;&#34;Decorator to limit maximum number of concurrent executions.
+
+    In some cases, the author of a `Command` may wish to restrict the number of
+    concurrent executions of a command, regardless of the number of workers the
+    `AccountRunner` has been instantiated with. awsrun CLI users can specify the
+    number of workers via the `--threads` flag, which defaults to 10.
+
+    Use this with `Command.execute` or `RegionalCommand.regional_execute` to
+    guarantee concurrent executions do not exceed the specified `count`. When
+    the number of concurrent executions exceed the value, they will block until
+    an existing execution has completed. For example, the following will limit
+    concurrent executions to one:
+
+        @max_thread_limit(1)
+        def regional_execute(self, session, acct, region):
+           pass
+
+    Note: while this decorator can limit the number of concurrent executions, it
+    will not increase the number of workers in the `AccountRunner` worker pool.
+    This is a rate limiting decorator only.
+    &#34;&#34;&#34;
+    def decorator(func):
+        sem = threading.BoundedSemaphore(count)
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            with sem:
+                return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+
 class AccountRunner:
     &#34;&#34;&#34;Runs a `Command` across one or more accounts.
 
@@ -1135,8 +1169,8 @@ def _wrap_exception(exception):
 </code></dt>
 <dd>
 <section class="desc"><p>Executes a function across one or more accounts concurrently.</p>
-<p>This is a convenience function that instantiates an <a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a>, wraps a
-<code>func</code> in a <a title="awsrun.runner.CommandFunctionAdapter" href="#awsrun.runner.CommandFunctionAdapter"><code>CommandFunctionAdapter</code></a>, runs the command across a list of
+<p>This is a convenience function that instantiates an <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code>, wraps a
+<code>func</code> in a <code><a title="awsrun.runner.CommandFunctionAdapter" href="#awsrun.runner.CommandFunctionAdapter">CommandFunctionAdapter</a></code>, runs the command across a list of
 <code>accounts</code>, and then returns a tuple of dicts representing the results and
 errors after all accounts have been processed. The returned dicts are keyed
 by the account.</p>
@@ -1181,8 +1215,8 @@ of workers is specified by the <code>max_workers</code> argument, which defaults
 </code></dt>
 <dd>
 <section class="desc"><p>Executes a function across one or more accounts and regions concurrently.</p>
-<p>This is a convenience function that instantiates an <a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a>, wraps a
-<code>func</code> in a <a title="awsrun.runner.RegionalCommandFunctionAdapter" href="#awsrun.runner.RegionalCommandFunctionAdapter"><code>RegionalCommandFunctionAdapter</code></a>, runs the command across a list
+<p>This is a convenience function that instantiates an <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code>, wraps a
+<code>func</code> in a <code><a title="awsrun.runner.RegionalCommandFunctionAdapter" href="#awsrun.runner.RegionalCommandFunctionAdapter">RegionalCommandFunctionAdapter</a></code>, runs the command across a list
 of <code>accounts</code> and <code>regions</code>, and then returns a tuple of dicts representing
 the results and errors after all accounts have been processed. The returned
 dicts are keyed by a tuple of account and region.</p>
@@ -1224,6 +1258,63 @@ of workers is specified by the <code>max_workers</code> argument, which defaults
     return (command.results, command.errors)</code></pre>
 </details>
 </dd>
+<dt id="awsrun.runner.max_thread_limit"><code class="name flex">
+<span>def <span class="ident">max_thread_limit</span></span>(<span>count)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Decorator to limit maximum number of concurrent executions.</p>
+<p>In some cases, the author of a <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code> may wish to restrict the number of
+concurrent executions of a command, regardless of the number of workers the
+<code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code> has been instantiated with. awsrun CLI users can specify the
+number of workers via the <code>--threads</code> flag, which defaults to 10.</p>
+<p>Use this with <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code> or <code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">RegionalCommand.regional_execute()</a></code> to
+guarantee concurrent executions do not exceed the specified <code>count</code>. When
+the number of concurrent executions exceed the value, they will block until
+an existing execution has completed. For example, the following will limit
+concurrent executions to one:</p>
+<pre><code>@max_thread_limit(1)
+def regional_execute(self, session, acct, region):
+   pass
+</code></pre>
+<p>Note: while this decorator can limit the number of concurrent executions, it
+will not increase the number of workers in the <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code> worker pool.
+This is a rate limiting decorator only.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def max_thread_limit(count):
+    &#34;&#34;&#34;Decorator to limit maximum number of concurrent executions.
+
+    In some cases, the author of a `Command` may wish to restrict the number of
+    concurrent executions of a command, regardless of the number of workers the
+    `AccountRunner` has been instantiated with. awsrun CLI users can specify the
+    number of workers via the `--threads` flag, which defaults to 10.
+
+    Use this with `Command.execute` or `RegionalCommand.regional_execute` to
+    guarantee concurrent executions do not exceed the specified `count`. When
+    the number of concurrent executions exceed the value, they will block until
+    an existing execution has completed. For example, the following will limit
+    concurrent executions to one:
+
+        @max_thread_limit(1)
+        def regional_execute(self, session, acct, region):
+           pass
+
+    Note: while this decorator can limit the number of concurrent executions, it
+    will not increase the number of workers in the `AccountRunner` worker pool.
+    This is a rate limiting decorator only.
+    &#34;&#34;&#34;
+    def decorator(func):
+        sem = threading.BoundedSemaphore(count)
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            with sem:
+                return func(*args, **kwargs)
+        return wrapper
+    return decorator</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -1235,16 +1326,16 @@ of workers is specified by the <code>max_workers</code> argument, which defaults
 <dd>
 <section class="desc"><p>Abstract base class that represents a command to execute on an account.</p>
 <p>A command is a unit of work that is executed across one or more accounts by
-the <a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a>. During processing of an account, the command is
+the <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code>. During processing of an account, the command is
 provided a session configured with the appropriate credentials. In addition,
 the command is also provided an account object for the account being
 processed. The attributes and methods attached to the account object depend
-on what was passed to <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>. This allows users to pass
+on what was passed to <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>. This allows users to pass
 arbitrary account objects for use within their custom commands.</p>
 <p>All user-defined awsrun commands must be a subclass this base class. This
 class documents the contract between the awsrun framework and command
 author. For several examples on how to write custom commands, refer to the
-built-in commands included in the <a title="awsrun.commands" href="commands/index.html"><code>awsrun.commands</code></a> module.</p></section>
+built-in commands included in the <code><a title="awsrun.commands" href="commands/index.html">awsrun.commands</a></code> module.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1477,15 +1568,15 @@ built-in commands included in the <a title="awsrun.commands" href="commands/inde
 <dd>
 <section class="desc"><p>Factory to build the command from CLI args and user configuration.</p>
 <p><em>This method is only required if the command is intended for use with
-the <a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> command line. API users will not instantiate commands
+the <code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> command line. API users will not instantiate commands
 via this factory method.</em></p>
-<p>The CLI uses <a title="awsrun.cmdmgr" href="cmdmgr.html"><code>awsrun.cmdmgr</code></a> to find, load, and instantiate commands.
-This factory is called by the <a title="awsrun.cmdmgr.CommandManager" href="cmdmgr.html#awsrun.cmdmgr.CommandManager"><code>CommandManager</code></a> and must
+<p>The CLI uses <code><a title="awsrun.cmdmgr" href="cmdmgr.html">awsrun.cmdmgr</a></code> to find, load, and instantiate commands.
+This factory is called by the <code><a title="awsrun.cmdmgr.CommandManager" href="cmdmgr.html#awsrun.cmdmgr.CommandManager">CommandManager</a></code> and must
 return an instance of the command. Commands can hook into the command
 line argument processing of the main CLI. This allows command authors to
 define their own flags and arguments for the CLI. In addition, authors
 can pull values from the user configuration file via the
-<a title="awsrun.config.Config" href="config.html#awsrun.config.Config"><code>Config</code></a> API.</p>
+<code><a title="awsrun.config.Config" href="config.html#awsrun.config.Config">Config</a></code> API.</p>
 <p>For reference, there are several types of awsrun CLI arguments as shown
 below:</p>
 <pre><code>awsrun --account 100200300400 access_report --verbose
@@ -1522,7 +1613,7 @@ the <code>parser</code>. This is done to avoid unintended consequences when the
 main CLI argument parser consumes a flag in the command because it
 shares the same name.</p>
 <p>The <code>cfg</code> argument is a callable that implements the
-<a title="awsrun.config.Config.get" href="config.html#awsrun.config.Config.get"><code>Config.get()</code></a> interface allowing one to query for
+<code><a title="awsrun.config.Config.get" href="config.html#awsrun.config.Config.get">Config.get()</a></code> interface allowing one to query for
 type-checked key/value pairs defined in a user configuration file. The
 keys passed to <code>cfg</code> are relative to the <code>Commands</code> section of the
 configuration and the command name. Given the following user config and
@@ -1674,8 +1765,8 @@ def from_cli(cls, parser, argv, cfg):  # pylint: disable=unused-argument
 <span>def <span class="ident">pre_hook</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Invoked by <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> before any processing starts.</p>
-<p>This method is invoked only once per invocation of <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>.
+<section class="desc"><p>Invoked by <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> before any processing starts.</p>
+<p>This method is invoked only once per invocation of <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>.
 It is not executed before each account is processed, but rather once
 before any accounts are processed.</p>
 <p>The default implementation does nothing.</p></section>
@@ -1698,8 +1789,8 @@ before any accounts are processed.</p>
 <span>def <span class="ident">post_hook</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Invoked by <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> after all processing has completed.</p>
-<p>This method is invoked only once per invocation of <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>.
+<section class="desc"><p>Invoked by <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> after all processing has completed.</p>
+<p>This method is invoked only once per invocation of <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>.
 It is not executed after each account is processed, but rather once
 after all accounts have been processed.</p>
 <p>The default implementation does nothing.</p></section>
@@ -1722,13 +1813,13 @@ after all accounts have been processed.</p>
 <span>def <span class="ident">execute</span></span>(<span>self, session, acct)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Invoked by <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> to process an account.</p>
+<section class="desc"><p>Invoked by <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> to process an account.</p>
 <p>This method is invoked once for each account. The <code>session</code> parameter is
 a boto3 Session object, or similar cloud SDK session-like object, with
 credentials for the account being processed. The <code>acct</code> will be the same
-object that was passed in the list of accounts to <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>.</p>
+object that was passed in the list of accounts to <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>.</p>
 <p>The return value from this method can be of any type. By default, this
-value will be printed to the console if a <a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results"><code>Command.collect_results()</code></a>
+value will be printed to the console if a <code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>
 implementation is not provided. If an exception is raised during the
 execution, it will be printed to the console on standard error.</p>
 <p>Note the following items of importance:</p>
@@ -1741,7 +1832,7 @@ implementation.</p>
 <p>Recognize that this method will be invoked concurrently, so
 modification of instance variables from within this method requires
 synchronization. If accumulating results, define a custom
-<a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results"><code>Command.collect_results()</code></a> which is guaranteed to be invoked
+<code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code> which is guaranteed to be invoked
 sequentially.</p>
 </li>
 <li>
@@ -1818,19 +1909,19 @@ string buffer and return the buffer at the end of the method:</p>
 <span>def <span class="ident">collect_results</span></span>(<span>self, acct, get_result)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Invoked by <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> after processing an account.</p>
-<p>This method is invoked by <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> after each <code>acct</code> has been
-processed by <a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a>. The results from execute are provided
+<section class="desc"><p>Invoked by <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> after processing an account.</p>
+<p>This method is invoked by <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> after each <code>acct</code> has been
+processed by <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code>. The results from execute are provided
 via <code>get_result</code>, which is a callable that will either return the value
 returned by execute or raise an exception if one was raised. The <code>acct</code>
 parameter will be the same object that was passed in the list of
-accounts to <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>.</p>
-<p>Note: <a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results"><code>Command.collect_results()</code></a> is guaranteed to be called sequentially
+accounts to <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>.</p>
+<p>Note: <code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code> is guaranteed to be called sequentially
 by the main thread, so it is safe to mutate instance variables attached
-to the <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a> object from within this method. This allows command
+to the <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code> object from within this method. This allows command
 authors to safely accumulate results of processing within instance
 variables without the need for synchronization.</p>
-<p>The default implementation prints the return value of <a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a>
+<p>The default implementation prints the return value of <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code>
 to the console on standard output. If the command's execution raises an
 exception, it prints the exception to standard error and logs the stack
 trace at WARN log level.</p></section>
@@ -1889,17 +1980,17 @@ process. For example:</p>
         self.arg2 = arg2
 </code></pre>
 <p>A command is a unit of work that is executed across one or more accounts and
-regions by the <a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a>. During processing of an account and region,
+regions by the <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code>. During processing of an account and region,
 the command is provided a boto3 session, or similar cloud SDK session-like
 object, configured with the appropriate credentials. In addition, the
 command is provided an account object for the account being processed. The
 attributes and methods attached to the account object depend on what was
-passed to <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>. This allows users to pass arbitrary account
+passed to <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>. This allows users to pass arbitrary account
 objects for use within their custom commands.</p>
 <p>This class documents the contract between the awsrun framework and command
-author. Subclasses must implement <a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute"><code>RegionalCommand.regional_execute()</code></a>. For
+author. Subclasses must implement <code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">RegionalCommand.regional_execute()</a></code>. For
 examples on how to write custom regional commands, refer to the built-in
-commands included in the <a title="awsrun.commands" href="commands/index.html"><code>awsrun.commands</code></a> module.</p></section>
+commands included in the <code><a title="awsrun.commands" href="commands/index.html">awsrun.commands</a></code> module.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2134,9 +2225,9 @@ commands included in the <a title="awsrun.commands" href="commands/index.html"><
 <dd>
 <section class="desc"><p>Factory to build a regional command from CLI args and user configuration.</p>
 <p><em>This method is only required if the command is intended for use with
-the <a title="awsrun.cli" href="cli.html"><code>awsrun.cli</code></a> command line. API users will not instantiate commands
+the <code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> command line. API users will not instantiate commands
 via this factory method.</em></p>
-<p>Refer to <a title="awsrun.runner.Command.from_cli" href="#awsrun.runner.Command.from_cli"><code>Command.from_cli()</code></a> for in-depth discussion on the use of this
+<p>Refer to <code><a title="awsrun.runner.Command.from_cli" href="#awsrun.runner.Command.from_cli">Command.from_cli()</a></code> for in-depth discussion on the use of this
 factory method. This method only adds the following additional behavior
 to simplify building a factory for a regional command:</p>
 <ol>
@@ -2159,7 +2250,7 @@ to register the arguments on behalf of the regional command author:</p>
 </li>
 <li>
 <p>The chosen regions must be passed to the command's constructor
-because subclasses of <a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a> must invoke its constructor,
+because subclasses of <code><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></code> must invoke its constructor,
 which requires a list of regions to process. If the instance returned
 from this factory method does not have a non-zero <code>regions</code> instance
 variable, a usage error is displayed to the user and the program
@@ -2219,15 +2310,15 @@ def regional_from_cli(cls, parser, argv, cfg):  # pylint: disable=unused-argumen
 <span>def <span class="ident">regional_execute</span></span>(<span>self, session, acct, region)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Invoked by <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> to process an account / region pair.</p>
+<section class="desc"><p>Invoked by <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> to process an account / region pair.</p>
 <p>This method is invoked for each account and region pair. The <code>session</code>
 parameter is a boto3 Session object, or similar cloud SDK session-like
 object, with credentials for the account being processed. The <code>acct</code>
 will be the same object that was passed in the list of accounts to
-<a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>. <code>region</code> is a string representing the region name
+<code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>. <code>region</code> is a string representing the region name
 such as "us-east-1".</p>
 <p>The return value can be of any type. It will be, by default, printed to
-the console if a <a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results"><code>RegionalCommand.regional_collect_results()</code></a>
+the console if a <code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results">RegionalCommand.regional_collect_results()</a></code>
 implementation is not provided. If an exception is raised during the
 execution, it will be printed to the console on standard error.</p>
 <p>Note the following items of importance:</p>
@@ -2240,7 +2331,7 @@ implementation.</p>
 <p>Recognize that this method will be invoked concurrently, so
 modification of instance variables from within this method requires
 synchronization. If accumulating results, define a custom
-<a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results"><code>RegionalCommand.regional_collect_results()</code></a> which is guaranteed to be
+<code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results">RegionalCommand.regional_collect_results()</a></code> which is guaranteed to be
 invoked sequentially.</p>
 </li>
 <li>
@@ -2338,22 +2429,22 @@ string buffer and return the buffer at the end of the method:</p>
 <span>def <span class="ident">regional_collect_results</span></span>(<span>self, acct, region, get_result)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Invoked by <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> after processing an account and region.</p>
-<p>This method is invoked by <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> after each <code>acct</code> /
-<code>region</code> pair has been processed by <a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute"><code>RegionalCommand.regional_execute()</code></a>.
+<section class="desc"><p>Invoked by <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> after processing an account and region.</p>
+<p>This method is invoked by <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> after each <code>acct</code> /
+<code>region</code> pair has been processed by <code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">RegionalCommand.regional_execute()</a></code>.
 The results from execute are provided via <code>get_result</code>, which is a
 callable that will either return the value returned by the regional
 execute method or raise an exception if one was raised. The <code>acct</code>
 parameter will be the same object that was passed in the list of
-accounts to <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>.</p>
-<p>Note: <a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results"><code>RegionalCommand.regional_collect_results()</code></a> is guaranteed to be
+accounts to <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>.</p>
+<p>Note: <code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results">RegionalCommand.regional_collect_results()</a></code> is guaranteed to be
 called sequentially by the main thread, so it is safe to mutate instance
-variables attached to the <a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a> object from within this
+variables attached to the <code><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></code> object from within this
 method. This allows command authors to safely accumulate results of
 processing within instance variables without the need for
 synchronization.</p>
 <p>The default implementation prints the return value of
-<a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute"><code>RegionalCommand.regional_execute()</code></a> to the console on standard output. If
+<code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">RegionalCommand.regional_execute()</a></code> to the console on standard output. If
 the command's execution raises an exception, it prints the exception to
 standard error and logs the stack trace at WARN log level.</p></section>
 <details class="source">
@@ -2410,11 +2501,11 @@ standard error and logs the stack trace at WARN log level.</p></section>
 <span>(</span><span>func)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Function adapter for a <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a>.</p>
-<p>This adapter wraps <code>func</code> in a <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a> that collects the results of the
+<section class="desc"><p>Function adapter for a <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code>.</p>
+<p>This adapter wraps <code>func</code> in a <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code> that collects the results of the
 function and any exceptions raised in two instance variables. These are
-available for inspection after the <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> has returned. The
-<code>func</code> should have the same signature as <a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a> sans the self
+available for inspection after the <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> has returned. The
+<code>func</code> should have the same signature as <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code> sans the self
 parameter.</p></section>
 <details class="source">
 <summary>
@@ -2482,11 +2573,11 @@ parameter.</p></section>
 <span>(</span><span>regions, func)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Function adapter for a <a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a>.</p>
-<p>This adapter wraps <code>func</code> in a <a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand"><code>RegionalCommand</code></a> that collects the results
+<section class="desc"><p>Function adapter for a <code><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></code>.</p>
+<p>This adapter wraps <code>func</code> in a <code><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></code> that collects the results
 of the function and any exceptions raised in two instance variables. These
-are available for inspection after the <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a> has returned. The
-<code>func</code> should have the same signature as <a title="awsrun.runner.RegionalCommand.execute" href="#awsrun.runner.Command.execute"><code>RegionalCommand.execute()</code></a> sans the
+are available for inspection after the <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> has returned. The
+<code>func</code> should have the same signature as <code><a title="awsrun.runner.RegionalCommand.execute" href="#awsrun.runner.Command.execute">RegionalCommand.execute()</a></code> sans the
 self parameter.</p></section>
 <details class="source">
 <summary>
@@ -2558,16 +2649,16 @@ self parameter.</p></section>
 <span>(</span><span>session_provider, max_workers=10)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Runs a <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a> across one or more accounts.</p>
-<p>The <a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner"><code>AccountRunner</code></a> manages the concurrent execution of a <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a> across
+<section class="desc"><p>Runs a <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code> across one or more accounts.</p>
+<p>The <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code> manages the concurrent execution of a <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code> across
 one or more cloud accounts. A thread pool is used to process the accounts.
 By default, the number of workers is 10 unless the <code>max_workers</code> argument
 has been specified.</p>
 <p>A single worker is responsible for processing an account. The worker obtains
 a boto3 session, or similar cloud SDK session object, with the appropriate
 credentials for the account being processed by using the <code>session_provider</code>,
-which must be a subclass of <a title="awsrun.session.SessionProvider" href="session.html#awsrun.session.SessionProvider"><code>SessionProvider</code></a>.</p>
-<p>It then invokes <a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a> with the session for the account being
+which must be a subclass of <code><a title="awsrun.session.SessionProvider" href="session.html#awsrun.session.SessionProvider">SessionProvider</a></code>.</p>
+<p>It then invokes <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code> with the session for the account being
 processed. Any exceptions raised during the invocation of a command are
 caught to prevent the termination of other threads. The result of the
 execute method, or exceptions raised, are made available to the command.</p></section>
@@ -2707,25 +2798,25 @@ execute method, or exceptions raised, are made available to the command.</p></se
 <section class="desc"><p>Execute a command concurrently on the specified accounts.</p>
 <p>This method will block until all accounts have been processed. The
 return value is the number of seconds it took to process the accounts.</p>
-<p>The <code>cmd</code> must be a subclass of <a title="awsrun.runner.Command" href="#awsrun.runner.Command"><code>Command</code></a>. The runner will invoke the
-<a title="awsrun.runner.Command.pre_hook" href="#awsrun.runner.Command.pre_hook"><code>Command.pre_hook()</code></a> once before it starts processing any accounts, then
-accounts are processed concurrently and <a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a> is invoked by
+<p>The <code>cmd</code> must be a subclass of <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code>. The runner will invoke the
+<code><a title="awsrun.runner.Command.pre_hook" href="#awsrun.runner.Command.pre_hook">Command.pre_hook()</a></code> once before it starts processing any accounts, then
+accounts are processed concurrently and <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code> is invoked by
 a worker for each account. As each execute method returns, the main
-thread will invoke <a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results"><code>Command.collect_results()</code></a>, which ensures results are
+thread will invoke <code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>, which ensures results are
 collected sequentially. Finally, after all accounts have been processed,
-<a title="awsrun.runner.Command.post_hook" href="#awsrun.runner.Command.post_hook"><code>Command.post_hook()</code></a> is called.</p>
+<code><a title="awsrun.runner.Command.post_hook" href="#awsrun.runner.Command.post_hook">Command.post_hook()</a></code> is called.</p>
 <p>The specified list of <code>accounts</code> can be of any type as long as the
 function specified by the <code>key</code> parameter returns a string representing
 the cloud account ID when passed one of these accounts. This allows
 users to pass any object representing an account all the way through to
-<a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a>. The only contract is that a <code>key</code> function must be
+<code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code>. The only contract is that a <code>key</code> function must be
 provided, so workers can obtain the account ID, which is used to request
 a session for the account.</p>
 <p>For example, <code>accounts</code> could be a simple list of strings of AWS account
 IDs. The default value of <code>key</code> is the identity function, which returns
 the string itself satisfying the contract above. Alternatively,
 <code>accounts</code> could be a list of dicts containing metadata for an account,
-which would then be available for command authors in <a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute"><code>Command.execute()</code></a>.
+which would then be available for command authors in <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code>.
 If the list of accounts specified contained the following:</p>
 <pre><code>[
     {'id': '100200300400', 'env': 'prod', 'status': 'active'},
@@ -2738,9 +2829,9 @@ will return the account ID string satisfying the contract above.
 Likewise, if accounts were a list of objects that contained an <code>acct_id</code>
 attribute, <code>key</code> must be defined as <code>lambda x: x.acct_id</code> to satisfy the
 contract. If the key function does not return a string or throws an
-exception, then an <a title="awsrun.runner.InvalidAccountIDError" href="#awsrun.runner.InvalidAccountIDError"><code>InvalidAccountIDError</code></a> is raised in the worker
+exception, then an <code><a title="awsrun.runner.InvalidAccountIDError" href="#awsrun.runner.InvalidAccountIDError">InvalidAccountIDError</a></code> is raised in the worker
 thread processing the account, which will then propagate to the
-<a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results"><code>Command.collect_results()</code></a>.</p></section>
+<code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2845,11 +2936,11 @@ thread processing the account, which will then propagate to the
 </dd>
 <dt id="awsrun.runner.InvalidAccountIDError"><code class="flex name class">
 <span>class <span class="ident">InvalidAccountIDError</span></span>
-<span>(</span><span>...)</span>
+<span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Raised if an account ID cannot be extracted from an account object.</p>
-<p>This is due to an invalid key function specified to <a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run"><code>AccountRunner.run()</code></a>. The
+<p>This is due to an invalid key function specified to <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>. The
 function either did not return a string or an exception was raised. In
 either case, a valid account ID could be be obtained from the account
 object, so this account cannot be processed.</p></section>
@@ -2895,6 +2986,7 @@ object, so this account cannot be processed.</p></section>
 <ul class="">
 <li><code><a title="awsrun.runner.execute_function" href="#awsrun.runner.execute_function">execute_function</a></code></li>
 <li><code><a title="awsrun.runner.regional_execute_function" href="#awsrun.runner.regional_execute_function">regional_execute_function</a></code></li>
+<li><code><a title="awsrun.runner.max_thread_limit" href="#awsrun.runner.max_thread_limit">max_thread_limit</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
@@ -2946,7 +3038,7 @@ object, so this account cannot be processed.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

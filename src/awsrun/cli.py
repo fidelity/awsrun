@@ -693,7 +693,7 @@ page. For a gentle introduction to the credential loader plug-ins, see the
 [Credential Plug-ins](#credential-plug-ins) section in the user guide above.
 
 If this section is not defined, the CLI will use the default credential loader
-`awsrun.plugins.creds.Profile.`.
+`awsrun.plugins.creds.aws.Profile.`.
 
     Credentials:
       plugin: PYTHON_MODULE.CLASSNAME

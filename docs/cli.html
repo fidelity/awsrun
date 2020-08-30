@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.5" />
+<meta name="generator" content="pdoc 0.9.1" />
 <title>awsrun.cli API documentation</title>
 <meta name="description" content="The awsrun CLI concurrently executes commands across AWS accounts …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <link href="/awsrun/webfonts.css" rel="stylesheet">
 <style>
@@ -58,7 +58,7 @@ overview of features and installation instructions, refer to the
 <a href="https://github.com/fmr-llc/awsrun">awsrun</a> project
 page.</p>
 <h2 id="cli-user-guide">CLI User Guide</h2>
-<p>The <a title="awsrun.cli" href="#awsrun.cli"><code>awsrun.cli</code></a> is a full-featured command line tool with a plethora of options
+<p>The <code><a title="awsrun.cli" href="#awsrun.cli">awsrun.cli</a></code> is a full-featured command line tool with a plethora of options
 to allow a user to invoke a "command" across one or more AWS accounts. A command
 is a Python module that executes a block of Python code &ndash; typically using the
 Boto3 library. awsrun includes a handful of built-in commands, but you are
@@ -69,7 +69,7 @@ plug-ins for obtaining credentials and account loading. If you are looking for
 reference material instead, then skip ahead to the <a href="#cli-reference">Reference
 Guide</a>.</p>
 <p>For the remainder of this guide, we'll be using the general purpose
-<a title="awsrun.commands.aws.aws" href="commands/aws/aws.html"><code>awsrun.commands.aws.aws</code></a> command, which is an adapter for the AWS CLI tool.
+<code><a title="awsrun.commands.aws.aws" href="commands/aws/aws.html">awsrun.commands.aws.aws</a></code> command, which is an adapter for the AWS CLI tool.
 This allows users to concurrently run the AWS CLI across multiple accounts. When
 combined with other awsrun features such as SAML authentication, cross-account
 access, and metadata account filters, it makes the AWS CLI tool even more
@@ -107,7 +107,7 @@ $ aws --profile 200300400100 --region us-east-1 ec2 describe-vpcs
 $ aws --profile 200300400100 --region us-west-2 ec2 describe-vpcs
 </code></pre>
 <p>Now let's use an "out of the box" installation of awsrun. We'll use the built-in
-<a title="awsrun.commands.aws.aws" href="commands/aws/aws.html"><code>awsrun.commands.aws.aws</code></a> command, which allows you to run an AWS CLI command
+<code><a title="awsrun.commands.aws.aws" href="commands/aws/aws.html">awsrun.commands.aws.aws</a></code> command, which allows you to run an AWS CLI command
 concurrently across one or more accounts and one or more regions. The following
 command will execute the "ec2 describe-vpcs" across both accounts concurrently:</p>
 <pre><code>$ awsrun --account 100200300400 --account 200300400100 aws ec2 describe-vpcs --region us-east-1 --region us-west-2
@@ -132,7 +132,7 @@ plug-ins to obtain credentials for accounts via SAML and cross-account access.</
 yet, but when running the same AWS CLI command over more than a handful of
 accounts, it becomes incredibly powerful especially when coupled with account
 and credential loader plug-ins. Even more powerful is when you start to build
-your own commands, which is covered in another guide in the <a title="awsrun.commands" href="commands/index.html"><code>awsrun.commands</code></a>
+your own commands, which is covered in another guide in the <code><a title="awsrun.commands" href="commands/index.html">awsrun.commands</a></code>
 module.</p>
 <p>awsrun executes commands concurrently across accounts via a worker pool, which
 contains ten threads by default. You can change this value by specifying the
@@ -180,11 +180,11 @@ must be quoted as AWS account numbers can have leading zeros:</p>
 <p>Don't worry, if you forget to quote the account numbers, the CLI type checks all
 values in the configuration and will complain if you use a number by accident.
 For more information on the core command line arguments and their corresponding
-configuration keys, please refer to <a title="awsrun.cli" href="#awsrun.cli"><code>awsrun.cli</code></a>.</p>
+configuration keys, please refer to <code><a title="awsrun.cli" href="#awsrun.cli">awsrun.cli</a></code>.</p>
 <p>In addition to core options, you can add defaults for specific awsrun commands
 in the top-level <code>Commands</code> section of the config. Again, using our previous
 example, assume you always want to use "us-east-1" and "us-west-2" as the
-regions when using the <a title="awsrun.commands.aws.aws" href="commands/aws/aws.html"><code>awsrun.commands.aws.aws</code></a> command. All we need to do is
+regions when using the <code><a title="awsrun.commands.aws.aws" href="commands/aws/aws.html">awsrun.commands.aws.aws</a></code> command. All we need to do is
 add an <code>aws</code> key, the name of the command, in the <code>Commands</code> section:</p>
 <pre><code>Commands:
   aws:
@@ -195,23 +195,23 @@ add an <code>aws</code> key, the name of the command, in the <code>Commands</cod
 <p>Commands can define their own command line flags and configuration options. You
 will need to refer to the documentation for each command for more information.
 For example, you can find the valid flags and configuration options for the aws
-command on the <a title="awsrun.commands.aws.aws" href="commands/aws/aws.html"><code>awsrun.commands.aws.aws</code></a> page.</p>
+command on the <code><a title="awsrun.commands.aws.aws" href="commands/aws/aws.html">awsrun.commands.aws.aws</a></code> page.</p>
 <p>In the next section, we'll explore how to take advantage of the awsrun plug-ins
 for account and credential loading.</p>
 <h3 id="credential-plug-ins">Credential Plug-ins</h3>
 <p>Up until this point, we have been using the default credential loader called
-<a title="awsrun.plugins.creds.aws.Profile" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.Profile"><code>Profile</code></a>, which looks for account profiles in your
+<code><a title="awsrun.plugins.creds.aws.Profile" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.Profile">Profile</a></code>, which looks for account profiles in your
 <code>$HOME/.aws/credentials</code> or <code>$HOME/.aws/config</code>. Let's look at some of the other
 mechanisms included with awsrun such as the SAML and cross-account access
 plug-ins. If you are only seeking reference material, please refer to the
-<a title="awsrun.plugins.creds" href="plugins/creds/index.html"><code>awsrun.plugins.creds</code></a> page instead.</p>
+<code><a title="awsrun.plugins.creds" href="plugins/creds/index.html">awsrun.plugins.creds</a></code> page instead.</p>
 <p>Within many enterprises, the use of single sign-on (SSO) is prevalent and allows
 for centralized account management. AWS supports federated users and SSO via the
 use of a SAML-compliant Identity Provider (IdP). Rather than define IAM users in
 each account, an IAM role can be created that allows for federated access via
 your IdP. To use SAML-based access with AWS, you need to obtain temporary tokens
 from the AWS STS service.</p>
-<p>The <a title="awsrun.plugins.creds.aws.SAML" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAML"><code>SAML</code></a> credential plug-in simplifies this process
+<p>The <code><a title="awsrun.plugins.creds.aws.SAML" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAML">SAML</a></code> credential plug-in simplifies this process
 for you. At a minimum, you'll need the IAM role that has been setup for SAML as
 well as the URL to your IdP. Let's assume you are using Microsoft's ADFS server
 as your IdP. We'll need to add a new top-level block to our configuration called
@@ -259,7 +259,7 @@ SAML options:
 ...
 </code></pre>
 <p>For more information on the SAML plug-in configuration options and command line
-arguments, please refer to <a title="awsrun.plugins.creds.aws.SAML" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAML"><code>SAML</code></a>.</p>
+arguments, please refer to <code><a title="awsrun.plugins.creds.aws.SAML" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAML">SAML</a></code>.</p>
 <p>Now, let's turn our attention to cross-account access, which is commonly used
 when managing hundreds of accounts. With cross-account access, users are granted
 access to an IAM role in a single base account from which they can use to assume
@@ -270,7 +270,7 @@ want to obtain credentials for the base role. One supports the use of profiles
 and your AWS credential files while the other supports SAML for federated access
 to the base account. Let's assume our base account is 900900900900, and it has a
 role called OperationsStaff configured for SAML-based authentication. To use the
-<a title="awsrun.plugins.creds.aws.SAMLCrossAccount" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAMLCrossAccount"><code>SAMLCrossAccount</code></a> plug-in, we would add the following
+<code><a title="awsrun.plugins.creds.aws.SAMLCrossAccount" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAMLCrossAccount">SAMLCrossAccount</a></code> plug-in, we would add the following
 to our configuration:</p>
 <pre><code>Credentials:
   plugin: awsrun.plugins.creds.aws.SAMLCrossAccount
@@ -309,7 +309,7 @@ cross-account options:
 ...
 </code></pre>
 <p>For more information on the configuration options and command line arguments,
-please see <a title="awsrun.plugins.creds.aws.SAMLCrossAccount" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAMLCrossAccount"><code>SAMLCrossAccount</code></a>. Finally, if none of the
+please see <code><a title="awsrun.plugins.creds.aws.SAMLCrossAccount" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAMLCrossAccount">SAMLCrossAccount</a></code>. Finally, if none of the
 included credential plug-ins suit your needs, you can build your own, refer to
 the <a href="index.html#user-defined-plug-ins">User-Defined Plug-ins</a> section of the
 guide.</p>
@@ -325,7 +325,7 @@ if you could select groups of accounts to process? Perhaps you want to run a
 command across all of your production accounts, or maybe run a command across
 all of the accounts of a business unit? Well, you can, by using an account
 loader plug-in, either one of the included or one you build yourself. If you are
-seeking reference material only, please refer to the <a title="awsrun.plugins.accts" href="plugins/accts.html"><code>awsrun.plugins.accts</code></a> page.</p>
+seeking reference material only, please refer to the <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code> page.</p>
 <p>The account loader plug-in is responsible for loading the full list of the
 accounts you manage as well as the metadata associated with each account. Using
 this metadata, we can specify filters on the command line or via your config to
@@ -347,7 +347,7 @@ list of accounts and metadata for those accounts stored in a JSON file called
     ]
 }
 </code></pre>
-<p>We'll use the <a title="awsrun.plugins.accts.JSON" href="plugins/accts.html#awsrun.plugins.accts.JSON"><code>JSON</code></a> plug-in to load the accounts, so we
+<p>We'll use the <code><a title="awsrun.plugins.accts.JSON" href="plugins/accts.html#awsrun.plugins.accts.JSON">JSON</a></code> plug-in to load the accounts, so we
 can explore how to use the CLI's metadata filters to select accounts. To do so,
 we need to add the following top-level block to our configuration file:</p>
 <pre><code>Accounts:
@@ -470,8 +470,8 @@ the priority "1" accounts:</p>
 
 400100200300
 </code></pre>
-<p>When using the built-in <a title="awsrun.plugins.accts.CSV" href="plugins/accts.html#awsrun.plugins.accts.CSV"><code>CSV</code></a> or
-<a title="awsrun.plugins.accts.JSON" href="plugins/accts.html#awsrun.plugins.accts.JSON"><code>JSON</code></a> plug-ins, if you specify an account that is not
+<p>When using the built-in <code><a title="awsrun.plugins.accts.CSV" href="plugins/accts.html#awsrun.plugins.accts.CSV">CSV</a></code> or
+<code><a title="awsrun.plugins.accts.JSON" href="plugins/accts.html#awsrun.plugins.accts.JSON">JSON</a></code> plug-ins, if you specify an account that is not
 contained in the list of loaded accounts, an error is displayed to the user:</p>
 <pre><code>$ awsrun --account 111111111111
 Account IDs not found: 111111111111
@@ -482,8 +482,8 @@ of that account. This allows more complex logic to be added to awsrun commands.
 This is covered in the user guide for <a href="commands/index.html#execute-method">User-Defined
 Commands</a>.</p>
 <p>This concludes the tour of the awsrun CLI. For more information on the available
-account loader plug-ins, please refer to <a title="awsrun.plugins.accts" href="plugins/accts.html"><code>awsrun.plugins.accts</code></a>. And, for more
-reference material on the CLI, please see <a title="awsrun.cli" href="#awsrun.cli"><code>awsrun.cli</code></a>.</p>
+account loader plug-ins, please refer to <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code>. And, for more
+reference material on the CLI, please see <code><a title="awsrun.cli" href="#awsrun.cli">awsrun.cli</a></code>.</p>
 <h2 id="cli-reference">CLI Reference</h2>
 <p>The CLI is a tool that can execute user-defined commands across one or more
 accounts concurrently. This section contains reference material on the various
@@ -505,13 +505,13 @@ Options</a> section.</dd>
 plug-ins extend the capabilities of awsrun by simplifying account selection
 process and credential loading via SAML. Plug-ins can provide their own set of
 command line arguments and configuration options. These are documented on the
-plug-in pages at <a title="awsrun.plugins.accts" href="plugins/accts.html"><code>awsrun.plugins.accts</code></a> and <a title="awsrun.plugins.creds.aws" href="plugins/creds/aws.html"><code>awsrun.plugins.creds.aws</code></a>. Plug-ins
+plug-in pages at <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code> and <code><a title="awsrun.plugins.creds.aws" href="plugins/creds/aws.html">awsrun.plugins.creds.aws</a></code>. Plug-ins
 must be explicitly enabled by the user in their awsrun <a href="#configuration">config</a>.</dd>
 <dt>command</dt>
 <dd>Defined by the command being executed. Like plug-ins, each command can define
 its own set of command line arguments and configuration options. The list of
 commands included with awsrun and their various options are documented on the
-<a title="awsrun.commands.aws" href="commands/aws/index.html"><code>awsrun.commands.aws</code></a> page. Commands define the action to be taken when
+<code><a title="awsrun.commands.aws" href="commands/aws/index.html">awsrun.commands.aws</a></code> page. Commands define the action to be taken when
 processing each account. Executing the CLI without specifying a command to run
 will simply print the list of selected accounts to the console as well as a list
 of the available commands that have been found in the command path.</dd>
@@ -607,7 +607,7 @@ awsrun commands. A command is defined in its own block, where <code>COMMAND_NAME
 the Python module that contains the command. I.e., the same name that one would
 specify on the command line. Within the specific command block, users can define
 default values for the command's various options. For the included commands with
-awsrun, refer to the <a title="awsrun.commands.aws" href="commands/aws/index.html"><code>awsrun.commands.aws</code></a> page for the available options on
+awsrun, refer to the <code><a title="awsrun.commands.aws" href="commands/aws/index.html">awsrun.commands.aws</a></code> page for the available options on
 each command.</p>
 <pre><code>Commands:
   COMMAND_NAME:
@@ -624,11 +624,11 @@ the account loader plug-in in the form of <code>PYTHON_MODULE.CLASSNAME</code>, 
 can find and load it. If the plug-in accepts options, they can be provided in an
 optional <code>options</code> block. Refer to the account loader's documentation for a list
 of available configuration options. The included account loader plug-ins are
-documented at the <a title="awsrun.plugins.accts" href="plugins/accts.html"><code>awsrun.plugins.accts</code></a> page. For a gentle introduction to the
+documented at the <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code> page. For a gentle introduction to the
 account loader plug-ins, see the <a href="#account-plug-ins">Account Plug-ins</a> section
 in the user guide above.</p>
 <p>If this section is not defined, the CLI will use the default account loader
-<a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity"><code>Identity</code></a>.</p>
+<code><a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity">Identity</a></code>.</p>
 <pre><code>Accounts:
   plugin: PYTHON_MODULE.CLASSNAME
   options:
@@ -642,11 +642,11 @@ to the credential loader plug-in in the form of <code>PYTHON_MODULE.CLASSNAME</c
 the CLI can find and load it. If the plug-in accepts options, they can be
 provided in an optional <code>options</code> block. Refer to the credential loader's
 documentation for a list of available configuration options. The included
-credential loader plug-ins are documented at the <a title="awsrun.plugins.creds.aws" href="plugins/creds/aws.html"><code>awsrun.plugins.creds.aws</code></a>
+credential loader plug-ins are documented at the <code><a title="awsrun.plugins.creds.aws" href="plugins/creds/aws.html">awsrun.plugins.creds.aws</a></code>
 page. For a gentle introduction to the credential loader plug-ins, see the
 <a href="#credential-plug-ins">Credential Plug-ins</a> section in the user guide above.</p>
 <p>If this section is not defined, the CLI will use the default credential loader
-<code>awsrun.plugins.creds.Profile.</code>.</p>
+<code><a title="awsrun.plugins.creds.aws.Profile" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.Profile">Profile</a>.</code>.</p>
 <pre><code>Credentials:
   plugin: PYTHON_MODULE.CLASSNAME
   options:
@@ -1363,7 +1363,7 @@ page. For a gentle introduction to the credential loader plug-ins, see the
 [Credential Plug-ins](#credential-plug-ins) section in the user guide above.
 
 If this section is not defined, the CLI will use the default credential loader
-`awsrun.plugins.creds.Profile.`.
+`awsrun.plugins.creds.aws.Profile.`.
 
     Credentials:
       plugin: PYTHON_MODULE.CLASSNAME
@@ -1970,7 +1970,7 @@ session manager.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
