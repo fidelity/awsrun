@@ -383,7 +383,13 @@ def _vif2str(vif, conn):
     v_state = vif["virtualInterfaceState"].upper()
     v_vlan = vif["vlan"]
 
-    return f"{v_id} vlan {v_vlan} owned by {v_owner} on {c_name} is {v_state}"
+    # A private VIF will be connected to either a VGW or a DXGW, so one of these
+    # will be the empty string
+    v_gwid = vif["virtualGatewayId"]
+    v_dxgwid = vif["directConnectGatewayId"]
+    gwid = v_gwid if v_gwid else f"dxgw {v_dxgwid}"
+
+    return f"{v_id} on {gwid} vlan {v_vlan} owned by {v_owner} on {c_name} is {v_state}"
 
 
 def _conn2str(conn, vifs):
