@@ -458,7 +458,7 @@ def _print_conn_metrics(
 
 
 def _format_metric(name, chart, color=Fore.BLACK):
-    return f"{Style.DIM}{color}{chart} {name}{Style.RESET_ALL}"
+    return f"{color}{chart} {name}{Style.RESET_ALL}"
 
 
 # Type definition for awsrun.config to validate positive numbers.
