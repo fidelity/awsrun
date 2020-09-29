@@ -578,7 +578,13 @@ def _vif2str(vif, conn):
     v_state = vif[&#34;virtualInterfaceState&#34;].upper()
     v_vlan = vif[&#34;vlan&#34;]
 
-    return f&#34;{v_id} vlan {v_vlan} owned by {v_owner} on {c_name} is {v_state}&#34;
+    # A private VIF will be connected to either a VGW or a DXGW, so one of these
+    # will be the empty string
+    v_gwid = vif[&#34;virtualGatewayId&#34;]
+    v_dxgwid = vif[&#34;directConnectGatewayId&#34;]
+    gwid = v_gwid if v_gwid else f&#34;dxgw {v_dxgwid}&#34;
+
+    return f&#34;{v_id} on {gwid} vlan {v_vlan} owned by {v_owner} on {c_name} is {v_state}&#34;
 
 
 def _conn2str(conn, vifs):
@@ -647,7 +653,7 @@ def _print_conn_metrics(
 
 
 def _format_metric(name, chart, color=Fore.BLACK):
-    return f&#34;{Style.DIM}{color}{chart} {name}{Style.RESET_ALL}&#34;
+    return f&#34;{color}{chart} {name}{Style.RESET_ALL}&#34;
 
 
 # Type definition for awsrun.config to validate positive numbers.

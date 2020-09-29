@@ -13,7 +13,7 @@ to the CLI as well as a [Reference Guide](#cli-reference) for command line
 arguments and configuration options. The user guide is intended to be a gentle
 introduction on the usage and configuration of the awsrun CLI. For a general
 overview of features and installation instructions, refer to the
-[awsrun](https://github.com/fmr-llc/awsrun) project
+[awsrun](https://github.com/fidelity/awsrun) project
 page.
 
 ## CLI User Guide
