@@ -279,6 +279,19 @@ class CLICommand(RegionalCommand):
         self.output_dir = awsrun_output_dir
         self.annotate = awsrun_annotate
 
+        # Make sure user has both dependent binaries installed
+        has_prereqs = True
+        if not shutil.which("kubectl"):
+            print("'kubectl' not found in PATH, have you installed it?", file=sys.stderr)
+            has_prereqs = False
+
+        if not shutil.which("aws-iam-authenticator"):
+            print("'aws-iam-authenticator' not found in PATH, have you installed it?", file=sys.stderr)
+            has_prereqs = False
+
+        if not has_prereqs:
+            sys.exit(1)
+
     def regional_execute(self, session, acct, region):
         eks = session.client("eks", region_name=region)
 
@@ -303,10 +316,10 @@ class CLICommand(RegionalCommand):
                 )
 
                 # If user doesn't pass any kubectl commands, then just move on
+                # as we've already save the credentials for them.
                 if not self.kubectl_args:
                     text = f"kubeconfig saved to {filename}"
-                    if self.annotate in ["json", "yaml"]:
-                        text = f'"{text}"'
+                    text = f'"{text}"' if self.annotate in ["json", "yaml"] else f"{text}\n"
                     results.append(_Result(text, None, name, namespace))
                     continue
 
