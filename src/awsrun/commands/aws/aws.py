@@ -481,7 +481,7 @@ class CLICommand(RegionalCommand):
         new_vars = {
             "AWS_ACCESS_KEY_ID": creds.access_key,
             "AWS_SECRET_ACCESS_KEY": creds.secret_key,
-            "AWS_SESSION_TOKEN": creds.token,
+            "AWS_SESSION_TOKEN": creds.token if creds.token else "",
         }
 
         env = ChainMap(new_vars, os.environ)
