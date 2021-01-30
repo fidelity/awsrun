@@ -80,7 +80,7 @@ does not exist, it is created.
 `awsrun_annotate`, `--awsrun-annotate`
 :  Specifies the output format for the AWS CLI command and annotates that
 format appropriately with account and region information. Must be one of
-"json", "table", or "text". See use guide for more information.
+"json", "table", or "text". See user guide for more information.
 
 `region`, `--region`
 :  Run the AWS CLI command in the specified regions. When specifying multiple

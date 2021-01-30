@@ -65,6 +65,8 @@ access.""",
     install_requires=[
         "requests",
         "boto3>=1.12.39",
+        "azure-identity",
+        "azure-mgmt-network",
         "bs4",
         "colorama",
         "asciichartpy>=1.5.14",
@@ -79,8 +81,7 @@ access.""",
     entry_points={
         "console_scripts": [
             "awsrun = awsrun.cli:main",
-            # Install azurerun as well once Azure support has been finished
-            # 'azurerun = awsrun.cli:main',
+            "azurerun = awsrun.cli:main",
         ]
     },
 )
