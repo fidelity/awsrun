@@ -1193,7 +1193,7 @@ class _CSP:
 
     def default_session_provider(self):
         """Returns the module name of the builtin Profile session provider."""
-        return "awsrun.plugins.creds." + self.name.lower() + ".Profile"
+        return "awsrun.plugins.creds." + self.name.lower() + ".Default"
 
 
 if __name__ == "__main__":

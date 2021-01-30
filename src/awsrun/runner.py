@@ -26,10 +26,10 @@ of the command must be called `CLICommand` and must be in its own module, so the
 The following is a full example that demonstrates how to use the awsrun API to
 programmatically execute the included `awsrun.commands.aws.access_report`
 command for two accounts using credentials stored in local config files with the
-`awsrun.session.CredsViaProfile` session provider:
+`awsrun.session.aws.CredsViaProfile` session provider:
 
     from awsrun.runner import AccountRunner
-    from awsrun.session import CredsViaProfile
+    from awsrun.session.aws import CredsViaProfile
     from awsrun.commands.aws import access_report
 
     session_provider = CredsViaProfile()
@@ -737,13 +737,17 @@ def max_thread_limit(count):
     will not increase the number of workers in the `AccountRunner` worker pool.
     This is a rate limiting decorator only.
     """
+
     def decorator(func):
         sem = threading.BoundedSemaphore(count)
+
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             with sem:
                 return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 

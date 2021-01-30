@@ -45,8 +45,8 @@ from requests.auth import HTTPBasicAuth, HTTPDigestAuth
 from requests_ntlm import HttpNtlmAuth
 
 from awsrun.config import URL, Bool, Choice, Dict, Int, Str
-from awsrun.session import CredsViaCrossAccount, CredsViaProfile, CredsViaSAML
 from awsrun.plugmgr import Plugin
+from awsrun.session.aws import CredsViaCrossAccount, CredsViaProfile, CredsViaSAML
 
 # This is only used to prevent pdoc (the doc generator) from exposing
 # AbstractCrossAccount in the module's documentation, which is intended for CLI
@@ -103,6 +103,10 @@ class Profile(Plugin):
 
     def instantiate(self, args):
         return CredsViaProfile()
+
+
+Default = Profile
+"""Default session provider used if one is not configured by user."""
 
 
 class SAML(Plugin):
@@ -411,7 +415,7 @@ class ProfileCrossAccount(AbstractCrossAccount):
 
     `x_acct: duration`, `--x-acct-duration`
     : The amount of time, in seconds, that the AWS credentials for the role /
-   cross-account combination are cached in memory. The default value is `3600`
+    cross-account combination are cached in memory. The default value is `3600`
     seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
     credentials are expired sooner by a local IAM policy, then lower the value.
     """

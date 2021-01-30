@@ -40,10 +40,10 @@ information.
 `awsrun.session`
 : Contains the definition of the `awsrun.session.SessionProvider`, which is used
 to provide Boto3 sessions pre-loaded with credentials. Included are several
-built-in implementations such as `awsrun.session.CredsViaProfile`,
-`awsrun.session.CredsViaSAML`, and `awsrun.session.CredsViaCrossAccount`. This
-module can be used outside of awsurn in other scripts. The module documentation
-includes a user guide on how to do so.
+built-in implementations such as `awsrun.session.aws.CredsViaProfile`,
+`awsrun.session.aws.CredsViaSAML`, and `awsrun.session.aws.CredsViaCrossAccount`.
+This module can be used outside of awsurn in other scripts. The module
+documentation includes a user guide on how to do so.
 
 ### User-Defined Commands
 
@@ -108,7 +108,7 @@ files.
   dedicated to the CSP. This prevents commands for a different CSP from being
   displayed on the command line when a user lists the available commands.
 
-- The default credential loader plug-in is `awsrun.plugins.creds.csp.Profile`,
+- The default credential loader plug-in is `awsrun.plugins.creds.csp.Default`,
   where `csp` is the name of the CSP. Providing credentials to commands is done
   via a credential loader. When none has been specified in the configuration
   file, awsrun must default to a sane choice for a CSP.
