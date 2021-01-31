@@ -4,6 +4,10 @@
 
 CLI and library to concurrently execute user-defined commands across AWS accounts.
 
+NOTE: Initial Azure support has been added in the `azure` branch. Install
+that version if you are interested in running commands across one or more
+Azure subscriptions concurrently.
+
 ## Overview
 
 Awsrun is both a CLI and Python package used to execute commands over one or
