@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>awsrun.runner API documentation</title>
 <meta name="description" content="Executes a `Command` across one or more accounts concurrently …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -54,7 +54,7 @@ font-weight: bold;
 is a user-defined computation to be executed concurrently across one or more
 accounts by the <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code>. Typically, commands are simply a set of boto3
 calls, or similar cloud SDK calls, to be run within an account using credentials
-provided by a <code><a title="awsrun.session.SessionProvider" href="session.html#awsrun.session.SessionProvider">SessionProvider</a></code> from the <code><a title="awsrun.session" href="session.html">awsrun.session</a></code> module.
+provided by a <code><a title="awsrun.session.SessionProvider" href="session/index.html#awsrun.session.SessionProvider">SessionProvider</a></code> from the <code><a title="awsrun.session" href="session/index.html">awsrun.session</a></code> module.
 All commands must be subclasses of <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code>. For cloud SDKs that have
 regional-based APIs , such as AWS and its boto3 library, the abstract base class
 <code><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></code> is provided to simplify the execution of commands across
@@ -66,9 +66,9 @@ of the command must be called <code>CLICommand</code> and must be in its own mod
 <p>The following is a full example that demonstrates how to use the awsrun API to
 programmatically execute the included <code><a title="awsrun.commands.aws.access_report" href="commands/aws/access_report.html">awsrun.commands.aws.access_report</a></code>
 command for two accounts using credentials stored in local config files with the
-<code><a title="awsrun.session.CredsViaProfile" href="session.html#awsrun.session.CredsViaProfile">CredsViaProfile</a></code> session provider:</p>
+<code><a title="awsrun.session.aws.CredsViaProfile" href="session/aws.html#awsrun.session.aws.CredsViaProfile">CredsViaProfile</a></code> session provider:</p>
 <pre><code>from awsrun.runner import AccountRunner
-from awsrun.session import CredsViaProfile
+from awsrun.session.aws import CredsViaProfile
 from awsrun.commands.aws import access_report
 
 session_provider = CredsViaProfile()
@@ -235,10 +235,10 @@ of the command must be called `CLICommand` and must be in its own module, so the
 The following is a full example that demonstrates how to use the awsrun API to
 programmatically execute the included `awsrun.commands.aws.access_report`
 command for two accounts using credentials stored in local config files with the
-`awsrun.session.CredsViaProfile` session provider:
+`awsrun.session.aws.CredsViaProfile` session provider:
 
     from awsrun.runner import AccountRunner
-    from awsrun.session import CredsViaProfile
+    from awsrun.session.aws import CredsViaProfile
     from awsrun.commands.aws import access_report
 
     session_provider = CredsViaProfile()
@@ -946,13 +946,17 @@ def max_thread_limit(count):
     will not increase the number of workers in the `AccountRunner` worker pool.
     This is a rate limiting decorator only.
     &#34;&#34;&#34;
+
     def decorator(func):
         sem = threading.BoundedSemaphore(count)
+
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             with sem:
                 return func(*args, **kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -1305,13 +1309,17 @@ This is a rate limiting decorator only.</p></section>
     will not increase the number of workers in the `AccountRunner` worker pool.
     This is a rate limiting decorator only.
     &#34;&#34;&#34;
+
     def decorator(func):
         sem = threading.BoundedSemaphore(count)
+
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             with sem:
                 return func(*args, **kwargs)
+
         return wrapper
+
     return decorator</code></pre>
 </details>
 </dd>
@@ -1557,6 +1565,9 @@ built-in commands included in the <code><a title="awsrun.commands" href="command
 <li><a title="awsrun.commands.aws.console.CLICommand" href="commands/aws/console.html#awsrun.commands.aws.console.CLICommand">CLICommand</a></li>
 <li><a title="awsrun.commands.aws.list_iam_policies.CLICommand" href="commands/aws/list_iam_policies.html#awsrun.commands.aws.list_iam_policies.CLICommand">CLICommand</a></li>
 <li><a title="awsrun.commands.aws.list_iam_roles.CLICommand" href="commands/aws/list_iam_roles.html#awsrun.commands.aws.list_iam_roles.CLICommand">CLICommand</a></li>
+<li><a title="awsrun.commands.azure.az.CLICommand" href="commands/azure/az.html#awsrun.commands.azure.az.CLICommand">CLICommand</a></li>
+<li><a title="awsrun.commands.azure.cidr_overlap.CLICommand" href="commands/azure/cidr_overlap.html#awsrun.commands.azure.cidr_overlap.CLICommand">CLICommand</a></li>
+<li><a title="awsrun.commands.azure.list_vnets.CLICommand" href="commands/azure/list_vnets.html#awsrun.commands.azure.list_vnets.CLICommand">CLICommand</a></li>
 <li><a title="awsrun.runner.CommandFunctionAdapter" href="#awsrun.runner.CommandFunctionAdapter">CommandFunctionAdapter</a></li>
 <li><a title="awsrun.runner.RegionalCommand" href="#awsrun.runner.RegionalCommand">RegionalCommand</a></li>
 </ul>
@@ -2657,7 +2668,7 @@ has been specified.</p>
 <p>A single worker is responsible for processing an account. The worker obtains
 a boto3 session, or similar cloud SDK session object, with the appropriate
 credentials for the account being processed by using the <code>session_provider</code>,
-which must be a subclass of <code><a title="awsrun.session.SessionProvider" href="session.html#awsrun.session.SessionProvider">SessionProvider</a></code>.</p>
+which must be a subclass of <code><a title="awsrun.session.SessionProvider" href="session/index.html#awsrun.session.SessionProvider">SessionProvider</a></code>.</p>
 <p>It then invokes <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code> with the session for the account being
 processed. Any exceptions raised during the invocation of a command are
 caught to prevent the termination of other threads. The result of the
@@ -3038,7 +3049,7 @@ object, so this account cannot be processed.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

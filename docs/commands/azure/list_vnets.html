@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
-<title>awsrun.plugins API documentation</title>
-<meta name="description" content="Plug-ins for the awsrun CLI …" />
+<title>awsrun.commands.azure.list_vnets API documentation</title>
+<meta name="description" content="Display the Virtual Networks (VNETs) configured in a subscription …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
@@ -44,116 +44,142 @@ font-weight: bold;
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>awsrun.plugins</code></h1>
+<h1 class="title">Module <code>awsrun.commands.azure.list_vnets</code></h1>
 </header>
 <section id="section-intro">
-<p>Plug-ins for the awsrun CLI.</p>
-<p>The awsrun CLI supports two pluggable behaviors: <strong>account loading</strong> and
-<strong>credential loading</strong>. To provide choices and extensibility for CLI users,
-these behaviors can be changed via a user's awsrun YAML configuration file.
-Several plug-ins are included with awsrun. Users may, however, provide their own
-implementations, so long as they are installed and available in the standard
-Python path.</p>
-<p>To use a plug-in, add a plug-in specification to the user configuration file.
-The plug-in specification identifies the name of the plug-in, the path to the
-<code><a title="awsrun.plugmgr.Plugin" href="../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></code> implementation, and, optionally, its options. The format
-of the specification is as follows:</p>
-<pre><code>PLUGIN_NAME:
-  plugin: PYTHON_MODULE.CLASSNAME
-  options:
-    ARG1: VAL1
-    ARG2: VAL2
+<p>Display the Virtual Networks (VNETs) configured in a subscription.</p>
+<h2 id="overview">Overview</h2>
+<p>The list_vnets command displays each VNET configured as well as the list of
+CIDR blocks associated with it. For example:</p>
+<pre><code>$ azurerun --account 00000000-0000-0000-0000-000000000000 list_vnets
+00000000-0000-0000-0000-000000000000/eastus2: cidrs=10.0.1.0/24, 10.0.2.0/26
+$
 </code></pre>
-<p>The specification must begin with the <code>PLUGIN_NAME</code>, which is either <code>Accounts</code>
-or <code>Credentials</code> depending on the behavior being configured. It must also
-include <code>plugin</code> that identifies, via a dotted string, the Python module
-concatenated with the name of a <code>Plugin</code> subclass. Plug-ins must be installed in
-the standard Python path.
-The specification can also optionally include
-<code>options</code> that defines options made available to the plug-in.</p>
-<p>Only one plug-in should be specified per behavior. If multiple plug-in
-specifications are provided for the same behavior, the last one defined in the
-configuration is used.</p>
-<p>API users of awsrun will not use this module.</p>
+<h2 id="reference">Reference</h2>
+<h3 id="synopsis">Synopsis</h3>
+<pre><code>$ azurerun [options] list_vnets [command options]
+</code></pre>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">#
-# Copyright 2019 FMR LLC &lt;opensource@fmr.com&gt;
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
 #
 # SPDX-License-Identifier: MIT
 #
-&#34;&#34;&#34;Plug-ins for the awsrun CLI.
+&#34;&#34;&#34;Display the Virtual Networks (VNETs) configured in a subscription.
 
-The awsrun CLI supports two pluggable behaviors: **account loading** and
-**credential loading**. To provide choices and extensibility for CLI users,
-these behaviors can be changed via a user&#39;s awsrun YAML configuration file.
-Several plug-ins are included with awsrun. Users may, however, provide their own
-implementations, so long as they are installed and available in the standard
-Python path.
+## Overview
 
-To use a plug-in, add a plug-in specification to the user configuration file.
-The plug-in specification identifies the name of the plug-in, the path to the
-`awsrun.plugmgr.Plugin` implementation, and, optionally, its options. The format
-of the specification is as follows:
+The list_vnets command displays each VNET configured as well as the list of
+CIDR blocks associated with it. For example:
 
-    PLUGIN_NAME:
-      plugin: PYTHON_MODULE.CLASSNAME
-      options:
-        ARG1: VAL1
-        ARG2: VAL2
+    $ azurerun --account 00000000-0000-0000-0000-000000000000 list_vnets
+    00000000-0000-0000-0000-000000000000/eastus2: cidrs=10.0.1.0/24, 10.0.2.0/26
+    $
 
-The specification must begin with the `PLUGIN_NAME`, which is either `Accounts`
-or `Credentials` depending on the behavior being configured. It must also
-include `plugin` that identifies, via a dotted string, the Python module
-concatenated with the name of a `Plugin` subclass. Plug-ins must be installed in
-the standard Python path.  The specification can also optionally include
-`options` that defines options made available to the plug-in.
+## Reference
 
-Only one plug-in should be specified per behavior. If multiple plug-in
-specifications are provided for the same behavior, the last one defined in the
-configuration is used.
+### Synopsis
 
-API users of awsrun will not use this module.
-&#34;&#34;&#34;</code></pre>
+    $ azurerun [options] list_vnets [command options]
+&#34;&#34;&#34;
+
+import io
+
+from azure.mgmt.network import NetworkManagementClient
+
+from awsrun.runner import Command
+
+
+class CLICommand(Command):
+    &#34;&#34;&#34;Display VNETs configured in accounts.&#34;&#34;&#34;
+
+    def execute(self, session, acct):
+        out = io.StringIO()
+        nmc = NetworkManagementClient(session, acct)
+
+        for vnet in nmc.virtual_networks.list_all():
+            cidrs = &#34;, &#34;.join(vnet.address_space.address_prefixes)
+            print(f&#34;{acct}/{vnet.location}: cidrs={cidrs}&#34;, file=out)
+
+        return out.getvalue()</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="awsrun.plugins.accts" href="accts.html">awsrun.plugins.accts</a></code></dt>
+<dt id="awsrun.commands.azure.list_vnets.CLICommand"><code class="flex name class">
+<span>class <span class="ident">CLICommand</span></span>
+</code></dt>
 <dd>
-<section class="desc"><p>Plug-ins for account loading …</p></section>
-</dd>
-<dt><code class="name"><a title="awsrun.plugins.creds" href="creds/index.html">awsrun.plugins.creds</a></code></dt>
-<dd>
-<section class="desc"><p>Plug-ins for credential loading …</p></section>
+<section class="desc"><p>Display VNETs configured in accounts.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CLICommand(Command):
+    &#34;&#34;&#34;Display VNETs configured in accounts.&#34;&#34;&#34;
+
+    def execute(self, session, acct):
+        out = io.StringIO()
+        nmc = NetworkManagementClient(session, acct)
+
+        for vnet in nmc.virtual_networks.list_all():
+            cidrs = &#34;, &#34;.join(vnet.address_space.address_prefixes)
+            print(f&#34;{acct}/{vnet.location}: cidrs={cidrs}&#34;, file=out)
+
+        return out.getvalue()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.Command.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.Command.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.Command.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.Command.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
 </section>
 </article>
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#reference">Reference</a><ul>
+<li><a href="#synopsis">Synopsis</a></li>
+</ul>
+</li>
+</ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="awsrun" href="../index.html">awsrun</a></code></li>
+<li><code><a title="awsrun.commands.azure" href="index.html">awsrun.commands.azure</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li><code><a title="awsrun.plugins.accts" href="accts.html">awsrun.plugins.accts</a></code></li>
-<li><code><a title="awsrun.plugins.creds" href="creds/index.html">awsrun.plugins.creds</a></code></li>
+<li>
+<h4><code><a title="awsrun.commands.azure.list_vnets.CLICommand" href="#awsrun.commands.azure.list_vnets.CLICommand">CLICommand</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>

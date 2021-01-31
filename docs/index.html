@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>awsrun API documentation</title>
 <meta name="description" content="CLI and API to concurrently execute user-defined commands across AWS accounts …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -74,13 +74,13 @@ find the <code><a title="awsrun.runner.AccountRunner" href="runner.html#awsrun.r
 defined in this module. Build your own commands by subclassing the base class.
 See the <a href="#user-defined-commands">User-Defined Commmands</a> next for more
 information.</dd>
-<dt><code><a title="awsrun.session" href="session.html">awsrun.session</a></code></dt>
-<dd>Contains the definition of the <code><a title="awsrun.session.SessionProvider" href="session.html#awsrun.session.SessionProvider">SessionProvider</a></code>, which is used
+<dt><code><a title="awsrun.session" href="session/index.html">awsrun.session</a></code></dt>
+<dd>Contains the definition of the <code><a title="awsrun.session.SessionProvider" href="session/index.html#awsrun.session.SessionProvider">SessionProvider</a></code>, which is used
 to provide Boto3 sessions pre-loaded with credentials. Included are several
-built-in implementations such as <code><a title="awsrun.session.CredsViaProfile" href="session.html#awsrun.session.CredsViaProfile">CredsViaProfile</a></code>,
-<code><a title="awsrun.session.CredsViaSAML" href="session.html#awsrun.session.CredsViaSAML">CredsViaSAML</a></code>, and <code><a title="awsrun.session.CredsViaCrossAccount" href="session.html#awsrun.session.CredsViaCrossAccount">CredsViaCrossAccount</a></code>. This
-module can be used outside of awsurn in other scripts. The module documentation
-includes a user guide on how to do so.</dd>
+built-in implementations such as <code><a title="awsrun.session.aws.CredsViaProfile" href="session/aws.html#awsrun.session.aws.CredsViaProfile">CredsViaProfile</a></code>,
+<code><a title="awsrun.session.aws.CredsViaSAML" href="session/aws.html#awsrun.session.aws.CredsViaSAML">CredsViaSAML</a></code>, and <code><a title="awsrun.session.aws.CredsViaCrossAccount" href="session/aws.html#awsrun.session.aws.CredsViaCrossAccount">CredsViaCrossAccount</a></code>.
+This module can be used outside of awsurn in other scripts. The module
+documentation includes a user guide on how to do so.</dd>
 </dl>
 <h3 id="user-defined-commands">User-Defined Commands</h3>
 <p>To get the most benefit from awsrun, one typically writes their own used-defined
@@ -107,13 +107,13 @@ superclass's <code>__init__</code> method as well.</p>
 <li>
 <p>Provide an implementation for <code><a title="awsrun.plugmgr.Plugin.instantiate" href="plugmgr.html#awsrun.plugmgr.Plugin.instantiate">Plugin.instantiate()</a></code>, which must
 return an instance of either <code><a title="awsrun.acctload.AccountLoader" href="acctload.html#awsrun.acctload.AccountLoader">AccountLoader</a></code> or
-<code><a title="awsrun.session.SessionProvider" href="session.html#awsrun.session.SessionProvider">SessionProvider</a></code> depending on whether you are writing an
+<code><a title="awsrun.session.SessionProvider" href="session/index.html#awsrun.session.SessionProvider">SessionProvider</a></code> depending on whether you are writing an
 account loader or a credential loader.</p>
 </li>
 <li>
 <p>Provide an implementation for your account loader or credential loader
 returned in step 3. Refer to the <code><a title="awsrun.acctload.AccountLoader" href="acctload.html#awsrun.acctload.AccountLoader">AccountLoader</a></code> and
-<code><a title="awsrun.session.SessionProvider" href="session.html#awsrun.session.SessionProvider">SessionProvider</a></code> for the methods that must be implemented.</p>
+<code><a title="awsrun.session.SessionProvider" href="session/index.html#awsrun.session.SessionProvider">SessionProvider</a></code> for the methods that must be implemented.</p>
 </li>
 </ol>
 <p>It is recommended that you review the existing plug-ins included in awsrun for
@@ -147,7 +147,7 @@ dedicated to the CSP. This prevents commands for a different CSP from being
 displayed on the command line when a user lists the available commands.</p>
 </li>
 <li>
-<p>The default credential loader plug-in is <code>awsrun.plugins.creds.csp.Profile</code>,
+<p>The default credential loader plug-in is <code>awsrun.plugins.creds.csp.Default</code>,
 where <code>csp</code> is the name of the CSP. Providing credentials to commands is done
 via a credential loader. When none has been specified in the configuration
 file, awsrun must default to a sane choice for a CSP.</p>
@@ -216,10 +216,10 @@ information.
 `awsrun.session`
 : Contains the definition of the `awsrun.session.SessionProvider`, which is used
 to provide Boto3 sessions pre-loaded with credentials. Included are several
-built-in implementations such as `awsrun.session.CredsViaProfile`,
-`awsrun.session.CredsViaSAML`, and `awsrun.session.CredsViaCrossAccount`. This
-module can be used outside of awsurn in other scripts. The module documentation
-includes a user guide on how to do so.
+built-in implementations such as `awsrun.session.aws.CredsViaProfile`,
+`awsrun.session.aws.CredsViaSAML`, and `awsrun.session.aws.CredsViaCrossAccount`.
+This module can be used outside of awsurn in other scripts. The module
+documentation includes a user guide on how to do so.
 
 ### User-Defined Commands
 
@@ -284,7 +284,7 @@ files.
   dedicated to the CSP. This prevents commands for a different CSP from being
   displayed on the command line when a user lists the available commands.
 
-- The default credential loader plug-in is `awsrun.plugins.creds.csp.Profile`,
+- The default credential loader plug-in is `awsrun.plugins.creds.csp.Default`,
   where `csp` is the name of the CSP. Providing credentials to commands is done
   via a credential loader. When none has been specified in the configuration
   file, awsrun must default to a sane choice for a CSP.
@@ -357,9 +357,9 @@ __version__ = &#34;2.2.2&#34;</code></pre>
 <dd>
 <section class="desc"><p>Executes a <code>Command</code> across one or more accounts concurrently …</p></section>
 </dd>
-<dt><code class="name"><a title="awsrun.session" href="session.html">awsrun.session</a></code></dt>
+<dt><code class="name"><a title="awsrun.session" href="session/index.html">awsrun.session</a></code></dt>
 <dd>
-<section class="desc"><p>API to obtain boto3 sessions and credentials via a variety of means …</p></section>
+<section class="desc"><p>API to obtain CSP sessions and credentials …</p></section>
 </dd>
 </dl>
 </section>
@@ -402,14 +402,14 @@ __version__ = &#34;2.2.2&#34;</code></pre>
 <li><code><a title="awsrun.plugins" href="plugins/index.html">awsrun.plugins</a></code></li>
 <li><code><a title="awsrun.plugmgr" href="plugmgr.html">awsrun.plugmgr</a></code></li>
 <li><code><a title="awsrun.runner" href="runner.html">awsrun.runner</a></code></li>
-<li><code><a title="awsrun.session" href="session.html">awsrun.session</a></code></li>
+<li><code><a title="awsrun.session" href="session/index.html">awsrun.session</a></code></li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

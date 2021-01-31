@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>awsrun.plugins.creds.azure API documentation</title>
 <meta name="description" content="Plug-ins for Azure credential loading …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -49,9 +49,9 @@ font-weight: bold;
 <section id="section-intro">
 <p>Plug-ins for Azure credential loading.</p>
 <p>The plug-ins in this module allow a user to control how credentials are obtained
-for the Azure accounts specified on the awsrun CLI. To configure the awsrun CLI to
-use one of these plug-ins, or a user-defined plug-in, specify a <code>Credentials</code>
-block in the user configuration file:</p>
+for the Azure accounts specified on the azurerun CLI. To configure the azurerun
+CLI to use one of these plug-ins, or a user-defined plug-in, specify a
+<code>Credentials</code> block in the user configuration file:</p>
 <pre><code>Credentials:
   plugin: PYTHON_MODULE.CLASSNAME
   options:
@@ -59,15 +59,17 @@ block in the user configuration file:</p>
     ARG2: VAL2
 </code></pre>
 <p>Refer to each plug-in's documentation for a list of valid options that can be
-provided via the configuration file or via awsrun CLI flags. CLI flags override
+provided via the configuration file or via azurerun CLI flags. CLI flags override
 the values defined in the configuration file. The <code>plugin</code> key may be one of the
 following values:</p>
 <dl>
-<dt>awsrun.plugins.creds.azure.Profile</dt>
-<dd><code>Profile</code> uses standard Azure configuration files for credentials.</dd>
+<dt>awsrun.plugins.creds.azure.Default</dt>
+<dd><code><a title="awsrun.plugins.creds.azure.Default" href="#awsrun.plugins.creds.azure.Default">Default</a></code> uses the default Azure SDK credential methods.</dd>
+<dt>awsrun.plugins.creds.azure.UsernamePassword</dt>
+<dd><code><a title="awsrun.plugins.creds.azure.UsernamePassword" href="#awsrun.plugins.creds.azure.UsernamePassword">UsernamePassword</a></code> uses a username &amp; password for credentials.</dd>
 <dt>your.own.module.PluginSubclass</dt>
 <dd>A custom plug-in installed in the Python path that subclasses
-<code><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></code> that returns a <code><a title="awsrun.session.SessionProvider" href="../../session.html#awsrun.session.SessionProvider">SessionProvider</a></code>.</dd>
+<code><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></code> that returns a <code><a title="awsrun.session.SessionProvider" href="../../session/index.html#awsrun.session.SessionProvider">SessionProvider</a></code>.</dd>
 </dl>
 <details class="source">
 <summary>
@@ -81,9 +83,9 @@ following values:</p>
 &#34;&#34;&#34;Plug-ins for Azure credential loading.
 
 The plug-ins in this module allow a user to control how credentials are obtained
-for the Azure accounts specified on the awsrun CLI. To configure the awsrun CLI to
-use one of these plug-ins, or a user-defined plug-in, specify a `Credentials`
-block in the user configuration file:
+for the Azure accounts specified on the azurerun CLI. To configure the azurerun
+CLI to use one of these plug-ins, or a user-defined plug-in, specify a
+`Credentials` block in the user configuration file:
 
     Credentials:
       plugin: PYTHON_MODULE.CLASSNAME
@@ -92,17 +94,182 @@ block in the user configuration file:
         ARG2: VAL2
 
 Refer to each plug-in&#39;s documentation for a list of valid options that can be
-provided via the configuration file or via awsrun CLI flags. CLI flags override
+provided via the configuration file or via azurerun CLI flags. CLI flags override
 the values defined in the configuration file. The `plugin` key may be one of the
 following values:
 
-awsrun.plugins.creds.azure.Profile
-:  `Profile` uses standard Azure configuration files for credentials.
+awsrun.plugins.creds.azure.Default
+:  `Default` uses the default Azure SDK credential methods.
+
+awsrun.plugins.creds.azure.UsernamePassword
+:  `UsernamePassword` uses a username &amp; password for credentials.
 
 your.own.module.PluginSubclass
 :  A custom plug-in installed in the Python path that subclasses
 `awsrun.plugmgr.Plugin` that returns a `awsrun.session.SessionProvider`.
-&#34;&#34;&#34;</code></pre>
+&#34;&#34;&#34;
+
+import os
+import getpass
+
+from awsrun.config import Str
+from awsrun.plugmgr import Plugin
+from awsrun.session.azure import CredsViaUsernamePassword, CredsViaAzureDefault
+
+
+class Default(Plugin):
+    &#34;&#34;&#34;CLI plug-in that uses the default Azure credential mechanisms.
+
+    ## Overview
+
+    Credentials are obtained via environment variables, a managed identity on an
+    Azure host, the shared token cache (Windows only), Azure VSCode, Azure CLI,
+    or interactively via the browser. These are tried in order until one
+    succeeds.
+
+    For more information, see [Azure SDK
+    documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.5.0/index.html#defaultazurecredential)
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Credentials:
+          plugin: awsrun.plugins.creds.azure.Default
+          options:
+            authority: STRING
+
+    ## Plug-in Options
+
+    Some options can be overridden on the azurerun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `authority`, `--ad-authority`
+    :  The `authority` specifies the Microsoft AD authority host. If one is not
+    provided, the default is &#34;login.microsoftonline.com&#34;.
+    &#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main azurerun args, so they are prefixed with &#39;--ad-&#39; to lessen
+        # chance of a name collision.
+        group = parser.add_argument_group(&#34;Azure authentication options&#34;)
+        group.add_argument(
+            &#34;--ad-authority&#34;,
+            metavar=&#34;NAME&#34;,
+            default=self.cfg(
+                &#34;authority&#34;, type=Str, default=&#34;login.microsoftonline.com&#34;
+            ),
+            help=&#34;Azure AD authority host&#34;,
+        )
+
+    def instantiate(self, args):
+        return CredsViaAzureDefault(authority=args.ad_authority)
+
+
+class UsernamePassword(Plugin):
+    &#34;&#34;&#34;CLI plug-in that uses the default Azure credential mechanisms.
+
+    ## Overview
+
+    Credentials are obtained by authenticating with Azure AD using a username
+    and password. Access tokens are cached by the underlying MSAL library and
+    automatically refreshed as needed.
+
+    For more information, see [Azure SDK
+    documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.4.0/azure.identity.html#azure.identity.UsernamePasswordCredential)
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Credentials:
+          plugin: awsrun.plugins.creds.azure.Default
+          options:
+            username: EMAIL
+            password: STRING
+            tenant: STRING
+            authority: STRING
+
+    ## Plug-in Options
+
+    Some options can be overridden on the azurerun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `username`, `--ad-username`
+    :  The `username` to use when requesting access tokens. It is typically an
+    email address that specifies the user and Azure tenant.
+
+    `password`, `--ad-password`
+    : The password to use when requesting access tokens. The default is the
+    value, if any, of the PASSWORD environment variable. If none of these are
+    set, the user will be prompted via the console when azurerun is invoked.
+
+    `tenant`, `--ad-tenant`
+    : The `tenant_id` specifies the tenant where the user resides.  Normally,
+    this can be derived from the email address used as the username, so it is
+    not normally required.
+
+    `authority`, `--ad-authority`
+    :  The `authority` specifies the Microsoft AD authority host. If one is not
+    provided, the default is &#34;login.microsoftonline.com&#34;.
+    &#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main azurerun args, so they are prefixed with &#39;--az-&#39; to lessen
+        # chance of a name collision.
+        group = parser.add_argument_group(&#34;Azure authentication options&#34;)
+        group.add_argument(
+            &#34;--ad-username&#34;,
+            metavar=&#34;USER&#34;,
+            default=self.cfg(&#34;username&#34;, type=Str),
+            help=&#34;username for Azure AD authentication&#34;,
+        )
+
+        group.add_argument(
+            &#34;--ad-password&#34;,
+            metavar=&#34;PASS&#34;,
+            default=self.cfg(
+                &#34;password&#34;, type=Str, default=os.environ.get(&#34;PASSWORD&#34;, None)
+            ),
+            help=&#34;password for Azure AD authentication&#34;,
+        )
+
+        group.add_argument(
+            &#34;--ad-tenant&#34;,
+            metavar=&#34;ID&#34;,
+            default=self.cfg(&#34;tenant&#34;, type=Str),
+            help=&#34;Azure tenant or directory ID&#34;,
+        )
+
+        group.add_argument(
+            &#34;--ad-authority&#34;,
+            metavar=&#34;NAME&#34;,
+            default=self.cfg(
+                &#34;authority&#34;, type=Str, default=&#34;login.microsoftonline.com&#34;
+            ),
+            help=&#34;Azure AD authority host&#34;,
+        )
+
+    def instantiate(self, args):
+        args.ad_username = args.ad_username or input(&#34;Username (email address)? &#34;)
+        args.ad_password = args.ad_password or getpass.getpass(
+            f&#34;Password for {args.ad_username}? &#34;
+        )
+
+        return CredsViaUsernamePassword(
+            args.ad_username,
+            args.ad_password,
+            tenant_id=args.ad_tenant,
+            authority=args.ad_authority,
+        )</code></pre>
 </details>
 </section>
 <section>
@@ -112,6 +279,266 @@ your.own.module.PluginSubclass
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.plugins.creds.azure.Default"><code class="flex name class">
+<span>class <span class="ident">Default</span></span>
+<span>(</span><span>parser, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CLI plug-in that uses the default Azure credential mechanisms.</p>
+<h2 id="overview">Overview</h2>
+<p>Credentials are obtained via environment variables, a managed identity on an
+Azure host, the shared token cache (Windows only), Azure VSCode, Azure CLI,
+or interactively via the browser. These are tried in order until one
+succeeds.</p>
+<p>For more information, see <a href="https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.5.0/index.html#defaultazurecredential">Azure SDK
+documentation</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>Options with an asterisk are mandatory and must be provided:</p>
+<pre><code>Credentials:
+  plugin: awsrun.plugins.creds.azure.Default
+  options:
+    authority: STRING
+</code></pre>
+<h2 id="plug-in-options">Plug-in Options</h2>
+<p>Some options can be overridden on the azurerun CLI via command line flags.
+In those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>authority</code>, <code>--ad-authority</code></dt>
+<dd>The <code>authority</code> specifies the Microsoft AD authority host. If one is not
+provided, the default is "login.microsoftonline.com".</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Default(Plugin):
+    &#34;&#34;&#34;CLI plug-in that uses the default Azure credential mechanisms.
+
+    ## Overview
+
+    Credentials are obtained via environment variables, a managed identity on an
+    Azure host, the shared token cache (Windows only), Azure VSCode, Azure CLI,
+    or interactively via the browser. These are tried in order until one
+    succeeds.
+
+    For more information, see [Azure SDK
+    documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.5.0/index.html#defaultazurecredential)
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Credentials:
+          plugin: awsrun.plugins.creds.azure.Default
+          options:
+            authority: STRING
+
+    ## Plug-in Options
+
+    Some options can be overridden on the azurerun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `authority`, `--ad-authority`
+    :  The `authority` specifies the Microsoft AD authority host. If one is not
+    provided, the default is &#34;login.microsoftonline.com&#34;.
+    &#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main azurerun args, so they are prefixed with &#39;--ad-&#39; to lessen
+        # chance of a name collision.
+        group = parser.add_argument_group(&#34;Azure authentication options&#34;)
+        group.add_argument(
+            &#34;--ad-authority&#34;,
+            metavar=&#34;NAME&#34;,
+            default=self.cfg(
+                &#34;authority&#34;, type=Str, default=&#34;login.microsoftonline.com&#34;
+            ),
+            help=&#34;Azure AD authority host&#34;,
+        )
+
+    def instantiate(self, args):
+        return CredsViaAzureDefault(authority=args.ad_authority)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.plugmgr.Plugin.instantiate" href="../../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.plugins.creds.azure.UsernamePassword"><code class="flex name class">
+<span>class <span class="ident">UsernamePassword</span></span>
+<span>(</span><span>parser, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CLI plug-in that uses the default Azure credential mechanisms.</p>
+<h2 id="overview">Overview</h2>
+<p>Credentials are obtained by authenticating with Azure AD using a username
+and password. Access tokens are cached by the underlying MSAL library and
+automatically refreshed as needed.</p>
+<p>For more information, see <a href="https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.4.0/azure.identity.html#azure.identity.UsernamePasswordCredential">Azure SDK
+documentation</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>Options with an asterisk are mandatory and must be provided:</p>
+<pre><code>Credentials:
+  plugin: awsrun.plugins.creds.azure.Default
+  options:
+    username: EMAIL
+    password: STRING
+    tenant: STRING
+    authority: STRING
+</code></pre>
+<h2 id="plug-in-options">Plug-in Options</h2>
+<p>Some options can be overridden on the azurerun CLI via command line flags.
+In those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>username</code>, <code>--ad-username</code></dt>
+<dd>The <code>username</code> to use when requesting access tokens. It is typically an
+email address that specifies the user and Azure tenant.</dd>
+<dt><code>password</code>, <code>--ad-password</code></dt>
+<dd>The password to use when requesting access tokens. The default is the
+value, if any, of the PASSWORD environment variable. If none of these are
+set, the user will be prompted via the console when azurerun is invoked.</dd>
+<dt><code>tenant</code>, <code>--ad-tenant</code></dt>
+<dd>The <code>tenant_id</code> specifies the tenant where the user resides.
+Normally,
+this can be derived from the email address used as the username, so it is
+not normally required.</dd>
+<dt><code>authority</code>, <code>--ad-authority</code></dt>
+<dd>The <code>authority</code> specifies the Microsoft AD authority host. If one is not
+provided, the default is "login.microsoftonline.com".</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UsernamePassword(Plugin):
+    &#34;&#34;&#34;CLI plug-in that uses the default Azure credential mechanisms.
+
+    ## Overview
+
+    Credentials are obtained by authenticating with Azure AD using a username
+    and password. Access tokens are cached by the underlying MSAL library and
+    automatically refreshed as needed.
+
+    For more information, see [Azure SDK
+    documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.4.0/azure.identity.html#azure.identity.UsernamePasswordCredential)
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Credentials:
+          plugin: awsrun.plugins.creds.azure.Default
+          options:
+            username: EMAIL
+            password: STRING
+            tenant: STRING
+            authority: STRING
+
+    ## Plug-in Options
+
+    Some options can be overridden on the azurerun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `username`, `--ad-username`
+    :  The `username` to use when requesting access tokens. It is typically an
+    email address that specifies the user and Azure tenant.
+
+    `password`, `--ad-password`
+    : The password to use when requesting access tokens. The default is the
+    value, if any, of the PASSWORD environment variable. If none of these are
+    set, the user will be prompted via the console when azurerun is invoked.
+
+    `tenant`, `--ad-tenant`
+    : The `tenant_id` specifies the tenant where the user resides.  Normally,
+    this can be derived from the email address used as the username, so it is
+    not normally required.
+
+    `authority`, `--ad-authority`
+    :  The `authority` specifies the Microsoft AD authority host. If one is not
+    provided, the default is &#34;login.microsoftonline.com&#34;.
+    &#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main azurerun args, so they are prefixed with &#39;--az-&#39; to lessen
+        # chance of a name collision.
+        group = parser.add_argument_group(&#34;Azure authentication options&#34;)
+        group.add_argument(
+            &#34;--ad-username&#34;,
+            metavar=&#34;USER&#34;,
+            default=self.cfg(&#34;username&#34;, type=Str),
+            help=&#34;username for Azure AD authentication&#34;,
+        )
+
+        group.add_argument(
+            &#34;--ad-password&#34;,
+            metavar=&#34;PASS&#34;,
+            default=self.cfg(
+                &#34;password&#34;, type=Str, default=os.environ.get(&#34;PASSWORD&#34;, None)
+            ),
+            help=&#34;password for Azure AD authentication&#34;,
+        )
+
+        group.add_argument(
+            &#34;--ad-tenant&#34;,
+            metavar=&#34;ID&#34;,
+            default=self.cfg(&#34;tenant&#34;, type=Str),
+            help=&#34;Azure tenant or directory ID&#34;,
+        )
+
+        group.add_argument(
+            &#34;--ad-authority&#34;,
+            metavar=&#34;NAME&#34;,
+            default=self.cfg(
+                &#34;authority&#34;, type=Str, default=&#34;login.microsoftonline.com&#34;
+            ),
+            help=&#34;Azure AD authority host&#34;,
+        )
+
+    def instantiate(self, args):
+        args.ad_username = args.ad_username or input(&#34;Username (email address)? &#34;)
+        args.ad_password = args.ad_password or getpass.getpass(
+            f&#34;Password for {args.ad_username}? &#34;
+        )
+
+        return CredsViaUsernamePassword(
+            args.ad_username,
+            args.ad_password,
+            tenant_id=args.ad_tenant,
+            authority=args.ad_authority,
+        )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.plugmgr.Plugin.instantiate" href="../../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -125,11 +552,21 @@ your.own.module.PluginSubclass
 <li><code><a title="awsrun.plugins.creds" href="index.html">awsrun.plugins.creds</a></code></li>
 </ul>
 </li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.plugins.creds.azure.Default" href="#awsrun.plugins.creds.azure.Default">Default</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.plugins.creds.azure.UsernamePassword" href="#awsrun.plugins.creds.azure.UsernamePassword">UsernamePassword</a></code></h4>
+</li>
+</ul>
+</li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
