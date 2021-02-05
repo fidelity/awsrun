@@ -61,7 +61,7 @@ provided by this module: <code><a title="awsrun.acctload.IdentityAccountLoader" 
 <code><a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader">JSONAccountLoader</a></code>, and <code><a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader">YAMLAccountLoader</a></code>. These loaders are used by the
 <code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> to obtain the list of accounts and to filter those accounts by
 metadata attributes specified on the command line. The CLI instantiates a loader
-by calling the the plug-ins defined in <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code>.</p>
+by calling the the plug-ins defined in <code><a title="awsrun.plugins.accts" href="plugins/accts/index.html">awsrun.plugins.accts</a></code>.</p>
 <p>The <code><a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader">IdentityAccountLoader</a></code> is intended for use when no additional metadata is
 to be associated with accounts. It simply returns account objects that are
 strings of account IDs. <code><a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader">CSVAccountLoader</a></code> loads accounts and metadata from CSVs
@@ -1917,6 +1917,7 @@ names. In addition, all of the attributes referenced in <code>str_template</code
 <li><a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader">CSVAccountLoader</a></li>
 <li><a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader">JSONAccountLoader</a></li>
 <li><a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader">YAMLAccountLoader</a></li>
+<li><a title="awsrun.plugins.accts.azure.AzureCLIAccountLoader" href="plugins/accts/azure.html#awsrun.plugins.accts.azure.AzureCLIAccountLoader">AzureCLIAccountLoader</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>

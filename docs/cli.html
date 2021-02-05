@@ -325,7 +325,7 @@ if you could select groups of accounts to process? Perhaps you want to run a
 command across all of your production accounts, or maybe run a command across
 all of the accounts of a business unit? Well, you can, by using an account
 loader plug-in, either one of the included or one you build yourself. If you are
-seeking reference material only, please refer to the <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code> page.</p>
+seeking reference material only, please refer to the <code><a title="awsrun.plugins.accts" href="plugins/accts/index.html">awsrun.plugins.accts</a></code> page.</p>
 <p>The account loader plug-in is responsible for loading the full list of the
 accounts you manage as well as the metadata associated with each account. Using
 this metadata, we can specify filters on the command line or via your config to
@@ -347,7 +347,7 @@ list of accounts and metadata for those accounts stored in a JSON file called
     ]
 }
 </code></pre>
-<p>We'll use the <code><a title="awsrun.plugins.accts.JSON" href="plugins/accts.html#awsrun.plugins.accts.JSON">JSON</a></code> plug-in to load the accounts, so we
+<p>We'll use the <code><a title="awsrun.plugins.accts.JSON" href="plugins/accts/index.html#awsrun.plugins.accts.JSON">JSON</a></code> plug-in to load the accounts, so we
 can explore how to use the CLI's metadata filters to select accounts. To do so,
 we need to add the following top-level block to our configuration file:</p>
 <pre><code>Accounts:
@@ -470,8 +470,8 @@ the priority "1" accounts:</p>
 
 400100200300
 </code></pre>
-<p>When using the built-in <code><a title="awsrun.plugins.accts.CSV" href="plugins/accts.html#awsrun.plugins.accts.CSV">CSV</a></code> or
-<code><a title="awsrun.plugins.accts.JSON" href="plugins/accts.html#awsrun.plugins.accts.JSON">JSON</a></code> plug-ins, if you specify an account that is not
+<p>When using the built-in <code><a title="awsrun.plugins.accts.CSV" href="plugins/accts/index.html#awsrun.plugins.accts.CSV">CSV</a></code> or
+<code><a title="awsrun.plugins.accts.JSON" href="plugins/accts/index.html#awsrun.plugins.accts.JSON">JSON</a></code> plug-ins, if you specify an account that is not
 contained in the list of loaded accounts, an error is displayed to the user:</p>
 <pre><code>$ awsrun --account 111111111111
 Account IDs not found: 111111111111
@@ -482,7 +482,7 @@ of that account. This allows more complex logic to be added to awsrun commands.
 This is covered in the user guide for <a href="commands/index.html#execute-method">User-Defined
 Commands</a>.</p>
 <p>This concludes the tour of the awsrun CLI. For more information on the available
-account loader plug-ins, please refer to <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code>. And, for more
+account loader plug-ins, please refer to <code><a title="awsrun.plugins.accts" href="plugins/accts/index.html">awsrun.plugins.accts</a></code>. And, for more
 reference material on the CLI, please see <code><a title="awsrun.cli" href="#awsrun.cli">awsrun.cli</a></code>.</p>
 <h2 id="cli-reference">CLI Reference</h2>
 <p>The CLI is a tool that can execute user-defined commands across one or more
@@ -505,7 +505,7 @@ Options</a> section.</dd>
 plug-ins extend the capabilities of awsrun by simplifying account selection
 process and credential loading via SAML. Plug-ins can provide their own set of
 command line arguments and configuration options. These are documented on the
-plug-in pages at <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code> and <code><a title="awsrun.plugins.creds.aws" href="plugins/creds/aws.html">awsrun.plugins.creds.aws</a></code>. Plug-ins
+plug-in pages at <code><a title="awsrun.plugins.accts" href="plugins/accts/index.html">awsrun.plugins.accts</a></code> and <code><a title="awsrun.plugins.creds.aws" href="plugins/creds/aws.html">awsrun.plugins.creds.aws</a></code>. Plug-ins
 must be explicitly enabled by the user in their awsrun <a href="#configuration">config</a>.</dd>
 <dt>command</dt>
 <dd>Defined by the command being executed. Like plug-ins, each command can define
@@ -624,11 +624,11 @@ the account loader plug-in in the form of <code>PYTHON_MODULE.CLASSNAME</code>, 
 can find and load it. If the plug-in accepts options, they can be provided in an
 optional <code>options</code> block. Refer to the account loader's documentation for a list
 of available configuration options. The included account loader plug-ins are
-documented at the <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code> page. For a gentle introduction to the
+documented at the <code><a title="awsrun.plugins.accts" href="plugins/accts/index.html">awsrun.plugins.accts</a></code> page. For a gentle introduction to the
 account loader plug-ins, see the <a href="#account-plug-ins">Account Plug-ins</a> section
 in the user guide above.</p>
 <p>If this section is not defined, the CLI will use the default account loader
-<code><a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity">Identity</a></code>.</p>
+<code><a title="awsrun.plugins.accts.Identity" href="plugins/accts/index.html#awsrun.plugins.accts.Identity">Identity</a></code>.</p>
 <pre><code>Accounts:
   plugin: PYTHON_MODULE.CLASSNAME
   options:
@@ -1689,7 +1689,9 @@ def _cli(csp):
         attrs = account_loader.attributes()
         if args.metadata in attrs:
             print(f&#34;Metadata values for &#39;{args.metadata}&#39; attribute:\n&#34;)
-            print(&#34;\n&#34;.join(sorted(attrs[args.metadata])))
+            print(
+                &#34;\n&#34;.join(sorted(str(x) for x in attrs[args.metadata] if x is not None))
+            )
         elif attrs:
             print(&#34;Valid metadata attributes:\n&#34;)
             print(&#34;\n&#34;.join(sorted(attrs)))

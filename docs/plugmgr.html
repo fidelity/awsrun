@@ -64,7 +64,7 @@ for each plug-in provides details on options available in the configuration file
 as well as CLI flags. Please refer to <code><a title="awsrun.plugins" href="plugins/index.html">awsrun.plugins</a></code> for details on the
 pluggable behaviors and included plug-ins.</p>
 <p>For example, one pluggable behavior is the <code><a title="awsrun.acctload.AccountLoader" href="acctload.html#awsrun.acctload.AccountLoader">AccountLoader</a></code>. By
-default, awsrun will use the <code><a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity">Identity</a></code> plug-in unless a
+default, awsrun will use the <code><a title="awsrun.plugins.accts.Identity" href="plugins/accts/index.html#awsrun.plugins.accts.Identity">Identity</a></code> plug-in unless a
 user specifies an alternate plug-in in their awsrun configuration. To replace
 the standard account loader, the user would define a plug-in specification block
 in their config called <code>Accounts</code>. This specification block contains a <code>plugin</code>
@@ -704,8 +704,9 @@ register new CLI arguments and invoke the superclass's constructor.</p></section
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity">Identity</a></li>
+<li><a title="awsrun.plugins.accts.Identity" href="plugins/accts/index.html#awsrun.plugins.accts.Identity">Identity</a></li>
 <li>awsrun.plugins.accts._CachingLoaderPlugin</li>
+<li><a title="awsrun.plugins.accts.azure.AzureCLI" href="plugins/accts/azure.html#awsrun.plugins.accts.azure.AzureCLI">AzureCLI</a></li>
 <li>awsrun.plugins.creds.aws.AbstractCrossAccount</li>
 <li><a title="awsrun.plugins.creds.aws.Profile" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.Profile">Profile</a></li>
 <li><a title="awsrun.plugins.creds.aws.SAML" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAML">SAML</a></li>
@@ -806,8 +807,8 @@ follows:</p>
 <p>The specification must include the <code>plugin</code> key that identifies, via a
 dotted string, the Python module concatenated with the name of a <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code>
 subclass. Plug-ins must be installed in the standard Python path. In the
-above example, <code><a title="awsrun.plugins.accts.JSON" href="plugins/accts.html#awsrun.plugins.accts.JSON">JSON</a></code> points to a subclass called
-<code>JSON</code> in the <code><a title="awsrun.plugins.accts" href="plugins/accts.html">awsrun.plugins.accts</a></code> module. The specification can also
+above example, <code><a title="awsrun.plugins.accts.JSON" href="plugins/accts/index.html#awsrun.plugins.accts.JSON">JSON</a></code> points to a subclass called
+<code>JSON</code> in the <code><a title="awsrun.plugins.accts" href="plugins/accts/index.html">awsrun.plugins.accts</a></code> module. The specification can also
 optionally include the <code>options</code> key that defines options made available
 to the plug-in via an <code><a title="awsrun.config.Config" href="config.html#awsrun.config.Config">Config</a></code> object, which is passed to the
 constructor of a <code><a title="awsrun.plugmgr.Plugin" href="#awsrun.plugmgr.Plugin">Plugin</a></code>. This allows the plug-in to type check values and
@@ -1030,7 +1031,7 @@ a dotted string pointing to a subclass of <code><a title="awsrun.plugmgr.Plugin"
 pm.parse_args('Accounts', default='awsrun.plugins.accts.Identity')
 </code></pre>
 <p>If the <code>Accounts</code> key does not exist in the configuration, then the
-<code><a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity">Identity</a></code> plug-in will be used instead.</p></section>
+<code><a title="awsrun.plugins.accts.Identity" href="plugins/accts/index.html#awsrun.plugins.accts.Identity">Identity</a></code> plug-in will be used instead.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1111,7 +1112,7 @@ acct_loader = pm.instantiate(
     default='awsrun.plugins.accts.Identity')
 </code></pre>
 <p>If the <code>Accounts</code> key does not exist in the configuration, then the
-<code><a title="awsrun.plugins.accts.Identity" href="plugins/accts.html#awsrun.plugins.accts.Identity">Identity</a></code> plug-in will be used instead. If
+<code><a title="awsrun.plugins.accts.Identity" href="plugins/accts/index.html#awsrun.plugins.accts.Identity">Identity</a></code> plug-in will be used instead. If
 <code>must_be</code> is provided, the returned value from <code><a title="awsrun.plugmgr.Plugin.instantiate" href="#awsrun.plugmgr.Plugin.instantiate">Plugin.instantiate()</a></code> must
 be an instance of the type specified, otherwise a <code>TypeError</code> is raised.
 If <code>must_be</code> is not provided, the returned object can be of any type.</p></section>

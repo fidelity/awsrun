@@ -219,35 +219,50 @@ followed the installation instructions:
 
 Out of the box, the utility of azurerun is limited as most of its power comes
 from the configuration of an [account loader
-plug-in](https://fidelity.github.io/awsrun/cli.html#account-plug-ins). For example, assume you have a CSV file called `/Users/me/subscriptions.csv` to keep track of your subscriptions along with metadata:
+plug-in](https://fidelity.github.io/awsrun/cli.html#account-plug-ins). Using the
+included [AzureCLI](https://fidelity.github.io/awsrun/plugins/accts/azure.html)
+plug-in, azurerun will use the Azure CLI to obtain a list of subscriptions and
+metadata associated with those. Furthermore, assuming you use a naming
+convention for your subscriptions, we can parse the name to pull out additional
+metadata. For example, if your subscriptions are named "azure-retail-prod" and
+"azure-retail-nonprod", then we can use this regexp to add the "bu" and "env"
+metadata attributes:
 
-    Subscription, BU, Env 
-    00000000-0000-0000-0000-000000000000, IT, nonprod
-    11111111-1111-1111-1111-111111111111, IT, prod
-    22222222-2222-2222-2222-222222222222, HR, nonprod
-    33333333-3333-3333-3333-333333333333, HR, prod
-    
-Azurerun can use that list when selecting accounts. Create the following
-azurerun configuration file called `/Users/me/.azurerun.yaml`:
+    azure-(?P<bu>[^-]+)-(?P<env>.+)
+
+Create the following azurerun configuration file called `.azurerun.yaml` in your
+home directory:
 
     Accounts:
-      plugin: awsrun.plugins.accts.CSV
+      plugin: awsrun.plugins.accts.azure.AzureCLI
       options:
-        url: file:///Users/me/subscriptions.csv
-        id_attr: Subscription
+        name_regexp: 'azure-(?P<bu>[^-]+)-(?P<env>.+)'
 
-Now, you can use the metadata filters to specify subscriptions instead of enumerating them on the azurerun command line. Here are a few examples:
+Now, you can use the metadata filters to specify subscriptions instead of
+enumerating them on the azurerun command line. Here are a few examples:
 
-    # Run the command over all four subscriptions.
+    # Let's see what metadata we can use
+    $ azurerun --metadata
+    bu
+    cloudName
+    env
+    homeTenantId
+    id
+    isDefault
+    name
+    state
+    tenantId 
+
+    # Run the command over all subscriptions.
     $ azurerun az vm list --output table
     ...
 
-    # Run the command over all IT, but not HR, subscriptions.
-    $ azurerun --include BU=IT az vm list --output table
+    # Run the command over all prod subscriptions.
+    $ azurerun --include env=prod az vm list --output table
     ...
     
-    # Run the command over all prod ID subscriptions.
-    $ azurerun --include BU=IT --include Env=prod az vm list --output table
+    # Run the command over all nonprod ACTIVE subscriptions
+    $ azurerun --include state=ACTIVE --include Env=nonprod az vm list --output table
     ...
 
 There are several other [built-in

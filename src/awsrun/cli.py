@@ -1019,7 +1019,9 @@ def _cli(csp):
         attrs = account_loader.attributes()
         if args.metadata in attrs:
             print(f"Metadata values for '{args.metadata}' attribute:\n")
-            print("\n".join(sorted(attrs[args.metadata])))
+            print(
+                "\n".join(sorted(str(x) for x in attrs[args.metadata] if x is not None))
+            )
         elif attrs:
             print("Valid metadata attributes:\n")
             print("\n".join(sorted(attrs)))
