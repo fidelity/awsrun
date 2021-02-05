@@ -261,8 +261,8 @@ enumerating them on the azurerun command line. Here are a few examples:
     $ azurerun --include env=prod az vm list --output table
     ...
     
-    # Run the command over all nonprod ACTIVE subscriptions
-    $ azurerun --include state=ACTIVE --include Env=nonprod az vm list --output table
+    # Run the command over all enabled, nonprod subscriptions
+    $ azurerun --include state=Enabled --include Env=nonprod az vm list --output table
     ...
 
 There are several other [built-in
