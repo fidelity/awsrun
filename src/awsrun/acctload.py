@@ -50,12 +50,15 @@ import itertools
 import keyword
 import logging
 import re
+import shutil
+import subprocess
 import tempfile
 from collections import defaultdict
 from functools import reduce
 from pathlib import Path
 
 import requests
+import json
 import yaml
 from requests_file import FileAdapter
 
@@ -831,6 +834,81 @@ class YAMLAccountLoader(MetaAccountLoader):
             include_attrs=include_attrs,
             exclude_attrs=exclude_attrs,
         )
+
+
+class AzureCLIAccountLoader(MetaAccountLoader):
+    """Creates an `awsrun.acctload.AccountLoader` with accounts loaded from the Azure CLI.
+
+    The following metadata is attached to each account: `id` (str), `name`
+    (str), `cloudName` (str), `tenantId` (str), `homeTenantId` (str), `state`
+    (str), and `isDefault` (bool). In addition, the name of an Azure
+    subscription can be parsed for additional metadata attributes. For example,
+    assume the following Azure subscription names:
+
+    - azure-retail-prod
+    - azure-retail-nonprod
+    - azure-wholesale-prod
+    - azure-wholesale-nonprod
+
+    Setting the `name_regexp` argument to the following regexp
+    `^azure-(?P<bu>[^-]+)-(?P<env>.*)` will attach the `bu` and `env` metadata
+    attributes as well. More precisely, each **named** capture group in the
+    pattern becomes an available metadata attribute. If a subscription name does
+    not match the pattern, the additional attributes will be set to `None`.
+    """
+
+    def __init__(self, name_regexp=None):
+        if not shutil.which("az"):
+            raise FileNotFoundError(
+                "error: Please install the Azure CLI and ensure 'az' is in your path"
+            )
+
+        # Check to make sure it's a valid regexp. Don't catch exception as
+        # azurerun will catch it and report to user.
+        if name_regexp:
+            try:
+                name_regexp = re.compile(name_regexp)
+            except re.error as e:
+                raise ValueError(f"Subscription name regexp invalid: {e}") from e
+            if not name_regexp.groupindex:
+                raise ValueError("Subscription name regexp has no named capture groups")
+
+        # Use the Azure CLI to get the list of subscriptions the user has access
+        # to. It is up to the user to run az login. If they don't we'll print
+        # that error.
+        result = subprocess.run(
+            ["az", "account", "list", "--all"], capture_output=True, check=True
+        )
+
+        # The Azure CLI always returns 0, so we must check to see if anything
+        # was sent to stderr.
+        if result.stderr:
+            raise RuntimeError(result.stderr.decode("utf-8"))
+
+        accts = []
+        for subscription in json.loads(result.stdout):
+
+            # Remove non-scalar elements
+            subscription.pop("user", None)
+            subscription.pop("managedByTenants", None)
+
+            if not name_regexp:
+                accts.append(subscription)
+                continue
+
+            match = name_regexp.search(subscription.get("name"))
+            if match:
+                for k, v in match.groupdict().items():
+                    subscription[k] = v
+            else:
+                LOG.info(
+                    "%s does not match %s",
+                    name_regexp.pattern,
+                    subscription.get("name"),
+                )
+            accts.append(subscription)
+
+        super().__init__(accts)
 
 
 class AbstractAccount:
