@@ -9,7 +9,7 @@ OUTDIR=../../docs
 rm -rf ${OUTDIR}/*
 
 # Build docs from python docstrings
-pdoc --template-dir=templates --html -o ${OUTDIR} ../awsrun
+pdoc3 --template-dir=templates --html -o ${OUTDIR} ../awsrun
 
 # pdoc always outputs to a dir called awsrun, but we want that
 # content in the docs directory
