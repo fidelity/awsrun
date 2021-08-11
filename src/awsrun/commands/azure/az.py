@@ -295,6 +295,7 @@ class CLICommand(Command):
 
     def __init__(self, azurecli_args, output=None, output_dir=None, annotate=False):
         super().__init__()
+        self.azurecli_path = shutil.which("az")
         self.azurecli_args = azurecli_args
         self.output = output
         self.annotate = annotate
@@ -302,6 +303,11 @@ class CLICommand(Command):
 
         if self.output_dir:
             self.output_dir.mkdir(parents=True, exist_ok=True)
+
+        if not self.azurecli_path:
+            raise FileNotFoundError(
+                "error: Have you installed the Azure CLI? https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
+            )
 
     def execute(self, session, acct):
         """Invoke an Azure CLI command for an account."""
@@ -312,7 +318,7 @@ class CLICommand(Command):
         # provide --output if the user has asked us to annotate an output type.
         # This ensures we override any user settings that the Azure CLI tool may
         # pick up from ~/.azure directory.
-        cmd = [shutil.which("az")]
+        cmd = [self.azurecli_path]
         cmd += self.azurecli_args
         cmd += ["--subscription", str(acct)]
         if self.annotate:
