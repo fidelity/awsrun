@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 #
-"""Contains the built-in commands included in awsrun.
+"""Contains the built-in commands included in awsrun and azurerun.
 
 The [submodules](#header-submodules) below provide the commands for different
 cloud service providers (CSPs). The commands made available to the CLI user
@@ -13,24 +13,24 @@ in `awsrun.commands.aws` are included in the command path. If the CLI command is
 called `azurerun`, then the commands in `awsrun.commands.azure` are included
 instead.
 
-*Note: Only AWS commands are included at this time (see [Future
-Plans](../index.html#future-plans) for more details).*
-
-While there are many included commands with awsrun, most users will want to
-write their own awsrun commands tailored to specific tasks. The next section is
-a user guide on how to write your own commands. An example is used throughout to
-illustrate the key concepts.
+While there are many included commands with awsrun (and some in azurerun), most
+users will want to write their own commands tailored to specific tasks.  The
+next section is a user guide on how to write your own commands. An example is
+used throughout to illustrate the key concepts.
 
 ## User-Defined Commands
 
-Building your own awsrun commands is easy if you are familiar with Python and
-the Boto3 library. An awsrun command is simply a subclass of the abstract base
-class `awsrun.runner.Command`.
+Building your own awsrun or azurerun commands is easy if you are familiar with
+Python and the AWS Boto3 or Azure SDK library. The majority of this document
+will focus building a command for awsrun as most concepts are identical for both
+awsrun and azurerun user-defined commands. The last section will, however,
+provide a full working azurerun example.
 
-If you are writing your own command for use with the awsrun API, then you only
-need to implement the `awsrun.runner.Command.execute` method on your subclass.
-Please refer to `awsrun.runner` for details on how to use the module and the
-methods available on the `awsrun.runner.Command` class.
+An awsrun command is simply a subclass of the abstract base class
+`awsrun.runner.Command`.  If you are writing your own command for use with the
+awsrun API, then you only need to implement the `awsrun.runner.Command.execute`
+method on your subclass.  Please refer to `awsrun.runner` for details on how to
+use the module and the methods available on the `awsrun.runner.Command` class.
 
 If, on the other hand, you want to build a command that can also be used from
 the awsrun CLI, then you must define a subclass of `awsrun.runner.Command`
@@ -44,8 +44,9 @@ As a convenience when building commands for AWS to operate on one or more
 regions, you should subclass `awsrun.runner.RegionalCommand` instead of the
 `awsrun.runner.Command`, which will abstract away the explicit looping over
 regions on your behalf. The majority of your AWS commands will use this regional
-command base class. Refer to the documentation in `awsrun.runner` for additional
-details on the differences.
+command base class. Because Azure API endpoints are not region specific, you
+will only use `awsrun.runner.Command` when building commands for Azure. Refer to
+the documentation in `awsrun.runner` for additional details on the differences.
 
 Let's build a simple command to list the VPCs in an AWS account. In subsequent
 sections, we will iterate on this example to illustrate important principles to
@@ -151,7 +152,8 @@ if your command needs to define additional command line arguments or if it needs
 to read values from the user configuration. This is a factory method that will
 be called by the CLI when instantiating the command for use. It must return an
 instance of the command that has been initialized using the command line flags
-and/or the user configuration file.
+and/or the user configuration file. Note: azurerun commands will use the
+non-region specific `awsrun.runner.Command.from_cli` method instead.
 
 Building on the previous example, let's provide a command line flag to print the
 CIDR blocks associated with each VPC. We'll need to make the following changes:
@@ -590,4 +592,102 @@ built-in commands to our path:
 
 For more information on the awsrun CLI command line options, please refer to the
 `awsrun.cli` documentation.
+
+### Azurerun Example
+
+When building azurerun commands, there are a few differences compared to the
+awsrun discussion in the preceding sections:
+
+1. Use the Azure Python SDK instead of the AWS Boto3 library.
+
+2. Subclass the non-region specific `awsrun.runner.Command`.  Implement the
+   non-region specific lifecycle methods as appropriate:
+   `awsrun.runner.Command.execute`, `awsrun.runner.Command.from_cli`, and
+   `awsrun.runner.Command.collect_results`.
+
+3. Edit your `~/.azurerun.yaml` file to add the path to your command if you
+   don't want to specify the `--cmd-path` argument each time.
+
+Here is the full example used in this guide rewritten for Azure.
+
+    #!/usr/bin/env python
+    \"\"\"Display the VNETs in an account.
+
+    The `list_vnets` command displays the IDs of each VNET. For example:
+
+        $ azurerun --account 00000000-0000-0000-0000-000000000000 list_vnets
+        00000000-0000-0000-0000-000000000000/eastus2: my-prd-vnet (10.0.0.0/24)
+
+    Specify the `--summary` flag to include a summary count of VPCs and
+    CIDRs after processing all of the accounts:
+
+        $ azurerun --account 00000000-0000-0000-0000-000000000000 --account 11111111-1111-1111-1111-111111111111 list_vnets --summary
+        00000000-0000-0000-0000-000000000000/eastus2: my-prd-vnet (10.0.0.0/24)
+        11111111-1111-1111-1111-111111111111/centralus: my-nonprd-vnet (10.10.0.0/24, 10.10.1.0/24)
+        Total VPCs: 2
+        Total CIDRs: 3
+    \"\"\"
+
+    import io
+    import sys
+
+    from awsrun.config import Bool
+    from awsrun.runner import Command
+
+    from azure.mgmt.network import NetworkManagementClient
+
+    class CLICommand(Command):
+        \"\"\"Display the VNETs in a subscription.\"\"\"
+
+        @classmethod
+        def from_cli(cls, parser, argv, cfg):
+            parser.add_argument(
+                '--summary',
+                action='store_true',
+                default=cfg('summary', type=Bool, default=False),
+                help='include a summary report at the end')
+
+            args = parser.parse_args(argv)
+            return cls(**vars(args))
+
+        def __init__(self, summary=False):
+            super().__init__()
+            self.summary_flag = summary
+            self.all_cidrs = {}
+
+        def pre_hook(self):
+            self.all_cidrs.clear()
+
+        def execute(self, session, acct):
+            nmc = NetworkManagementClient(session, acct)
+            cidrs = {}  # local variable
+            for vnet in nmc.virtual_networks.list_all():
+                cidrs[vnet.name] = vnet.address_space.address_prefixes
+            return cidrs
+
+        def collect_results(self, acct, get_result):
+            try:
+                # Grab the results from the execute method
+                cidrs = get_result()
+
+                # Update the dict accumulating all of the results. Note: this is
+                # safe to update without synchronization because collect_results
+                # is guaranteed to be invoked sequentially by the main thread.
+                self.all_cidrs.update(cidrs)
+
+                # Print out a one line summary as we process each account like
+                # we had before. Note: this is safe to print directly to stdout
+                # for the same reason stated above.
+                ids = ', '.join(f'{v} ({", ".join(c)})' for v, c in cidrs.items())
+                print(f'{acct}: {ids}', file=sys.stdout)
+
+            except Exception as e:
+                print(f'{acct}: error: {e}', flush=True, file=sys.stderr)
+
+        def post_hook(self):
+            if self.summary_flag:
+                print(f'Total VNETs: {len(self.all_cidrs.keys())}')
+                print(f'Total CIDRs: {sum(len(c) for c in self.all_cidrs.values())}')
+
+
 """
