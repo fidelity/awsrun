@@ -15,11 +15,12 @@
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> -->
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 <style>
 body {
 font-size: 16px;
-font-family: 'Source Sans Pro', serif;
+font-family: 'Source Serif Pro', serif;
 }
 code {
 font-family: 'Source Code Pro', monospace;
@@ -129,11 +130,11 @@ additional guidance on how to build your own.</p>
 other cloud service providers. This section includes the implementation details
 as well as a high-level roadmap of future enhancements.</p>
 <h3 id="other-csps">Other CSPs</h3>
-<p>Other Cloud Service Providers (CSPs) aside from AWS can be supported. The name
-of the installed CLI script is used to determine which CSP is being used. For
-example, if the CLI has been installed as <code><a title="awsrun" href="#awsrun">awsrun</a></code>, the CSP is <code>aws</code>. If the CLI
-has been installed as <code>azurerun</code>, the CSP is <code>azure</code>. The name of the CSP
-dictates the following:</p>
+<p>Other Cloud Service Providers (CSPs) aside from AWS and Azure can be supported.
+The name of the installed CLI script is used to determine which CSP is being
+used. For example, if the CLI has been installed as <code><a title="awsrun" href="#awsrun">awsrun</a></code>, the CSP is <code>aws</code>.
+If the CLI has been installed as <code>azurerun</code>, the CSP is <code>azure</code>. The name of the
+CSP dictates the following:</p>
 <ul>
 <li>
 <p>The user configuration file is loaded from <code>$HOME/.csprun.yaml</code>, where <code>csp</code>
@@ -159,8 +160,6 @@ via a credential loader. When none has been specified in the configuration
 file, awsrun must default to a sane choice for a CSP.</p>
 </li>
 </ul>
-<p>Note: While the above support is already included in awsrun, only commands and
-plug-ins for AWS have been included. The plan is to add Azure support next.</p>
 <h3 id="roadmap">Roadmap</h3>
 <ul>
 <li>Add tests for each module (only a handful have been done so far). PyTest is
@@ -261,11 +260,11 @@ as well as a high-level roadmap of future enhancements.
 
 ### Other CSPs
 
-Other Cloud Service Providers (CSPs) aside from AWS can be supported. The name
-of the installed CLI script is used to determine which CSP is being used. For
-example, if the CLI has been installed as `awsrun`, the CSP is `aws`. If the CLI
-has been installed as `azurerun`, the CSP is `azure`. The name of the CSP
-dictates the following:
+Other Cloud Service Providers (CSPs) aside from AWS and Azure can be supported.
+The name of the installed CLI script is used to determine which CSP is being
+used. For example, if the CLI has been installed as `awsrun`, the CSP is `aws`.
+If the CLI has been installed as `azurerun`, the CSP is `azure`. The name of the
+CSP dictates the following:
 
 - The user configuration file is loaded from `$HOME/.csprun.yaml`, where `csp`
   is the name of the CSP. This allows users to have CSP-specific configuration
@@ -285,9 +284,6 @@ files.
   where `csp` is the name of the CSP. Providing credentials to commands is done
   via a credential loader. When none has been specified in the configuration
   file, awsrun must default to a sane choice for a CSP.
-
-Note: While the above support is already included in awsrun, only commands and
-plug-ins for AWS have been included. The plan is to add Azure support next.
 
 ### Roadmap
 

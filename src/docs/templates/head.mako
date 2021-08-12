@@ -6,7 +6,7 @@
 
 body {
     font-size: 16px;
-    font-family: 'Source Sans Pro', serif;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 code {
