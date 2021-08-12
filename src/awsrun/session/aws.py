@@ -246,27 +246,10 @@ import requests
 from bs4 import BeautifulSoup
 
 from awsrun.cache import ExpiringValue
+from awsrun.session import SessionProvider
+
 
 LOG = logging.getLogger(__name__)
-
-
-class SessionProvider:
-    """A session provider is used to obtain boto3 Sessions for accounts.
-
-    This is an abstract base class and cannot be instantiated directly.
-    Implementors must ensure that the boto3 Sessions returned have the necessary
-    credentials included. The Session object should be ready to use by the user
-    upon request.
-    """
-
-    def session(self, acct_id):
-        """Returns a boto3 Session with credentials for the requested account.
-
-        The `acct_id` is a string containing the AWS account ID. The returned
-        boto3 Session object is ready to use and loaded with the requested
-        credentials.
-        """
-        raise NotImplementedError
 
 
 class CachingSessionProvider(SessionProvider):

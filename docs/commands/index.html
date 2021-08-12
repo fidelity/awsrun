@@ -3,27 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.1" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>awsrun.commands API documentation</title>
-<meta name="description" content="Contains the built-in commands included in awsrun …" />
+<meta name="description" content="Contains the built-in commands included in awsrun and azurerun …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
 <style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<link href="/awsrun/webfonts.css" rel="stylesheet">
+<!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> -->
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 <style>
 body {
-font-size: 17px;
-font-family: Charter-Racket, serif;
+font-size: 16px;
+font-family: 'Source Serif Pro', serif;
 }
 code {
-font-family: Fira-Mono, monospace;
+font-family: 'Source Code Pro', monospace;
+}
+#content {
+max-width: 110ch;
 }
 /* `Text` size and code blocks in main body */
 section code {
-font-size: 15px;
+font-size: 14px;
 }
 /* "expand source code" text */
 details {
@@ -47,7 +54,7 @@ font-weight: bold;
 <h1 class="title">Module <code>awsrun.commands</code></h1>
 </header>
 <section id="section-intro">
-<p>Contains the built-in commands included in awsrun.</p>
+<p>Contains the built-in commands included in awsrun and azurerun.</p>
 <p>The <a href="#header-submodules">submodules</a> below provide the commands for different
 cloud service providers (CSPs). The commands made available to the CLI user
 depend on the literal name of the awsrun script installed on the filesystem. If
@@ -55,20 +62,24 @@ the awsrun CLI command is called <code><a title="awsrun" href="../index.html">aw
 in <code><a title="awsrun.commands.aws" href="aws/index.html">awsrun.commands.aws</a></code> are included in the command path. If the CLI command is
 called <code>azurerun</code>, then the commands in <code><a title="awsrun.commands.azure" href="azure/index.html">awsrun.commands.azure</a></code> are included
 instead.</p>
-<p><em>Note: Only AWS commands are included at this time (see <a href="../index.html#future-plans">Future
-Plans</a> for more details).</em></p>
-<p>While there are many included commands with awsrun, most users will want to
-write their own awsrun commands tailored to specific tasks. The next section is
-a user guide on how to write your own commands. An example is used throughout to
-illustrate the key concepts.</p>
+<p>While there are many included commands with awsrun (and some in azurerun), most
+users will want to write their own commands tailored to specific tasks.
+The
+next section is a user guide on how to write your own commands. An example is
+used throughout to illustrate the key concepts.</p>
 <h2 id="user-defined-commands">User-Defined Commands</h2>
-<p>Building your own awsrun commands is easy if you are familiar with Python and
-the Boto3 library. An awsrun command is simply a subclass of the abstract base
-class <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code>.</p>
-<p>If you are writing your own command for use with the awsrun API, then you only
-need to implement the <code><a title="awsrun.runner.Command.execute" href="../runner.html#awsrun.runner.Command.execute">Command.execute()</a></code> method on your subclass.
-Please refer to <code><a title="awsrun.runner" href="../runner.html">awsrun.runner</a></code> for details on how to use the module and the
-methods available on the <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code> class.</p>
+<p>Building your own awsrun or azurerun commands is easy if you are familiar with
+Python and the AWS Boto3 or Azure SDK library. The majority of this document
+will focus building a command for awsrun as most concepts are identical for both
+awsrun and azurerun user-defined commands. The last section will, however,
+provide a full working azurerun example.</p>
+<p>An awsrun command is simply a subclass of the abstract base class
+<code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code>.
+If you are writing your own command for use with the
+awsrun API, then you only need to implement the <code><a title="awsrun.runner.Command.execute" href="../runner.html#awsrun.runner.Command.execute">Command.execute()</a></code>
+method on your subclass.
+Please refer to <code><a title="awsrun.runner" href="../runner.html">awsrun.runner</a></code> for details on how to
+use the module and the methods available on the <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code> class.</p>
 <p>If, on the other hand, you want to build a command that can also be used from
 the awsrun CLI, then you must define a subclass of <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code>
 called <code>CLICommand</code> in a Python module with the same name of the command you
@@ -80,8 +91,9 @@ find and dynamically load your command at runtime.</p>
 regions, you should subclass <code><a title="awsrun.runner.RegionalCommand" href="../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></code> instead of the
 <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code>, which will abstract away the explicit looping over
 regions on your behalf. The majority of your AWS commands will use this regional
-command base class. Refer to the documentation in <code><a title="awsrun.runner" href="../runner.html">awsrun.runner</a></code> for additional
-details on the differences.</p>
+command base class. Because Azure API endpoints are not region specific, you
+will only use <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code> when building commands for Azure. Refer to
+the documentation in <code><a title="awsrun.runner" href="../runner.html">awsrun.runner</a></code> for additional details on the differences.</p>
 <p>Let's build a simple command to list the VPCs in an AWS account. In subsequent
 sections, we will iterate on this example to illustrate important principles to
 learn when writing your own commands. Because most of the AWS APIs are regional,
@@ -176,7 +188,8 @@ if your command needs to define additional command line arguments or if it needs
 to read values from the user configuration. This is a factory method that will
 be called by the CLI when instantiating the command for use. It must return an
 instance of the command that has been initialized using the command line flags
-and/or the user configuration file.</p>
+and/or the user configuration file. Note: azurerun commands will use the
+non-region specific <code><a title="awsrun.runner.Command.from_cli" href="../runner.html#awsrun.runner.Command.from_cli">Command.from_cli()</a></code> method instead.</p>
 <p>Building on the previous example, let's provide a command line flag to print the
 CIDR blocks associated with each VPC. We'll need to make the following changes:</p>
 <ol>
@@ -309,7 +322,7 @@ unless you are using a custom account loader that provides a custom account
 object. Depending on the account loader, this object might contain metadata
 associated with it that can be accessed via this object while processing an
 account. Several custom account loaders are included with awsrun in the
-<code><a title="awsrun.plugins.accts" href="../plugins/accts.html">awsrun.plugins.accts</a></code> module.</p>
+<code><a title="awsrun.plugins.accts" href="../plugins/accts/index.html">awsrun.plugins.accts</a></code> module.</p>
 <p>A common pattern for CLI-based commands is to build up a string to be displayed
 to the user. By using an <code>io.StringIO</code> buffer, you'll be able to use the familiar
 <code>print()</code> function to incrementally append to an in-memory buffer. Then, at the
@@ -587,6 +600,105 @@ built-in commands to our path:</p>
 </code></pre>
 <p>For more information on the awsrun CLI command line options, please refer to the
 <code><a title="awsrun.cli" href="../cli.html">awsrun.cli</a></code> documentation.</p>
+<h3 id="azurerun-example">Azurerun Example</h3>
+<p>When building azurerun commands, there are a few differences compared to the
+awsrun discussion in the preceding sections:</p>
+<ol>
+<li>
+<p>Use the Azure Python SDK instead of the AWS Boto3 library.</p>
+</li>
+<li>
+<p>Subclass the non-region specific <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code>.
+Implement the
+non-region specific lifecycle methods as appropriate:
+<code><a title="awsrun.runner.Command.execute" href="../runner.html#awsrun.runner.Command.execute">Command.execute()</a></code>, <code><a title="awsrun.runner.Command.from_cli" href="../runner.html#awsrun.runner.Command.from_cli">Command.from_cli()</a></code>, and
+<code><a title="awsrun.runner.Command.collect_results" href="../runner.html#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>.</p>
+</li>
+<li>
+<p>Edit your <code>~/.azurerun.yaml</code> file to add the path to your command if you
+don't want to specify the <code>--cmd-path</code> argument each time.</p>
+</li>
+</ol>
+<p>Here is the full example used in this guide rewritten for Azure.</p>
+<pre><code>#!/usr/bin/env python
+"""Display the VNETs in an account.
+
+The &lt;code&gt;list\_vnets&lt;/code&gt; command displays the IDs of each VNET. For example:
+
+    $ azurerun --account 00000000-0000-0000-0000-000000000000 list_vnets
+    00000000-0000-0000-0000-000000000000/eastus2: my-prd-vnet (10.0.0.0/24)
+
+Specify the `--summary` flag to include a summary count of VPCs and
+CIDRs after processing all of the accounts:
+
+    $ azurerun --account 00000000-0000-0000-0000-000000000000 --account 11111111-1111-1111-1111-111111111111 list_vnets --summary
+    00000000-0000-0000-0000-000000000000/eastus2: my-prd-vnet (10.0.0.0/24)
+    11111111-1111-1111-1111-111111111111/centralus: my-nonprd-vnet (10.10.0.0/24, 10.10.1.0/24)
+    Total VPCs: 2
+    Total CIDRs: 3
+"""
+
+import io
+import sys
+
+from awsrun.config import Bool
+from awsrun.runner import Command
+
+from azure.mgmt.network import NetworkManagementClient
+
+class CLICommand(Command):
+    """Display the VNETs in a subscription."""
+
+    @classmethod
+    def from_cli(cls, parser, argv, cfg):
+        parser.add_argument(
+            '--summary',
+            action='store_true',
+            default=cfg('summary', type=Bool, default=False),
+            help='include a summary report at the end')
+
+        args = parser.parse_args(argv)
+        return cls(**vars(args))
+
+    def __init__(self, summary=False):
+        super().__init__()
+        self.summary_flag = summary
+        self.all_cidrs = {}
+
+    def pre_hook(self):
+        self.all_cidrs.clear()
+
+    def execute(self, session, acct):
+        nmc = NetworkManagementClient(session, acct)
+        cidrs = {}  # local variable
+        for vnet in nmc.virtual_networks.list_all():
+            cidrs[vnet.name] = vnet.address_space.address_prefixes
+        return cidrs
+
+    def collect_results(self, acct, get_result):
+        try:
+            # Grab the results from the execute method
+            cidrs = get_result()
+
+            # Update the dict accumulating all of the results. Note: this is
+            # safe to update without synchronization because collect_results
+            # is guaranteed to be invoked sequentially by the main thread.
+            self.all_cidrs.update(cidrs)
+
+            # Print out a one line summary as we process each account like
+            # we had before. Note: this is safe to print directly to stdout
+            # for the same reason stated above.
+            ids = ', '.join(f'{v} ({", ".join(c)})' for v, c in cidrs.items())
+            print(f'{acct}: {ids}', file=sys.stdout)
+
+        except Exception as e:
+            print(f'{acct}: error: {e}', flush=True, file=sys.stderr)
+
+    def post_hook(self):
+        if self.summary_flag:
+            print(f'Total VNETs: {len(self.all_cidrs.keys())}')
+            print(f'Total CIDRs: {sum(len(c) for c in self.all_cidrs.values())}')
+</code></pre>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -596,7 +708,7 @@ built-in commands to our path:</p>
 #
 # SPDX-License-Identifier: MIT
 #
-&#34;&#34;&#34;Contains the built-in commands included in awsrun.
+&#34;&#34;&#34;Contains the built-in commands included in awsrun and azurerun.
 
 The [submodules](#header-submodules) below provide the commands for different
 cloud service providers (CSPs). The commands made available to the CLI user
@@ -606,24 +718,24 @@ in `awsrun.commands.aws` are included in the command path. If the CLI command is
 called `azurerun`, then the commands in `awsrun.commands.azure` are included
 instead.
 
-*Note: Only AWS commands are included at this time (see [Future
-Plans](../index.html#future-plans) for more details).*
-
-While there are many included commands with awsrun, most users will want to
-write their own awsrun commands tailored to specific tasks. The next section is
-a user guide on how to write your own commands. An example is used throughout to
-illustrate the key concepts.
+While there are many included commands with awsrun (and some in azurerun), most
+users will want to write their own commands tailored to specific tasks.  The
+next section is a user guide on how to write your own commands. An example is
+used throughout to illustrate the key concepts.
 
 ## User-Defined Commands
 
-Building your own awsrun commands is easy if you are familiar with Python and
-the Boto3 library. An awsrun command is simply a subclass of the abstract base
-class `awsrun.runner.Command`.
+Building your own awsrun or azurerun commands is easy if you are familiar with
+Python and the AWS Boto3 or Azure SDK library. The majority of this document
+will focus building a command for awsrun as most concepts are identical for both
+awsrun and azurerun user-defined commands. The last section will, however,
+provide a full working azurerun example.
 
-If you are writing your own command for use with the awsrun API, then you only
-need to implement the `awsrun.runner.Command.execute` method on your subclass.
-Please refer to `awsrun.runner` for details on how to use the module and the
-methods available on the `awsrun.runner.Command` class.
+An awsrun command is simply a subclass of the abstract base class
+`awsrun.runner.Command`.  If you are writing your own command for use with the
+awsrun API, then you only need to implement the `awsrun.runner.Command.execute`
+method on your subclass.  Please refer to `awsrun.runner` for details on how to
+use the module and the methods available on the `awsrun.runner.Command` class.
 
 If, on the other hand, you want to build a command that can also be used from
 the awsrun CLI, then you must define a subclass of `awsrun.runner.Command`
@@ -637,8 +749,9 @@ As a convenience when building commands for AWS to operate on one or more
 regions, you should subclass `awsrun.runner.RegionalCommand` instead of the
 `awsrun.runner.Command`, which will abstract away the explicit looping over
 regions on your behalf. The majority of your AWS commands will use this regional
-command base class. Refer to the documentation in `awsrun.runner` for additional
-details on the differences.
+command base class. Because Azure API endpoints are not region specific, you
+will only use `awsrun.runner.Command` when building commands for Azure. Refer to
+the documentation in `awsrun.runner` for additional details on the differences.
 
 Let&#39;s build a simple command to list the VPCs in an AWS account. In subsequent
 sections, we will iterate on this example to illustrate important principles to
@@ -744,7 +857,8 @@ if your command needs to define additional command line arguments or if it needs
 to read values from the user configuration. This is a factory method that will
 be called by the CLI when instantiating the command for use. It must return an
 instance of the command that has been initialized using the command line flags
-and/or the user configuration file.
+and/or the user configuration file. Note: azurerun commands will use the
+non-region specific `awsrun.runner.Command.from_cli` method instead.
 
 Building on the previous example, let&#39;s provide a command line flag to print the
 CIDR blocks associated with each VPC. We&#39;ll need to make the following changes:
@@ -1183,6 +1297,104 @@ built-in commands to our path:
 
 For more information on the awsrun CLI command line options, please refer to the
 `awsrun.cli` documentation.
+
+### Azurerun Example
+
+When building azurerun commands, there are a few differences compared to the
+awsrun discussion in the preceding sections:
+
+1. Use the Azure Python SDK instead of the AWS Boto3 library.
+
+2. Subclass the non-region specific `awsrun.runner.Command`.  Implement the
+   non-region specific lifecycle methods as appropriate:
+   `awsrun.runner.Command.execute`, `awsrun.runner.Command.from_cli`, and
+   `awsrun.runner.Command.collect_results`.
+
+3. Edit your `~/.azurerun.yaml` file to add the path to your command if you
+   don&#39;t want to specify the `--cmd-path` argument each time.
+
+Here is the full example used in this guide rewritten for Azure.
+
+    #!/usr/bin/env python
+    \&#34;\&#34;\&#34;Display the VNETs in an account.
+
+    The `list_vnets` command displays the IDs of each VNET. For example:
+
+        $ azurerun --account 00000000-0000-0000-0000-000000000000 list_vnets
+        00000000-0000-0000-0000-000000000000/eastus2: my-prd-vnet (10.0.0.0/24)
+
+    Specify the `--summary` flag to include a summary count of VPCs and
+    CIDRs after processing all of the accounts:
+
+        $ azurerun --account 00000000-0000-0000-0000-000000000000 --account 11111111-1111-1111-1111-111111111111 list_vnets --summary
+        00000000-0000-0000-0000-000000000000/eastus2: my-prd-vnet (10.0.0.0/24)
+        11111111-1111-1111-1111-111111111111/centralus: my-nonprd-vnet (10.10.0.0/24, 10.10.1.0/24)
+        Total VPCs: 2
+        Total CIDRs: 3
+    \&#34;\&#34;\&#34;
+
+    import io
+    import sys
+
+    from awsrun.config import Bool
+    from awsrun.runner import Command
+
+    from azure.mgmt.network import NetworkManagementClient
+
+    class CLICommand(Command):
+        \&#34;\&#34;\&#34;Display the VNETs in a subscription.\&#34;\&#34;\&#34;
+
+        @classmethod
+        def from_cli(cls, parser, argv, cfg):
+            parser.add_argument(
+                &#39;--summary&#39;,
+                action=&#39;store_true&#39;,
+                default=cfg(&#39;summary&#39;, type=Bool, default=False),
+                help=&#39;include a summary report at the end&#39;)
+
+            args = parser.parse_args(argv)
+            return cls(**vars(args))
+
+        def __init__(self, summary=False):
+            super().__init__()
+            self.summary_flag = summary
+            self.all_cidrs = {}
+
+        def pre_hook(self):
+            self.all_cidrs.clear()
+
+        def execute(self, session, acct):
+            nmc = NetworkManagementClient(session, acct)
+            cidrs = {}  # local variable
+            for vnet in nmc.virtual_networks.list_all():
+                cidrs[vnet.name] = vnet.address_space.address_prefixes
+            return cidrs
+
+        def collect_results(self, acct, get_result):
+            try:
+                # Grab the results from the execute method
+                cidrs = get_result()
+
+                # Update the dict accumulating all of the results. Note: this is
+                # safe to update without synchronization because collect_results
+                # is guaranteed to be invoked sequentially by the main thread.
+                self.all_cidrs.update(cidrs)
+
+                # Print out a one line summary as we process each account like
+                # we had before. Note: this is safe to print directly to stdout
+                # for the same reason stated above.
+                ids = &#39;, &#39;.join(f&#39;{v} ({&#34;, &#34;.join(c)})&#39; for v, c in cidrs.items())
+                print(f&#39;{acct}: {ids}&#39;, file=sys.stdout)
+
+            except Exception as e:
+                print(f&#39;{acct}: error: {e}&#39;, flush=True, file=sys.stderr)
+
+        def post_hook(self):
+            if self.summary_flag:
+                print(f&#39;Total VNETs: {len(self.all_cidrs.keys())}&#39;)
+                print(f&#39;Total CIDRs: {sum(len(c) for c in self.all_cidrs.values())}&#39;)
+
+
 &#34;&#34;&#34;</code></pre>
 </details>
 </section>
@@ -1216,6 +1428,7 @@ For more information on the awsrun CLI command line options, please refer to the
 <li><a href="#execute-method">Execute Method</a></li>
 <li><a href="#collecting-results">Collecting Results</a></li>
 <li><a href="#installing-commands">Installing Commands</a></li>
+<li><a href="#azurerun-example">Azurerun Example</a></li>
 </ul>
 </li>
 </ul>
@@ -1236,7 +1449,7 @@ For more information on the awsrun CLI command line options, please refer to the
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

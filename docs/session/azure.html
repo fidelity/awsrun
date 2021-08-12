@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>awsrun.session.azure API documentation</title>
+<meta name="description" content="API to obtain Azure credentials via a variety of means …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> -->
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Source+Serif+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+body {
+font-size: 16px;
+font-family: 'Source Serif Pro', serif;
+}
+code {
+font-family: 'Source Code Pro', monospace;
+}
+#content {
+max-width: 110ch;
+}
+/* `Text` size and code blocks in main body */
+section code {
+font-size: 14px;
+}
+/* "expand source code" text */
+details {
+font-size: 14px;
+}
+ul li code a {
+font-size: .9em;
+}
+dt {
+font-weight: bold;
+}
+h4 {
+font-weight: bold;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.session.azure</code></h1>
+</header>
+<section id="section-intro">
+<p>API to obtain Azure credentials via a variety of means.</p>
+<h2 id="overview">Overview</h2>
+<p>This module provides a <code>SessionProvider</code> interface to obtain Azure credentials
+via one of two mechanisms: DefaultAzureCredential or UsernamePasswordCredential.
+Regardless of the mechanism, the session provider is responsible for returning
+an Azure credential given a subscription. In Azure, when requesting credentials
+for a subscription, they will be the same unless the subscriptions are within
+different tenants. None of the included session providers provide support for
+mulitple tenants, but one could build their own if needed.</p>
+<p>Two concrete session provider implementations included in this module:</p>
+<dl>
+<dt><code><a title="awsrun.session.azure.CredsViaAzureDefault" href="#awsrun.session.azure.CredsViaAzureDefault">CredsViaAzureDefault</a></code></dt>
+<dd>Credentials are obtained from one of the following sources: environment
+variables, an Azure managed identity, shared token cache (Windows only), user
+signed into VSCode, the Azure CLI tool, or interactively via the browser.</dd>
+<dt><code><a title="awsrun.session.azure.CredsViaUsernamePassword" href="#awsrun.session.azure.CredsViaUsernamePassword">CredsViaUsernamePassword</a></code></dt>
+<dd>Credentials are obtained using a username and password. This session provider
+is almost twice as fast as <code><a title="awsrun.session.azure.CredsViaAzureDefault" href="#awsrun.session.azure.CredsViaAzureDefault">CredsViaAzureDefault</a></code> when relying on Azure CLI for
+authentication, which is slow as it has to invoke <code>az account get-access-token</code>
+each time a token is needed.</dd>
+</dl>
+<h2 id="quick-start">Quick Start</h2>
+<p>The following quick start guide shows how to use the provided Azure session
+providers. To obtain credentials for subscriptions, create an instance of a
+<code>SessionProvider</code>:</p>
+<pre><code># Instantiate a single session provider and reuse it (pick one)
+# session_provider = CredsViaAzureDefault()
+session_provider = CredsViaUsernamePassword('username', 'password')
+
+# Obtain credentials for one or more subscriptions
+creds1 = session_provider.session('00000000-0000-0000-0000-000000000000')
+creds2 = session_provider.session('11111111-1111-1111-1111-111111111111')
+
+# Use the credentials to interact with Azure
+nmc1 = NetworkManagementClient(creds1, '00000000-0000-0000-0000-000000000000')
+nmc2 = NetworkManagementClient(creds2, '11111111-1111-1111-1111-111111111111')
+</code></pre>
+<h2 id="caching">Caching</h2>
+<p>The same Azure credential is reused because the Azure SDK clients invoke
+<code>get_token</code> on the credential object to obtain an access token. Access tokens
+are cached when using <code><a title="awsrun.session.azure.CredsViaUsernamePassword" href="#awsrun.session.azure.CredsViaUsernamePassword">CredsViaUsernamePassword</a></code>. Likewise, when defaulting to
+VSCode or Azure CLI for authentication using <code><a title="awsrun.session.azure.CredsViaAzureDefault" href="#awsrun.session.azure.CredsViaAzureDefault">CredsViaAzureDefault</a></code>, the tokens
+are cached as well.</p>
+<h2 id="thread-safety">Thread Safety</h2>
+<p><code><a title="awsrun.session.azure.CredsViaUsernamePassword" href="#awsrun.session.azure.CredsViaUsernamePassword">CredsViaUsernamePassword</a></code> is thread-safe. It uses the MSAL library token
+cache, which is protected by locks, so it is safe to reuse the same underlying
+Azure credential object.</p>
+<p><code><a title="awsrun.session.azure.CredsViaAzureDefault" href="#awsrun.session.azure.CredsViaAzureDefault">CredsViaAzureDefault</a></code> is almost thread-safe. When the credentials are obtained
+from the Azure CLI, a token cache on disk is searched. If a token does not exist
+or needs to be refreshed, then the writing of the cache is not thread-safe as it
+does not appear the Azure CLI provides locking or atomic moves. To minimize this
+risk, this module guarantees that only one thread makes the first request for a
+token, to populate the token cache or refresh it, before allowing other threads
+to proceed concurrently.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;API to obtain Azure credentials via a variety of means.
+
+## Overview
+
+This module provides a `SessionProvider` interface to obtain Azure credentials
+via one of two mechanisms: DefaultAzureCredential or UsernamePasswordCredential.
+Regardless of the mechanism, the session provider is responsible for returning
+an Azure credential given a subscription. In Azure, when requesting credentials
+for a subscription, they will be the same unless the subscriptions are within
+different tenants. None of the included session providers provide support for
+mulitple tenants, but one could build their own if needed.
+
+Two concrete session provider implementations included in this module:
+
+`CredsViaAzureDefault`
+:  Credentials are obtained from one of the following sources: environment
+variables, an Azure managed identity, shared token cache (Windows only), user
+signed into VSCode, the Azure CLI tool, or interactively via the browser.
+
+`CredsViaUsernamePassword`
+:  Credentials are obtained using a username and password. This session provider
+is almost twice as fast as `CredsViaAzureDefault` when relying on Azure CLI for
+authentication, which is slow as it has to invoke `az account get-access-token`
+each time a token is needed.
+
+## Quick Start
+
+The following quick start guide shows how to use the provided Azure session
+providers. To obtain credentials for subscriptions, create an instance of a
+`SessionProvider`:
+
+    # Instantiate a single session provider and reuse it (pick one)
+    # session_provider = CredsViaAzureDefault()
+    session_provider = CredsViaUsernamePassword(&#39;username&#39;, &#39;password&#39;)
+
+    # Obtain credentials for one or more subscriptions
+    creds1 = session_provider.session(&#39;00000000-0000-0000-0000-000000000000&#39;)
+    creds2 = session_provider.session(&#39;11111111-1111-1111-1111-111111111111&#39;)
+
+    # Use the credentials to interact with Azure
+    nmc1 = NetworkManagementClient(creds1, &#39;00000000-0000-0000-0000-000000000000&#39;)
+    nmc2 = NetworkManagementClient(creds2, &#39;11111111-1111-1111-1111-111111111111&#39;)
+
+## Caching
+
+The same Azure credential is reused because the Azure SDK clients invoke
+`get_token` on the credential object to obtain an access token. Access tokens
+are cached when using `CredsViaUsernamePassword`. Likewise, when defaulting to
+VSCode or Azure CLI for authentication using `CredsViaAzureDefault`, the tokens
+are cached as well.
+
+## Thread Safety
+
+`CredsViaUsernamePassword` is thread-safe. It uses the MSAL library token
+cache, which is protected by locks, so it is safe to reuse the same underlying
+Azure credential object.
+
+`CredsViaAzureDefault` is almost thread-safe. When the credentials are obtained
+from the Azure CLI, a token cache on disk is searched. If a token does not exist
+or needs to be refreshed, then the writing of the cache is not thread-safe as it
+does not appear the Azure CLI provides locking or atomic moves. To minimize this
+risk, this module guarantees that only one thread makes the first request for a
+token, to populate the token cache or refresh it, before allowing other threads
+to proceed concurrently.
+&#34;&#34;&#34;
+import threading
+import functools
+
+from awsrun.session import SessionProvider
+
+# I think pylint has bug when the current file is named the same as an existing
+# module already installed. In this case, this file is called azure.py and there
+# is a external module called azure installed with the Azure SDK.
+# pylint: disable=no-name-in-module,import-error
+from azure.identity import DefaultAzureCredential
+from azure.identity import UsernamePasswordCredential
+
+
+# The UsernamePasswordCredenial requires a client ID, so we use the client used
+# by the Azure CLI.
+DEVELOPER_SIGN_ON_CLIENT_ID = &#34;04b07795-8ddb-461a-bbee-02f9e1bf7b46&#34;
+
+# Scope used to test if user&#39;s password is valid before azurerun launches a
+# bunch of workers.
+ARM_SCOPE = &#34;https://management.azure.com/.default&#34;
+
+
+# Decorator used to wrap the various Azure Credential classes&#39; get_token()
+# methods. In the Azure SDK, one passes these credential objects to the various
+# SDK clients, which in turn invoke the get_token method on that credential
+# object. Depending on the specific Azure Credential class used, some of these
+# cache access tokens such as the Azure UsernamePasswordCredential and the
+# AzureCliCredential.
+#
+# When azurerun executes, it creates a thread pool of workers that will
+# concurrently execute a &#34;command&#34; across one or more subscriptions using one of
+# the Azure SDK clients. If an access token is not in a cache or needs to be
+# refreshed at the time azurerun starts, all of the workers will concurrently
+# attempt to get a fresh token by making network requests to Azure AD. This is
+# wasteful. It would be better if we waited for one worker to complete a call to
+# get_token, thus populating any caches, and then letting the rest of the
+# workers proceed concurrently.
+#
+# This decorator will only allow one worker thread to proceed with a get_token()
+# call and force the remaining workers to be blocked until that first call has
+# completed. After which, the remaining threads can proceed concurrently.
+# Because get_token is called with a list of scopes, we ensure threads block
+# based on the scope being requested, to make sure the cache contains the right
+# access key.
+def _wait_once_per_scope(func):
+    done = set()
+    lock = threading.RLock()
+
+    @functools.wraps(func)
+    def wrapper(*scopes, **kwargs):
+        scope_key = tuple(scopes)
+        with lock:
+            if scope_key not in done:
+                # Mark it as done even before the function call completes in
+                # case it throws an exception. If the call is going to fail, no
+                # need to slow the rest of the blocked threads. Fail fast.
+                done.add(scope_key)
+                return func(*scopes, **kwargs)
+        return func(*scopes, **kwargs)
+
+    return wrapper
+
+
+# pylint: disable=too-few-public-methods
+
+
+class CredsViaAzureDefault(SessionProvider):
+    &#34;&#34;&#34;A session provider that obtains credentials from a variety of sources.
+
+    Credentials are obtained via environment variables, managed identity on an
+    Azure host, shared token cache (Windows only), Azure VSCode, Azure CLI, or
+    interactively via the browser. These are tried in order until one succeeds.
+
+    The `authority` argument specifies the Microsoft authority host to use. If none
+    is provided, the default is &#34;login.microsoftonline.com&#34;.
+
+    For more information, see [Azure SDK
+    documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.5.0/index.html#defaultazurecredential)
+    &#34;&#34;&#34;
+
+    def __init__(self, authority=None):
+        self.creds = DefaultAzureCredential(
+            exclude_interactive_browser_credential=False, authority=authority
+        )
+
+        # Wrap the credential&#39;s get_token method to ensure that only one thread
+        # calls get_token with a specific scope. All other threads requesting a
+        # token of the same scope will be blocked until the first has completed.
+        # It prevents a bunch of unnecessary network requets for authentication.
+        self.creds.get_token = _wait_once_per_scope(self.creds.get_token)
+
+    def session(self, _subscription_id):
+        # The same credentials are used regardless of the subscription within a
+        # tenant, which is why we ignore the subscription here--unlike AWS.
+        return self.creds
+
+
+class CredsViaUsernamePassword(SessionProvider):
+    &#34;&#34;&#34;A session provider that obtains Azure tokens via username &amp; password.
+
+    Credentials are obtained by authenticating with Azure AD using a username
+    and password. Access tokens are cached by the underlying MSAL library and
+    automatically refreshed as needed.
+
+    The `username` is typically an email address that specifies the user.
+    `Password` is the password for the specified username.
+
+    The `tenant_id` argument is optional specifies the tenant of the user.
+    Normally, this can be derived from the email address used as the username,
+    so it is not required.
+
+    The `authority` argument is optional and specifies the Microsoft authority
+    host to use. If none is provided, the default is
+    &#34;login.microsoftonline.com&#34;.
+
+    For more information, see [Azure SDK
+    documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.4.0/azure.identity.html#azure.identity.UsernamePasswordCredential)
+    &#34;&#34;&#34;
+
+    def __init__(self, username, password, tenant_id=None, authority=None):
+        self.creds = UsernamePasswordCredential(
+            DEVELOPER_SIGN_ON_CLIENT_ID,
+            username,
+            password,
+            tenant_id=tenant_id,
+            authority=authority,
+        )
+
+        # Wrap the credential&#39;s get_token method to ensure that only one thread
+        # calls get_token with a specific scope. All other threads requesting a
+        # token of the same scope will be blocked until the first has completed.
+        # Thus pre-filling the MSAL token cache. It prevents a bunch of
+        # unnecessary network requets for authentication.
+        self.creds.get_token = _wait_once_per_scope(self.creds.get_token)
+
+        # Request a token now as it will validate the user supplied the correct
+        # username and password. If we did not catch that here, then each worker
+        # would end up failing---possibly locking the user&#39;s account.
+        #
+        # Is using this scope a safe assumption, will all users have access to
+        # this scope? I&#39;d really like to validate a person&#39;s credential before
+        # we let the workers loose, but it&#39;s impossible to know what Azure SDK
+        # clients will be used by the user, which dictates the scope used.
+        self.creds.get_token(ARM_SCOPE)
+
+    def session(self, _subscription_id):
+        # The same credentials are used regardless of the subscription within a
+        # tenant, which is why we ignore the subscription here--unlike AWS.
+        return self.creds</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.session.azure.CredsViaAzureDefault"><code class="flex name class">
+<span>class <span class="ident">CredsViaAzureDefault</span></span>
+<span>(</span><span>authority=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A session provider that obtains credentials from a variety of sources.</p>
+<p>Credentials are obtained via environment variables, managed identity on an
+Azure host, shared token cache (Windows only), Azure VSCode, Azure CLI, or
+interactively via the browser. These are tried in order until one succeeds.</p>
+<p>The <code>authority</code> argument specifies the Microsoft authority host to use. If none
+is provided, the default is "login.microsoftonline.com".</p>
+<p>For more information, see <a href="https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.5.0/index.html#defaultazurecredential">Azure SDK
+documentation</a></p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CredsViaAzureDefault(SessionProvider):
+    &#34;&#34;&#34;A session provider that obtains credentials from a variety of sources.
+
+    Credentials are obtained via environment variables, managed identity on an
+    Azure host, shared token cache (Windows only), Azure VSCode, Azure CLI, or
+    interactively via the browser. These are tried in order until one succeeds.
+
+    The `authority` argument specifies the Microsoft authority host to use. If none
+    is provided, the default is &#34;login.microsoftonline.com&#34;.
+
+    For more information, see [Azure SDK
+    documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.5.0/index.html#defaultazurecredential)
+    &#34;&#34;&#34;
+
+    def __init__(self, authority=None):
+        self.creds = DefaultAzureCredential(
+            exclude_interactive_browser_credential=False, authority=authority
+        )
+
+        # Wrap the credential&#39;s get_token method to ensure that only one thread
+        # calls get_token with a specific scope. All other threads requesting a
+        # token of the same scope will be blocked until the first has completed.
+        # It prevents a bunch of unnecessary network requets for authentication.
+        self.creds.get_token = _wait_once_per_scope(self.creds.get_token)
+
+    def session(self, _subscription_id):
+        # The same credentials are used regardless of the subscription within a
+        # tenant, which is why we ignore the subscription here--unlike AWS.
+        return self.creds</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.session.SessionProvider.session" href="index.html#awsrun.session.SessionProvider.session">session</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.session.azure.CredsViaUsernamePassword"><code class="flex name class">
+<span>class <span class="ident">CredsViaUsernamePassword</span></span>
+<span>(</span><span>username, password, tenant_id=None, authority=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A session provider that obtains Azure tokens via username &amp; password.</p>
+<p>Credentials are obtained by authenticating with Azure AD using a username
+and password. Access tokens are cached by the underlying MSAL library and
+automatically refreshed as needed.</p>
+<p>The <code>username</code> is typically an email address that specifies the user.
+<code>Password</code> is the password for the specified username.</p>
+<p>The <code>tenant_id</code> argument is optional specifies the tenant of the user.
+Normally, this can be derived from the email address used as the username,
+so it is not required.</p>
+<p>The <code>authority</code> argument is optional and specifies the Microsoft authority
+host to use. If none is provided, the default is
+"login.microsoftonline.com".</p>
+<p>For more information, see <a href="https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.4.0/azure.identity.html#azure.identity.UsernamePasswordCredential">Azure SDK
+documentation</a></p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CredsViaUsernamePassword(SessionProvider):
+    &#34;&#34;&#34;A session provider that obtains Azure tokens via username &amp; password.
+
+    Credentials are obtained by authenticating with Azure AD using a username
+    and password. Access tokens are cached by the underlying MSAL library and
+    automatically refreshed as needed.
+
+    The `username` is typically an email address that specifies the user.
+    `Password` is the password for the specified username.
+
+    The `tenant_id` argument is optional specifies the tenant of the user.
+    Normally, this can be derived from the email address used as the username,
+    so it is not required.
+
+    The `authority` argument is optional and specifies the Microsoft authority
+    host to use. If none is provided, the default is
+    &#34;login.microsoftonline.com&#34;.
+
+    For more information, see [Azure SDK
+    documentation](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-identity/1.4.0/azure.identity.html#azure.identity.UsernamePasswordCredential)
+    &#34;&#34;&#34;
+
+    def __init__(self, username, password, tenant_id=None, authority=None):
+        self.creds = UsernamePasswordCredential(
+            DEVELOPER_SIGN_ON_CLIENT_ID,
+            username,
+            password,
+            tenant_id=tenant_id,
+            authority=authority,
+        )
+
+        # Wrap the credential&#39;s get_token method to ensure that only one thread
+        # calls get_token with a specific scope. All other threads requesting a
+        # token of the same scope will be blocked until the first has completed.
+        # Thus pre-filling the MSAL token cache. It prevents a bunch of
+        # unnecessary network requets for authentication.
+        self.creds.get_token = _wait_once_per_scope(self.creds.get_token)
+
+        # Request a token now as it will validate the user supplied the correct
+        # username and password. If we did not catch that here, then each worker
+        # would end up failing---possibly locking the user&#39;s account.
+        #
+        # Is using this scope a safe assumption, will all users have access to
+        # this scope? I&#39;d really like to validate a person&#39;s credential before
+        # we let the workers loose, but it&#39;s impossible to know what Azure SDK
+        # clients will be used by the user, which dictates the scope used.
+        self.creds.get_token(ARM_SCOPE)
+
+    def session(self, _subscription_id):
+        # The same credentials are used regardless of the subscription within a
+        # tenant, which is why we ignore the subscription here--unlike AWS.
+        return self.creds</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.session.SessionProvider.session" href="index.html#awsrun.session.SessionProvider.session">session</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#caching">Caching</a></li>
+<li><a href="#thread-safety">Thread Safety</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun.session" href="index.html">awsrun.session</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.session.azure.CredsViaAzureDefault" href="#awsrun.session.azure.CredsViaAzureDefault">CredsViaAzureDefault</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.session.azure.CredsViaUsernamePassword" href="#awsrun.session.azure.CredsViaUsernamePassword">CredsViaUsernamePassword</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

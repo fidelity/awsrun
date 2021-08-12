@@ -1019,7 +1019,9 @@ def _cli(csp):
         attrs = account_loader.attributes()
         if args.metadata in attrs:
             print(f"Metadata values for '{args.metadata}' attribute:\n")
-            print("\n".join(sorted(attrs[args.metadata])))
+            print(
+                "\n".join(sorted(str(x) for x in attrs[args.metadata] if x is not None))
+            )
         elif attrs:
             print("Valid metadata attributes:\n")
             print("\n".join(sorted(attrs)))
@@ -1193,7 +1195,7 @@ class _CSP:
 
     def default_session_provider(self):
         """Returns the module name of the builtin Profile session provider."""
-        return "awsrun.plugins.creds." + self.name.lower() + ".Profile"
+        return "awsrun.plugins.creds." + self.name.lower() + ".Default"
 
 
 if __name__ == "__main__":

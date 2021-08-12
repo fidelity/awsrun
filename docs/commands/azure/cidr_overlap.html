@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>awsrun.commands.aws.cidr_overlap API documentation</title>
-<meta name="description" content="Display overlapping CIDR blocks between VPCs …" />
+<title>awsrun.commands.azure.cidr_overlap API documentation</title>
+<meta name="description" content="Display overlapping CIDR blocks between VNETs …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
@@ -51,45 +51,40 @@ font-weight: bold;
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>awsrun.commands.aws.cidr_overlap</code></h1>
+<h1 class="title">Module <code>awsrun.commands.azure.cidr_overlap</code></h1>
 </header>
 <section id="section-intro">
-<p>Display overlapping CIDR blocks between VPCs.</p>
+<p>Display overlapping CIDR blocks between VNETs.</p>
 <h2 id="overview">Overview</h2>
-<p>The cidr_overlap command displays the overlapping CIDR blocks across VPCs.
+<p>The cidr_overlap command displays the overlapping CIDR blocks across VNETs.
 An overlapping CIDR block is one that is contained partially or wholly within
 another.</p>
-<pre><code>$ awsrun --account 100200300400 --account 200300400100 cidr_overlap --region us-east-1
+<pre><code>$ azurerun --account 00000000-0000-0000-0000-000000000000 --account 11111111-1111-1111-1111-111111111111 cidr_overlap
 2 accounts selected:
 
-100200300400, 200300400100
+00000000-0000-0000-0000-000000000000, 11111111-1111-1111-1111-111111111111
 
 Proceed (y/n)? y
-Found CIDR 100200300400/us-east-1/vpc-abc/10.10.180.0/24
-Found CIDR 200300400100/us-east-1/vpc-def/10.10.180.0/24
-OVERLAP! 100200300400/us-east-1/vpc-abc/10.10.180.0/24 &lt;&lt;&lt;&gt;&gt;&gt; 200300400100/us-east-1/vpc-def/10.10.180.0/24
+Found CIDR 00000000-0000-0000-0000-000000000000/eastus2/10.10.180.0/24
+Found CIDR 11111111-1111-1111-1111-111111111111/eastus2/10.10.180.0/24
+OVERLAP! 00000000-0000-0000-0000-000000000000/eastus2/10.10.180.0/24 &lt;&lt;&lt;&gt;&gt;&gt; 11111111-1111-1111-1111-111111111111/eastus2/10.10.180.0/24
 </code></pre>
 <h2 id="reference">Reference</h2>
 <h3 id="synopsis">Synopsis</h3>
-<pre><code>$ awsrun [options] cidr_overlap [command options]
+<pre><code>$ azurerun [options] cidr_overlap [command options]
 </code></pre>
 <h3 id="configuration">Configuration</h3>
 <p>The following is the syntax for the options that can be specified in the user
 configuration file:</p>
 <pre><code>Commands:
   cidr_overlap:
-    region:
-      - STRING
     exclude_block:
       - STRING
 </code></pre>
 <h3 id="command-options">Command Options</h3>
-<p>Some options can be overridden on the awsrun CLI via command line flags. In
+<p>Some options can be overridden on the azurerun CLI via command line flags. In
 those cases, the CLI flags are specified next to the option name below:</p>
 <dl>
-<dt><code>region</code>, <code>--region</code></dt>
-<dd>Run the AWS CLI command in the specified regions. When specifying multiple
-values on the command line, use multiple flags for each value.</dd>
 <dt><code>exclude_block</code>, <code>--exclude-block</code></dt>
 <dd>Exclude the CIDR blocks from consideration. When specifying more than one
 block via the command line flag, use a <code>--exclude-block</code> flag for each block.</dd>
@@ -103,29 +98,29 @@ block via the command line flag, use a <code>--exclude-block</code> flag for eac
 #
 # SPDX-License-Identifier: MIT
 #
-&#34;&#34;&#34;Display overlapping CIDR blocks between VPCs.
+&#34;&#34;&#34;Display overlapping CIDR blocks between VNETs.
 
 ## Overview
 
-The cidr_overlap command displays the overlapping CIDR blocks across VPCs.
+The cidr_overlap command displays the overlapping CIDR blocks across VNETs.
 An overlapping CIDR block is one that is contained partially or wholly within
 another.
 
-    $ awsrun --account 100200300400 --account 200300400100 cidr_overlap --region us-east-1
+    $ azurerun --account 00000000-0000-0000-0000-000000000000 --account 11111111-1111-1111-1111-111111111111 cidr_overlap
     2 accounts selected:
 
-    100200300400, 200300400100
+    00000000-0000-0000-0000-000000000000, 11111111-1111-1111-1111-111111111111
 
     Proceed (y/n)? y
-    Found CIDR 100200300400/us-east-1/vpc-abc/10.10.180.0/24
-    Found CIDR 200300400100/us-east-1/vpc-def/10.10.180.0/24
-    OVERLAP! 100200300400/us-east-1/vpc-abc/10.10.180.0/24 &lt;&lt;&lt;&gt;&gt;&gt; 200300400100/us-east-1/vpc-def/10.10.180.0/24
+    Found CIDR 00000000-0000-0000-0000-000000000000/eastus2/10.10.180.0/24
+    Found CIDR 11111111-1111-1111-1111-111111111111/eastus2/10.10.180.0/24
+    OVERLAP! 00000000-0000-0000-0000-000000000000/eastus2/10.10.180.0/24 &lt;&lt;&lt;&gt;&gt;&gt; 11111111-1111-1111-1111-111111111111/eastus2/10.10.180.0/24
 
 ## Reference
 
 ### Synopsis
 
-    $ awsrun [options] cidr_overlap [command options]
+    $ azurerun [options] cidr_overlap [command options]
 
 ### Configuration
 
@@ -134,19 +129,13 @@ configuration file:
 
     Commands:
       cidr_overlap:
-        region:
-          - STRING
         exclude_block:
           - STRING
 
 ### Command Options
 
-Some options can be overridden on the awsrun CLI via command line flags. In
+Some options can be overridden on the azurerun CLI via command line flags. In
 those cases, the CLI flags are specified next to the option name below:
-
-`region`, `--region`
-:  Run the AWS CLI command in the specified regions. When specifying multiple
-values on the command line, use multiple flags for each value.
 
 `exclude_block`, `--exclude-block`
 :  Exclude the CIDR blocks from consideration. When specifying more than one
@@ -155,19 +144,21 @@ block via the command line flag, use a `--exclude-block` flag for each block.
 
 from ipaddress import ip_network
 
+from azure.mgmt.network import NetworkManagementClient
+
 from awsrun.config import IPNet, List
-from awsrun.runner import RegionalCommand
+from awsrun.runner import Command
 
 
 class _CIDR:
-    def __init__(self, acct, region, vpc, block):
-        self.acct = acct
-        self.region = region
-        self.vpc = vpc
+    def __init__(self, subscription, location, vnet, block):
+        self.subscription = subscription
+        self.location = location
+        self.vnet = vnet
         self.block = block
 
     def __str__(self):
-        return f&#34;{self.acct}/{self.region}/{self.vpc}/{self.block}&#34;
+        return f&#34;{self.subscription}/{self.location}/{self.block}&#34;
 
     def __lt__(self, other):
         return self.block &lt; other.block
@@ -176,19 +167,19 @@ class _CIDR:
         return self.block == other.block
 
     def overlaps(self, other):
-        # If the VPCs are the same, then there is no overlap. This can happen
-        # when a VPC is shared between accounts. Each account will have the
-        # same CDIR block, so we make sure they aren&#39;t the same VPC.
-        if self.vpc == other.vpc:
+        # If the VNETs are the same, then there is no overlap. This can happen
+        # when a VNET is shared between accounts. Each account will have the
+        # same CDIR block, so we make sure they aren&#39;t the same VNET.
+        if self.vnet == other.vnet:
             return False
         return self.block.overlaps(other.block)
 
 
-class CLICommand(RegionalCommand):
-    &#34;&#34;&#34;Display VPCs configured in accounts.&#34;&#34;&#34;
+class CLICommand(Command):
+    &#34;&#34;&#34;Display VNETs configured in accounts.&#34;&#34;&#34;
 
     @classmethod
-    def regional_from_cli(cls, parser, argv, cfg):
+    def from_cli(cls, parser, argv, cfg):
         parser.add_argument(
             &#34;--exclude-block&#34;,
             action=&#34;append&#34;,
@@ -200,25 +191,25 @@ class CLICommand(RegionalCommand):
         args = parser.parse_args(argv)
         return cls(**vars(args))
 
-    def __init__(self, regions, exclude_blocks):
-        super().__init__(regions)
+    def __init__(self, exclude_blocks):
+        super().__init__()
         self.exclude_blocks = [ip_network(b) for b in exclude_blocks]
         self.cidrs = []
 
-    def regional_execute(self, session, acct, region):
-        ec2 = session.resource(&#34;ec2&#34;, region_name=region)
+    def execute(self, session, acct):
+        nmc = NetworkManagementClient(session, acct)
         return [
-            (c[&#34;CidrBlock&#34;], vpc.id)
-            for vpc in ec2.vpcs.all()
-            for c in vpc.cidr_block_association_set
+            (c, vnet.location, vnet.id)
+            for vnet in nmc.virtual_networks.list_all()
+            for c in vnet.address_space.address_prefixes
         ]
 
-    def regional_collect_results(self, acct, region, get_result):
-        for block, vpc_id in get_result():
+    def collect_results(self, acct, get_result):
+        for block, location, vnet_id in get_result():
             block = ip_network(block)
             if any(block.overlaps(e) for e in self.exclude_blocks):
                 continue
-            cidr = _CIDR(acct, region, vpc_id, block)
+            cidr = _CIDR(acct, location, vnet_id, block)
             self.cidrs.append(cidr)
             print(f&#34;Found CIDR {cidr}&#34;, flush=True)
 
@@ -245,21 +236,21 @@ class CLICommand(RegionalCommand):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="awsrun.commands.aws.cidr_overlap.CLICommand"><code class="flex name class">
+<dt id="awsrun.commands.azure.cidr_overlap.CLICommand"><code class="flex name class">
 <span>class <span class="ident">CLICommand</span></span>
-<span>(</span><span>regions, exclude_blocks)</span>
+<span>(</span><span>exclude_blocks)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Display VPCs configured in accounts.</p></section>
+<section class="desc"><p>Display VNETs configured in accounts.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class CLICommand(RegionalCommand):
-    &#34;&#34;&#34;Display VPCs configured in accounts.&#34;&#34;&#34;
+<pre><code class="python">class CLICommand(Command):
+    &#34;&#34;&#34;Display VNETs configured in accounts.&#34;&#34;&#34;
 
     @classmethod
-    def regional_from_cli(cls, parser, argv, cfg):
+    def from_cli(cls, parser, argv, cfg):
         parser.add_argument(
             &#34;--exclude-block&#34;,
             action=&#34;append&#34;,
@@ -271,25 +262,25 @@ class CLICommand(RegionalCommand):
         args = parser.parse_args(argv)
         return cls(**vars(args))
 
-    def __init__(self, regions, exclude_blocks):
-        super().__init__(regions)
+    def __init__(self, exclude_blocks):
+        super().__init__()
         self.exclude_blocks = [ip_network(b) for b in exclude_blocks]
         self.cidrs = []
 
-    def regional_execute(self, session, acct, region):
-        ec2 = session.resource(&#34;ec2&#34;, region_name=region)
+    def execute(self, session, acct):
+        nmc = NetworkManagementClient(session, acct)
         return [
-            (c[&#34;CidrBlock&#34;], vpc.id)
-            for vpc in ec2.vpcs.all()
-            for c in vpc.cidr_block_association_set
+            (c, vnet.location, vnet.id)
+            for vnet in nmc.virtual_networks.list_all()
+            for c in vnet.address_space.address_prefixes
         ]
 
-    def regional_collect_results(self, acct, region, get_result):
-        for block, vpc_id in get_result():
+    def collect_results(self, acct, get_result):
+        for block, location, vnet_id in get_result():
             block = ip_network(block)
             if any(block.overlaps(e) for e in self.exclude_blocks):
                 continue
-            cidr = _CIDR(acct, region, vpc_id, block)
+            cidr = _CIDR(acct, location, vnet_id, block)
             self.cidrs.append(cidr)
             print(f&#34;Found CIDR {cidr}&#34;, flush=True)
 
@@ -308,21 +299,17 @@ class CLICommand(RegionalCommand):
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></li>
 <li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
 </ul>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="awsrun.runner.RegionalCommand" href="../../runner.html#awsrun.runner.RegionalCommand">RegionalCommand</a></b></code>:
+<li><code><b><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></b></code>:
 <ul class="hlist">
-<li><code><a title="awsrun.runner.RegionalCommand.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
-<li><code><a title="awsrun.runner.RegionalCommand.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
-<li><code><a title="awsrun.runner.RegionalCommand.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
-<li><code><a title="awsrun.runner.RegionalCommand.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
-<li><code><a title="awsrun.runner.RegionalCommand.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
-<li><code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="../../runner.html#awsrun.runner.RegionalCommand.regional_collect_results">regional_collect_results</a></code></li>
-<li><code><a title="awsrun.runner.RegionalCommand.regional_execute" href="../../runner.html#awsrun.runner.RegionalCommand.regional_execute">regional_execute</a></code></li>
-<li><code><a title="awsrun.runner.RegionalCommand.regional_from_cli" href="../../runner.html#awsrun.runner.RegionalCommand.regional_from_cli">regional_from_cli</a></code></li>
+<li><code><a title="awsrun.runner.Command.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.Command.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.Command.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.Command.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
 </ul>
 </li>
 </ul>
@@ -346,13 +333,13 @@ class CLICommand(RegionalCommand):
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="awsrun.commands.aws" href="index.html">awsrun.commands.aws</a></code></li>
+<li><code><a title="awsrun.commands.azure" href="index.html">awsrun.commands.azure</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="awsrun.commands.aws.cidr_overlap.CLICommand" href="#awsrun.commands.aws.cidr_overlap.CLICommand">CLICommand</a></code></h4>
+<h4><code><a title="awsrun.commands.azure.cidr_overlap.CLICommand" href="#awsrun.commands.azure.cidr_overlap.CLICommand">CLICommand</a></code></h4>
 </li>
 </ul>
 </li>

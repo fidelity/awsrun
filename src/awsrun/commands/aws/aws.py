@@ -80,7 +80,7 @@ does not exist, it is created.
 `awsrun_annotate`, `--awsrun-annotate`
 :  Specifies the output format for the AWS CLI command and annotates that
 format appropriately with account and region information. Must be one of
-"json", "table", or "text". See use guide for more information.
+"json", "table", or "text". See user guide for more information.
 
 `region`, `--region`
 :  Run the AWS CLI command in the specified regions. When specifying multiple
@@ -447,6 +447,7 @@ class CLICommand(RegionalCommand):
         self, awscli_args, regions, output=None, output_dir=None, annotate=False
     ):
         super().__init__(regions)
+        self.awscli_path = shutil.which("aws")
         self.awscli_args = awscli_args
         self.output = output
         self.annotate = annotate
@@ -454,6 +455,11 @@ class CLICommand(RegionalCommand):
 
         if self.output_dir:
             self.output_dir.mkdir(parents=True, exist_ok=True)
+
+        if not self.awscli_path:
+            raise FileNotFoundError(
+                "error: Have you installed the AWS CLI? https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html"
+            )
 
     def regional_execute(self, session, acct, region):
         """Invoke an AWS CLI command for an account and region."""
@@ -465,7 +471,7 @@ class CLICommand(RegionalCommand):
         # We will also provide --output if the user has asked us to annotate an
         # output type. This ensures we override any user settings that the AWS
         # cli tool may pick up from ~/.aws/config.
-        cmd = [shutil.which("aws"), "--region", region]
+        cmd = [self.awscli_path, "--region", region]
         if self.annotate:
             cmd += ["--output", self.annotate]
         elif self.output:

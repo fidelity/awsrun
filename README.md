@@ -1,63 +1,64 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-# awsrun
+# awsrun & azurerun
 
-CLI and library to concurrently execute user-defined commands across AWS accounts.
-
-NOTE: Initial Azure support has been added in the `azure` branch. Install
-that version if you are interested in running commands across one or more
-Azure subscriptions concurrently.
+CLI tool and library to concurrently execute user-defined commands across AWS
+accounts or Azure subscriptions.
 
 ## Overview
 
-Awsrun is both a CLI and Python package used to execute commands over one or
-more AWS accounts concurrently. Commands are user-defined Python modules that
-implement a simple interface to abstract away the complications of obtaining
-credentials for Boto3 sessions&mdash;especially when using SAML authentication
-and/or cross-account access. The key features of awsrun include the following:
+Awsrun/azurerun is both a CLI tool and Python package that can be used to
+execute commands concurrently over one or more AWS accounts or Azure
+subscriptions. Commands are user-defined Python modules that implement a simple
+interface to abstract away the complications of obtaining credentials for Boto3
+and Azure SDK sessions&mdash;especially when using SAML authentication and/or
+cross-account access in AWS. The key features of awsrun/azurerun include the
+following:
 
 **Concurrent Account Processing**:
-Run a command concurrently across subset or all of your accounts. A worker pool
-manages the execution to ensure accounts are processed quickly, so you don't
-have to wait for them to be processed one at a time. Process hundreds of
-accounts in a few minutes.
+Run a command concurrently across subset or all of your accounts/subscriptions.
+A worker pool manages the execution to ensure accounts/subscriptions are
+processed quickly, so you don't have to wait for them to be processed one at a
+time. Process hundreds of accounts in a few minutes.
 
 **SAML and Cross-Account Access**:
-Tired of dealing with temporary STS credentials with SAML and cross-account
+Tired of dealing with AWS temporary STS credentials with SAML and cross-account
 authentication? Use any of the included credential plug-ins based on your needs,
 or build your own plug-in to provide credentials for your command authors. Don't
-use SAML? Build profiles in your AWS credentials file instead.
+use SAML? Define profiles in your AWS credentials file instead. With Azure, the
+default credentials are obtained via the Azure CLI or interactively via the browser.
 
-**Built-in Command for AWS CLI**:
-Ever wish you could run the standard AWS CLI tool across multiple accounts? Now
-you can using the included
-[`aws`](https://fidelity.github.io/awsrun/commands/aws/aws.html) command. This
-command is a simple wrapper for AWS's CLI tool, but with the added benefits of
-using metadata to select multiple accounts as well as simplified credential
-handling.
+**Built-in Command for AWS CLI & Azure CLI**:
+Ever wish you could run the standard AWS CLI tool or Azure CLI tool across
+multiple accounts/subscriptions? Now you can using the included
+[`aws`](https://fidelity.github.io/awsrun/commands/aws/aws.html) or
+[`az`](https://fidelity.github.io/awsrun/commands/azure/az.html) commands. These
+commands are simple wrappers for AWS's and Azure's CLI tools respectively, but
+with the added benefits of using metadata to select multiple accounts as well as
+simplified credential handling.
 
 **User-Defined Commands**:
-Build your own commands using the powerful Boto3 library without the hassle of
-obtaining sessions and credentials. Thanks to a simple interface, commands are
-easy to build and can be integrated directly into the CLI with custom arguments
-and help messages.
+Build your own commands using the powerful Boto3 SDK or Azure SDK without the
+hassle of obtaining sessions and credentials. Thanks to a simple interface,
+commands are easy to build and can be integrated directly into the CLI with
+custom arguments and help messages.
 
 **Metadata Enriched Accounts**:
-Accounts can be enriched with metadata from external sources, such as a
-corporate CMBD, via the account loader plug-in mechanism. This enables you to
-use metadata to select accounts to process rather than explicitly listing each
-account on the command line. In addition, command authors have access to this
-metadata, so it can be accessed while processing an account if needed.
+Accounts/subscriptions can be enriched with metadata from external sources, such
+as a corporate CMBD, via the account loader plug-in mechanism. This enables you
+to use metadata to select accounts to process rather than explicitly listing
+each account/subscription on the command line. In addition, command authors have
+access to this metadata, so it can used while processing an account if needed.
 
 ## Screenshots
 
 These examples demonstrate the wide-range of possibilities when building your
-own awsrun commands. While these commands are included in awsrun, they use the
-same command API that you would if building your own. Nothing is special about
-these commands other than they are included in the base install of awsrun. You
-could have built these yourself.
+own awsrun & azurerun commands. While these commands are included in awsrun,
+they use the same command API that you would if building your own. Nothing is
+special about these commands other than they are included in the base install of
+awsrun. You could have built these yourself.
 
-### `aws` command
+### awsrun `aws` command
 
 This screencast illustrates the power of awsrun once it has been configured to
 your environment using appropriate credential and account loader plug-ins. In
@@ -74,14 +75,14 @@ execution.
 Note: The output has been obfuscated with random account numbers and
 identifiers.
 
-### `last` command
+### awsrun `last` command
 
 This screenshot demonstrates the use of the [`last`](https://fidelity.github.io/awsrun/commands/aws/last.html) command to
 interactively explore CloudTrail events. Don't have a simple means to view CloudTrail logs? Tired of using the AWS Console? The `last` command provides a simple way of viewing events in one or more accounts.
 
 ![last command](https://fidelity.github.io/awsrun/last.jpg)
 
-### `dx_status` command
+### awsrun `dx_status` command
 
 If you manage AWS Direct Connects to provide connectivity to your on-premise
 corporate networks, you might find the
@@ -97,13 +98,15 @@ ASCII-based charts.
 
 ## Installation
 
+Python 3.6 or higher is required.
+
 To install from source, clone the repo and run pip install:
 
     $ git clone https://github.com/fidelity/awsrun.git
     $ cd awsrun
     $ pip3 install .
 
-Python 3.6 or higher is required.
+This will install both `awsrun` and `azurerun`.
 
 In order to use the built-in awsrun
 [`aws`](https://fidelity.github.io/awsrun/commands/aws/aws.html) command, the AWS
@@ -119,16 +122,23 @@ CLI tool is included in their PATH. When pip installs the AWS CLI, it does not
 set the appropriate PATH variable on Windows, so it may be easier to install the
 AWS CLI via the MSIs provided by AWS.
 
-## Quick Start
+In order to use the built-in azurerun
+[`az`](https://fidelity.github.io/awsrun/commands/azure/az.html) command, the Azure
+CLI tool must be
+[installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+and available in your operating system's PATH. 
+
+## AWS Quick Start
 
 Out of the box, the utility of awsrun is limited as most of its power comes from
 the configuration of an [account loader
-plug-in](https://fidelity.github.io/awsrun/cli.html#account-plug-ins) and a
-[credential loader
-plug-in](https://fidelity.github.io/awsrun/cli.html#credential-plug-ins). With
-that said, however, you can still use it, as it will default to loading
-credentials from your `$HOME/.aws/credentials` file. While not convenient when
-managing hundreds of accounts, it will suffice to get you started.
+plug-in](https://fidelity.github.io/awsrun/cli.html#account-plug-ins) (to
+simplify the selection of multiple accounts) and a [credential loader
+plug-in](https://fidelity.github.io/awsrun/cli.html#credential-plug-ins) (to
+simplify access to those accounts). With that said, however, you can still use
+it, as it will default to loading credentials from your `$HOME/.aws/credentials`
+file. While not convenient when managing hundreds of accounts, it will suffice
+to get you started.
 
 Assume you wanted to list the EC2 instances in two accounts: 100200300400
 and 200300400100. We can use the built-in
@@ -179,6 +189,90 @@ command to check the status of Direct Connect circuits. Remember, you are
 encouraged to build your own custom commands. These have been provided to show
 you how to do so.
 
+## Azure Quick Start
+
+Let's list all the Azure VMs in two subscriptions:
+00000000-0000-0000-0000-000000000000 and 11111111-1111-1111-1111-111111111111.
+We can use the built-in
+[`az`](https://fidelity.github.io/awsrun/commands/azure/az.html) command to
+execute an [Azure CLI
+command](https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest)
+across one or more subscriptions concurrently. Assuming you have already
+followed the installation instructions:
+
+    $ az login   # Use the Azure CLI to obtain credentials
+    $ azurerun --account 00000000-0000-0000-0000-000000000000 --account 11111111-1111-1111-1111-111111111111 az vm list --output table
+    2 accounts selected:
+
+    00000000-0000-0000-0000-000000000000, 11111111-1111-1111-1111-111111111111
+
+    Proceed (y/n)? y
+    ...
+    Name   ResourceGroup      Location    Zones
+    -----  -----------------  ----------  -----
+    vm1    rg1                centralus   1    
+    vm2    rg1                eastus2     1    
+
+    Name   ResourceGroup      Location    Zones
+    -----  -----------------  ----------  -----
+    vm1    rg2                centralus   1    
+    vm2    rg2                eastus1     1    
+    vm3    rg2                eastus2     1    
+
+Out of the box, the utility of azurerun is limited as most of its power comes
+from the configuration of an [account loader
+plug-in](https://fidelity.github.io/awsrun/cli.html#account-plug-ins) (to
+simplify selection of multiple accounts). Using the included
+[AzureCLI](https://fidelity.github.io/awsrun/plugins/accts/azure.html) plug-in,
+azurerun will use the Azure CLI to obtain a list of subscriptions and metadata
+associated with those. Furthermore, assuming you use a naming convention for
+your subscriptions, we can parse the name to pull out additional metadata. For
+example, if your subscriptions are named "azure-retail-prod" and
+"azure-retail-nonprod", then we can use this regexp to add the "bu" and "env"
+metadata attributes:
+
+    azure-(?P<bu>[^-]+)-(?P<env>.+)
+
+Create the following azurerun configuration file called `.azurerun.yaml` in your
+home directory:
+
+    Accounts:
+      plugin: awsrun.plugins.accts.azure.AzureCLI
+      options:
+        name_regexp: 'azure-(?P<bu>[^-]+)-(?P<env>.+)'
+
+Now, you can use the metadata filters to specify subscriptions instead of
+enumerating them on the azurerun command line. Here are a few examples:
+
+    # Let's see what metadata we can use
+    $ azurerun --metadata
+    bu
+    cloudName
+    env
+    homeTenantId
+    id
+    isDefault
+    name
+    state
+    tenantId 
+
+    # Run the command over all subscriptions.
+    $ azurerun az vm list --output table
+    ...
+
+    # Run the command over all prod subscriptions.
+    $ azurerun --include env=prod az vm list --output table
+    ...
+    
+    # Run the command over all enabled, nonprod subscriptions
+    $ azurerun --include state=Enabled --include Env=nonprod az vm list --output table
+    ...
+
+There are several other [built-in
+commands](https://fidelity.github.io/awsrun/commands/azure/index.html) that have
+been included in azurerun. Remember, you are encouraged to build your own custom
+commands. These have been provided to show you how to do so.
+
 ## Documentation
 
 awsrun includes extensive [documentation](https://fidelity.github.io/awsrun/), which
@@ -208,6 +302,11 @@ includes the following:
   your environment.
   
 ## Change Log
+
+### v2.3.0
+
+* Add support for Azure. By default, installation now installs both `awsrun` as
+  well as `azurerun`. See the quick start for Azure above.
 
 ### v2.2.2
 

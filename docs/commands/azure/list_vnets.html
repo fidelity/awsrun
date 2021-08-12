@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>awsrun.plugins.creds API documentation</title>
-<meta name="description" content="Plug-ins for credential loading …" />
+<title>awsrun.commands.azure.list_vnets API documentation</title>
+<meta name="description" content="Display the Virtual Networks (VNETs) configured in a subscription …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
@@ -51,90 +51,142 @@ font-weight: bold;
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>awsrun.plugins.creds</code></h1>
+<h1 class="title">Module <code>awsrun.commands.azure.list_vnets</code></h1>
 </header>
 <section id="section-intro">
-<p>Plug-ins for credential loading.</p>
-<p>Each submodule contains the built-in credential plug-ins for a Cloud Service
-Provider (CSP). The default plug-in used if none is specified by a user is
-<code><a title="awsrun.plugins.creds.aws.Profile" href="aws.html#awsrun.plugins.creds.aws.Profile">Profile</a></code> if the CLI command is "awsrun". If the CLI
-command is invoked as "azurerun", then <code><a title="awsrun.plugins.creds.azure.Default" href="azure.html#awsrun.plugins.creds.azure.Default">Default</a></code> is
-used.</p>
-<p>Users can also build their own credential plug-ins as well. To configure the CLI
-to use a user-defined plug-in, specify a <code>Credentials</code> block in the user
-configuration file where "your.own.module.PluginSubclass" is implementation of
-<code><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></code> that returns a <code><a title="awsrun.session.SessionProvider" href="../../session/index.html#awsrun.session.SessionProvider">SessionProvider</a></code>.</p>
-<pre><code>Credentials:
-  plugin: your.own.module.PluginSubclass
-  options:
-    ARG1: VAL1
-    ARG2: VAL2
+<p>Display the Virtual Networks (VNETs) configured in a subscription.</p>
+<h2 id="overview">Overview</h2>
+<p>The list_vnets command displays each VNET configured as well as the list of
+CIDR blocks associated with it. For example:</p>
+<pre><code>$ azurerun --account 00000000-0000-0000-0000-000000000000 list_vnets
+00000000-0000-0000-0000-000000000000/eastus2: vnet=my-prd-vnet cidrs=10.0.1.0/24, 10.0.2.0/26
+$
+</code></pre>
+<h2 id="reference">Reference</h2>
+<h3 id="synopsis">Synopsis</h3>
+<pre><code>$ azurerun [options] list_vnets [command options]
 </code></pre>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">#
-# Copyright 2019 FMR LLC &lt;opensource@fmr.com&gt;
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
 #
 # SPDX-License-Identifier: MIT
 #
-&#34;&#34;&#34;Plug-ins for credential loading.
+&#34;&#34;&#34;Display the Virtual Networks (VNETs) configured in a subscription.
 
-Each submodule contains the built-in credential plug-ins for a Cloud Service
-Provider (CSP). The default plug-in used if none is specified by a user is
-`awsrun.plugins.creds.aws.Profile` if the CLI command is &#34;awsrun&#34;. If the CLI
-command is invoked as &#34;azurerun&#34;, then `awsrun.plugins.creds.azure.Default` is
-used.
+## Overview
 
-Users can also build their own credential plug-ins as well. To configure the CLI
-to use a user-defined plug-in, specify a `Credentials` block in the user
-configuration file where &#34;your.own.module.PluginSubclass&#34; is implementation of
-`awsrun.plugmgr.Plugin` that returns a `awsrun.session.SessionProvider`.
+The list_vnets command displays each VNET configured as well as the list of
+CIDR blocks associated with it. For example:
 
-    Credentials:
-      plugin: your.own.module.PluginSubclass
-      options:
-        ARG1: VAL1
-        ARG2: VAL2
-&#34;&#34;&#34;</code></pre>
+    $ azurerun --account 00000000-0000-0000-0000-000000000000 list_vnets
+    00000000-0000-0000-0000-000000000000/eastus2: vnet=my-prd-vnet cidrs=10.0.1.0/24, 10.0.2.0/26
+    $
+
+## Reference
+
+### Synopsis
+
+    $ azurerun [options] list_vnets [command options]
+&#34;&#34;&#34;
+
+import io
+
+from azure.mgmt.network import NetworkManagementClient
+
+from awsrun.runner import Command
+
+
+class CLICommand(Command):
+    &#34;&#34;&#34;Display VNETs configured in accounts.&#34;&#34;&#34;
+
+    def execute(self, session, acct):
+        out = io.StringIO()
+        nmc = NetworkManagementClient(session, acct)
+
+        for vnet in nmc.virtual_networks.list_all():
+            cidrs = &#34;, &#34;.join(vnet.address_space.address_prefixes)
+            print(f&#34;{acct}/{vnet.location}: vnet={vnet.name} cidrs={cidrs}&#34;, file=out)
+
+        return out.getvalue()</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="awsrun.plugins.creds.aws" href="aws.html">awsrun.plugins.creds.aws</a></code></dt>
+<dt id="awsrun.commands.azure.list_vnets.CLICommand"><code class="flex name class">
+<span>class <span class="ident">CLICommand</span></span>
+</code></dt>
 <dd>
-<section class="desc"><p>Plug-ins for AWS credential loading …</p></section>
-</dd>
-<dt><code class="name"><a title="awsrun.plugins.creds.azure" href="azure.html">awsrun.plugins.creds.azure</a></code></dt>
-<dd>
-<section class="desc"><p>Plug-ins for Azure credential loading …</p></section>
+<section class="desc"><p>Display VNETs configured in accounts.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CLICommand(Command):
+    &#34;&#34;&#34;Display VNETs configured in accounts.&#34;&#34;&#34;
+
+    def execute(self, session, acct):
+        out = io.StringIO()
+        nmc = NetworkManagementClient(session, acct)
+
+        for vnet in nmc.virtual_networks.list_all():
+            cidrs = &#34;, &#34;.join(vnet.address_space.address_prefixes)
+            print(f&#34;{acct}/{vnet.location}: vnet={vnet.name} cidrs={cidrs}&#34;, file=out)
+
+        return out.getvalue()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.Command.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.Command.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.Command.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.Command.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
 </section>
 </article>
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#reference">Reference</a><ul>
+<li><a href="#synopsis">Synopsis</a></li>
+</ul>
+</li>
+</ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="awsrun.plugins" href="../index.html">awsrun.plugins</a></code></li>
+<li><code><a title="awsrun.commands.azure" href="index.html">awsrun.commands.azure</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li><code><a title="awsrun.plugins.creds.aws" href="aws.html">awsrun.plugins.creds.aws</a></code></li>
-<li><code><a title="awsrun.plugins.creds.azure" href="azure.html">awsrun.plugins.creds.azure</a></code></li>
+<li>
+<h4><code><a title="awsrun.commands.azure.list_vnets.CLICommand" href="#awsrun.commands.azure.list_vnets.CLICommand">CLICommand</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>

@@ -8,7 +8,7 @@
 Each submodule contains the built-in credential plug-ins for a Cloud Service
 Provider (CSP). The default plug-in used if none is specified by a user is
 `awsrun.plugins.creds.aws.Profile` if the CLI command is "awsrun". If the CLI
-command is invoked as "azurerun", then `awsrun.plugins.creds.azure.Profile` is
+command is invoked as "azurerun", then `awsrun.plugins.creds.azure.Default` is
 used.
 
 Users can also build their own credential plug-ins as well. To configure the CLI

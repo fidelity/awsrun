@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>awsrun.plugins.creds API documentation</title>
-<meta name="description" content="Plug-ins for credential loading …" />
+<title>awsrun.session API documentation</title>
+<meta name="description" content="API to obtain CSP sessions and credentials …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
@@ -51,65 +51,79 @@ font-weight: bold;
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>awsrun.plugins.creds</code></h1>
+<h1 class="title">Module <code>awsrun.session</code></h1>
 </header>
 <section id="section-intro">
-<p>Plug-ins for credential loading.</p>
-<p>Each submodule contains the built-in credential plug-ins for a Cloud Service
-Provider (CSP). The default plug-in used if none is specified by a user is
-<code><a title="awsrun.plugins.creds.aws.Profile" href="aws.html#awsrun.plugins.creds.aws.Profile">Profile</a></code> if the CLI command is "awsrun". If the CLI
-command is invoked as "azurerun", then <code><a title="awsrun.plugins.creds.azure.Default" href="azure.html#awsrun.plugins.creds.azure.Default">Default</a></code> is
-used.</p>
-<p>Users can also build their own credential plug-ins as well. To configure the CLI
-to use a user-defined plug-in, specify a <code>Credentials</code> block in the user
-configuration file where "your.own.module.PluginSubclass" is implementation of
-<code><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></code> that returns a <code><a title="awsrun.session.SessionProvider" href="../../session/index.html#awsrun.session.SessionProvider">SessionProvider</a></code>.</p>
-<pre><code>Credentials:
-  plugin: your.own.module.PluginSubclass
-  options:
-    ARG1: VAL1
-    ARG2: VAL2
-</code></pre>
+<p>API to obtain CSP sessions and credentials.</p>
+<h2 id="overview">Overview</h2>
+<p>This module provides a <code><a title="awsrun.session.SessionProvider" href="#awsrun.session.SessionProvider">SessionProvider</a></code> interface to obtain credentials for a
+Cloud Service Provider (CSP). Regardless of the mechanism, the session provider
+is responsible for returning a session that contains the credentials for a
+requested account. Credentials constitute different structures based on the SDK
+of the given CSP.</p>
+<dl>
+<dt><code><a title="awsrun.session.aws" href="aws.html">awsrun.session.aws</a></code></dt>
+<dd>Credentials obtained from AWS are Boto3 session objects that can be used to
+obtain Boto3 clients and resources.</dd>
+<dt><code><a title="awsrun.session.azure" href="azure.html">awsrun.session.azure</a></code></dt>
+<dd>Credentials obtained from Azure are the new-style azure.core that can be used
+as arguments to the various Azure clients.</dd>
+</dl>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">#
-# Copyright 2019 FMR LLC &lt;opensource@fmr.com&gt;
+# Copyright 2019 FMR LLC &lt;opensource@fidelity.com&gt;
 #
 # SPDX-License-Identifier: MIT
 #
-&#34;&#34;&#34;Plug-ins for credential loading.
+&#34;&#34;&#34;API to obtain CSP sessions and credentials.
 
-Each submodule contains the built-in credential plug-ins for a Cloud Service
-Provider (CSP). The default plug-in used if none is specified by a user is
-`awsrun.plugins.creds.aws.Profile` if the CLI command is &#34;awsrun&#34;. If the CLI
-command is invoked as &#34;azurerun&#34;, then `awsrun.plugins.creds.azure.Default` is
-used.
+## Overview
 
-Users can also build their own credential plug-ins as well. To configure the CLI
-to use a user-defined plug-in, specify a `Credentials` block in the user
-configuration file where &#34;your.own.module.PluginSubclass&#34; is implementation of
-`awsrun.plugmgr.Plugin` that returns a `awsrun.session.SessionProvider`.
+This module provides a `SessionProvider` interface to obtain credentials for a
+Cloud Service Provider (CSP). Regardless of the mechanism, the session provider
+is responsible for returning a session that contains the credentials for a
+requested account. Credentials constitute different structures based on the SDK
+of the given CSP.
 
-    Credentials:
-      plugin: your.own.module.PluginSubclass
-      options:
-        ARG1: VAL1
-        ARG2: VAL2
-&#34;&#34;&#34;</code></pre>
+`awsrun.session.aws`
+:  Credentials obtained from AWS are Boto3 session objects that can be used to
+obtain Boto3 clients and resources.
+
+`awsrun.session.azure`
+:  Credentials obtained from Azure are the new-style azure.core that can be used
+as arguments to the various Azure clients.
+&#34;&#34;&#34;
+
+
+class SessionProvider:
+    &#34;&#34;&#34;A session provider is used to obtain sessions for accounts.
+
+    This is an abstract base class and cannot be instantiated directly.
+    &#34;&#34;&#34;
+
+    def session(self, acct_id):
+        &#34;&#34;&#34;Returns a session with credentials for the requested account.
+
+        The `acct_id` is a string representing an account within a CSP. The
+        returned session object is ready to use and loaded with the requested
+        credentials.
+        &#34;&#34;&#34;
+        raise NotImplementedError</code></pre>
 </details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="awsrun.plugins.creds.aws" href="aws.html">awsrun.plugins.creds.aws</a></code></dt>
+<dt><code class="name"><a title="awsrun.session.aws" href="aws.html">awsrun.session.aws</a></code></dt>
 <dd>
-<section class="desc"><p>Plug-ins for AWS credential loading …</p></section>
+<section class="desc"><p>API to obtain boto3 sessions and credentials via a variety of means …</p></section>
 </dd>
-<dt><code class="name"><a title="awsrun.plugins.creds.azure" href="azure.html">awsrun.plugins.creds.azure</a></code></dt>
+<dt><code class="name"><a title="awsrun.session.azure" href="azure.html">awsrun.session.azure</a></code></dt>
 <dd>
-<section class="desc"><p>Plug-ins for Azure credential loading …</p></section>
+<section class="desc"><p>API to obtain Azure credentials via a variety of means …</p></section>
 </dd>
 </dl>
 </section>
@@ -118,23 +132,96 @@ configuration file where &#34;your.own.module.PluginSubclass&#34; is implementat
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.session.SessionProvider"><code class="flex name class">
+<span>class <span class="ident">SessionProvider</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>A session provider is used to obtain sessions for accounts.</p>
+<p>This is an abstract base class and cannot be instantiated directly.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SessionProvider:
+    &#34;&#34;&#34;A session provider is used to obtain sessions for accounts.
+
+    This is an abstract base class and cannot be instantiated directly.
+    &#34;&#34;&#34;
+
+    def session(self, acct_id):
+        &#34;&#34;&#34;Returns a session with credentials for the requested account.
+
+        The `acct_id` is a string representing an account within a CSP. The
+        returned session object is ready to use and loaded with the requested
+        credentials.
+        &#34;&#34;&#34;
+        raise NotImplementedError</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="awsrun.session.aws.CachingSessionProvider" href="aws.html#awsrun.session.aws.CachingSessionProvider">CachingSessionProvider</a></li>
+<li><a title="awsrun.session.aws.CredsViaProfile" href="aws.html#awsrun.session.aws.CredsViaProfile">CredsViaProfile</a></li>
+<li><a title="awsrun.session.azure.CredsViaAzureDefault" href="azure.html#awsrun.session.azure.CredsViaAzureDefault">CredsViaAzureDefault</a></li>
+<li><a title="awsrun.session.azure.CredsViaUsernamePassword" href="azure.html#awsrun.session.azure.CredsViaUsernamePassword">CredsViaUsernamePassword</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.session.SessionProvider.session"><code class="name flex">
+<span>def <span class="ident">session</span></span>(<span>self, acct_id)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns a session with credentials for the requested account.</p>
+<p>The <code>acct_id</code> is a string representing an account within a CSP. The
+returned session object is ready to use and loaded with the requested
+credentials.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def session(self, acct_id):
+    &#34;&#34;&#34;Returns a session with credentials for the requested account.
+
+    The `acct_id` is a string representing an account within a CSP. The
+    returned session object is ready to use and loaded with the requested
+    credentials.
+    &#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#overview">Overview</a></li>
+</ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="awsrun.plugins" href="../index.html">awsrun.plugins</a></code></li>
+<li><code><a title="awsrun" href="../index.html">awsrun</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="awsrun.plugins.creds.aws" href="aws.html">awsrun.plugins.creds.aws</a></code></li>
-<li><code><a title="awsrun.plugins.creds.azure" href="azure.html">awsrun.plugins.creds.azure</a></code></li>
+<li><code><a title="awsrun.session.aws" href="aws.html">awsrun.session.aws</a></code></li>
+<li><code><a title="awsrun.session.azure" href="azure.html">awsrun.session.azure</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.session.SessionProvider" href="#awsrun.session.SessionProvider">SessionProvider</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.session.SessionProvider.session" href="#awsrun.session.SessionProvider.session">session</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

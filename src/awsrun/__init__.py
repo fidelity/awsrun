@@ -40,10 +40,10 @@ information.
 `awsrun.session`
 : Contains the definition of the `awsrun.session.SessionProvider`, which is used
 to provide Boto3 sessions pre-loaded with credentials. Included are several
-built-in implementations such as `awsrun.session.CredsViaProfile`,
-`awsrun.session.CredsViaSAML`, and `awsrun.session.CredsViaCrossAccount`. This
-module can be used outside of awsurn in other scripts. The module documentation
-includes a user guide on how to do so.
+built-in implementations such as `awsrun.session.aws.CredsViaProfile`,
+`awsrun.session.aws.CredsViaSAML`, and `awsrun.session.aws.CredsViaCrossAccount`.
+This module can be used outside of awsurn in other scripts. The module
+documentation includes a user guide on how to do so.
 
 ### User-Defined Commands
 
@@ -88,11 +88,11 @@ as well as a high-level roadmap of future enhancements.
 
 ### Other CSPs
 
-Other Cloud Service Providers (CSPs) aside from AWS can be supported. The name
-of the installed CLI script is used to determine which CSP is being used. For
-example, if the CLI has been installed as `awsrun`, the CSP is `aws`. If the CLI
-has been installed as `azurerun`, the CSP is `azure`. The name of the CSP
-dictates the following:
+Other Cloud Service Providers (CSPs) aside from AWS and Azure can be supported.
+The name of the installed CLI script is used to determine which CSP is being
+used. For example, if the CLI has been installed as `awsrun`, the CSP is `aws`.
+If the CLI has been installed as `azurerun`, the CSP is `azure`. The name of the
+CSP dictates the following:
 
 - The user configuration file is loaded from `$HOME/.csprun.yaml`, where `csp`
   is the name of the CSP. This allows users to have CSP-specific configuration
@@ -108,25 +108,16 @@ files.
   dedicated to the CSP. This prevents commands for a different CSP from being
   displayed on the command line when a user lists the available commands.
 
-- The default credential loader plug-in is `awsrun.plugins.creds.csp.Profile`,
+- The default credential loader plug-in is `awsrun.plugins.creds.csp.Default`,
   where `csp` is the name of the CSP. Providing credentials to commands is done
   via a credential loader. When none has been specified in the configuration
   file, awsrun must default to a sane choice for a CSP.
-
-Note: While the above support is already included in awsrun, only commands and
-plug-ins for AWS have been included. The plan is to add Azure support next.
 
 ### Roadmap
 
 - Add tests for each module (only a handful have been done so far). PyTest is
   the framework used in awsrun. See the tests/ directory which contains the
   directories for unit and integration tests.
-
-- Add Azure support. Specifically, add a handful of builtin session providers in
-  `awsrun.plugins.creds.azure` module. Then add a few sample command modules in
-  `awsrun.commands.azure` that use the Azure python SDK. Finally, uncomment the
-  line in setup.py so the 'azurerun' script is installed. Adding other CSPs will
-  follow the same process.
 
 """
 
