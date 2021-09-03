@@ -170,7 +170,9 @@ class CLICommand(RegionalCommand):
     @classmethod
     def regional_from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            "--list-clusters", action="store_true", help="list the EKS cluster",
+            "--list-clusters",
+            action="store_true",
+            help="list the EKS cluster",
         )
         parser.add_argument(
             "--cluster",
@@ -282,11 +284,16 @@ class CLICommand(RegionalCommand):
         # Make sure user has both dependent binaries installed
         has_prereqs = True
         if not shutil.which("kubectl"):
-            print("'kubectl' not found in PATH, have you installed it?", file=sys.stderr)
+            print(
+                "'kubectl' not found in PATH, have you installed it?", file=sys.stderr
+            )
             has_prereqs = False
 
         if not shutil.which("aws-iam-authenticator"):
-            print("'aws-iam-authenticator' not found in PATH, have you installed it?", file=sys.stderr)
+            print(
+                "'aws-iam-authenticator' not found in PATH, have you installed it?",
+                file=sys.stderr,
+            )
             has_prereqs = False
 
         if not has_prereqs:
@@ -319,7 +326,11 @@ class CLICommand(RegionalCommand):
                 # as we've already save the credentials for them.
                 if not self.kubectl_args:
                     text = f"kubeconfig saved to {filename}"
-                    text = f'"{text}"' if self.annotate in ["json", "yaml"] else f"{text}\n"
+                    text = (
+                        f'"{text}"'
+                        if self.annotate in ["json", "yaml"]
+                        else f"{text}\n"
+                    )
                     results.append(_Result(text, None, name, namespace))
                     continue
 
