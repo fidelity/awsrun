@@ -190,7 +190,7 @@ class CLICommand(RegionalCommand):
             "--hours",
             metavar="N",
             type=int,
-            default=cfg("hours", type=Int, default=1),
+            default=cfg("hours", type=Int),
             help="retrieve the last N hours of events",
         )
         time_spec.add_argument(
