@@ -966,6 +966,66 @@ def max_thread_limit(count):
     return decorator
 
 
+def get_paginated_resources(
+    client, paginator, page_key, predicate=lambda _: True, **kwargs
+):
+    &#34;&#34;&#34;Return the full list of boto3 resources via a paginator.
+
+    `client` is a boto3 client.  `paginator` is the name (string) of the
+    paginator.  `page_key` is the name (string) of the dictionary key used in
+    the paginated responses.
+
+    `predicate` is a function that determines which resources are included in
+    the list.  The function takes a single argument, the resource. If it returns
+    `True`, the resource is included, otherwise it is excluded.
+
+    The remaining `kwargs` are used to specify which resources to retrieve. Some
+    paginators do not require any additional arguments, but others do to
+    restrict the size of the response.
+
+    For example, to collect the list of load balancers, one might write:
+
+        def get_lbs(client):
+            lbs = []
+            paginator = client.get_paginator(&#34;describe_load_balancers&#34;)
+            for page in paginator.paginate():
+                for lb in page[&#34;LoadBalancers&#34;]:
+                    lbs.append(lb)
+            return lbs
+
+    This can be simplified by using `get_paginated_resources`:
+
+        lbs = get_paginated_resources(client, &#34;describe_load_balancers&#34;, &#34;LoadBalancers&#34;)
+
+    As another example, to collect the list of UDP listeners for a load
+    balancer, one might write:
+
+        def get_listeners(client, lb_arn):
+            listeners = []
+            paginator = client.get_paginator(&#34;describe_listeners&#34;)
+            for page in paginator.paginate(LoadBalancerArn=lb_arn):
+                for listener in page[&#34;Listeners&#34;]:
+                    if listener[&#34;Protocol&#34;] in [&#34;UDP&#34;, &#34;TCP_UDP&#34;]:
+                        listeners.append(listener)
+            return listeners
+
+    This, too, can be simplified using `get_paginated_resources`:
+
+        listeners = get_paginated_resources(
+            client,
+            &#34;describe_listeners&#34;,
+            &#34;Listeners&#34;,
+            lambda l: l[&#34;Protocol&#34;] in [&#34;UDP&#34;, &#34;TCP_UDP&#34;],
+            LoadBalancer=lb_arn)
+    &#34;&#34;&#34;
+    resources = []
+    for page in client.get_paginator(paginator).paginate(**kwargs):
+        for resource in page[page_key]:
+            if predicate(resource):
+                resources.append(resource)
+    return resources
+
+
 class AccountRunner:
     &#34;&#34;&#34;Runs a `Command` across one or more accounts.
 
@@ -1327,6 +1387,118 @@ This is a rate limiting decorator only.</p></section>
         return wrapper
 
     return decorator</code></pre>
+</details>
+</dd>
+<dt id="awsrun.runner.get_paginated_resources"><code class="name flex">
+<span>def <span class="ident">get_paginated_resources</span></span>(<span>client, paginator, page_key, predicate=&lt;function &lt;lambda&gt;&gt;, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Return the full list of boto3 resources via a paginator.</p>
+<p><code>client</code> is a boto3 client.
+<code>paginator</code> is the name (string) of the
+paginator.
+<code>page_key</code> is the name (string) of the dictionary key used in
+the paginated responses.</p>
+<p><code>predicate</code> is a function that determines which resources are included in
+the list.
+The function takes a single argument, the resource. If it returns
+<code>True</code>, the resource is included, otherwise it is excluded.</p>
+<p>The remaining <code>kwargs</code> are used to specify which resources to retrieve. Some
+paginators do not require any additional arguments, but others do to
+restrict the size of the response.</p>
+<p>For example, to collect the list of load balancers, one might write:</p>
+<pre><code>def get_lbs(client):
+    lbs = []
+    paginator = client.get_paginator("describe_load_balancers")
+    for page in paginator.paginate():
+        for lb in page["LoadBalancers"]:
+            lbs.append(lb)
+    return lbs
+</code></pre>
+<p>This can be simplified by using <code><a title="awsrun.runner.get_paginated_resources" href="#awsrun.runner.get_paginated_resources">get_paginated_resources()</a></code>:</p>
+<pre><code>lbs = get_paginated_resources(client, "describe_load_balancers", "LoadBalancers")
+</code></pre>
+<p>As another example, to collect the list of UDP listeners for a load
+balancer, one might write:</p>
+<pre><code>def get_listeners(client, lb_arn):
+    listeners = []
+    paginator = client.get_paginator("describe_listeners")
+    for page in paginator.paginate(LoadBalancerArn=lb_arn):
+        for listener in page["Listeners"]:
+            if listener["Protocol"] in ["UDP", "TCP_UDP"]:
+                listeners.append(listener)
+    return listeners
+</code></pre>
+<p>This, too, can be simplified using <code><a title="awsrun.runner.get_paginated_resources" href="#awsrun.runner.get_paginated_resources">get_paginated_resources()</a></code>:</p>
+<pre><code>listeners = get_paginated_resources(
+    client,
+    "describe_listeners",
+    "Listeners",
+    lambda l: l["Protocol"] in ["UDP", "TCP_UDP"],
+    LoadBalancer=lb_arn)
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_paginated_resources(
+    client, paginator, page_key, predicate=lambda _: True, **kwargs
+):
+    &#34;&#34;&#34;Return the full list of boto3 resources via a paginator.
+
+    `client` is a boto3 client.  `paginator` is the name (string) of the
+    paginator.  `page_key` is the name (string) of the dictionary key used in
+    the paginated responses.
+
+    `predicate` is a function that determines which resources are included in
+    the list.  The function takes a single argument, the resource. If it returns
+    `True`, the resource is included, otherwise it is excluded.
+
+    The remaining `kwargs` are used to specify which resources to retrieve. Some
+    paginators do not require any additional arguments, but others do to
+    restrict the size of the response.
+
+    For example, to collect the list of load balancers, one might write:
+
+        def get_lbs(client):
+            lbs = []
+            paginator = client.get_paginator(&#34;describe_load_balancers&#34;)
+            for page in paginator.paginate():
+                for lb in page[&#34;LoadBalancers&#34;]:
+                    lbs.append(lb)
+            return lbs
+
+    This can be simplified by using `get_paginated_resources`:
+
+        lbs = get_paginated_resources(client, &#34;describe_load_balancers&#34;, &#34;LoadBalancers&#34;)
+
+    As another example, to collect the list of UDP listeners for a load
+    balancer, one might write:
+
+        def get_listeners(client, lb_arn):
+            listeners = []
+            paginator = client.get_paginator(&#34;describe_listeners&#34;)
+            for page in paginator.paginate(LoadBalancerArn=lb_arn):
+                for listener in page[&#34;Listeners&#34;]:
+                    if listener[&#34;Protocol&#34;] in [&#34;UDP&#34;, &#34;TCP_UDP&#34;]:
+                        listeners.append(listener)
+            return listeners
+
+    This, too, can be simplified using `get_paginated_resources`:
+
+        listeners = get_paginated_resources(
+            client,
+            &#34;describe_listeners&#34;,
+            &#34;Listeners&#34;,
+            lambda l: l[&#34;Protocol&#34;] in [&#34;UDP&#34;, &#34;TCP_UDP&#34;],
+            LoadBalancer=lb_arn)
+    &#34;&#34;&#34;
+    resources = []
+    for page in client.get_paginator(paginator).paginate(**kwargs):
+        for resource in page[page_key]:
+            if predicate(resource):
+                resources.append(resource)
+    return resources</code></pre>
 </details>
 </dd>
 </dl>
@@ -3004,6 +3176,7 @@ object, so this account cannot be processed.</p></section>
 <li><code><a title="awsrun.runner.execute_function" href="#awsrun.runner.execute_function">execute_function</a></code></li>
 <li><code><a title="awsrun.runner.regional_execute_function" href="#awsrun.runner.regional_execute_function">regional_execute_function</a></code></li>
 <li><code><a title="awsrun.runner.max_thread_limit" href="#awsrun.runner.max_thread_limit">max_thread_limit</a></code></li>
+<li><code><a title="awsrun.runner.get_paginated_resources" href="#awsrun.runner.get_paginated_resources">get_paginated_resources</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

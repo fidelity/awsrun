@@ -375,7 +375,7 @@ class CLICommand(RegionalCommand):
             &#34;--hours&#34;,
             metavar=&#34;N&#34;,
             type=int,
-            default=cfg(&#34;hours&#34;, type=Int, default=1),
+            default=cfg(&#34;hours&#34;, type=Int),
             help=&#34;retrieve the last N hours of events&#34;,
         )
         time_spec.add_argument(
@@ -960,7 +960,7 @@ class _MyScrollMenu(py_cui.widgets.ScrollMenu):
             &#34;--hours&#34;,
             metavar=&#34;N&#34;,
             type=int,
-            default=cfg(&#34;hours&#34;, type=Int, default=1),
+            default=cfg(&#34;hours&#34;, type=Int),
             help=&#34;retrieve the last N hours of events&#34;,
         )
         time_spec.add_argument(

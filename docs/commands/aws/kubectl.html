@@ -356,7 +356,9 @@ class CLICommand(RegionalCommand):
     @classmethod
     def regional_from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#34;--list-clusters&#34;, action=&#34;store_true&#34;, help=&#34;list the EKS cluster&#34;,
+            &#34;--list-clusters&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;list the EKS cluster&#34;,
         )
         parser.add_argument(
             &#34;--cluster&#34;,
@@ -468,11 +470,16 @@ class CLICommand(RegionalCommand):
         # Make sure user has both dependent binaries installed
         has_prereqs = True
         if not shutil.which(&#34;kubectl&#34;):
-            print(&#34;&#39;kubectl&#39; not found in PATH, have you installed it?&#34;, file=sys.stderr)
+            print(
+                &#34;&#39;kubectl&#39; not found in PATH, have you installed it?&#34;, file=sys.stderr
+            )
             has_prereqs = False
 
         if not shutil.which(&#34;aws-iam-authenticator&#34;):
-            print(&#34;&#39;aws-iam-authenticator&#39; not found in PATH, have you installed it?&#34;, file=sys.stderr)
+            print(
+                &#34;&#39;aws-iam-authenticator&#39; not found in PATH, have you installed it?&#34;,
+                file=sys.stderr,
+            )
             has_prereqs = False
 
         if not has_prereqs:
@@ -505,7 +512,11 @@ class CLICommand(RegionalCommand):
                 # as we&#39;ve already save the credentials for them.
                 if not self.kubectl_args:
                     text = f&#34;kubeconfig saved to {filename}&#34;
-                    text = f&#39;&#34;{text}&#34;&#39; if self.annotate in [&#34;json&#34;, &#34;yaml&#34;] else f&#34;{text}\n&#34;
+                    text = (
+                        f&#39;&#34;{text}&#34;&#39;
+                        if self.annotate in [&#34;json&#34;, &#34;yaml&#34;]
+                        else f&#34;{text}\n&#34;
+                    )
                     results.append(_Result(text, None, name, namespace))
                     continue
 
@@ -696,7 +707,9 @@ def _list_clusters(eks):
     @classmethod
     def regional_from_cli(cls, parser, argv, cfg):
         parser.add_argument(
-            &#34;--list-clusters&#34;, action=&#34;store_true&#34;, help=&#34;list the EKS cluster&#34;,
+            &#34;--list-clusters&#34;,
+            action=&#34;store_true&#34;,
+            help=&#34;list the EKS cluster&#34;,
         )
         parser.add_argument(
             &#34;--cluster&#34;,
@@ -808,11 +821,16 @@ def _list_clusters(eks):
         # Make sure user has both dependent binaries installed
         has_prereqs = True
         if not shutil.which(&#34;kubectl&#34;):
-            print(&#34;&#39;kubectl&#39; not found in PATH, have you installed it?&#34;, file=sys.stderr)
+            print(
+                &#34;&#39;kubectl&#39; not found in PATH, have you installed it?&#34;, file=sys.stderr
+            )
             has_prereqs = False
 
         if not shutil.which(&#34;aws-iam-authenticator&#34;):
-            print(&#34;&#39;aws-iam-authenticator&#39; not found in PATH, have you installed it?&#34;, file=sys.stderr)
+            print(
+                &#34;&#39;aws-iam-authenticator&#39; not found in PATH, have you installed it?&#34;,
+                file=sys.stderr,
+            )
             has_prereqs = False
 
         if not has_prereqs:
@@ -845,7 +863,11 @@ def _list_clusters(eks):
                 # as we&#39;ve already save the credentials for them.
                 if not self.kubectl_args:
                     text = f&#34;kubeconfig saved to {filename}&#34;
-                    text = f&#39;&#34;{text}&#34;&#39; if self.annotate in [&#34;json&#34;, &#34;yaml&#34;] else f&#34;{text}\n&#34;
+                    text = (
+                        f&#39;&#34;{text}&#34;&#39;
+                        if self.annotate in [&#34;json&#34;, &#34;yaml&#34;]
+                        else f&#34;{text}\n&#34;
+                    )
                     results.append(_Result(text, None, name, namespace))
                     continue
 
