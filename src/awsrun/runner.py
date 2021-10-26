@@ -751,6 +751,66 @@ def max_thread_limit(count):
     return decorator
 
 
+def get_paginated_resources(
+    client, paginator, page_key, predicate=lambda _: True, **kwargs
+):
+    """Return the full list of boto3 resources via a paginator.
+
+    `client` is a boto3 client.  `paginator` is the name (string) of the
+    paginator.  `page_key` is the name (string) of the dictionary key used in
+    the paginated responses.
+
+    `predicate` is a function that determines which resources are included in
+    the list.  The function takes a single argument, the resource. If it returns
+    `True`, the resource is included, otherwise it is excluded.
+
+    The remaining `kwargs` are used to specify which resources to retrieve. Some
+    paginators do not require any additional arguments, but others do to
+    restrict the size of the response.
+
+    For example, to collect the list of load balancers, one might write:
+
+        def get_lbs(client):
+            lbs = []
+            paginator = client.get_paginator("describe_load_balancers")
+            for page in paginator.paginate():
+                for lb in page["LoadBalancers"]:
+                    lbs.append(lb)
+            return lbs
+
+    This can be simplified by using `get_paginated_resources`:
+
+        lbs = get_paginated_resources(client, "describe_load_balancers", "LoadBalancers")
+
+    As another example, to collect the list of UDP listeners for a load
+    balancer, one might write:
+
+        def get_listeners(client, lb_arn):
+            listeners = []
+            paginator = client.get_paginator("describe_listeners")
+            for page in paginator.paginate(LoadBalancerArn=lb_arn):
+                for listener in page["Listeners"]:
+                    if listener["Protocol"] in ["UDP", "TCP_UDP"]:
+                        listeners.append(listener)
+            return listeners
+
+    This, too, can be simplified using `get_paginated_resources`:
+
+        listeners = get_paginated_resources(
+            client,
+            "describe_listeners",
+            "Listeners",
+            lambda l: l["Protocol"] in ["UDP", "TCP_UDP"],
+            LoadBalancer=lb_arn)
+    """
+    resources = []
+    for page in client.get_paginator(paginator).paginate(**kwargs):
+        for resource in page[page_key]:
+            if predicate(resource):
+                resources.append(resource)
+    return resources
+
+
 class AccountRunner:
     """Runs a `Command` across one or more accounts.
 
