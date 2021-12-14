@@ -892,20 +892,9 @@ class AzureCLIAccountLoader(MetaAccountLoader):
             subscription.pop("user", None)
             subscription.pop("managedByTenants", None)
 
-            if not name_regexp:
-                accts.append(subscription)
-                continue
+            if name_regexp:
+                subscription.update(capture_groups(subscription["name"], name_regexp))
 
-            match = name_regexp.search(subscription.get("name"))
-            if match:
-                for k, v in match.groupdict().items():
-                    subscription[k] = v
-            else:
-                LOG.info(
-                    "%s does not match %s",
-                    name_regexp.pattern,
-                    subscription.get("name"),
-                )
             accts.append(subscription)
 
         super().__init__(accts)
@@ -999,6 +988,15 @@ class InvalidFormatTemplateError(Exception):
         super().__init__(
             f"Unknown attributes in format template: {quote(unknown)}. Valid attributes are: {quote(valid)}"
         )
+
+
+def capture_groups(s, regexp):
+    """Return dict of key/value pairs from matching capture groups."""
+    match = regexp.search(s)
+    if match:
+        return match.groupdict()
+    LOG.info("%s does not match %s", regexp.pattern, s)
+    return {}
 
 
 def _convert_keys_to_valid_attribute_names(d):

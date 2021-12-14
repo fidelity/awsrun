@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>awsrun.plugins.accts.aws API documentation</title>
+<meta name="description" content="Account loader plugins specific to AWS …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,500;0,700;1,500;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+body {
+font-size: 16px;
+font-family: 'Source Sans Pro', sans-serif;
+}
+code {
+font-family: 'Source Code Pro', monospace;
+}
+#content {
+max-width: 110ch;
+}
+/* `Text` size and code blocks in main body */
+section code {
+font-size: 14px;
+}
+/* "expand source code" text */
+details {
+font-size: 14px;
+}
+ul li code a {
+font-size: .9em;
+}
+dt {
+font-weight: bold;
+}
+h4 {
+font-weight: bold;
+}
+</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>awsrun.plugins.accts.aws</code></h1>
+</header>
+<section id="section-intro">
+<p>Account loader plugins specific to AWS.</p>
+<p>The plug-in in this module allows a user to select accounts using the metadata
+filters on the <code><a title="awsrun.cli" href="../../cli.html">awsrun.cli</a></code> instead of explicitly listing accounts to process.
+For accounts that are explicitly specified, the plug-ins are used to validate
+those accounts exist. Most plugins in this module attach metadata attributes to
+the account objects, which are made available to command authors.</p>
+<p>Refer to the plug-in's documentation for a list of valid options that can be
+provided via the configuration file or via azurerun CLI flags. CLI flags
+override the values defined in the configuration file. The <code>plugin</code> key may be
+one of the following values:</p>
+<dl>
+<dt>awsrun.plugins.accts.aws.SSO</dt>
+<dd><code><a title="awsrun.plugins.accts.aws.SSO" href="#awsrun.plugins.accts.aws.SSO">SSO</a></code> loads accounts and metadata for those accounts from the AWS Single
+Sign-On service.</dd>
+</dl>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#
+# Copyright 2021 FMR LLC &lt;opensource@fidelity.com&gt;
+#
+# SPDX-License-Identifier: MIT
+#
+&#34;&#34;&#34;Account loader plugins specific to AWS.
+
+The plug-in in this module allows a user to select accounts using the metadata
+filters on the `awsrun.cli` instead of explicitly listing accounts to process.
+For accounts that are explicitly specified, the plug-ins are used to validate
+those accounts exist. Most plugins in this module attach metadata attributes to
+the account objects, which are made available to command authors.
+
+Refer to the plug-in&#39;s documentation for a list of valid options that can be
+provided via the configuration file or via azurerun CLI flags. CLI flags
+override the values defined in the configuration file. The `plugin` key may be
+one of the following values:
+
+awsrun.plugins.accts.aws.SSO
+:  `SSO` loads accounts and metadata for those accounts from the AWS Single
+Sign-On service.
+&#34;&#34;&#34;
+import json
+import tempfile
+import hashlib
+import logging
+import re
+
+from pathlib import Path
+
+import boto3
+
+from awsrun.config import Int, Str, List
+from awsrun.plugmgr import Plugin
+from awsrun.acctload import MetaAccountLoader, capture_groups
+from awsrun.cache import PersistentExpiringValue
+
+
+LOG = logging.getLogger(__name__)
+
+
+class SSO(Plugin):
+    &#34;&#34;&#34;Account loader plug-in that obtains accounts via AWS Single Sign-On.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or `--account-file`
+    will be validated against the list of accounts obtained from the AWS Single
+    Sign-On service.  The accounts loaded via this plug-in will also include
+    metadata associated with each account parsed from the `list_accounts` AWS
+    SSO call.  This metadata can be used to select accounts using the
+    `--include` and `--exclude` awsrun CLI flags.  The following metadata is
+    loaded for each account: `accountId` (str), `accountName` (str), and
+    `emailAddress` (str).
+
+    To use this plug-in, AWS Single Sign-On is required and the user must
+    login using the AWS CLI `aws sso login` command.  The accounts accessible to
+    the SSO user will be retrieved and made available when selecting accounts
+    using awsrun.  The account list can be cached to avoid looking up accounts
+    upon each awsrun invocation (see options below).
+
+    The following metadata is attached to each account: `accountId` (str),
+    `accountName` (str), and `emailAddress` (str). In addition, the account name
+    of an AWS account can be parsed for additional metadata attributes.
+    For example, assume the following AWS account names:
+
+    - aws-retail-prod
+    - aws-retail-nonprod
+    - aws-wholesale-prod
+    - aws-wholesale-nonprod
+
+    Setting the `name_regexp` configuration option or the `--loader-name-regexp`
+    command line flag to the following regexp `^aws-(?P&lt;bu&gt;[^-]+)-(?P&lt;env&gt;.+)`
+    will attach the `bu` and `env` metadata attributes as well. More precisely,
+    each **named** capture group in the pattern becomes an available metadata
+    attribute. If an account name does not match the pattern, the additional
+    attributes will be set to `None`.
+
+    With the accounts loaded and metadata attached, users can specify which
+    accounts to process using the `--include` and `--exclude` command line
+    options. In the following example, only accounts with &#34;john@example.com&#34;
+    email address will be selected:
+
+        $ awsrun --include emailAddress=john@example.com aws ec2 describe-vpcs --region us-east-1
+
+    For more information on how to use the CLI and metadata filters, refer to
+    the CLI user guide in `awsrun.cli`.
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Accounts:
+          plugin: awsrun.plugins.accts.aws.SSO
+          options:
+            sso_start_url: URL*
+            max_age: INTEGER
+            str_template: STRING
+            name_regexp: STRING
+
+    ## Plug-in Options
+
+    Options can be overridden on the azurerun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `sso_start_url`, `--loader-sso-start-url`
+    : The application start URL that begins the federation process. This is only
+    used to obtain the SSO access token stored locally after the user has
+    logged in via the `aws sso login` command.
+
+    `max_age`, `--loader-max-age`
+    : Cache the data retrieved from the SSO list accounts call for the specified
+    number of seconds.  The default value is `3600`, which caches the account
+    list for 1 hour. To disable caching, use a value of `0`.
+
+    `str_template`, `--loader-str-template`
+    : Controls how accounts are formatted as strings. This is a [Python format
+    string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
+    that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
+    or `&#34;{id}-{env}&#34;` assuming `id` and `env` are JSON key names.
+
+    `name_regexp`, `--loader-name-regexp`
+    : Specifies a regular expression with named capture groups that will be
+    applied to each AWS account name to create additional metadata attributes
+    that can be used when filtering or by command authors. For example,
+    `^aws-(?P&lt;bu&gt;[^-]+)-(?P&lt;env&gt;.+)` will add two metadata attributes, `bu`
+    and `env`, on top of the default ones. If a name does not match, the
+    attributes specified by the capture groups will be set to `None`.
+    &#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
+        # chance of collision.
+        group = parser.add_argument_group(&#34;account loader options&#34;)
+
+        group.add_argument(
+            &#34;--loader-max-age&#34;,
+            metavar=&#34;SECS&#34;,
+            type=int,
+            default=cfg(&#34;max_age&#34;, type=Int, default=3600),
+            help=&#34;max age for cached list of accounts&#34;,
+        )
+        group.add_argument(
+            &#34;--loader-str-template&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(&#34;str_template&#34;),
+            help=&#34;format string used to display an account&#34;,
+        )
+        group.add_argument(
+            &#34;--loader-sso-start-url&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(&#34;sso_start_url&#34;),
+            help=&#34;AWS SSO START URL&#34;,
+        )
+        group.add_argument(
+            &#34;--loader-name-regexp&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(&#34;name_regexp&#34;),
+            help=&#34;regexp applied to account name for metadata attributes&#34;,
+        )
+
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        loader = SSOAccountLoader(
+            max_age=args.loader_max_age,
+            str_template=args.loader_str_template,
+            sso_start_url=args.loader_sso_start_url,
+            include_attrs=cfg(&#34;include_attrs&#34;, type=List(Str), default=[]),
+            exclude_attrs=cfg(&#34;exclude_attrs&#34;, type=List(Str), default=[]),
+            name_regexp=args.loader_name_regexp,
+        )
+
+        return loader
+
+
+class SSOAccountLoader(MetaAccountLoader):
+    &#34;&#34;&#34;Returns an `awsrun.acctload.AccountLoader` with accounts loaded from AWS SSO API.
+
+    Accounts are loaded from the AWS SSO API using the user&#39;s locally stored SSO
+    access token.  This requires that the user has signed in with the AWS CLI
+    command: `aws sso login`.
+
+    Loaded accounts will include the following metadata attribute names:
+    `accountId`, `accountName`, and `emailAddress`.  This account loader will
+    build account objects with those attributes attached:
+
+        # After I&#39;ve signed run &#34;aws sso login&#34; from the CLI
+        loader = SSOAccountLoader(sso_start_url=&#39;http://example.com/&#39;)
+        accts = loader.accounts()
+
+        # Let&#39;s inspect the 1st account object and its metadata
+        assert accts[0].accountId == &#39;100200300400&#39;
+        assert accts[0].accountName == &#39;MyAWSAccount&#39;
+        assert accts[0].emailAddress == &#39;you@example.com&#39;
+
+    In addition, the name of the AWS account name can be parsed for additional
+    metadata attributes. For example, assume the following AWS account names:
+
+    - aws-retail-prod
+    - aws-retail-nonprod
+    - aws-wholesale-prod
+    - aws-wholesale-nonprod
+
+    Setting the `name_regexp` argument to the following regexp
+    `^aws-(?P&lt;bu&gt;[^-]+)-(?P&lt;env&gt;.*)` will attach the `bu` and `env` metadata
+    attributes as well. More precisely, each **named** capture group in the
+    pattern becomes an available metadata attribute. If an account name does
+    not match the pattern, the additional attributes will be set to `None`.
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        max_age=0,
+        str_template=None,
+        sso_start_url=&#34;&#34;,
+        include_attrs=None,
+        exclude_attrs=None,
+        name_regexp=None,
+    ):
+        include_attrs = [] if include_attrs is None else include_attrs
+        exclude_attrs = [] if exclude_attrs is None else exclude_attrs
+
+        # Check to make sure it&#39;s a valid regexp. Don&#39;t catch exception as
+        # awsrun will catch it and report to user.
+        if name_regexp:
+            try:
+                name_regexp = re.compile(name_regexp)
+            except re.error as e:
+                raise ValueError(f&#34;Account name regexp invalid: {e}&#34;) from e
+            if not name_regexp.groupindex:
+                raise ValueError(&#34;Account name regexp has no named capture groups&#34;)
+
+        # See botocore v2 utils.py:SSOTokenLoader
+        sso_fname = hashlib.sha1(sso_start_url.encode(&#34;utf-8&#34;)).hexdigest()
+        sso_token_file = Path.home() / &#34;.aws&#34; / &#34;sso&#34; / &#34;cache&#34; / sso_fname
+        sso_token_file = sso_token_file.with_suffix(&#34;.json&#34;)
+
+        def load_accts():
+            with open(sso_token_file) as f:
+                token = json.load(f)[&#34;accessToken&#34;]
+            accts = []
+            sso = boto3.client(&#34;sso&#34;)
+            for page in sso.get_paginator(&#34;list_accounts&#34;).paginate(accessToken=token):
+                for acct in page[&#34;accountList&#34;]:
+                    if name_regexp:
+                        acct.update(capture_groups(acct[&#34;accountName&#34;], name_regexp))
+                    accts.append(acct)
+
+            return accts
+
+        cache_file = Path(tempfile.gettempdir(), &#34;awsrun-&#34; + sso_fname)
+        accts = PersistentExpiringValue(load_accts, cache_file, max_age=max_age)
+
+        super().__init__(
+            accts.value(),
+            id_attr=&#34;accountId&#34;,
+            str_template=str_template,
+            include_attrs=include_attrs,
+            exclude_attrs=exclude_attrs,
+        )</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="awsrun.plugins.accts.aws.SSO"><code class="flex name class">
+<span>class <span class="ident">SSO</span></span>
+<span>(</span><span>parser, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Account loader plug-in that obtains accounts via AWS Single Sign-On.</p>
+<h2 id="overview">Overview</h2>
+<p>Accounts specified on the awsrun CLI via the <code>--account</code> or <code>--account-file</code>
+will be validated against the list of accounts obtained from the AWS Single
+Sign-On service.
+The accounts loaded via this plug-in will also include
+metadata associated with each account parsed from the <code>list_accounts</code> AWS
+SSO call.
+This metadata can be used to select accounts using the
+<code>--include</code> and <code>--exclude</code> awsrun CLI flags.
+The following metadata is
+loaded for each account: <code>accountId</code> (str), <code>accountName</code> (str), and
+<code>emailAddress</code> (str).</p>
+<p>To use this plug-in, AWS Single Sign-On is required and the user must
+login using the AWS CLI <code>aws sso login</code> command.
+The accounts accessible to
+the SSO user will be retrieved and made available when selecting accounts
+using awsrun.
+The account list can be cached to avoid looking up accounts
+upon each awsrun invocation (see options below).</p>
+<p>The following metadata is attached to each account: <code>accountId</code> (str),
+<code>accountName</code> (str), and <code>emailAddress</code> (str). In addition, the account name
+of an AWS account can be parsed for additional metadata attributes.
+For example, assume the following AWS account names:</p>
+<ul>
+<li>aws-retail-prod</li>
+<li>aws-retail-nonprod</li>
+<li>aws-wholesale-prod</li>
+<li>aws-wholesale-nonprod</li>
+</ul>
+<p>Setting the <code>name_regexp</code> configuration option or the <code>--loader-name-regexp</code>
+command line flag to the following regexp <code>^aws-(?P&lt;bu&gt;[^-]+)-(?P&lt;env&gt;.+)</code>
+will attach the <code>bu</code> and <code>env</code> metadata attributes as well. More precisely,
+each <strong>named</strong> capture group in the pattern becomes an available metadata
+attribute. If an account name does not match the pattern, the additional
+attributes will be set to <code>None</code>.</p>
+<p>With the accounts loaded and metadata attached, users can specify which
+accounts to process using the <code>--include</code> and <code>--exclude</code> command line
+options. In the following example, only accounts with "john@example.com"
+email address will be selected:</p>
+<pre><code>$ awsrun --include emailAddress=john@example.com aws ec2 describe-vpcs --region us-east-1
+</code></pre>
+<p>For more information on how to use the CLI and metadata filters, refer to
+the CLI user guide in <code><a title="awsrun.cli" href="../../cli.html">awsrun.cli</a></code>.</p>
+<h2 id="configuration">Configuration</h2>
+<p>Options with an asterisk are mandatory and must be provided:</p>
+<pre><code>Accounts:
+  plugin: awsrun.plugins.accts.aws.SSO
+  options:
+    sso_start_url: URL*
+    max_age: INTEGER
+    str_template: STRING
+    name_regexp: STRING
+</code></pre>
+<h2 id="plug-in-options">Plug-in Options</h2>
+<p>Options can be overridden on the azurerun CLI via command line flags.
+In those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>sso_start_url</code>, <code>--loader-sso-start-url</code></dt>
+<dd>The application start URL that begins the federation process. This is only
+used to obtain the SSO access token stored locally after the user has
+logged in via the <code>aws sso login</code> command.</dd>
+<dt><code>max_age</code>, <code>--loader-max-age</code></dt>
+<dd>Cache the data retrieved from the SSO list accounts call for the specified
+number of seconds.
+The default value is <code>3600</code>, which caches the account
+list for 1 hour. To disable caching, use a value of <code>0</code>.</dd>
+<dt><code>str_template</code>, <code>--loader-str-template</code></dt>
+<dd>Controls how accounts are formatted as strings. This is a <a href="https://docs.python.org/3.7/library/string.html#format-string-syntax">Python format
+string</a>
+that can include any of the included attributes. For example, <code>"{id}:{env}"</code>
+or <code>"{id}-{env}"</code> assuming <code>id</code> and <code>env</code> are JSON key names.</dd>
+<dt><code>name_regexp</code>, <code>--loader-name-regexp</code></dt>
+<dd>Specifies a regular expression with named capture groups that will be
+applied to each AWS account name to create additional metadata attributes
+that can be used when filtering or by command authors. For example,
+<code>^aws-(?P&lt;bu&gt;[^-]+)-(?P&lt;env&gt;.+)</code> will add two metadata attributes, <code>bu</code>
+and <code>env</code>, on top of the default ones. If a name does not match, the
+attributes specified by the capture groups will be set to <code>None</code>.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SSO(Plugin):
+    &#34;&#34;&#34;Account loader plug-in that obtains accounts via AWS Single Sign-On.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or `--account-file`
+    will be validated against the list of accounts obtained from the AWS Single
+    Sign-On service.  The accounts loaded via this plug-in will also include
+    metadata associated with each account parsed from the `list_accounts` AWS
+    SSO call.  This metadata can be used to select accounts using the
+    `--include` and `--exclude` awsrun CLI flags.  The following metadata is
+    loaded for each account: `accountId` (str), `accountName` (str), and
+    `emailAddress` (str).
+
+    To use this plug-in, AWS Single Sign-On is required and the user must
+    login using the AWS CLI `aws sso login` command.  The accounts accessible to
+    the SSO user will be retrieved and made available when selecting accounts
+    using awsrun.  The account list can be cached to avoid looking up accounts
+    upon each awsrun invocation (see options below).
+
+    The following metadata is attached to each account: `accountId` (str),
+    `accountName` (str), and `emailAddress` (str). In addition, the account name
+    of an AWS account can be parsed for additional metadata attributes.
+    For example, assume the following AWS account names:
+
+    - aws-retail-prod
+    - aws-retail-nonprod
+    - aws-wholesale-prod
+    - aws-wholesale-nonprod
+
+    Setting the `name_regexp` configuration option or the `--loader-name-regexp`
+    command line flag to the following regexp `^aws-(?P&lt;bu&gt;[^-]+)-(?P&lt;env&gt;.+)`
+    will attach the `bu` and `env` metadata attributes as well. More precisely,
+    each **named** capture group in the pattern becomes an available metadata
+    attribute. If an account name does not match the pattern, the additional
+    attributes will be set to `None`.
+
+    With the accounts loaded and metadata attached, users can specify which
+    accounts to process using the `--include` and `--exclude` command line
+    options. In the following example, only accounts with &#34;john@example.com&#34;
+    email address will be selected:
+
+        $ awsrun --include emailAddress=john@example.com aws ec2 describe-vpcs --region us-east-1
+
+    For more information on how to use the CLI and metadata filters, refer to
+    the CLI user guide in `awsrun.cli`.
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Accounts:
+          plugin: awsrun.plugins.accts.aws.SSO
+          options:
+            sso_start_url: URL*
+            max_age: INTEGER
+            str_template: STRING
+            name_regexp: STRING
+
+    ## Plug-in Options
+
+    Options can be overridden on the azurerun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `sso_start_url`, `--loader-sso-start-url`
+    : The application start URL that begins the federation process. This is only
+    used to obtain the SSO access token stored locally after the user has
+    logged in via the `aws sso login` command.
+
+    `max_age`, `--loader-max-age`
+    : Cache the data retrieved from the SSO list accounts call for the specified
+    number of seconds.  The default value is `3600`, which caches the account
+    list for 1 hour. To disable caching, use a value of `0`.
+
+    `str_template`, `--loader-str-template`
+    : Controls how accounts are formatted as strings. This is a [Python format
+    string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
+    that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
+    or `&#34;{id}-{env}&#34;` assuming `id` and `env` are JSON key names.
+
+    `name_regexp`, `--loader-name-regexp`
+    : Specifies a regular expression with named capture groups that will be
+    applied to each AWS account name to create additional metadata attributes
+    that can be used when filtering or by command authors. For example,
+    `^aws-(?P&lt;bu&gt;[^-]+)-(?P&lt;env&gt;.+)` will add two metadata attributes, `bu`
+    and `env`, on top of the default ones. If a name does not match, the
+    attributes specified by the capture groups will be set to `None`.
+    &#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
+        # chance of collision.
+        group = parser.add_argument_group(&#34;account loader options&#34;)
+
+        group.add_argument(
+            &#34;--loader-max-age&#34;,
+            metavar=&#34;SECS&#34;,
+            type=int,
+            default=cfg(&#34;max_age&#34;, type=Int, default=3600),
+            help=&#34;max age for cached list of accounts&#34;,
+        )
+        group.add_argument(
+            &#34;--loader-str-template&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(&#34;str_template&#34;),
+            help=&#34;format string used to display an account&#34;,
+        )
+        group.add_argument(
+            &#34;--loader-sso-start-url&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(&#34;sso_start_url&#34;),
+            help=&#34;AWS SSO START URL&#34;,
+        )
+        group.add_argument(
+            &#34;--loader-name-regexp&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(&#34;name_regexp&#34;),
+            help=&#34;regexp applied to account name for metadata attributes&#34;,
+        )
+
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        loader = SSOAccountLoader(
+            max_age=args.loader_max_age,
+            str_template=args.loader_str_template,
+            sso_start_url=args.loader_sso_start_url,
+            include_attrs=cfg(&#34;include_attrs&#34;, type=List(Str), default=[]),
+            exclude_attrs=cfg(&#34;exclude_attrs&#34;, type=List(Str), default=[]),
+            name_regexp=args.loader_name_regexp,
+        )
+
+        return loader</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.plugmgr.Plugin.instantiate" href="../../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.plugins.accts.aws.SSOAccountLoader"><code class="flex name class">
+<span>class <span class="ident">SSOAccountLoader</span></span>
+<span>(</span><span>max_age=0, str_template=None, sso_start_url='', include_attrs=None, exclude_attrs=None, name_regexp=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns an <code><a title="awsrun.acctload.AccountLoader" href="../../acctload.html#awsrun.acctload.AccountLoader">AccountLoader</a></code> with accounts loaded from AWS SSO API.</p>
+<p>Accounts are loaded from the AWS SSO API using the user's locally stored SSO
+access token.
+This requires that the user has signed in with the AWS CLI
+command: <code>aws sso login</code>.</p>
+<p>Loaded accounts will include the following metadata attribute names:
+<code>accountId</code>, <code>accountName</code>, and <code>emailAddress</code>.
+This account loader will
+build account objects with those attributes attached:</p>
+<pre><code># After I've signed run "aws sso login" from the CLI
+loader = SSOAccountLoader(sso_start_url='http://example.com/')
+accts = loader.accounts()
+
+# Let's inspect the 1st account object and its metadata
+assert accts[0].accountId == '100200300400'
+assert accts[0].accountName == 'MyAWSAccount'
+assert accts[0].emailAddress == 'you@example.com'
+</code></pre>
+<p>In addition, the name of the AWS account name can be parsed for additional
+metadata attributes. For example, assume the following AWS account names:</p>
+<ul>
+<li>aws-retail-prod</li>
+<li>aws-retail-nonprod</li>
+<li>aws-wholesale-prod</li>
+<li>aws-wholesale-nonprod</li>
+</ul>
+<p>Setting the <code>name_regexp</code> argument to the following regexp
+<code>^aws-(?P&lt;bu&gt;[^-]+)-(?P&lt;env&gt;.*)</code> will attach the <code>bu</code> and <code>env</code> metadata
+attributes as well. More precisely, each <strong>named</strong> capture group in the
+pattern becomes an available metadata attribute. If an account name does
+not match the pattern, the additional attributes will be set to <code>None</code>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SSOAccountLoader(MetaAccountLoader):
+    &#34;&#34;&#34;Returns an `awsrun.acctload.AccountLoader` with accounts loaded from AWS SSO API.
+
+    Accounts are loaded from the AWS SSO API using the user&#39;s locally stored SSO
+    access token.  This requires that the user has signed in with the AWS CLI
+    command: `aws sso login`.
+
+    Loaded accounts will include the following metadata attribute names:
+    `accountId`, `accountName`, and `emailAddress`.  This account loader will
+    build account objects with those attributes attached:
+
+        # After I&#39;ve signed run &#34;aws sso login&#34; from the CLI
+        loader = SSOAccountLoader(sso_start_url=&#39;http://example.com/&#39;)
+        accts = loader.accounts()
+
+        # Let&#39;s inspect the 1st account object and its metadata
+        assert accts[0].accountId == &#39;100200300400&#39;
+        assert accts[0].accountName == &#39;MyAWSAccount&#39;
+        assert accts[0].emailAddress == &#39;you@example.com&#39;
+
+    In addition, the name of the AWS account name can be parsed for additional
+    metadata attributes. For example, assume the following AWS account names:
+
+    - aws-retail-prod
+    - aws-retail-nonprod
+    - aws-wholesale-prod
+    - aws-wholesale-nonprod
+
+    Setting the `name_regexp` argument to the following regexp
+    `^aws-(?P&lt;bu&gt;[^-]+)-(?P&lt;env&gt;.*)` will attach the `bu` and `env` metadata
+    attributes as well. More precisely, each **named** capture group in the
+    pattern becomes an available metadata attribute. If an account name does
+    not match the pattern, the additional attributes will be set to `None`.
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        max_age=0,
+        str_template=None,
+        sso_start_url=&#34;&#34;,
+        include_attrs=None,
+        exclude_attrs=None,
+        name_regexp=None,
+    ):
+        include_attrs = [] if include_attrs is None else include_attrs
+        exclude_attrs = [] if exclude_attrs is None else exclude_attrs
+
+        # Check to make sure it&#39;s a valid regexp. Don&#39;t catch exception as
+        # awsrun will catch it and report to user.
+        if name_regexp:
+            try:
+                name_regexp = re.compile(name_regexp)
+            except re.error as e:
+                raise ValueError(f&#34;Account name regexp invalid: {e}&#34;) from e
+            if not name_regexp.groupindex:
+                raise ValueError(&#34;Account name regexp has no named capture groups&#34;)
+
+        # See botocore v2 utils.py:SSOTokenLoader
+        sso_fname = hashlib.sha1(sso_start_url.encode(&#34;utf-8&#34;)).hexdigest()
+        sso_token_file = Path.home() / &#34;.aws&#34; / &#34;sso&#34; / &#34;cache&#34; / sso_fname
+        sso_token_file = sso_token_file.with_suffix(&#34;.json&#34;)
+
+        def load_accts():
+            with open(sso_token_file) as f:
+                token = json.load(f)[&#34;accessToken&#34;]
+            accts = []
+            sso = boto3.client(&#34;sso&#34;)
+            for page in sso.get_paginator(&#34;list_accounts&#34;).paginate(accessToken=token):
+                for acct in page[&#34;accountList&#34;]:
+                    if name_regexp:
+                        acct.update(capture_groups(acct[&#34;accountName&#34;], name_regexp))
+                    accts.append(acct)
+
+            return accts
+
+        cache_file = Path(tempfile.gettempdir(), &#34;awsrun-&#34; + sso_fname)
+        accts = PersistentExpiringValue(load_accts, cache_file, max_age=max_age)
+
+        super().__init__(
+            accts.value(),
+            id_attr=&#34;accountId&#34;,
+            str_template=str_template,
+            include_attrs=include_attrs,
+            exclude_attrs=exclude_attrs,
+        )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.acctload.MetaAccountLoader" href="../../acctload.html#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></li>
+<li><a title="awsrun.acctload.AccountLoader" href="../../acctload.html#awsrun.acctload.AccountLoader">AccountLoader</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.acctload.MetaAccountLoader" href="../../acctload.html#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.acctload.MetaAccountLoader.accounts" href="../../acctload.html#awsrun.acctload.MetaAccountLoader.accounts">accounts</a></code></li>
+<li><code><a title="awsrun.acctload.MetaAccountLoader.acct_id" href="../../acctload.html#awsrun.acctload.MetaAccountLoader.acct_id">acct_id</a></code></li>
+<li><code><a title="awsrun.acctload.MetaAccountLoader.attributes" href="../../acctload.html#awsrun.acctload.MetaAccountLoader.attributes">attributes</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="awsrun.plugins.accts" href="index.html">awsrun.plugins.accts</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="awsrun.plugins.accts.aws.SSO" href="#awsrun.plugins.accts.aws.SSO">SSO</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.plugins.accts.aws.SSOAccountLoader" href="#awsrun.plugins.accts.aws.SSOAccountLoader">SSOAccountLoader</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

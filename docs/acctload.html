@@ -985,20 +985,9 @@ class AzureCLIAccountLoader(MetaAccountLoader):
             subscription.pop(&#34;user&#34;, None)
             subscription.pop(&#34;managedByTenants&#34;, None)
 
-            if not name_regexp:
-                accts.append(subscription)
-                continue
+            if name_regexp:
+                subscription.update(capture_groups(subscription[&#34;name&#34;], name_regexp))
 
-            match = name_regexp.search(subscription.get(&#34;name&#34;))
-            if match:
-                for k, v in match.groupdict().items():
-                    subscription[k] = v
-            else:
-                LOG.info(
-                    &#34;%s does not match %s&#34;,
-                    name_regexp.pattern,
-                    subscription.get(&#34;name&#34;),
-                )
             accts.append(subscription)
 
         super().__init__(accts)
@@ -1094,6 +1083,15 @@ class InvalidFormatTemplateError(Exception):
         )
 
 
+def capture_groups(s, regexp):
+    &#34;&#34;&#34;Return dict of key/value pairs from matching capture groups.&#34;&#34;&#34;
+    match = regexp.search(s)
+    if match:
+        return match.groupdict()
+    LOG.info(&#34;%s does not match %s&#34;, regexp.pattern, s)
+    return {}
+
+
 def _convert_keys_to_valid_attribute_names(d):
     &#34;&#34;&#34;Replace keys that are invalid Python identifiers or keywords with
     valid object attribute names.
@@ -1129,6 +1127,27 @@ def _make_valid_attribute_name(s):
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="awsrun.acctload.capture_groups"><code class="name flex">
+<span>def <span class="ident">capture_groups</span></span>(<span>s, regexp)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Return dict of key/value pairs from matching capture groups.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def capture_groups(s, regexp):
+    &#34;&#34;&#34;Return dict of key/value pairs from matching capture groups.&#34;&#34;&#34;
+    match = regexp.search(s)
+    if match:
+        return match.groupdict()
+    LOG.info(&#34;%s does not match %s&#34;, regexp.pattern, s)
+    return {}</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
@@ -2002,6 +2021,7 @@ names. In addition, all of the attributes referenced in <code>str_template</code
 <li><a title="awsrun.acctload.CSVAccountLoader" href="#awsrun.acctload.CSVAccountLoader">CSVAccountLoader</a></li>
 <li><a title="awsrun.acctload.JSONAccountLoader" href="#awsrun.acctload.JSONAccountLoader">JSONAccountLoader</a></li>
 <li><a title="awsrun.acctload.YAMLAccountLoader" href="#awsrun.acctload.YAMLAccountLoader">YAMLAccountLoader</a></li>
+<li><a title="awsrun.plugins.accts.aws.SSOAccountLoader" href="plugins/accts/aws.html#awsrun.plugins.accts.aws.SSOAccountLoader">SSOAccountLoader</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -2667,20 +2687,9 @@ not match the pattern, the additional attributes will be set to <code>None</code
             subscription.pop(&#34;user&#34;, None)
             subscription.pop(&#34;managedByTenants&#34;, None)
 
-            if not name_regexp:
-                accts.append(subscription)
-                continue
+            if name_regexp:
+                subscription.update(capture_groups(subscription[&#34;name&#34;], name_regexp))
 
-            match = name_regexp.search(subscription.get(&#34;name&#34;))
-            if match:
-                for k, v in match.groupdict().items():
-                    subscription[k] = v
-            else:
-                LOG.info(
-                    &#34;%s does not match %s&#34;,
-                    name_regexp.pattern,
-                    subscription.get(&#34;name&#34;),
-                )
             accts.append(subscription)
 
         super().__init__(accts)</code></pre>
@@ -2874,6 +2883,11 @@ format string of the Account object.</p></section>
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="awsrun" href="index.html">awsrun</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="awsrun.acctload.capture_groups" href="#awsrun.acctload.capture_groups">capture_groups</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

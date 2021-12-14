@@ -304,6 +304,14 @@ includes the following:
   
 ## Change Log
 
+### v2.3.1
+
+* Add an AWS SSO account loader plug-in.  For those using AWS SSO, this plug-in
+  loads accounts via the `ListAccounts` SSO API call.
+
+* Add another sample azurerun command `list_udrs` that provides a listing of 
+  all Azure routing tables in a subscription.
+
 ### v2.3.0
 
 * Add support for Azure. By default, installation now installs both `awsrun` as
