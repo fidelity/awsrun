@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>awsrun.commands.azure API documentation</title>
-<meta name="description" content="Contains the built-in commands for Azure …" />
+<title>awsrun.commands.azure.list_udrs API documentation</title>
+<meta name="description" content="Display the route tables configured in a subscription …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
@@ -50,84 +50,161 @@ font-weight: bold;
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>awsrun.commands.azure</code></h1>
+<h1 class="title">Module <code>awsrun.commands.azure.list_udrs</code></h1>
 </header>
 <section id="section-intro">
-<p>Contains the built-in commands for Azure.</p>
-<p>Each module represents an individual awsrun <code><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></code> that can be
-invoked via the command line <code><a title="awsrun.cli" href="../../cli.html">awsrun.cli</a></code> tool. When specifying the name of the
-command to invoke, only the last portion of the dotted module name is required
-as <code><a title="awsrun.commands.azure" href="#awsrun.commands.azure">awsrun.commands.azure</a></code> is included by default in the path used by
-<code><a title="awsrun.cmdmgr" href="../../cmdmgr.html">awsrun.cmdmgr</a></code>.</p>
-<p>Users can build their own commands as well. Please refer to the <code><a title="awsrun" href="../../index.html">awsrun</a></code>
-documentation for instructions on how to define and install your own commands.</p>
+<p>Display the route tables configured in a subscription.</p>
+<h2 id="overview">Overview</h2>
+<p>The list_udrs command displays all route tables defined in a subscription with
+one row per route entry.</p>
+<pre><code>$ azurerun --account 00000000-0000-0000-0000-000000000000 list_udrs
+00000000-0000-0000-0000-000000000000/my-route-table: bgp=N assocs=1 route=0.0.0.0/0 next_hop=Internet
+00000000-0000-0000-0000-000000000000/my-route-table: bgp=N assocs=1 route=10.10.10.10/28 next_hop=VirtualAppliance 10.20.20.20
+...
+$
+</code></pre>
+<p>Each row contains the route table name, whether or not BGP routes are propagated
+to the route table, the number of subnets the route table is associated, the
+route prefix, and the next hop. If the next hop is a virtual appliance, the IP
+of the appliance is provided as well.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">#
-# Copyright 2019 FMR LLC &lt;opensource@fmr.com&gt;
+# Copyright 2021 FMR LLC &lt;opensource@fidelity.com&gt;
 #
 # SPDX-License-Identifier: MIT
 #
-&#34;&#34;&#34;Contains the built-in commands for Azure.
+&#34;&#34;&#34;Display the route tables configured in a subscription.
 
-Each module represents an individual awsrun `awsrun.runner.Command` that can be
-invoked via the command line `awsrun.cli` tool. When specifying the name of the
-command to invoke, only the last portion of the dotted module name is required
-as `awsrun.commands.azure` is included by default in the path used by
-`awsrun.cmdmgr`.
+## Overview
 
-Users can build their own commands as well. Please refer to the `awsrun`
-documentation for instructions on how to define and install your own commands.
-&#34;&#34;&#34;</code></pre>
+The list_udrs command displays all route tables defined in a subscription with
+one row per route entry.
+
+    $ azurerun --account 00000000-0000-0000-0000-000000000000 list_udrs
+    00000000-0000-0000-0000-000000000000/my-route-table: bgp=N assocs=1 route=0.0.0.0/0 next_hop=Internet
+    00000000-0000-0000-0000-000000000000/my-route-table: bgp=N assocs=1 route=10.10.10.10/28 next_hop=VirtualAppliance 10.20.20.20
+    ...
+    $
+
+Each row contains the route table name, whether or not BGP routes are propagated
+to the route table, the number of subnets the route table is associated, the
+route prefix, and the next hop. If the next hop is a virtual appliance, the IP
+of the appliance is provided as well.
+&#34;&#34;&#34;
+
+import io
+
+from azure.mgmt.network import NetworkManagementClient
+
+from awsrun.runner import Command
+
+
+class CLICommand(Command):
+    &#34;&#34;&#34;Display UDRs configured in subscriptions.&#34;&#34;&#34;
+
+    def execute(self, session, acct):
+        out = io.StringIO()
+        nmc = NetworkManagementClient(session, acct)
+
+        for rt in nmc.route_tables.list_all():
+            bgp = &#34;N&#34; if rt.disable_bgp_route_propagation else &#34;Y&#34;
+
+            # Azure API doesn&#39;t seem to believe in 0 length lists, sigh.
+            assocs = 0 if rt.subnets is None else len(rt.subnets)
+
+            for r in rt.routes:
+                # Azure API sometimes returns None and sometimes an &#34;&#34;, sigh.
+                next_hop = r.next_hop_ip_address or &#34;&#34;
+                print(
+                    f&#34;{acct}/{rt.name}: bgp={bgp} assocs={assocs} route={r.address_prefix} next_hop={r.next_hop_type} {next_hop}&#34;,
+                    file=out,
+                )
+
+        return out.getvalue()</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="awsrun.commands.azure.az" href="az.html">awsrun.commands.azure.az</a></code></dt>
+<dt id="awsrun.commands.azure.list_udrs.CLICommand"><code class="flex name class">
+<span>class <span class="ident">CLICommand</span></span>
+</code></dt>
 <dd>
-<section class="desc"><p>Adapter for the Azure Command Line Interface (CLI) …</p></section>
-</dd>
-<dt><code class="name"><a title="awsrun.commands.azure.cidr_overlap" href="cidr_overlap.html">awsrun.commands.azure.cidr_overlap</a></code></dt>
-<dd>
-<section class="desc"><p>Display overlapping CIDR blocks between VNETs …</p></section>
-</dd>
-<dt><code class="name"><a title="awsrun.commands.azure.list_udrs" href="list_udrs.html">awsrun.commands.azure.list_udrs</a></code></dt>
-<dd>
-<section class="desc"><p>Display the route tables configured in a subscription …</p></section>
-</dd>
-<dt><code class="name"><a title="awsrun.commands.azure.list_vnets" href="list_vnets.html">awsrun.commands.azure.list_vnets</a></code></dt>
-<dd>
-<section class="desc"><p>Display the Virtual Networks (VNETs) configured in a subscription …</p></section>
+<section class="desc"><p>Display UDRs configured in subscriptions.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CLICommand(Command):
+    &#34;&#34;&#34;Display UDRs configured in subscriptions.&#34;&#34;&#34;
+
+    def execute(self, session, acct):
+        out = io.StringIO()
+        nmc = NetworkManagementClient(session, acct)
+
+        for rt in nmc.route_tables.list_all():
+            bgp = &#34;N&#34; if rt.disable_bgp_route_propagation else &#34;Y&#34;
+
+            # Azure API doesn&#39;t seem to believe in 0 length lists, sigh.
+            assocs = 0 if rt.subnets is None else len(rt.subnets)
+
+            for r in rt.routes:
+                # Azure API sometimes returns None and sometimes an &#34;&#34;, sigh.
+                next_hop = r.next_hop_ip_address or &#34;&#34;
+                print(
+                    f&#34;{acct}/{rt.name}: bgp={bgp} assocs={assocs} route={r.address_prefix} next_hop={r.next_hop_type} {next_hop}&#34;,
+                    file=out,
+                )
+
+        return out.getvalue()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.runner.Command" href="../../runner.html#awsrun.runner.Command">Command</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.runner.Command.collect_results" href="../../runner.html#awsrun.runner.Command.collect_results">collect_results</a></code></li>
+<li><code><a title="awsrun.runner.Command.execute" href="../../runner.html#awsrun.runner.Command.execute">execute</a></code></li>
+<li><code><a title="awsrun.runner.Command.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.Command.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
 </section>
 </article>
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#overview">Overview</a></li>
+</ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="awsrun.commands" href="../index.html">awsrun.commands</a></code></li>
+<li><code><a title="awsrun.commands.azure" href="index.html">awsrun.commands.azure</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li><code><a title="awsrun.commands.azure.az" href="az.html">awsrun.commands.azure.az</a></code></li>
-<li><code><a title="awsrun.commands.azure.cidr_overlap" href="cidr_overlap.html">awsrun.commands.azure.cidr_overlap</a></code></li>
-<li><code><a title="awsrun.commands.azure.list_udrs" href="list_udrs.html">awsrun.commands.azure.list_udrs</a></code></li>
-<li><code><a title="awsrun.commands.azure.list_vnets" href="list_vnets.html">awsrun.commands.azure.list_vnets</a></code></li>
+<li>
+<h4><code><a title="awsrun.commands.azure.list_udrs.CLICommand" href="#awsrun.commands.azure.list_udrs.CLICommand">CLICommand</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>

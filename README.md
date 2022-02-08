@@ -304,6 +304,13 @@ includes the following:
   
 ## Change Log
 
+### v2.3.1
+* Add new sample awsrun command, `dx_maint`, that queries the AWS Health API to
+  display recent and upcoming maintenance events (technically any open events)
+  on Direct Connects.
+* Add new sample azurerun command, `list_udrs`, that displays all User Defined
+  Routes (UDRs) in an Azure VNET.
+
 ### v2.3.0
 
 * Add support for Azure. By default, installation now installs both `awsrun` as
