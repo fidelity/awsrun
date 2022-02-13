@@ -15,28 +15,32 @@
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,500;0,700;1,500;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Code+Latin:wght@400;600&display=swap" rel="stylesheet">
 <style>
 body {
-font-size: 16px;
-font-family: 'Source Sans Pro', sans-serif;
+font-size: 15px;
+font-family: 'M PLUS 1', sans-serif;
 }
 code {
-font-family: 'Source Code Pro', monospace;
+font-family: 'M PLUS Code Latin', monospace;
 }
 #content {
 max-width: 110ch;
 }
 /* `Text` size and code blocks in main body */
 section code {
-font-size: 14px;
+font-size: 15px;
+}
+/* Line height for code blocks in main body */
+pre code {
+line-height: 1.3em;
 }
 /* "expand source code" text */
 details {
-font-size: 14px;
+font-size: 13px;
 }
-ul li code a {
-font-size: .9em;
+code.name {
+font-size: 1.0em;
 }
 dt {
 font-weight: bold;
@@ -898,12 +902,12 @@ are cached for <code>duration</code> seconds, which defaults to 1 hour.</p></sec
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></li>
+<code><li><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></li></code>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="awsrun.session.aws.CredsViaCrossAccount" href="#awsrun.session.aws.CredsViaCrossAccount">CredsViaCrossAccount</a></li>
-<li><a title="awsrun.session.aws.CredsViaSAML" href="#awsrun.session.aws.CredsViaSAML">CredsViaSAML</a></li>
+<code><li><a title="awsrun.session.aws.CredsViaCrossAccount" href="#awsrun.session.aws.CredsViaCrossAccount">CredsViaCrossAccount</a></li></code>
+<code><li><a title="awsrun.session.aws.CredsViaSAML" href="#awsrun.session.aws.CredsViaSAML">CredsViaSAML</a></li></code>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -1053,7 +1057,7 @@ process to obtain credentials.</p></section>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></li>
+<code><li><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></li></code>
 </ul>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -1230,8 +1234,8 @@ from the IdP is cached for <code>saml_duration</code>, which defaults to 5 minut
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="awsrun.session.aws.CachingSessionProvider" href="#awsrun.session.aws.CachingSessionProvider">CachingSessionProvider</a></li>
-<li><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></li>
+<code><li><a title="awsrun.session.aws.CachingSessionProvider" href="#awsrun.session.aws.CachingSessionProvider">CachingSessionProvider</a></li></code>
+<code><li><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></li></code>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -1356,8 +1360,8 @@ seconds, which defaults to 1 hour.</p></section>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="awsrun.session.aws.CachingSessionProvider" href="#awsrun.session.aws.CachingSessionProvider">CachingSessionProvider</a></li>
-<li><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></li>
+<code><li><a title="awsrun.session.aws.CachingSessionProvider" href="#awsrun.session.aws.CachingSessionProvider">CachingSessionProvider</a></li></code>
+<code><li><a title="awsrun.session.SessionProvider" href="index.html#awsrun.session.SessionProvider">SessionProvider</a></li></code>
 </ul>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -1384,8 +1388,8 @@ seconds, which defaults to 1 hour.</p></section>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>builtins.Exception</li>
-<li>builtins.BaseException</li>
+<code><li>builtins.Exception</li></code>
+<code><li>builtins.BaseException</li></code>
 </ul>
 </dd>
 <dt id="awsrun.session.aws.IDPInvalidResponseException"><code class="flex name class">
@@ -1403,8 +1407,8 @@ seconds, which defaults to 1 hour.</p></section>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>builtins.Exception</li>
-<li>builtins.BaseException</li>
+<code><li>builtins.Exception</li></code>
+<code><li>builtins.BaseException</li></code>
 </ul>
 </dd>
 <dt id="awsrun.session.aws.IDPInvalidRoleException"><code class="flex name class">
@@ -1422,8 +1426,8 @@ seconds, which defaults to 1 hour.</p></section>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>builtins.Exception</li>
-<li>builtins.BaseException</li>
+<code><li>builtins.Exception</li></code>
+<code><li>builtins.BaseException</li></code>
 </ul>
 </dd>
 <dt id="awsrun.session.aws.AWSAssumeRoleException"><code class="flex name class">
@@ -1441,8 +1445,8 @@ seconds, which defaults to 1 hour.</p></section>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>builtins.Exception</li>
-<li>builtins.BaseException</li>
+<code><li>builtins.Exception</li></code>
+<code><li>builtins.BaseException</li></code>
 </ul>
 </dd>
 </dl>

@@ -15,28 +15,32 @@
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,500;0,700;1,500;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Code+Latin:wght@400;600&display=swap" rel="stylesheet">
 <style>
 body {
-font-size: 16px;
-font-family: 'Source Sans Pro', sans-serif;
+font-size: 15px;
+font-family: 'M PLUS 1', sans-serif;
 }
 code {
-font-family: 'Source Code Pro', monospace;
+font-family: 'M PLUS Code Latin', monospace;
 }
 #content {
 max-width: 110ch;
 }
 /* `Text` size and code blocks in main body */
 section code {
-font-size: 14px;
+font-size: 15px;
+}
+/* Line height for code blocks in main body */
+pre code {
+line-height: 1.3em;
 }
 /* "expand source code" text */
 details {
-font-size: 14px;
+font-size: 13px;
 }
-ul li code a {
-font-size: .9em;
+code.name {
+font-size: 1.0em;
 }
 dt {
 font-weight: bold;
@@ -710,14 +714,14 @@ register new CLI arguments and invoke the superclass's constructor.</p></section
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="awsrun.plugins.accts.Identity" href="plugins/accts/index.html#awsrun.plugins.accts.Identity">Identity</a></li>
-<li>awsrun.plugins.accts._CachingLoaderPlugin</li>
-<li><a title="awsrun.plugins.accts.azure.AzureCLI" href="plugins/accts/azure.html#awsrun.plugins.accts.azure.AzureCLI">AzureCLI</a></li>
-<li>awsrun.plugins.creds.aws.AbstractCrossAccount</li>
-<li><a title="awsrun.plugins.creds.aws.Profile" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.Profile">Profile</a></li>
-<li><a title="awsrun.plugins.creds.aws.SAML" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAML">SAML</a></li>
-<li><a title="awsrun.plugins.creds.azure.Default" href="plugins/creds/azure.html#awsrun.plugins.creds.azure.Default">Default</a></li>
-<li><a title="awsrun.plugins.creds.azure.UsernamePassword" href="plugins/creds/azure.html#awsrun.plugins.creds.azure.UsernamePassword">UsernamePassword</a></li>
+<code><li><a title="awsrun.plugins.accts.Identity" href="plugins/accts/index.html#awsrun.plugins.accts.Identity">Identity</a></li></code>
+<code><li>awsrun.plugins.accts._CachingLoaderPlugin</li></code>
+<code><li><a title="awsrun.plugins.accts.azure.AzureCLI" href="plugins/accts/azure.html#awsrun.plugins.accts.azure.AzureCLI">AzureCLI</a></li></code>
+<code><li>awsrun.plugins.creds.aws.AbstractCrossAccount</li></code>
+<code><li><a title="awsrun.plugins.creds.aws.Profile" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.Profile">Profile</a></li></code>
+<code><li><a title="awsrun.plugins.creds.aws.SAML" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAML">SAML</a></li></code>
+<code><li><a title="awsrun.plugins.creds.azure.Default" href="plugins/creds/azure.html#awsrun.plugins.creds.azure.Default">Default</a></li></code>
+<code><li><a title="awsrun.plugins.creds.azure.UsernamePassword" href="plugins/creds/azure.html#awsrun.plugins.creds.azure.UsernamePassword">UsernamePassword</a></li></code>
 </ul>
 <h3>Methods</h3>
 <dl>
