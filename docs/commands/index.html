@@ -15,7 +15,7 @@
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Code+Latin:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Code+Latin:wght@400;430;600&display=swap" rel="stylesheet">
 <style>
 body {
 font-size: 15px;
@@ -33,6 +33,8 @@ font-size: 15px;
 }
 /* Line height for code blocks in main body */
 pre code {
+font-size: 14px;
+font-weight: 430;
 line-height: 1.3em;
 }
 /* "expand source code" text */
@@ -76,13 +78,14 @@ Python and the AWS Boto3 or Azure SDK library. The majority of this document
 will focus building a command for awsrun as most concepts are identical for both
 awsrun and azurerun user-defined commands. The last section will, however,
 provide a full working azurerun example.</p>
-<p>An awsrun command is simply a subclass of the abstract base class
+<p>An awsrun command is a subclass of the abstract base class
 <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code>.
-If you are writing your own command for use with the
-awsrun API, then you only need to implement the <code><a title="awsrun.runner.Command.execute" href="../runner.html#awsrun.runner.Command.execute">Command.execute()</a></code>
-method on your subclass.
-Please refer to <code><a title="awsrun.runner" href="../runner.html">awsrun.runner</a></code> for details on how to
-use the module and the methods available on the <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code> class.</p>
+If you are writing your own command, not intended for
+use with the CLI, then you only need to implement the
+<code><a title="awsrun.runner.Command.execute" href="../runner.html#awsrun.runner.Command.execute">Command.execute()</a></code> method on your subclass.
+Please refer to
+<code><a title="awsrun.runner" href="../runner.html">awsrun.runner</a></code> for details on how to use the module and the methods available
+on the <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code> class.</p>
 <p>If, on the other hand, you want to build a command that can also be used from
 the awsrun CLI, then you must define a subclass of <code><a title="awsrun.runner.Command" href="../runner.html#awsrun.runner.Command">Command</a></code>
 called <code>CLICommand</code> in a Python module with the same name of the command you
@@ -734,11 +737,12 @@ will focus building a command for awsrun as most concepts are identical for both
 awsrun and azurerun user-defined commands. The last section will, however,
 provide a full working azurerun example.
 
-An awsrun command is simply a subclass of the abstract base class
-`awsrun.runner.Command`.  If you are writing your own command for use with the
-awsrun API, then you only need to implement the `awsrun.runner.Command.execute`
-method on your subclass.  Please refer to `awsrun.runner` for details on how to
-use the module and the methods available on the `awsrun.runner.Command` class.
+An awsrun command is a subclass of the abstract base class
+`awsrun.runner.Command`.  If you are writing your own command, not intended for
+use with the CLI, then you only need to implement the
+`awsrun.runner.Command.execute` method on your subclass.  Please refer to
+`awsrun.runner` for details on how to use the module and the methods available
+on the `awsrun.runner.Command` class.
 
 If, on the other hand, you want to build a command that can also be used from
 the awsrun CLI, then you must define a subclass of `awsrun.runner.Command`

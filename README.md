@@ -55,7 +55,7 @@ access to this metadata, so it can used while processing an account if needed.
 
 These examples demonstrate the wide-range of possibilities when building your
 own awsrun & azurerun commands. While these commands are included in awsrun,
-they use the same command API that you would if building your own. Nothing is
+they use the same command library that you would if building your own. Nothing is
 special about these commands other than they are included in the base install of
 awsrun. You could have built these yourself.
 

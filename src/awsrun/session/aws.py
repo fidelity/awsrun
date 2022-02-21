@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 #
-"""API to obtain boto3 sessions and credentials via a variety of means.
+"""Obtain boto3 sessions and credentials via a variety of means.
 
 ## Overview
 
@@ -31,9 +31,9 @@ module:
 ## Quick Start
 
 The following quick start guides show which `SessionProvider` implementation to
-use and how to use the API depending on the preferred mechanism to obtain AWS
-credentials. Each section includes code examples and references to additional
-documentation.
+use and how to use the library depending on the preferred mechanism to obtain
+AWS credentials. Each section includes code examples and references to
+additional documentation.
 
 ### AWS Profiles
 

@@ -3,14 +3,14 @@
 #
 # SPDX-License-Identifier: MIT
 #
-"""CLI and API to concurrently execute user-defined commands across AWS accounts.
+"""CLI and library to concurrently execute user-defined commands across AWS accounts.
 
 ## Overview
 
-`awsrun` is both a CLI and API to execute commands over one or more AWS accounts
-concurrently. Commands are user-defined Python modules that implement a simple
-interface to abstract away the complications of obtaining credentials for Boto3
-sessions - especially when using SAML authentication and/or cross-account
+`awsrun` is both a CLI and library to execute commands over one or more AWS
+accounts concurrently. Commands are user-defined Python modules that implement a
+simple interface to abstract away the complications of obtaining credentials for
+Boto3 sessions - especially when using SAML authentication and/or cross-account
 access.
 
 ### CLI Usage
@@ -20,14 +20,14 @@ includes both a user guide as well as a reference guide on the use of the CLI
 command, its command line options, use of the account loader and credential
 plug-ins, as well as the syntax of the configuration file.
 
-### API Usage
+### Library Usage
 
 Not only is awsrun a CLI, but it is, first and foremost, a Python package that
 can be used in other Python libraries and scripts. The package contains
 extensive documentation on its use. Each submodule contains an overview of the
 module and how to use it, which is then followed by standard module docs for
 classes and methods. The available [submodules](#header-submodules) can be found
-at the bottom of this page. Of particular interest to API users will be the
+at the bottom of this page. Of particular interest to library users will be the
 following submodules:
 
 `awsrun.runner`

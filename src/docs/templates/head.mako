@@ -1,8 +1,9 @@
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Code+Latin:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Code+Latin:wght@400;430;600&display=swap" rel="stylesheet">
 <style>
+
 body {
     font-size: 15px;
     font-family: 'M PLUS 1', sans-serif;
@@ -23,6 +24,8 @@ section code {
 
 /* Line height for code blocks in main body */
 pre code {
+    font-size: 14px;
+    font-weight: 430;
     line-height: 1.3em;
 }
 

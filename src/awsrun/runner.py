@@ -23,8 +23,8 @@ of the command must be called `CLICommand` and must be in its own module, so the
 
 ## Basic Usage
 
-The following is a full example that demonstrates how to use the awsrun API to
-programmatically execute the included `awsrun.commands.aws.access_report`
+The following is a full example that demonstrates how to use the awsrun library
+to programmatically execute the included `awsrun.commands.aws.access_report`
 command for two accounts using credentials stored in local config files with the
 `awsrun.session.aws.CredsViaProfile` session provider:
 
@@ -209,8 +209,8 @@ class Command:
         """Factory to build the command from CLI args and user configuration.
 
         *This method is only required if the command is intended for use with
-        the `awsrun.cli` command line. API users will not instantiate commands
-        via this factory method.*
+        the `awsrun.cli` command line. Non-CLI users will not instantiate
+        commands via this factory method.*
 
         The CLI uses `awsrun.cmdmgr` to find, load, and instantiate commands.
         This factory is called by the `awsrun.cmdmgr.CommandManager` and must
@@ -464,8 +464,8 @@ class RegionalCommand(Command):
         """Factory to build a regional command from CLI args and user configuration.
 
         *This method is only required if the command is intended for use with
-        the `awsrun.cli` command line. API users will not instantiate commands
-        via this factory method.*
+        the `awsrun.cli` command line. Non-CLI users will not instantiate
+        commands via this factory method.*
 
         Refer to `Command.from_cli` for in-depth discussion on the use of this
         factory method. This method only adds the following additional behavior

@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 #
-"""API to obtain Azure credentials via a variety of means.
+"""Obtain Azure credentials via a variety of means.
 
 ## Overview
 

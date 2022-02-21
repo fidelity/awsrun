@@ -15,7 +15,7 @@
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Code+Latin:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Code+Latin:wght@400;430;600&display=swap" rel="stylesheet">
 <style>
 body {
 font-size: 15px;
@@ -33,6 +33,8 @@ font-size: 15px;
 }
 /* Line height for code blocks in main body */
 pre code {
+font-size: 14px;
+font-weight: 430;
 line-height: 1.3em;
 }
 /* "expand source code" text */
@@ -73,8 +75,8 @@ regions.</p>
 of the command must be called <code>CLICommand</code> and must be in its own module, so the
 <code><a title="awsrun.cmdmgr" href="cmdmgr.html">awsrun.cmdmgr</a></code> can find and load it.</em></p>
 <h2 id="basic-usage">Basic Usage</h2>
-<p>The following is a full example that demonstrates how to use the awsrun API to
-programmatically execute the included <code><a title="awsrun.commands.aws.access_report" href="commands/aws/access_report.html">awsrun.commands.aws.access_report</a></code>
+<p>The following is a full example that demonstrates how to use the awsrun library
+to programmatically execute the included <code><a title="awsrun.commands.aws.access_report" href="commands/aws/access_report.html">awsrun.commands.aws.access_report</a></code>
 command for two accounts using credentials stored in local config files with the
 <code><a title="awsrun.session.aws.CredsViaProfile" href="session/aws.html#awsrun.session.aws.CredsViaProfile">CredsViaProfile</a></code> session provider:</p>
 <pre><code>from awsrun.runner import AccountRunner
@@ -242,8 +244,8 @@ of the command must be called `CLICommand` and must be in its own module, so the
 
 ## Basic Usage
 
-The following is a full example that demonstrates how to use the awsrun API to
-programmatically execute the included `awsrun.commands.aws.access_report`
+The following is a full example that demonstrates how to use the awsrun library
+to programmatically execute the included `awsrun.commands.aws.access_report`
 command for two accounts using credentials stored in local config files with the
 `awsrun.session.aws.CredsViaProfile` session provider:
 
@@ -428,8 +430,8 @@ class Command:
         &#34;&#34;&#34;Factory to build the command from CLI args and user configuration.
 
         *This method is only required if the command is intended for use with
-        the `awsrun.cli` command line. API users will not instantiate commands
-        via this factory method.*
+        the `awsrun.cli` command line. Non-CLI users will not instantiate
+        commands via this factory method.*
 
         The CLI uses `awsrun.cmdmgr` to find, load, and instantiate commands.
         This factory is called by the `awsrun.cmdmgr.CommandManager` and must
@@ -683,8 +685,8 @@ class RegionalCommand(Command):
         &#34;&#34;&#34;Factory to build a regional command from CLI args and user configuration.
 
         *This method is only required if the command is intended for use with
-        the `awsrun.cli` command line. API users will not instantiate commands
-        via this factory method.*
+        the `awsrun.cli` command line. Non-CLI users will not instantiate
+        commands via this factory method.*
 
         Refer to `Command.from_cli` for in-depth discussion on the use of this
         factory method. This method only adds the following additional behavior
@@ -1552,8 +1554,8 @@ built-in commands included in the <code><a title="awsrun.commands" href="command
         &#34;&#34;&#34;Factory to build the command from CLI args and user configuration.
 
         *This method is only required if the command is intended for use with
-        the `awsrun.cli` command line. API users will not instantiate commands
-        via this factory method.*
+        the `awsrun.cli` command line. Non-CLI users will not instantiate
+        commands via this factory method.*
 
         The CLI uses `awsrun.cmdmgr` to find, load, and instantiate commands.
         This factory is called by the `awsrun.cmdmgr.CommandManager` and must
@@ -1762,8 +1764,8 @@ built-in commands included in the <code><a title="awsrun.commands" href="command
 <dd>
 <section class="desc"><p>Factory to build the command from CLI args and user configuration.</p>
 <p><em>This method is only required if the command is intended for use with
-the <code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> command line. API users will not instantiate commands
-via this factory method.</em></p>
+the <code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> command line. Non-CLI users will not instantiate
+commands via this factory method.</em></p>
 <p>The CLI uses <code><a title="awsrun.cmdmgr" href="cmdmgr.html">awsrun.cmdmgr</a></code> to find, load, and instantiate commands.
 This factory is called by the <code><a title="awsrun.cmdmgr.CommandManager" href="cmdmgr.html#awsrun.cmdmgr.CommandManager">CommandManager</a></code> and must
 return an instance of the command. Commands can hook into the command
@@ -1854,8 +1856,8 @@ def from_cli(cls, parser, argv, cfg):  # pylint: disable=unused-argument
     &#34;&#34;&#34;Factory to build the command from CLI args and user configuration.
 
     *This method is only required if the command is intended for use with
-    the `awsrun.cli` command line. API users will not instantiate commands
-    via this factory method.*
+    the `awsrun.cli` command line. Non-CLI users will not instantiate
+    commands via this factory method.*
 
     The CLI uses `awsrun.cmdmgr` to find, load, and instantiate commands.
     This factory is called by the `awsrun.cmdmgr.CommandManager` and must
@@ -2254,8 +2256,8 @@ commands included in the <code><a title="awsrun.commands" href="commands/index.h
         &#34;&#34;&#34;Factory to build a regional command from CLI args and user configuration.
 
         *This method is only required if the command is intended for use with
-        the `awsrun.cli` command line. API users will not instantiate commands
-        via this factory method.*
+        the `awsrun.cli` command line. Non-CLI users will not instantiate
+        commands via this factory method.*
 
         Refer to `Command.from_cli` for in-depth discussion on the use of this
         factory method. This method only adds the following additional behavior
@@ -2420,8 +2422,8 @@ commands included in the <code><a title="awsrun.commands" href="commands/index.h
 <dd>
 <section class="desc"><p>Factory to build a regional command from CLI args and user configuration.</p>
 <p><em>This method is only required if the command is intended for use with
-the <code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> command line. API users will not instantiate commands
-via this factory method.</em></p>
+the <code><a title="awsrun.cli" href="cli.html">awsrun.cli</a></code> command line. Non-CLI users will not instantiate
+commands via this factory method.</em></p>
 <p>Refer to <code><a title="awsrun.runner.Command.from_cli" href="#awsrun.runner.Command.from_cli">Command.from_cli()</a></code> for in-depth discussion on the use of this
 factory method. This method only adds the following additional behavior
 to simplify building a factory for a regional command:</p>
@@ -2462,8 +2464,8 @@ def regional_from_cli(cls, parser, argv, cfg):  # pylint: disable=unused-argumen
     &#34;&#34;&#34;Factory to build a regional command from CLI args and user configuration.
 
     *This method is only required if the command is intended for use with
-    the `awsrun.cli` command line. API users will not instantiate commands
-    via this factory method.*
+    the `awsrun.cli` command line. Non-CLI users will not instantiate
+    commands via this factory method.*
 
     Refer to `Command.from_cli` for in-depth discussion on the use of this
     factory method. This method only adds the following additional behavior

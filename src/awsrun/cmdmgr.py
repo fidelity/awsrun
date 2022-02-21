@@ -10,8 +10,8 @@
 This module provides a `CommandManager`, which is responsible for loading and
 instantiating user-defined commands for use with `awsrun.runner`. The command
 manager was built to allow `awsrun.cli` users to dynamically point awsrun to
-commands installed in user-defined paths. API users of awsrun without the need
-to dynamically load commands will not use this module.
+commands installed in user-defined paths. Non-CLI users of awsrun without the
+need to dynamically load commands will not use this module.
 
 To facilitate the discovery of commands, each user-defined command intended for
 use from the CLI must be defined in a separate Python module that contains a

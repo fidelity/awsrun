@@ -26,11 +26,12 @@ will focus building a command for awsrun as most concepts are identical for both
 awsrun and azurerun user-defined commands. The last section will, however,
 provide a full working azurerun example.
 
-An awsrun command is simply a subclass of the abstract base class
-`awsrun.runner.Command`.  If you are writing your own command for use with the
-awsrun API, then you only need to implement the `awsrun.runner.Command.execute`
-method on your subclass.  Please refer to `awsrun.runner` for details on how to
-use the module and the methods available on the `awsrun.runner.Command` class.
+An awsrun command is a subclass of the abstract base class
+`awsrun.runner.Command`.  If you are writing your own command, not intended for
+use with the CLI, then you only need to implement the
+`awsrun.runner.Command.execute` method on your subclass.  Please refer to
+`awsrun.runner` for details on how to use the module and the methods available
+on the `awsrun.runner.Command` class.
 
 If, on the other hand, you want to build a command that can also be used from
 the awsrun CLI, then you must define a subclass of `awsrun.runner.Command`

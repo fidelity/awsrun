@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MIT
 #
-"""API to obtain CSP sessions and credentials.
+"""Obtain CSP sessions and credentials.
 
 ## Overview
 

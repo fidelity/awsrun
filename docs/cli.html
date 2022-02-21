@@ -15,7 +15,7 @@
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Code+Latin:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@400;700&family=M+PLUS+Code+Latin:wght@400;430;600&display=swap" rel="stylesheet">
 <style>
 body {
 font-size: 15px;
@@ -33,6 +33,8 @@ font-size: 15px;
 }
 /* Line height for code blocks in main body */
 pre code {
+font-size: 14px;
+font-weight: 430;
 line-height: 1.3em;
 }
 /* "expand source code" text */
@@ -1773,7 +1775,7 @@ def _cli(csp):
     # Load up a session provider to hand out creds for the runner.
     session_provider = plugin_mgr.instantiate(&#34;Credentials&#34;, must_be=SessionProvider)
 
-    # This is the main entry point into the awsrun API. Note: the entirety of
+    # This is the main entry point into the awsrun library. Note: the entirety of
     # awsrun can be used without the need of the CLI. One only needs a list of
     # accounts, an awsrun.runner.Command, and an awsrun.session.SessionProvider.
     runner = AccountRunner(session_provider, args.threads)

@@ -34,5 +34,5 @@ Only one plug-in should be specified per behavior. If multiple plug-in
 specifications are provided for the same behavior, the last one defined in the
 configuration is used.
 
-API users of awsrun will not use this module.
+Non-CLI users of awsrun will not use this module.
 """

@@ -12,7 +12,7 @@ The awsrun CLI supports two pluggable behaviors: **account loading** and
 these behaviors can be changed via a user's awsrun YAML configuration file.
 There are several plug-ins included for each. Users may, alternatively, provide
 their own implementations, so long as they are installed and available in the
-standard Python path. API users of awsrun will not use this module.
+standard Python path. Non-CLI users of awsrun will not use this module.
 
 This module provides a `PluginManager` which is responsible for loading and
 instantiating a `Plugin` as well as managing the state associated with CLI
@@ -214,7 +214,7 @@ class PluginManager:
     optionally include the `options` key that defines options made available
     to the plug-in via an `awsrun.config.Config` object, which is passed to the
     constructor of a `Plugin`. This allows the plug-in to type check values and
-    use other features of the config API.
+    use other features of the config module.
 
     Plug-in authors should refer to the documentation for `Plugin` to understand
     how the `config` and `parser` interact with each other during the

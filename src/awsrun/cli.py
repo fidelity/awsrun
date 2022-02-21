@@ -1093,7 +1093,7 @@ def _cli(csp):
     # Load up a session provider to hand out creds for the runner.
     session_provider = plugin_mgr.instantiate("Credentials", must_be=SessionProvider)
 
-    # This is the main entry point into the awsrun API. Note: the entirety of
+    # This is the main entry point into the awsrun library. Note: the entirety of
     # awsrun can be used without the need of the CLI. One only needs a list of
     # accounts, an awsrun.runner.Command, and an awsrun.session.SessionProvider.
     runner = AccountRunner(session_provider, args.threads)

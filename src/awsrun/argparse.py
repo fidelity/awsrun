@@ -17,7 +17,7 @@ class RawAndDefaultsFormatter(
 ):
     """Mixin of ArgumentDefaultsHelpFormatter and RawDescriptionHelpFormatter.
 
-    The argparse API does not allow for easy combinations of help formatters.
+    The argparse module does not allow for easy combinations of help formatters.
     This class combines the raw formatter along with the default args formatter,
     which is used by awsrun CLI.
     """
