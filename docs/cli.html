@@ -233,7 +233,7 @@ several <code>options</code> to configure its behavior:</p>
   plugin: awsrun.plugins.creds.aws.SAML
   options:
     role: OperationsStaff
-    url: &lt;https://adfs.example.com/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices&gt;
+    url: 'https://adfs.example.com/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices'
     auth_type: ntlm
 </code></pre>
 <p>With the plug-in configured, we can now invoke our awsrun command as we did
@@ -890,7 +890,7 @@ several `options` to configure its behavior:
       plugin: awsrun.plugins.creds.aws.SAML
       options:
         role: OperationsStaff
-        url: https://adfs.example.com/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices
+        url: &#39;https://adfs.example.com/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices&#39;
         auth_type: ntlm
 
 With the plug-in configured, we can now invoke our awsrun command as we did
