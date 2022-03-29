@@ -289,9 +289,9 @@ class CLICommand(RegionalCommand):
             )
             has_prereqs = False
 
-        if not shutil.which("aws-iam-authenticator"):
+        if not shutil.which("aws"):
             print(
-                "'aws-iam-authenticator' not found in PATH, have you installed it?",
+                "AWS CLI not found in PATH, have you installed it?",
                 file=sys.stderr,
             )
             has_prereqs = False
@@ -451,10 +451,13 @@ users:
     exec:
       apiVersion: client.authentication.k8s.io/v1alpha1
       args:
-      - token
-      - -i
+      - --region
+      - {region}
+      - eks
+      - get-token
+      - --cluster-name
       - {cluster}
-      command: aws-iam-authenticator
+      command: aws
       env:
       - name: AWS_ACCESS_KEY_ID
         value: {access_key}
@@ -471,6 +474,7 @@ def _save_kubecfg(name, namespace, account_id, region, cluster, session):
         "cluster": name,
         "namespace": namespace,
         "account_id": account_id,
+        "region": region,
         "endpoint": cluster["cluster"]["endpoint"],
         "certificate": cluster["cluster"]["certificateAuthority"]["data"],
         "access_key": creds.access_key,
