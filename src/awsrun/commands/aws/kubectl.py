@@ -5,6 +5,10 @@
 #
 """Execute kubectl commands on EKS clusters.
 
+NOTE: Be sure you have the most recent version of the AWS CLI installed as well
+as the latest version of `kubectl`.  There have been recent changes in those
+tools that cause compatibility issues with each other.
+
 This awsrun command is a thin wrapper around the kubectl command. It adapts
 kubectl for use with awsrun CLI tool allowing one to execute kubectl commands
 across one or more AWS accounts, clusters, and namespaces. Let's walk through a
@@ -457,7 +461,7 @@ users:
 - name: aws
   user:
     exec:
-      apiVersion: client.authentication.k8s.io/v1alpha1
+      apiVersion: client.authentication.k8s.io/v1beta1
       args:
       - --region
       - {region}
