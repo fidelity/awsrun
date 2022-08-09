@@ -307,6 +307,10 @@ includes the following:
 
 ## Change Log
 
+### v2.4.1
+
+- Require Python 3.7 or greater in `setup.py`.
+
 ### v2.4.0
 
 - Remove Python 3.6 classifier from `setup.py`.
