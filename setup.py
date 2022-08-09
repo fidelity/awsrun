@@ -26,7 +26,7 @@ def find_version(*file_paths):
 
 setup(
     name="awsrun",
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     version=find_version("src", "awsrun", "__init__.py"),
     license="",
     description="CLI to execute user-defined commands across one or more AWS accounts",
