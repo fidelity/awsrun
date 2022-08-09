@@ -102,15 +102,19 @@ ASCII-based charts.
 
 ## Installation
 
-Python 3.6 or higher is required.
+Python 3.7 or higher is required.
+
+To install (suggest using a virtual env):
+
+    $ python -m pip install awsrun
+
+This will install both `awsrun` and `azurerun`.
 
 To install from source, clone the repo and run pip install:
 
     $ git clone https://github.com/fidelity/awsrun.git
     $ cd awsrun
-    $ pip3 install .
-
-This will install both `awsrun` and `azurerun`.
+    $ python -m pip install .
 
 In order to use the built-in awsrun
 [`aws`](https://fidelity.github.io/awsrun/commands/aws/aws.html) command, the AWS
