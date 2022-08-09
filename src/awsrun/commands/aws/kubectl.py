@@ -336,12 +336,20 @@ class CLICommand(RegionalCommand):
 
                 # Invoke kubectl and return results being careful to ensure that
                 # we honor kubectl's stdout and stderr.
-                cmd = [shutil.which("kubectl"), "--kubeconfig", str(filename)]
+                cmd = [shutil.which("kubectl")]
                 if self.annotate and self.annotate != "text":
                     cmd += ["--output", self.annotate]
                 elif self.output:
                     cmd += ["--output", self.output]
                 cmd += self.kubectl_args
+
+                # Set the KUBECONFIG env variable instead of using the
+                # --kubeconfig command line option because not all kubectl
+                # plugins support it. KUBECONFIG is more widely supported.
+                os.environ["KUBECONFIG"] = str(filename)
+
+                LOG.info("setting KUBECONFIG to %s", filename)
+                LOG.info("running %s", cmd)
 
                 result = subprocess.run(
                     cmd,
