@@ -78,8 +78,11 @@ identifiers.
 
 ### awsrun `last` command
 
-This screenshot demonstrates the use of the [`last`](https://fidelity.github.io/awsrun/commands/aws/last.html) command to
-interactively explore CloudTrail events. Don't have a simple means to view CloudTrail logs? Tired of using the AWS Console? The `last` command provides a simple way of viewing events in one or more accounts.
+This screenshot demonstrates the use of the
+[`last`](https://fidelity.github.io/awsrun/commands/aws/last.html) command to
+interactively explore CloudTrail events. Don't have a simple means to view
+CloudTrail logs? Tired of using the AWS Console? The `last` command provides a
+simple way of viewing events in one or more accounts.
 
 ![last command](https://fidelity.github.io/awsrun/last.jpg)
 
@@ -127,7 +130,7 @@ In order to use the built-in azurerun
 [`az`](https://fidelity.github.io/awsrun/commands/azure/az.html) command, the Azure
 CLI tool must be
 [installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-and available in your operating system's PATH. 
+and available in your operating system's PATH.
 
 ## AWS Quick Start
 
@@ -169,7 +172,7 @@ instances in both accounts across multiple regions concurrently:
 
     Proceed (y/n)? y
     ...
-    
+
 If, instead, you want to list lambda functions in those accounts:
 
     $ awsrun --account 100200300400 --account 200300400100 aws lambda list-functions --region us-east-1 --region us-west-2
@@ -211,14 +214,14 @@ followed the installation instructions:
     ...
     Name   ResourceGroup      Location    Zones
     -----  -----------------  ----------  -----
-    vm1    rg1                centralus   1    
-    vm2    rg1                eastus2     1    
+    vm1    rg1                centralus   1
+    vm2    rg1                eastus2     1
 
     Name   ResourceGroup      Location    Zones
     -----  -----------------  ----------  -----
-    vm1    rg2                centralus   1    
-    vm2    rg2                eastus1     1    
-    vm3    rg2                eastus2     1    
+    vm1    rg2                centralus   1
+    vm2    rg2                eastus1     1
+    vm3    rg2                eastus2     1
 
 Out of the box, the utility of azurerun is limited as most of its power comes
 from the configuration of an [account loader
@@ -255,7 +258,7 @@ enumerating them on the azurerun command line. Here are a few examples:
     isDefault
     name
     state
-    tenantId 
+    tenantId
 
     # Run the command over all subscriptions.
     $ azurerun az vm list --output table
@@ -264,7 +267,7 @@ enumerating them on the azurerun command line. Here are a few examples:
     # Run the command over all prod subscriptions.
     $ azurerun --include env=prod az vm list --output table
     ...
-    
+
     # Run the command over all enabled, nonprod subscriptions
     $ azurerun --include state=Enabled --include Env=nonprod az vm list --output table
     ...
@@ -279,46 +282,60 @@ commands. These have been provided to show you how to do so.
 awsrun includes extensive [documentation](https://fidelity.github.io/awsrun/), which
 includes the following:
 
-* The [CLI User Guide](https://fidelity.github.io/awsrun/cli.html#cli-user-guide)
+- The [CLI User Guide](https://fidelity.github.io/awsrun/cli.html#cli-user-guide)
   includes basic usage, configuration of awsrun, and how to use the account
   loader and credential loader plug-ins to enhance the user experience on the
   CLI.
 
-* The [Library User Guide](https://fidelity.github.io/awsrun/#api-usage)
+- The [Library User Guide](https://fidelity.github.io/awsrun/#api-usage)
   includes pointers to the key documentation required to use awsrun
   programmatically instead of via the CLI. All of the awsrun
   [modules](https://fidelity.github.io/awsrun/#header-submodules) are also
   extensively documented.
-  
-* The [How-to Write Your Own
+
+- The [How-to Write Your Own
   Commands](https://fidelity.github.io/awsrun/commands/#user-defined-commands)
   guide provides everything you need to write your own custom awsrun commands.
   This is where you'll spend a lot of time once you become familiar with the
   capabilities of awsrun.
-  
-* The [How-to Write Your Own
+
+- The [How-to Write Your Own
   Plug-ins](https://fidelity.github.io/awsrun/#user-defined-plug-ins) section
   includes pointers to the documentation required to build your own account
   loader plug-in and credential plug-in if the included ones are not suitable to
   your environment.
-  
+
 ## Change Log
 
+### v2.4.0
+
+- Remove Python 3.6 classifier from `setup.py`.
+
+- Update authentication method in `kubectl` wrapper from `aws-iam-authenticator`
+  to use the AWS CLI command `aws eks get-token`. Users will no longer need
+  to install the separate `aws-iam-authenticator` helper moving forward.
+
+- Use `KUBECONFIG` environment variable instead of `--kubeconfig` command line
+  flag when the `kubectl` wrapper command invokes the real `kubectl` command.
+  This change should be transparent to users of the `kubectl` command.
+
 ### v2.3.1
-* Add new sample awsrun command, `dx_maint`, that queries the AWS Health API to
+
+- Add new sample awsrun command, `dx_maint`, that queries the AWS Health API to
   display recent and upcoming maintenance events (technically any open events)
   on Direct Connects.
-* Add new sample azurerun command, `list_udrs`, that displays all User Defined
+
+- Add new sample azurerun command, `list_udrs`, that displays all User Defined
   Routes (UDRs) in an Azure VNET.
 
 ### v2.3.0
 
-* Add support for Azure. By default, installation now installs both `awsrun` as
+- Add support for Azure. By default, installation now installs both `awsrun` as
   well as `azurerun`. See the quick start for Azure above.
 
 ### v2.2.2
 
-* Add a decorator `awsrun.runner.max_thread_limit` that can be used by command
+- Add a decorator `awsrun.runner.max_thread_limit` that can be used by command
   authors to limit the number of concurrent executions. There are some scenarios
   where a command author may never want their command run concurrently across
   multiple accounts. By default, awsrun uses a thread pool of ten workers, and
@@ -326,7 +343,7 @@ includes the following:
 
 ### v2.2.1
 
-* Reorganized the documentation. The CLI user guide and reference are now part
+- Reorganized the documentation. The CLI user guide and reference are now part
   of the `awsrun.cli` module documentation. The user guide on writing commands
   has been moved to the `awsrun.commands` module. Lots of other minor edits were
   made as part of this reorganization. Hopefully, things are easier to find with
@@ -334,7 +351,7 @@ includes the following:
 
 ### v2.2.0
 
-* Add three new built-in commands:
+- Add three new built-in commands:
   [`console`](https://fidelity.github.io/awsrun/commands/aws/console.html),
   [`dx_status`](https://fidelity.github.io/awsrun/commands/aws/dx_status.html),
   and [`last`](https://fidelity.github.io/awsrun/commands/aws/last.html). Console
@@ -342,35 +359,36 @@ includes the following:
   Dx_status shows the status of Direct Connect circuits (terminal graphs too!).
   Last provides an easier way to review CloudTrail events in both an interactive
   and non-interactive manner.
-  
-* Add the [`cloudwatch`](https://fidelity.github.io/awsrun/cloudwatch.html)
+
+- Add the [`cloudwatch`](https://fidelity.github.io/awsrun/cloudwatch.html)
   module to simplify the retrieval of CloudWatch metrics using bulk retrieval
   for efficiency. This module is used be the new
   [`dx_status`](https://fidelity.github.io/awsrun/commands/aws/dx_status.html)
   command.
-  
-* Update the included built-in commands that iterate over VPCs to filter out
+
+- Update the included built-in commands that iterate over VPCs to filter out
   VPCs that have been shared with an account, as opposed to being owned by the
   account, as generally that is the behavior one is expecting.
 
-* Remove AWS CLI as a python dependency in `setup.py`. AWS has released v2 of
+- Remove AWS CLI as a python dependency in `setup.py`. AWS has released v2 of
   the AWS CLI, so we should not presume to install v1 via pip installation. In
   addition, AWS has stated that the only supported installation of the AWS CLI
   v2 is via their own bundled package installers. What does this mean for awsrun
   users? Install the AWS CLI on your own if you plan on using the built-in `aws`
   command.
-  
-* Fonts used in documentation have been updated to use Charter and Fira Mono.
+
+- Fonts used in documentation have been updated to use Charter and Fira Mono.
 
 ### v2.1.0
 
-* Add a YAML account loader plug-in to complement the CSV and JSON account
+- Add a YAML account loader plug-in to complement the CSV and JSON account
   loader plug-ins.
-* Minor clarification in user guide about the interaction between `--accounts` and
+
+- Minor clarification in user guide about the interaction between `--accounts` and
   metadata filters (`--include`/`--exclude`).
 
 ### v2.0.0
 
-* Initial open source release of awsrun from Fidelity's CloudX Network team. This
+- Initial open source release of awsrun from Fidelity's CloudX Network team. This
   version abstracts the Fidelity specific integrations into plug-ins, so others
   can take advantage of this tool, which has proven to be valuable for our teams.
