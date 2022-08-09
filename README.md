@@ -311,6 +311,12 @@ includes the following:
 
 ## Change Log
 
+### v2.4.2
+
+- Update `kubectl` wrapper to use latest `v1beta1` Kubernetes API instead of
+  `v1alpha1` to fix compatibility issues with the latest version of Kubernetes
+  `kubectl` and latest AWS CLI tool.
+
 ### v2.4.1
 
 - Require Python 3.7 or greater in `setup.py`.
