@@ -393,6 +393,22 @@ class CLICommand(RegionalCommand):
 
         # Let's fire up the TUI!
 
+        # These contain the list of events being displayed by the TUI widgets.
+        # By default, all events are shown for a specific unless the user
+        # applies a filter.
+        events = self.events
+        events_by_user = self.events_by_user
+
+        # This contains the current query expression to filter events. We only
+        # save a reference to this, so we can prepopulate the filter popup box
+        # with the last expression the user used. This makes it easy for a user
+        # to keep tweaking long exressions without having to type it over and
+        # over again.
+        current_filter_expression = ""
+
+        # Our layout consists of three panes: user list, event list, and event
+        # detail.  We support a vertical layout where all three are stacked
+        # vertically in the terminal for those with narrow terminals ...
         if self.vertical:
             root = py_cui.PyCUI(4, 1)
             user_list = root.add_scroll_menu(f"Usernames", 0, 0)
@@ -412,7 +428,7 @@ class CLICommand(RegionalCommand):
 
         root.toggle_unicode_borders()
         root.set_title("CloudTrail Events")
-        root.set_status_bar_text("Press - q - to exit. TAB to move between widgets.")
+        root.set_status_bar_text("Press 'q' to exit. TAB to switch panes.")
 
         # py_cui has an odd navigation mechanism where the TUI is either in
         # overview mode or focus mode.  In overview mode, users navigate with
@@ -427,6 +443,50 @@ class CLICommand(RegionalCommand):
             root.move_focus(next(focus))
 
         root.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+
+        # Filter the event list objects in the outer scope that are used by
+        # widgets to display content. This function is called as a result of
+        # the user entering a query expression in the filtering popup.
+        def filter_event_lists(expr):
+            nonlocal events
+            nonlocal events_by_user
+
+            if not expr.strip():
+                events = self.events
+                events_by_user = self.events_by_user
+                return
+
+            events_by_user = defaultdict(list)
+            for user, events in self.events_by_user.items():
+                events = _filter_events(events, expr)
+                if events:
+                    events_by_user[user] = events
+
+            events = []  # List of lists
+            for sublist in self.events:
+                events.append(_filter_events(sublist, expr))
+
+        # Callback used when user presses key to open filtering popup. By
+        # default, py_cui returns the user to overview mode after the popup is
+        # dismissed. We save the widget that was in focus before the popup, so
+        # we can refocus on it afterwards.
+        def show_filter_popup():
+            original_widget = root.get_selected_widget()
+
+            def popup_callback(s):
+                nonlocal current_filter_expression
+                current_filter_expression = s
+                filter_event_lists(s)
+                update_user_list()
+                root.move_focus(original_widget)
+
+            root.show_text_box_popup("Filter expression:", popup_callback)
+            # TODO Workaround until upstream allows setting initial text.
+            root._popup.set_text(current_filter_expression)
+            # TODO Workaround until upstream py_cui fixes bug
+            root._popup._initial_cursor = (
+                root._popup.get_start_position()[0] + root._popup.get_padding()[0] + 2
+            )
 
         def update_user_list():
             user_list.clear()
@@ -451,7 +511,7 @@ class CLICommand(RegionalCommand):
         def unfilter_event_list():
             event_list.clear()
             all_events = sorted(
-                chain(*self.events), reverse=True, key=lambda e: e.event["EventTime"]
+                chain(*events), reverse=True, key=lambda e: e.event["EventTime"]
             )
             event_list.add_item_list(all_events)
             event_list.set_title(f"Events ({len(all_events)})")
@@ -462,24 +522,30 @@ class CLICommand(RegionalCommand):
         user_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
         user_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_list)
         user_list.add_key_command(py_cui.keys.KEY_BACKSPACE, unfilter_event_list)
+        user_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
         user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
         user_list.set_focus_text(
-            "Press - q - to exit. TAB to move between widgets. ENTER to filter events. BACKSPACE to show all."
+            "Press 'q' to exit. TAB to switch panes. RET for user events. BACKSPACE for all events. 'f' to filter."
         )
 
         event_list.set_selected_color(self.color)
         event_list.set_focus_border_color(self.color)
         event_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
         event_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_detail)
+        event_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
         event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
         event_list.set_focus_text(
-            "Press - q - to exit. TAB to move between widgets. ENTER to display event detail."
+            "Press 'q' to exit. TAB to switch panes. RET for event detail. 'f' to filter."
         )
 
         event_detail.set_selected_color(self.color)
         event_detail.set_focus_border_color(self.color)
         event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+        event_detail.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
         event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_detail.set_focus_text(
+            "Press 'q' to exit. TAB to switch panes. 'f' to filter."
+        )
 
         # Load the widgets with data and select the user list.
         update_user_list()
@@ -526,6 +592,15 @@ class _UserIdentityType:
             if user:
                 return user
         return self._parse_username()
+
+    def contains(self, s):
+        """Return True if the event contains `s`."""
+
+        try:
+            next(_deep_finder(self.ct_event, lambda n: isinstance(n, str) and s in n))
+            return True
+        except StopIteration:
+            return False
 
     def _parse_username(self):
         return self.event.get(
@@ -626,6 +701,54 @@ def _lookup_events(ct, start, end, attrs=None):
         StartTime=start,
         EndTime=end,
     )
+
+
+def _filter_events(events, query):
+    """Return list of events filtered by query expression.
+
+    Query expression may consist of one or more terms. Terms are matched using
+    logical OR. A term may be prefixed with an optional '-' to exclude events
+    containing the term. Terms are case sensitive and are matched as substrings
+    in a CloudTrail event including both keys and values.
+
+    For example, to search for CloudTrail events that had errors:
+
+        errorCode
+
+    To search for errors excluding S3 issues:
+
+        errorCode -s3
+
+    To search for errors excluding S3 that are due to rate limiting:
+
+        errorCode -s3 RequestLimitExceeded
+
+    Technically, the above could be shortened:
+
+        -s3 RequestLimitExceeded
+    """
+    terms = query.split()
+    for term in terms:
+        if term.startswith("-"):
+            events = [e for e in events if not e.contains(term[1:])]
+        else:
+            events = [e for e in events if e.contains(term)]
+    return events
+
+
+def _deep_finder(node, predicate):
+    """Return a generator that yields keys or objects matching `predicate`."""
+    if isinstance(node, dict):
+        for k, v in node.items():
+            if predicate(k):
+                yield k
+            yield from _deep_finder(v, predicate)
+    elif isinstance(node, list):
+        for e in node:
+            yield from _deep_finder(e, predicate)
+    else:
+        if predicate(node):
+            yield node
 
 
 def _colorize(color, string):
