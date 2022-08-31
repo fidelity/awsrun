@@ -163,9 +163,8 @@ import py_cui
 from colorama import Fore, Style, init
 
 from awsrun.argparse import AppendAttributeValuePair
-from awsrun.config import Bool, Choice, Dict, Int, Str, List
+from awsrun.config import Bool, Choice, Dict, Int, List, Str
 from awsrun.runner import RegionalCommand
-
 
 # Lookup attributes supported by AWS CloudTrail
 LOOKUP_ATTRIBUTES = [
@@ -551,7 +550,10 @@ class _UserIdentityType:
         src = self.event.get("EventSource", "")
         time = self.event.get("EventTime", "")
         name = self.event.get("EventName", "")
-        return f"{time}  {src:25.25} {name:30.30} {self.username()}"
+        error = self.ct_event.get("errorCode", "")
+        if error:
+            error = f"ERROR: {error}"
+        return f"{time}  {src:25.25} {name:30.30} {self.username()}  {error}"
 
 
 #############################################################################
