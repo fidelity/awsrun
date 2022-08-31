@@ -391,22 +391,22 @@ class CLICommand(RegionalCommand):
         if not self.interactive:
             return
 
-        # User wants the TUI, so let's fire it up! Keep in mind, the Python
-        # library I found to make the TUI is barely alpha, so I've had to work
-        # around many of its limitations that I will submit to the author.
-        if self.vertical:
-            root = _MyCUI(4, 1)
-            user_list = root.add_my_scroll_menu(f"Usernames", 0, 0)
-            event_list = root.add_my_scroll_menu("Events", 1, 0)
-            event_detail = root.add_my_scroll_menu("Event Detail", 2, 0, row_span=2)
+        # Let's fire up the TUI!
 
-        else:  # Default hybrid layout
-            root = _MyCUI(3, 4)
-            user_list = root.add_my_scroll_menu(f"Usernames", 0, 0, column_span=2)
-            event_list = root.add_my_scroll_menu(
-                "Events", 1, 0, row_span=2, column_span=2
-            )
-            event_detail = root.add_my_scroll_menu(
+        if self.vertical:
+            root = py_cui.PyCUI(4, 1)
+            user_list = root.add_scroll_menu(f"Usernames", 0, 0)
+            event_list = root.add_scroll_menu("Events", 1, 0)
+            event_detail = root.add_scroll_menu("Event Detail", 2, 0, row_span=2)
+
+        # ... but the default layout consists of the user and event list
+        # stacked vertically on the left side of the screen with the event
+        # detail pane taking the full height on the right side.
+        else:
+            root = py_cui.PyCUI(3, 4)
+            user_list = root.add_scroll_menu(f"Usernames", 0, 0, column_span=2)
+            event_list = root.add_scroll_menu("Events", 1, 0, row_span=2, column_span=2)
+            event_detail = root.add_scroll_menu(
                 "Event Detail", 0, 2, row_span=3, column_span=2
             )
 
@@ -414,21 +414,39 @@ class CLICommand(RegionalCommand):
         root.set_title("CloudTrail Events")
         root.set_status_bar_text("Press - q - to exit. TAB to move between widgets.")
 
-        # Override the default behavior and allow TAB to switch between
-        # widgets and activate widgets.
-        focus = cycle(root.widgets.values())
+        # py_cui has an odd navigation mechanism where the TUI is either in
+        # overview mode or focus mode.  In overview mode, users navigate with
+        # arrow keys to navigate between widgets, and then press RETURN to
+        # enter focus mode. Focus mode allows users to interact with the widget
+        # only until the user presses ESC to return to overview mode. I find
+        # this non-intuitive, so let's provide a mappting for TAB to cycle
+        # between widgets and place them in focus mode automatically.
+        focus = cycle(root.get_widgets().values())
 
         def select_next_widget():
             root.move_focus(next(focus))
 
         root.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
 
-        # Configure our user list
+        def update_user_list():
+            user_list.clear()
+            user_list.add_item_list(
+                sorted(events_by_user.keys(), key=lambda s: s.lower())
+            )
+            user_list.set_title(f"Usernames ({len(events_by_user.keys())})")
+            update_event_list()
+
         def update_event_list():
             event_list.clear()
-            event_list.add_item_list(self.events_by_user[user_list.get()])
-            event_list.title = f"Events ({len(event_list.get_item_list())})"
+            if user_list.get():
+                event_list.add_item_list(events_by_user[user_list.get()])
+            event_list.set_title(f"Events ({len(event_list.get_item_list())})")
             update_event_detail()
+
+        def update_event_detail():
+            event_detail.clear()
+            if event_list.get():
+                event_detail.add_item_list(event_list.get().to_json().split("\n"))
 
         def unfilter_event_list():
             event_list.clear()
@@ -436,51 +454,35 @@ class CLICommand(RegionalCommand):
                 chain(*self.events), reverse=True, key=lambda e: e.event["EventTime"]
             )
             event_list.add_item_list(all_events)
-            event_list.title = f"Events ({len(all_events)})"
+            event_list.set_title(f"Events ({len(all_events)})")
             update_event_detail()
 
+        user_list.set_selected_color(self.color)
+        user_list.set_focus_border_color(self.color)
         user_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
         user_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_list)
         user_list.add_key_command(py_cui.keys.KEY_BACKSPACE, unfilter_event_list)
-        user_list.add_key_command(py_cui.keys.KEY_PAGE_UP, user_list.page_up)
-        user_list.add_key_command(py_cui.keys.KEY_PAGE_DOWN, user_list.page_down)
         user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
-        user_list.title = f"Usernames ({len(self.events_by_user.keys())})"
         user_list.set_focus_text(
             "Press - q - to exit. TAB to move between widgets. ENTER to filter events. BACKSPACE to show all."
         )
-        user_list.set_selected_color(self.color)
-        user_list.add_item_list(
-            sorted(self.events_by_user.keys(), key=lambda s: s.lower())
-        )
 
-        # Configure our event list
-        def update_event_detail():
-            event_detail.clear()
-            event_detail.add_item_list(event_list.get().to_json().split("\n"))
-
+        event_list.set_selected_color(self.color)
+        event_list.set_focus_border_color(self.color)
         event_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
         event_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_detail)
-        event_list.add_key_command(py_cui.keys.KEY_PAGE_UP, event_list.page_up)
-        event_list.add_key_command(py_cui.keys.KEY_PAGE_DOWN, event_list.page_down)
         event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
         event_list.set_focus_text(
             "Press - q - to exit. TAB to move between widgets. ENTER to display event detail."
         )
-        event_list.set_selected_color(self.color)
-        if user_list.get():
-            update_event_list()
 
-        # Configure our event detail
-        event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-        event_detail.add_key_command(py_cui.keys.KEY_PAGE_UP, event_detail.page_up)
-        event_detail.add_key_command(py_cui.keys.KEY_PAGE_DOWN, event_detail.page_down)
-        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
-        event_detail.set_focus_text("Press - q - to exit. TAB to move between widgets.")
         event_detail.set_selected_color(self.color)
-        if event_list.get():
-            update_event_detail()
+        event_detail.set_focus_border_color(self.color)
+        event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
+        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
 
+        # Load the widgets with data and select the user list.
+        update_user_list()
         select_next_widget()
 
         # Fire up the main event loop
@@ -653,96 +655,3 @@ TUI_COLOR_THEMES = {
     for k, v in vars(py_cui).items()
     if k.endswith("_ON_BLACK")
 }
-
-
-#############################################################################
-# This code is for deficiencies in the py_cui library. I will actually make a
-# PR for the author of that project at some point.
-#############################################################################
-
-
-class _MyCUI(py_cui.PyCUI):
-    def add_my_scroll_menu(
-        self, title, row, column, row_span=1, column_span=1, padx=1, pady=0
-    ):
-        id = "Widget{}".format(len(self.widgets.keys()))
-        new_scroll_menu = _MyScrollMenu(
-            id, title, self.grid, row, column, row_span, column_span, padx, pady
-        )
-        self.widgets[id] = new_scroll_menu
-        if self.selected_widget is None:
-            self.set_selected_widget(id)
-        return new_scroll_menu
-
-
-class _MyScrollMenu(py_cui.widgets.ScrollMenu):
-    def __init__(
-        self,
-        id,
-        title,
-        grid,
-        row,
-        column,
-        row_span,
-        column_span,
-        padx,
-        pady,
-        to_str=str,
-    ):
-        super().__init__(
-            id, title, grid, row, column, row_span, column_span, padx, pady
-        )
-        self.to_str = to_str
-
-    def page_up(self):
-        shift_by = self.height - (2 * self.pady) - 3
-
-        new_top_view = self.top_view - shift_by
-        new_selected_item = self.selected_item - shift_by
-
-        self.top_view = 0 if new_top_view < 0 else new_top_view
-        self.selected_item = 0 if new_selected_item < 0 else new_selected_item
-
-    def page_down(self):
-        shift_by = self.height - (2 * self.pady) - 3
-        last_item_idx = len(self.view_items) - 1
-
-        new_top_view = self.top_view + shift_by
-        new_selected_item = self.selected_item + shift_by
-
-        self.top_view = (
-            new_top_view - shift_by if new_top_view > last_item_idx else new_top_view
-        )
-        self.selected_item = (
-            last_item_idx if new_selected_item > last_item_idx else new_selected_item
-        )
-
-    def draw(self):
-        super(py_cui.widgets.ScrollMenu, self).draw()
-
-        self.renderer.set_color_mode(
-            self.selected_color if self.selected else self.color
-        )
-        self.renderer.draw_border(self)
-
-        counter = self.pady + 1
-        line_counter = 0
-        for line in (self.to_str(i) for i in self.view_items):
-            if line_counter < self.top_view:
-                line_counter = line_counter + 1
-            else:
-                if counter >= self.height - self.pady - 1:
-                    break
-                if line_counter == self.selected_item:
-                    self.renderer.draw_text(
-                        self, line, self.start_y + counter, selected=True
-                    )
-                else:
-                    self.renderer.draw_text(self, line, self.start_y + counter)
-                counter = counter + 1
-                line_counter = line_counter + 1
-
-        self.renderer.unset_color_mode(
-            self.selected_color if self.selected else self.color
-        )
-        self.renderer.reset_cursor(self)
