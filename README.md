@@ -311,6 +311,19 @@ includes the following:
 
 ## Change Log
 
+### v2.5.0
+
+- `last` command now appends each CloudTrail event line in non-interactive mode
+  with "ERROR: " and the `errorCode` from the event if present. This allows users
+  to quickly identify errors (`grep ERROR`). The CloudTrail API does not provide
+  a means to filter on errors, so it can only be done after retrieving events.
+
+- `last` command TUI now allows users to filter CloudTrail events interactively
+  via a popup (mapped to 'f' key). Users can specify one or more terms to match
+  events. Terms are logically OR'd together. A term may be prefixed with `-` to
+  exclude events matching it. For example, "errorCode -s3" will show only
+  events that had errors excluding S3 events.
+
 ### v2.4.2
 
 - Update `kubectl` wrapper to use latest `v1beta1` Kubernetes API instead of
