@@ -311,6 +311,10 @@ includes the following:
 
 ## Change Log
 
+### v2.5.1
+
+- Fix tag and redeploy pypi artifacts.
+
 ### v2.5.0
 
 - `last` command now appends each CloudTrail event line in non-interactive mode
