@@ -441,16 +441,16 @@ def _print_conn_metrics(
 
         elif height > 1:
             opts = {
-                "minimum": 0,
+                "min": 0,
                 "height": height,
                 "format": "{:14,.0f} ",
             }
             # The asciichartpy module is a bit wonky and not really idiomatic
             # python as they just pass a giant dictionary of options (typical of
-            # javascript land). Do not provide a "maximum" key with a value of
+            # javascript land). Do not provide a "max" key with a value of
             # None. If use wants auto-scaling, don't provide the key at all.
             if max_yaxis is not None:
-                opts["maximum"] = max_yaxis
+                opts["max"] = max_yaxis
 
             chart = plot(values, opts)
         print(_format_metric(name, chart, color=colors.pop()), file=file)
