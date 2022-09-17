@@ -8,7 +8,6 @@
 import argparse
 import builtins
 import re
-
 from functools import wraps
 
 
@@ -141,39 +140,6 @@ class AppendAttributeValuePair(argparse.Action):
             parser.error(f"{option_string}: invalid {value_type} in {match.group()}")
 
         setattr(namespace, self.dest, d)
-
-
-# This is, admittedly, a hack as we are adding a wrapper around a method on a
-# private class that is not exposed in argparse module. This is just used for a
-# safety check to ensure the same option flag name is not used across _any_
-# parsers defined in a Python session unless they are in the `exclude` list.
-# This is used because there are many layers of argument parsing that take place
-# with the awsrun CLI (see cli.py for comment about argument parsing).
-def prevent_option_reuse(exclude=None):
-    """Prevent reuse of flags across any instance of ArgumentParser.
-
-    By default, `argparse.ArgumentParser` will raise an ArgumentError if the
-    same option flag name or positional parameter name is registered to the same
-    parser. After this function has been invoked, the option flag names cannot
-    be reused across *any* instance of `argparse.ArgumentParser` unless they
-    they are in the `exclude` list.
-    """
-    seen = set()
-    exclude = [] if exclude is None else exclude
-
-    # pylint: disable=protected-access
-    original = argparse._ActionsContainer.add_argument
-
-    @wraps(original)
-    def wrapper(self, *args, **kwargs):
-        for arg in args:
-            if arg in seen:
-                raise argparse.ArgumentError(None, f"option flag already used: {arg}")
-            if any(arg.startswith(p) for p in self.prefix_chars) and arg not in exclude:
-                seen.add(arg)
-        return original(self, *args, **kwargs)
-
-    argparse._ActionsContainer.add_argument = wrapper
 
 
 def from_str_to(type_):

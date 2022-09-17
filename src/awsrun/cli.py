@@ -732,7 +732,6 @@ from awsrun.argparse import (
     AppendAttributeValuePair,
     AppendWithoutDefault,
     RawAndDefaultsFormatter,
-    prevent_option_reuse,
 )
 from awsrun.cmdmgr import CommandManager
 from awsrun.config import Any, Choice, Config, Dict, File, Int, List, Str
@@ -857,24 +856,6 @@ def _cli(csp):
     # manager creates a new argument parser internally to parse the arguments
     # that were sent to the command as each command has the option to register
     # command line arguments.
-
-    # To minimize the likelihood of shadowing flags defined by command authors,
-    # this little hack wraps an internal method of argparse to track use of
-    # flag names across all instances of ArgumentParser. We use two of these
-    # during the 4 stages of CLI parsing. Stage 1-3 use one and stage 4 uses
-    # a second ArgumentParser, so this prevents a command author from defining
-    # the same flag name that we already use in the main CLI or one that a
-    # plug-in author uses. We exclude -h from the check as we want both the
-    # main CLI to have a -h as well as a command. The command's -h will not be
-    # shadowed as the stage 1 and 2 do not include a -h option. We only add
-    # the -h option in stage 3, and by then, the command name is parsed as
-    # well as the remainder of the argv line, so -h is not processed if it
-    # comes after the command name. This provides the behavior we want. If
-    # you have a -h anywhere before the command name, you get the main help
-    # for all of the awsrun CLI options as well as the options for any flags
-    # defined by plugins. If you specify a command and then a -h afterwards,
-    # you get the help that the command author includes for their command.
-    prevent_option_reuse(exclude=("-h", "--help"))
 
     # STAGE 1 Argument Processing (see description above)
 
