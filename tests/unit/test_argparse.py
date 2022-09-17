@@ -8,8 +8,7 @@ import argparse
 
 import pytest
 
-from awsrun.argparse import (AppendAttributeValuePair, AppendWithoutDefault,
-                             from_str_to)
+from awsrun.argparse import AppendAttributeValuePair, AppendWithoutDefault, from_str_to
 
 
 @pytest.mark.parametrize(

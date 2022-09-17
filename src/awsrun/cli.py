@@ -728,8 +728,11 @@ from pathlib import Path
 
 import awsrun.commands
 from awsrun.acctload import AccountLoader
-from awsrun.argparse import (AppendAttributeValuePair, AppendWithoutDefault,
-                             RawAndDefaultsFormatter)
+from awsrun.argparse import (
+    AppendAttributeValuePair,
+    AppendWithoutDefault,
+    RawAndDefaultsFormatter,
+)
 from awsrun.cmdmgr import CommandManager
 from awsrun.config import Any, Choice, Config, Dict, File, Int, List, Str
 from awsrun.plugmgr import PluginManager
