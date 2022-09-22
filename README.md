@@ -311,6 +311,16 @@ includes the following:
 
 ## Change Log
 
+### v2.5.2
+
+- Resolve all pylint warnings.
+
+- Update `dx_status` for `asciichart` API changes and bump version.
+
+- Allow reuse of `argparse` option flags for command authors that use the same
+  flag across multiple argparse subcommands. Previously, reuse of option flags
+  was prohibited across different instances of `argparse.ArgumentParser`.
+
 ### v2.5.1
 
 - Fix tag and redeploy pypi artifacts.

@@ -199,6 +199,7 @@ class CLICommand(Command):
         r = requests.get(
             &#34;https://signin.aws.amazon.com/federation&#34;,
             params={&#34;Action&#34;: &#34;getSigninToken&#34;, &#34;Session&#34;: json.dumps(session_creds)},
+            timeout=10.0,
         )
         r.raise_for_status()
         signin_token = r.json()[&#34;SigninToken&#34;]
@@ -274,6 +275,7 @@ class CLICommand(Command):
         r = requests.get(
             &#34;https://signin.aws.amazon.com/federation&#34;,
             params={&#34;Action&#34;: &#34;getSigninToken&#34;, &#34;Session&#34;: json.dumps(session_creds)},
+            timeout=10.0,
         )
         r.raise_for_status()
         signin_token = r.json()[&#34;SigninToken&#34;]

@@ -75,8 +75,6 @@ import argparse
 import builtins
 import re
 
-from functools import wraps
-
 
 class RawAndDefaultsFormatter(
     argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter
@@ -176,7 +174,7 @@ class AppendAttributeValuePair(argparse.Action):
     &#34;&#34;&#34;
 
     def __call__(self, parser, namespace, values, option_string=None):
-        match = re.match(r&#34;([^=]+)=(?:(str|int|float|bool):)?(.+)&#34;, values)
+        match = re.match(r&#34;([^=]+)=(?:(str|int|float|bool):)?(.+)&#34;, values)  # type: ignore
         if not match:
             parser.error(f&#34;{option_string}: expected attr=val1,val2,etc&#34;)
 
@@ -207,39 +205,6 @@ class AppendAttributeValuePair(argparse.Action):
             parser.error(f&#34;{option_string}: invalid {value_type} in {match.group()}&#34;)
 
         setattr(namespace, self.dest, d)
-
-
-# This is, admittedly, a hack as we are adding a wrapper around a method on a
-# private class that is not exposed in argparse module. This is just used for a
-# safety check to ensure the same option flag name is not used across _any_
-# parsers defined in a Python session unless they are in the `exclude` list.
-# This is used because there are many layers of argument parsing that take place
-# with the awsrun CLI (see cli.py for comment about argument parsing).
-def prevent_option_reuse(exclude=None):
-    &#34;&#34;&#34;Prevent reuse of flags across any instance of ArgumentParser.
-
-    By default, `argparse.ArgumentParser` will raise an ArgumentError if the
-    same option flag name or positional parameter name is registered to the same
-    parser. After this function has been invoked, the option flag names cannot
-    be reused across *any* instance of `argparse.ArgumentParser` unless they
-    they are in the `exclude` list.
-    &#34;&#34;&#34;
-    seen = set()
-    exclude = [] if exclude is None else exclude
-
-    # pylint: disable=protected-access
-    original = argparse._ActionsContainer.add_argument
-
-    @wraps(original)
-    def wrapper(self, *args, **kwargs):
-        for arg in args:
-            if arg in seen:
-                raise argparse.ArgumentError(None, f&#34;option flag already used: {arg}&#34;)
-            if any(arg.startswith(p) for p in self.prefix_chars) and arg not in exclude:
-                seen.add(arg)
-        return original(self, *args, **kwargs)
-
-    argparse._ActionsContainer.add_argument = wrapper
 
 
 def from_str_to(type_):
@@ -282,47 +247,6 @@ def from_str_to(type_):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="awsrun.argparse.prevent_option_reuse"><code class="name flex">
-<span>def <span class="ident">prevent_option_reuse</span></span>(<span>exclude=None)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>Prevent reuse of flags across any instance of ArgumentParser.</p>
-<p>By default, <code>argparse.ArgumentParser</code> will raise an ArgumentError if the
-same option flag name or positional parameter name is registered to the same
-parser. After this function has been invoked, the option flag names cannot
-be reused across <em>any</em> instance of <code>argparse.ArgumentParser</code> unless they
-they are in the <code>exclude</code> list.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def prevent_option_reuse(exclude=None):
-    &#34;&#34;&#34;Prevent reuse of flags across any instance of ArgumentParser.
-
-    By default, `argparse.ArgumentParser` will raise an ArgumentError if the
-    same option flag name or positional parameter name is registered to the same
-    parser. After this function has been invoked, the option flag names cannot
-    be reused across *any* instance of `argparse.ArgumentParser` unless they
-    they are in the `exclude` list.
-    &#34;&#34;&#34;
-    seen = set()
-    exclude = [] if exclude is None else exclude
-
-    # pylint: disable=protected-access
-    original = argparse._ActionsContainer.add_argument
-
-    @wraps(original)
-    def wrapper(self, *args, **kwargs):
-        for arg in args:
-            if arg in seen:
-                raise argparse.ArgumentError(None, f&#34;option flag already used: {arg}&#34;)
-            if any(arg.startswith(p) for p in self.prefix_chars) and arg not in exclude:
-                seen.add(arg)
-        return original(self, *args, **kwargs)
-
-    argparse._ActionsContainer.add_argument = wrapper</code></pre>
-</details>
-</dd>
 <dt id="awsrun.argparse.from_str_to"><code class="name flex">
 <span>def <span class="ident">from_str_to</span></span>(<span>type_)</span>
 </code></dt>
@@ -594,7 +518,7 @@ converted to ints, floats, or bools:</p>
     &#34;&#34;&#34;
 
     def __call__(self, parser, namespace, values, option_string=None):
-        match = re.match(r&#34;([^=]+)=(?:(str|int|float|bool):)?(.+)&#34;, values)
+        match = re.match(r&#34;([^=]+)=(?:(str|int|float|bool):)?(.+)&#34;, values)  # type: ignore
         if not match:
             parser.error(f&#34;{option_string}: expected attr=val1,val2,etc&#34;)
 
@@ -648,7 +572,6 @@ converted to ints, floats, or bools:</p>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="awsrun.argparse.prevent_option_reuse" href="#awsrun.argparse.prevent_option_reuse">prevent_option_reuse</a></code></li>
 <li><code><a title="awsrun.argparse.from_str_to" href="#awsrun.argparse.from_str_to">from_str_to</a></code></li>
 </ul>
 </li>

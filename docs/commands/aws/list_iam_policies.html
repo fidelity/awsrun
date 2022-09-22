@@ -715,7 +715,7 @@ class CLICommand(Command):
         if self.include_roles:
             identities[&#34;role&#34;] = get_identities(iam.roles, iam.Role, self.search_roles)
 
-        for i_type in identities:
+        for i_type in identities:  # pylint: disable=consider-using-dict-items
             for identity in identities[i_type]:
                 ip = IdentityPrinter(out, f&#34;{acct}: identity={i_type}:{identity.name}&#34;)
                 self.show_inline_policies(identity, ip)
@@ -1193,7 +1193,7 @@ effect, the identity's resources are loaded.</p></section>
         if self.include_roles:
             identities[&#34;role&#34;] = get_identities(iam.roles, iam.Role, self.search_roles)
 
-        for i_type in identities:
+        for i_type in identities:  # pylint: disable=consider-using-dict-items
             for identity in identities[i_type]:
                 ip = IdentityPrinter(out, f&#34;{acct}: identity={i_type}:{identity.name}&#34;)
                 self.show_inline_policies(identity, ip)

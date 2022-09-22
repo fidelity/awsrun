@@ -486,6 +486,7 @@ class CLICommand(RegionalCommand):
         # to load data. We load all data at once, instead of as we loop over
         # each connection, because CloudWatch has much more efficient APIs for
         # bulk data loads.
+        metrics = None
         if self.height &gt; 0:
             metrics = self._load_dx_metrics(cw, conn_by_id.keys())
 
@@ -502,7 +503,7 @@ class CLICommand(RegionalCommand):
 
             print(f&#34;{prefix} {_conn2str(conn, vifs)}&#34;, file=out)
 
-            if self.height &gt; 0:
+            if metrics:
                 _print_conn_metrics(
                     conn,
                     metrics[c_id],
@@ -550,10 +551,9 @@ def invert(n):
     &#34;&#34;&#34;Return 1 if n is 0, 0 if n is 1, otherwise n.&#34;&#34;&#34;
     if n == 0:
         return 1
-    elif n == 1:
+    if n == 1:
         return 0
-    else:  # NaN case
-        return n
+    return n  # NaN case
 
 
 def bps(bandwidth):
@@ -646,18 +646,18 @@ def _print_conn_metrics(
             chart = sparkify(values, minimum=0, maximum=max_yaxis)
             print(prefix, end=&#34; &#34;, file=file)
 
-        elif height &gt; 1:
+        else:
             opts = {
-                &#34;minimum&#34;: 0,
+                &#34;min&#34;: 0,
                 &#34;height&#34;: height,
                 &#34;format&#34;: &#34;{:14,.0f} &#34;,
             }
             # The asciichartpy module is a bit wonky and not really idiomatic
             # python as they just pass a giant dictionary of options (typical of
-            # javascript land). Do not provide a &#34;maximum&#34; key with a value of
+            # javascript land). Do not provide a &#34;max&#34; key with a value of
             # None. If use wants auto-scaling, don&#39;t provide the key at all.
             if max_yaxis is not None:
-                opts[&#34;maximum&#34;] = max_yaxis
+                opts[&#34;max&#34;] = max_yaxis
 
             chart = plot(values, opts)
         print(_format_metric(name, chart, color=colors.pop()), file=file)
@@ -670,6 +670,8 @@ def _format_metric(name, chart, color=Fore.BLACK):
 
 # Type definition for awsrun.config to validate positive numbers.
 class PositiveInt(Type):
+    &#34;&#34;&#34;Type that represents a positive integer.&#34;&#34;&#34;
+
     def type_check(self, obj):
         return isinstance(obj, int) and obj &gt; 0
 
@@ -700,10 +702,9 @@ PosInt = PositiveInt()</code></pre>
     &#34;&#34;&#34;Return 1 if n is 0, 0 if n is 1, otherwise n.&#34;&#34;&#34;
     if n == 0:
         return 1
-    elif n == 1:
+    if n == 1:
         return 0
-    else:  # NaN case
-        return n</code></pre>
+    return n  # NaN case</code></pre>
 </details>
 </dd>
 <dt id="awsrun.commands.aws.dx_status.bps"><code class="name flex">
@@ -859,6 +860,7 @@ uses an unsuppored unit, a ValueError is raised.</p></section>
         # to load data. We load all data at once, instead of as we loop over
         # each connection, because CloudWatch has much more efficient APIs for
         # bulk data loads.
+        metrics = None
         if self.height &gt; 0:
             metrics = self._load_dx_metrics(cw, conn_by_id.keys())
 
@@ -875,7 +877,7 @@ uses an unsuppored unit, a ValueError is raised.</p></section>
 
             print(f&#34;{prefix} {_conn2str(conn, vifs)}&#34;, file=out)
 
-            if self.height &gt; 0:
+            if metrics:
                 _print_conn_metrics(
                     conn,
                     metrics[c_id],
@@ -943,12 +945,14 @@ uses an unsuppored unit, a ValueError is raised.</p></section>
 <span>class <span class="ident">PositiveInt</span></span>
 </code></dt>
 <dd>
-<section class="desc"><p>Represents a type that can be used in type-check comparisons.</p></section>
+<section class="desc"><p>Type that represents a positive integer.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class PositiveInt(Type):
+    &#34;&#34;&#34;Type that represents a positive integer.&#34;&#34;&#34;
+
     def type_check(self, obj):
         return isinstance(obj, int) and obj &gt; 0
 

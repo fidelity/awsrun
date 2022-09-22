@@ -122,8 +122,8 @@ invoking the callable returned by `CWMetrics.add_metric`. For example:
         print(datetime, value)
 
 &#34;&#34;&#34;
-import math
 import logging
+import math
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
@@ -160,6 +160,7 @@ class CWMetrics:
         self._samples = samples
         self._ingestion_interval = ingestion_interval
         self._period = self._compute_period()
+        self._beg = self._end = datetime.now()
 
         _LOG.info(
             &#34;CWMetrics(client, last=%d, samples=%d, ingestion_interval=%d)&#34;,
@@ -495,6 +496,7 @@ metrics with ingestion intervals less than 60 seconds.</p></section>
         self._samples = samples
         self._ingestion_interval = ingestion_interval
         self._period = self._compute_period()
+        self._beg = self._end = datetime.now()
 
         _LOG.info(
             &#34;CWMetrics(client, last=%d, samples=%d, ingestion_interval=%d)&#34;,

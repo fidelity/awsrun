@@ -351,6 +351,7 @@ from functools import partial
 from itertools import chain, cycle
 
 import py_cui
+import py_cui.keys
 from colorama import Fore, Style, init
 
 from awsrun.argparse import AppendAttributeValuePair
@@ -464,10 +465,10 @@ class CLICommand(RegionalCommand):
             args.attributes[&#34;EventName&#34;] = [&#34;ConsoleLogin&#34;]
 
         elif len(args.attributes) &gt; 1:
-            parser.error(f&#34;only one lookup attribute may be used per AWS&#34;)
+            parser.error(&#34;only one lookup attribute may be used per AWS&#34;)
 
         elif any(len(v) &gt; 1 for v in args.attributes.values()):
-            parser.error(f&#34;only one lookup value may be specified per AWS&#34;)
+            parser.error(&#34;only one lookup value may be specified per AWS&#34;)
 
         elif any(a not in LOOKUP_ATTRIBUTES for a in args.attributes):
             parser.error(
@@ -571,7 +572,7 @@ class CLICommand(RegionalCommand):
 
     def regional_collect_results(self, acct, region, get_result):
         if not self.interactive:
-            return super().regional_collect_results(acct, region, get_result)
+            super().regional_collect_results(acct, region, get_result)
 
         events, events_by_user = get_result()
         self.events.append(events)
@@ -602,7 +603,7 @@ class CLICommand(RegionalCommand):
         # vertically in the terminal for those with narrow terminals ...
         if self.vertical:
             root = py_cui.PyCUI(4, 1)
-            user_list = root.add_scroll_menu(f&#34;Usernames&#34;, 0, 0)
+            user_list = root.add_scroll_menu(&#34;Usernames&#34;, 0, 0)
             event_list = root.add_scroll_menu(&#34;Events&#34;, 1, 0)
             event_detail = root.add_scroll_menu(&#34;Event Detail&#34;, 2, 0, row_span=2)
 
@@ -611,7 +612,7 @@ class CLICommand(RegionalCommand):
         # detail pane taking the full height on the right side.
         else:
             root = py_cui.PyCUI(3, 4)
-            user_list = root.add_scroll_menu(f&#34;Usernames&#34;, 0, 0, column_span=2)
+            user_list = root.add_scroll_menu(&#34;Usernames&#34;, 0, 0, column_span=2)
             event_list = root.add_scroll_menu(&#34;Events&#34;, 1, 0, row_span=2, column_span=2)
             event_detail = root.add_scroll_menu(
                 &#34;Event Detail&#34;, 0, 2, row_span=3, column_span=2
@@ -628,7 +629,7 @@ class CLICommand(RegionalCommand):
         # only until the user presses ESC to return to overview mode. I find
         # this non-intuitive, so let&#39;s provide a mappting for TAB to cycle
         # between widgets and place them in focus mode automatically.
-        focus = cycle(root.get_widgets().values())
+        focus = cycle(filter(None, root.get_widgets().values()))
 
         def select_next_widget():
             root.move_focus(next(focus))
@@ -662,6 +663,7 @@ class CLICommand(RegionalCommand):
         # dismissed. We save the widget that was in focus before the popup, so
         # we can refocus on it afterwards.
         def show_filter_popup():
+            # pylint: disable=protected-access
             original_widget = root.get_selected_widget()
 
             def popup_callback(s):
@@ -669,12 +671,13 @@ class CLICommand(RegionalCommand):
                 current_filter_expression = s
                 filter_event_lists(s)
                 update_user_list()
-                root.move_focus(original_widget)
+                if original_widget:
+                    root.move_focus(original_widget)
 
             root.show_text_box_popup(&#34;Filter expression:&#34;, popup_callback)
-            # TODO Workaround until upstream allows setting initial text.
+            # Workaround until upstream allows setting initial text.
             root._popup.set_text(current_filter_expression)
-            # TODO Workaround until upstream py_cui fixes bug
+            # Workaround until upstream py_cui fixes bug
             root._popup._initial_cursor = (
                 root._popup.get_start_position()[0] + root._popup.get_padding()[0] + 2
             )
@@ -696,8 +699,9 @@ class CLICommand(RegionalCommand):
 
         def update_event_detail():
             event_detail.clear()
-            if event_list.get():
-                event_detail.add_item_list(event_list.get().to_json().split(&#34;\n&#34;))
+            event = event_list.get()
+            if event:
+                event_detail.add_item_list(event.to_json().split(&#34;\n&#34;))
 
         def unfilter_event_list():
             event_list.clear()
@@ -714,7 +718,7 @@ class CLICommand(RegionalCommand):
         user_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_list)
         user_list.add_key_command(py_cui.keys.KEY_BACKSPACE, unfilter_event_list)
         user_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
         user_list.set_focus_text(
             &#34;Press &#39;q&#39; to exit. TAB to switch panes. RET for user events. BACKSPACE for all events. &#39;f&#39; to filter.&#34;
         )
@@ -724,7 +728,7 @@ class CLICommand(RegionalCommand):
         event_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
         event_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_detail)
         event_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
         event_list.set_focus_text(
             &#34;Press &#39;q&#39; to exit. TAB to switch panes. RET for event detail. &#39;f&#39; to filter.&#34;
         )
@@ -733,7 +737,7 @@ class CLICommand(RegionalCommand):
         event_detail.set_focus_border_color(self.color)
         event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
         event_detail.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
         event_detail.set_focus_text(
             &#34;Press &#39;q&#39; to exit. TAB to switch panes. &#39;f&#39; to filter.&#34;
         )
@@ -763,6 +767,7 @@ class _UserIdentityType:
 
     @classmethod
     def new(cls, event):
+        &#34;&#34;&#34;Return a concrete implementation of `_UserIdentityType`.&#34;&#34;&#34;
         user_type = event[&#34;CloudTrailEvent&#34;][&#34;userIdentity&#34;].get(&#34;type&#34;, &#34;AWSService&#34;)
         klass = globals().get(f&#34;_{user_type}Type&#34;, cls)
         return klass(event)
@@ -810,8 +815,10 @@ class _UserIdentityType:
         session_name = params.get(&#34;roleSessionName&#34;)
         if arn and session_name:
             return _strip_to(&#34;/&#34;, arn, greedy=True) + &#34;/&#34; + session_name
+        return None
 
     def to_json(self):
+        &#34;&#34;&#34;Return event as JSON string.&#34;&#34;&#34;
         return json.dumps(self.event, default=str, indent=4)
 
     def __str__(self):
@@ -1084,10 +1091,10 @@ TUI_COLOR_THEMES = {
             args.attributes[&#34;EventName&#34;] = [&#34;ConsoleLogin&#34;]
 
         elif len(args.attributes) &gt; 1:
-            parser.error(f&#34;only one lookup attribute may be used per AWS&#34;)
+            parser.error(&#34;only one lookup attribute may be used per AWS&#34;)
 
         elif any(len(v) &gt; 1 for v in args.attributes.values()):
-            parser.error(f&#34;only one lookup value may be specified per AWS&#34;)
+            parser.error(&#34;only one lookup value may be specified per AWS&#34;)
 
         elif any(a not in LOOKUP_ATTRIBUTES for a in args.attributes):
             parser.error(
@@ -1191,7 +1198,7 @@ TUI_COLOR_THEMES = {
 
     def regional_collect_results(self, acct, region, get_result):
         if not self.interactive:
-            return super().regional_collect_results(acct, region, get_result)
+            super().regional_collect_results(acct, region, get_result)
 
         events, events_by_user = get_result()
         self.events.append(events)
@@ -1222,7 +1229,7 @@ TUI_COLOR_THEMES = {
         # vertically in the terminal for those with narrow terminals ...
         if self.vertical:
             root = py_cui.PyCUI(4, 1)
-            user_list = root.add_scroll_menu(f&#34;Usernames&#34;, 0, 0)
+            user_list = root.add_scroll_menu(&#34;Usernames&#34;, 0, 0)
             event_list = root.add_scroll_menu(&#34;Events&#34;, 1, 0)
             event_detail = root.add_scroll_menu(&#34;Event Detail&#34;, 2, 0, row_span=2)
 
@@ -1231,7 +1238,7 @@ TUI_COLOR_THEMES = {
         # detail pane taking the full height on the right side.
         else:
             root = py_cui.PyCUI(3, 4)
-            user_list = root.add_scroll_menu(f&#34;Usernames&#34;, 0, 0, column_span=2)
+            user_list = root.add_scroll_menu(&#34;Usernames&#34;, 0, 0, column_span=2)
             event_list = root.add_scroll_menu(&#34;Events&#34;, 1, 0, row_span=2, column_span=2)
             event_detail = root.add_scroll_menu(
                 &#34;Event Detail&#34;, 0, 2, row_span=3, column_span=2
@@ -1248,7 +1255,7 @@ TUI_COLOR_THEMES = {
         # only until the user presses ESC to return to overview mode. I find
         # this non-intuitive, so let&#39;s provide a mappting for TAB to cycle
         # between widgets and place them in focus mode automatically.
-        focus = cycle(root.get_widgets().values())
+        focus = cycle(filter(None, root.get_widgets().values()))
 
         def select_next_widget():
             root.move_focus(next(focus))
@@ -1282,6 +1289,7 @@ TUI_COLOR_THEMES = {
         # dismissed. We save the widget that was in focus before the popup, so
         # we can refocus on it afterwards.
         def show_filter_popup():
+            # pylint: disable=protected-access
             original_widget = root.get_selected_widget()
 
             def popup_callback(s):
@@ -1289,12 +1297,13 @@ TUI_COLOR_THEMES = {
                 current_filter_expression = s
                 filter_event_lists(s)
                 update_user_list()
-                root.move_focus(original_widget)
+                if original_widget:
+                    root.move_focus(original_widget)
 
             root.show_text_box_popup(&#34;Filter expression:&#34;, popup_callback)
-            # TODO Workaround until upstream allows setting initial text.
+            # Workaround until upstream allows setting initial text.
             root._popup.set_text(current_filter_expression)
-            # TODO Workaround until upstream py_cui fixes bug
+            # Workaround until upstream py_cui fixes bug
             root._popup._initial_cursor = (
                 root._popup.get_start_position()[0] + root._popup.get_padding()[0] + 2
             )
@@ -1316,8 +1325,9 @@ TUI_COLOR_THEMES = {
 
         def update_event_detail():
             event_detail.clear()
-            if event_list.get():
-                event_detail.add_item_list(event_list.get().to_json().split(&#34;\n&#34;))
+            event = event_list.get()
+            if event:
+                event_detail.add_item_list(event.to_json().split(&#34;\n&#34;))
 
         def unfilter_event_list():
             event_list.clear()
@@ -1334,7 +1344,7 @@ TUI_COLOR_THEMES = {
         user_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_list)
         user_list.add_key_command(py_cui.keys.KEY_BACKSPACE, unfilter_event_list)
         user_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
         user_list.set_focus_text(
             &#34;Press &#39;q&#39; to exit. TAB to switch panes. RET for user events. BACKSPACE for all events. &#39;f&#39; to filter.&#34;
         )
@@ -1344,7 +1354,7 @@ TUI_COLOR_THEMES = {
         event_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
         event_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_detail)
         event_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
         event_list.set_focus_text(
             &#34;Press &#39;q&#39; to exit. TAB to switch panes. RET for event detail. &#39;f&#39; to filter.&#34;
         )
@@ -1353,7 +1363,7 @@ TUI_COLOR_THEMES = {
         event_detail.set_focus_border_color(self.color)
         event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
         event_detail.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
         event_detail.set_focus_text(
             &#34;Press &#39;q&#39; to exit. TAB to switch panes. &#39;f&#39; to filter.&#34;
         )

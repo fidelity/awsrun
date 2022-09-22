@@ -251,7 +251,7 @@ class Config:
         if path.suffix not in cls._filetypes:
             raise ValueError(f&#34;Unregistered file type extension: {path.suffix}&#34;)
 
-        with path.open() as f:
+        with path.open(encoding=&#34;utf-8&#34;) as f:
             return cls._filetypes[path.suffix](f)
 
     def __init__(self, d):
@@ -292,10 +292,10 @@ class Config:
         # empty dict.
         try:
             value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
-        except AttributeError:
+        except AttributeError as e:
             raise ValueError(
                 f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;
-            )
+            ) from e
 
         # If value is {} that means the key doesn&#39;t exist. If the must_exist
         # flag was passed, then we raise a descriptive ValueError, otherwise we
@@ -732,7 +732,7 @@ load configs from files.</p></section>
         if path.suffix not in cls._filetypes:
             raise ValueError(f&#34;Unregistered file type extension: {path.suffix}&#34;)
 
-        with path.open() as f:
+        with path.open(encoding=&#34;utf-8&#34;) as f:
             return cls._filetypes[path.suffix](f)
 
     def __init__(self, d):
@@ -773,10 +773,10 @@ load configs from files.</p></section>
         # empty dict.
         try:
             value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
-        except AttributeError:
+        except AttributeError as e:
             raise ValueError(
                 f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;
-            )
+            ) from e
 
         # If value is {} that means the key doesn&#39;t exist. If the must_exist
         # flag was passed, then we raise a descriptive ValueError, otherwise we
@@ -870,7 +870,7 @@ def from_file(cls, filename, must_exist=False):
     if path.suffix not in cls._filetypes:
         raise ValueError(f&#34;Unregistered file type extension: {path.suffix}&#34;)
 
-    with path.open() as f:
+    with path.open(encoding=&#34;utf-8&#34;) as f:
         return cls._filetypes[path.suffix](f)</code></pre>
 </details>
 </dd>
@@ -944,10 +944,10 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
     # empty dict.
     try:
         value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
-    except AttributeError:
+    except AttributeError as e:
         raise ValueError(
             f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;
-        )
+        ) from e
 
     # If value is {} that means the key doesn&#39;t exist. If the must_exist
     # flag was passed, then we raise a descriptive ValueError, otherwise we

@@ -509,7 +509,6 @@ from bs4 import BeautifulSoup
 from awsrun.cache import ExpiringValue
 from awsrun.session import SessionProvider
 
-
 LOG = logging.getLogger(__name__)
 
 
@@ -675,11 +674,11 @@ class CredsViaSAML(CachingSessionProvider):
         LOG.info(&#34;Fetching SAML assertion&#34;)
         with requests.Session() as s:
             s.auth = self._auth
-            s.headers = self._headers
+            s.headers.update(self._headers)
             resp = s.get(self._url, verify=not self._no_verify)
 
         if resp.status_code == 401:
-            raise IDPAccessDeniedException(f&#34;Could not authenticate&#34;)
+            raise IDPAccessDeniedException(&#34;Could not authenticate&#34;)
         if not 200 &lt;= resp.status_code &lt; 300:
             raise IDPInvalidResponseException(
                 f&#34;{resp.status_code} response from {self._url}&#34;
@@ -694,7 +693,7 @@ class CredsViaSAML(CachingSessionProvider):
 
         if len(saml) != 1:
             raise IDPInvalidResponseException(
-                f&#34;Cannot extract SAML assertion from response&#34;
+                &#34;Cannot extract SAML assertion from response&#34;
             )
 
         # Indexing is guaranteed to succeed as we check the length above
@@ -1162,11 +1161,11 @@ from the IdP is cached for <code>saml_duration</code>, which defaults to 5 minut
         LOG.info(&#34;Fetching SAML assertion&#34;)
         with requests.Session() as s:
             s.auth = self._auth
-            s.headers = self._headers
+            s.headers.update(self._headers)
             resp = s.get(self._url, verify=not self._no_verify)
 
         if resp.status_code == 401:
-            raise IDPAccessDeniedException(f&#34;Could not authenticate&#34;)
+            raise IDPAccessDeniedException(&#34;Could not authenticate&#34;)
         if not 200 &lt;= resp.status_code &lt; 300:
             raise IDPInvalidResponseException(
                 f&#34;{resp.status_code} response from {self._url}&#34;
@@ -1181,7 +1180,7 @@ from the IdP is cached for <code>saml_duration</code>, which defaults to 5 minut
 
         if len(saml) != 1:
             raise IDPInvalidResponseException(
-                f&#34;Cannot extract SAML assertion from response&#34;
+                &#34;Cannot extract SAML assertion from response&#34;
             )
 
         # Indexing is guaranteed to succeed as we check the length above

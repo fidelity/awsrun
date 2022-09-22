@@ -117,9 +117,9 @@ invocation of `value` took place, the original value expired after 10 seconds.
 &#34;&#34;&#34;
 
 import json
-import time
 import logging
 import threading
+import time
 from pathlib import Path
 
 LOG = logging.getLogger(__name__)
@@ -251,7 +251,7 @@ class PersistentExpiringValue(ExpiringValue):
 
     def load(self):
         LOG.debug(&#34;Loading cached data from %s&#34;, self._path)
-        with self._path.open(&#34;r&#34;) as file:
+        with self._path.open(&#34;r&#34;, encoding=&#34;utf-8&#34;) as file:
             return json.load(file)
 
     def save(self, value):
@@ -261,7 +261,7 @@ class PersistentExpiringValue(ExpiringValue):
 
         LOG.debug(&#34;Saving data to cache file %s&#34;, self._path)
         tmp = self._path.with_suffix(&#34;.tmp&#34;)
-        with tmp.open(&#34;w&#34;) as file:
+        with tmp.open(&#34;w&#34;, encoding=&#34;utf-8&#34;) as file:
             json.dump(value, file)
 
         # Pathlib.replace uses os.replace which is atomic on POSIX systems
@@ -586,7 +586,7 @@ persisted as JSON, a TypeError is thrown.</p></section>
 
     def load(self):
         LOG.debug(&#34;Loading cached data from %s&#34;, self._path)
-        with self._path.open(&#34;r&#34;) as file:
+        with self._path.open(&#34;r&#34;, encoding=&#34;utf-8&#34;) as file:
             return json.load(file)
 
     def save(self, value):
@@ -596,7 +596,7 @@ persisted as JSON, a TypeError is thrown.</p></section>
 
         LOG.debug(&#34;Saving data to cache file %s&#34;, self._path)
         tmp = self._path.with_suffix(&#34;.tmp&#34;)
-        with tmp.open(&#34;w&#34;) as file:
+        with tmp.open(&#34;w&#34;, encoding=&#34;utf-8&#34;) as file:
             json.dump(value, file)
 
         # Pathlib.replace uses os.replace which is atomic on POSIX systems

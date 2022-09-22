@@ -174,8 +174,8 @@ via `CommandManager.instantiate_command`.  If the command cannot be found,
 all the discovered commands found in the configured paths.
 &#34;&#34;&#34;
 
-import ast
 import argparse
+import ast
 import contextlib
 import importlib
 import logging
@@ -372,7 +372,7 @@ class DirectoryLoader(CommandLoader):
 
         except Exception as e:
             LOG.info(&#34;Invalid command at &#39;%s&#39;: %s&#34;, fullpath, e)
-            raise CommandNotFoundError(command_name, {fullpath: e})
+            raise CommandNotFoundError(command_name, {fullpath: e}) from e
 
     def load_all(self):
         classes = {}
@@ -389,7 +389,7 @@ class DirectoryLoader(CommandLoader):
 
     @staticmethod
     def _contains_awsrun_command(filename):
-        with open(filename) as f:
+        with open(filename, encoding=&#34;utf-8&#34;) as f:
             node = ast.parse(f.read(), filename)
         return any(
             n.name == &#34;CLICommand&#34; for n in node.body if isinstance(n, ast.ClassDef)
@@ -418,7 +418,7 @@ class ModuleLoader(CommandLoader):
             return module.CLICommand
 
         except Exception as e:
-            raise CommandNotFoundError(command_name, {self.module_name: e})
+            raise CommandNotFoundError(command_name, {self.module_name: e}) from e
 
     def load_all(self):
         classes = {}
@@ -931,7 +931,7 @@ allows the loader to find compatible commands.</p></section>
 
         except Exception as e:
             LOG.info(&#34;Invalid command at &#39;%s&#39;: %s&#34;, fullpath, e)
-            raise CommandNotFoundError(command_name, {fullpath: e})
+            raise CommandNotFoundError(command_name, {fullpath: e}) from e
 
     def load_all(self):
         classes = {}
@@ -948,7 +948,7 @@ allows the loader to find compatible commands.</p></section>
 
     @staticmethod
     def _contains_awsrun_command(filename):
-        with open(filename) as f:
+        with open(filename, encoding=&#34;utf-8&#34;) as f:
             node = ast.parse(f.read(), filename)
         return any(
             n.name == &#34;CLICommand&#34; for n in node.body if isinstance(n, ast.ClassDef)
@@ -1003,7 +1003,7 @@ which allows the loader to find compatible commands.</p></section>
             return module.CLICommand
 
         except Exception as e:
-            raise CommandNotFoundError(command_name, {self.module_name: e})
+            raise CommandNotFoundError(command_name, {self.module_name: e}) from e
 
     def load_all(self):
         classes = {}

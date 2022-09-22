@@ -353,13 +353,14 @@ import re
 import shutil
 import subprocess
 import sys
-import yaml
+from collections import namedtuple
 from pathlib import Path
+
+import yaml
 
 from awsrun.argparse import AppendWithoutDefault
 from awsrun.config import List, Str, StrMatch
 from awsrun.runner import RegionalCommand
-from collections import namedtuple
 
 LOG = logging.getLogger(__name__)
 
@@ -483,7 +484,10 @@ class CLICommand(RegionalCommand):
 
         # Make sure user has both dependent binaries installed
         has_prereqs = True
-        if not shutil.which(&#34;kubectl&#34;):
+        path = shutil.which(&#34;kubectl&#34;)
+        if path:
+            self.kubectlcli_path = path
+        else:
             print(
                 &#34;&#39;kubectl&#39; not found in PATH, have you installed it?&#34;, file=sys.stderr
             )
@@ -536,7 +540,7 @@ class CLICommand(RegionalCommand):
 
                 # Invoke kubectl and return results being careful to ensure that
                 # we honor kubectl&#39;s stdout and stderr.
-                cmd = [shutil.which(&#34;kubectl&#34;)]
+                cmd = [self.kubectlcli_path]
                 if self.annotate and self.annotate != &#34;text&#34;:
                     cmd += [&#34;--output&#34;, self.annotate]
                 elif self.output:
@@ -584,7 +588,7 @@ class CLICommand(RegionalCommand):
                 d[&#34;Results&#34;] = loader(result.stdout)
                 dumper(d, sys.stdout, indent=4)
                 print()
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 annotate_lines(result, f&#34;cannot parse output: {e}&#34;, file=sys.stderr)
 
         try:
@@ -625,13 +629,9 @@ class CLICommand(RegionalCommand):
                     / f&#34;{escaped}-{region}-{result.cluster}-{result.namespace}&#34;
                 )
 
-                def save(suffix, text):
-                    with name.with_suffix(suffix).open(&#34;w&#34;) as out:
-                        out.write(text)
-
-                save(&#34;.stdout.log&#34;, result.stdout)
+                _save_output(name.with_suffix(&#34;.stdout.log&#34;), result.stdout)
                 if result.stderr:
-                    save(&#34;.stderr.log&#34;, result.stderr)
+                    _save_output(name.with_suffix(&#34;.stderr.log&#34;), result.stderr)
 
 
 _Result = namedtuple(&#34;Result&#34;, [&#34;stdout&#34;, &#34;stderr&#34;, &#34;cluster&#34;, &#34;namespace&#34;])
@@ -676,6 +676,11 @@ users:
 &#34;&#34;&#34;
 
 
+def _save_output(name, text):
+    with name.open(&#34;w&#34;) as out:
+        out.write(text)
+
+
 def _save_kubecfg(name, namespace, account_id, region, cluster, session):
     creds = session.get_credentials()
     substitions = {
@@ -694,9 +699,7 @@ def _save_kubecfg(name, namespace, account_id, region, cluster, session):
     kubedir.mkdir(parents=True, exist_ok=True)
 
     filename = kubedir / Path(f&#34;awsrun-{account_id}-{region}-{name}-{namespace}&#34;)
-    with filename.open(&#34;w&#34;) as f:
-        f.write(_KUBECONFIG.format(**substitions))
-
+    _save_output(filename, _KUBECONFIG.format(**substitions))
     return filename
 
 
@@ -846,7 +849,10 @@ def _list_clusters(eks):
 
         # Make sure user has both dependent binaries installed
         has_prereqs = True
-        if not shutil.which(&#34;kubectl&#34;):
+        path = shutil.which(&#34;kubectl&#34;)
+        if path:
+            self.kubectlcli_path = path
+        else:
             print(
                 &#34;&#39;kubectl&#39; not found in PATH, have you installed it?&#34;, file=sys.stderr
             )
@@ -899,7 +905,7 @@ def _list_clusters(eks):
 
                 # Invoke kubectl and return results being careful to ensure that
                 # we honor kubectl&#39;s stdout and stderr.
-                cmd = [shutil.which(&#34;kubectl&#34;)]
+                cmd = [self.kubectlcli_path]
                 if self.annotate and self.annotate != &#34;text&#34;:
                     cmd += [&#34;--output&#34;, self.annotate]
                 elif self.output:
@@ -947,7 +953,7 @@ def _list_clusters(eks):
                 d[&#34;Results&#34;] = loader(result.stdout)
                 dumper(d, sys.stdout, indent=4)
                 print()
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 annotate_lines(result, f&#34;cannot parse output: {e}&#34;, file=sys.stderr)
 
         try:
@@ -988,13 +994,9 @@ def _list_clusters(eks):
                     / f&#34;{escaped}-{region}-{result.cluster}-{result.namespace}&#34;
                 )
 
-                def save(suffix, text):
-                    with name.with_suffix(suffix).open(&#34;w&#34;) as out:
-                        out.write(text)
-
-                save(&#34;.stdout.log&#34;, result.stdout)
+                _save_output(name.with_suffix(&#34;.stdout.log&#34;), result.stdout)
                 if result.stderr:
-                    save(&#34;.stderr.log&#34;, result.stderr)</code></pre>
+                    _save_output(name.with_suffix(&#34;.stderr.log&#34;), result.stderr)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1033,7 +1035,7 @@ def _list_clusters(eks):
             d[&#34;Results&#34;] = loader(result.stdout)
             dumper(d, sys.stdout, indent=4)
             print()
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             annotate_lines(result, f&#34;cannot parse output: {e}&#34;, file=sys.stderr)
 
     try:
@@ -1074,13 +1076,9 @@ def _list_clusters(eks):
                 / f&#34;{escaped}-{region}-{result.cluster}-{result.namespace}&#34;
             )
 
-            def save(suffix, text):
-                with name.with_suffix(suffix).open(&#34;w&#34;) as out:
-                    out.write(text)
-
-            save(&#34;.stdout.log&#34;, result.stdout)
+            _save_output(name.with_suffix(&#34;.stdout.log&#34;), result.stdout)
             if result.stderr:
-                save(&#34;.stderr.log&#34;, result.stderr)</code></pre>
+                _save_output(name.with_suffix(&#34;.stderr.log&#34;), result.stderr)</code></pre>
 </details>
 </dd>
 </dl>

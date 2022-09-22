@@ -191,6 +191,7 @@ import importlib
 import logging
 from contextlib import suppress
 from functools import partial, reduce
+from inspect import isclass
 
 LOG = logging.getLogger(__name__)
 
@@ -396,9 +397,9 @@ class PluginManager:
             plugin_class = load_dotted_object(path)
 
         except ImportError as e:
-            raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: {e}&#34;)
+            raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: {e}&#34;) from e
 
-        if not issubclass(plugin_class, Plugin):
+        if not (isclass(plugin_class) and issubclass(plugin_class, Plugin)):
             raise TypeError(
                 f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: &#39;{path}&#39; is not a {Plugin}&#34;
             )
@@ -938,9 +939,9 @@ instantiation of a plug-in.</p></section>
             plugin_class = load_dotted_object(path)
 
         except ImportError as e:
-            raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: {e}&#34;)
+            raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: {e}&#34;) from e
 
-        if not issubclass(plugin_class, Plugin):
+        if not (isclass(plugin_class) and issubclass(plugin_class, Plugin)):
             raise TypeError(
                 f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: &#39;{path}&#39; is not a {Plugin}&#34;
             )
@@ -1078,9 +1079,9 @@ pm.parse_args('Accounts', default='awsrun.plugins.accts.Identity')
         plugin_class = load_dotted_object(path)
 
     except ImportError as e:
-        raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: {e}&#34;)
+        raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: {e}&#34;) from e
 
-    if not issubclass(plugin_class, Plugin):
+    if not (isclass(plugin_class) and issubclass(plugin_class, Plugin)):
         raise TypeError(
             f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}-&gt;plugin: &#39;{path}&#39; is not a {Plugin}&#34;
         )
