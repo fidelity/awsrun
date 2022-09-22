@@ -8,7 +8,6 @@
 import argparse
 import builtins
 import re
-from functools import wraps
 
 
 class RawAndDefaultsFormatter(
@@ -109,7 +108,7 @@ class AppendAttributeValuePair(argparse.Action):
     """
 
     def __call__(self, parser, namespace, values, option_string=None):
-        match = re.match(r"([^=]+)=(?:(str|int|float|bool):)?(.+)", values)
+        match = re.match(r"([^=]+)=(?:(str|int|float|bool):)?(.+)", values)  # type: ignore
         if not match:
             parser.error(f"{option_string}: expected attr=val1,val2,etc")
 

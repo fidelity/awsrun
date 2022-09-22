@@ -248,7 +248,6 @@ from bs4 import BeautifulSoup
 from awsrun.cache import ExpiringValue
 from awsrun.session import SessionProvider
 
-
 LOG = logging.getLogger(__name__)
 
 
@@ -414,11 +413,11 @@ class CredsViaSAML(CachingSessionProvider):
         LOG.info("Fetching SAML assertion")
         with requests.Session() as s:
             s.auth = self._auth
-            s.headers = self._headers
+            s.headers.update(self._headers)
             resp = s.get(self._url, verify=not self._no_verify)
 
         if resp.status_code == 401:
-            raise IDPAccessDeniedException(f"Could not authenticate")
+            raise IDPAccessDeniedException("Could not authenticate")
         if not 200 <= resp.status_code < 300:
             raise IDPInvalidResponseException(
                 f"{resp.status_code} response from {self._url}"
@@ -433,7 +432,7 @@ class CredsViaSAML(CachingSessionProvider):
 
         if len(saml) != 1:
             raise IDPInvalidResponseException(
-                f"Cannot extract SAML assertion from response"
+                "Cannot extract SAML assertion from response"
             )
 
         # Indexing is guaranteed to succeed as we check the length above

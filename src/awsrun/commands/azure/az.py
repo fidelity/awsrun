@@ -295,7 +295,6 @@ class CLICommand(Command):
 
     def __init__(self, azurecli_args, output=None, output_dir=None, annotate=False):
         super().__init__()
-        self.azurecli_path = shutil.which("az")
         self.azurecli_args = azurecli_args
         self.output = output
         self.annotate = annotate
@@ -304,7 +303,10 @@ class CLICommand(Command):
         if self.output_dir:
             self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        if not self.azurecli_path:
+        path = shutil.which("az")
+        if path:
+            self.azurecli_path = path
+        else:
             raise FileNotFoundError(
                 "error: Have you installed the Azure CLI? https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
             )

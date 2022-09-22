@@ -436,7 +436,7 @@ class CLICommand(Command):
         if self.include_roles:
             identities["role"] = get_identities(iam.roles, iam.Role, self.search_roles)
 
-        for i_type in identities:
+        for i_type in identities:  # pylint: disable=consider-using-dict-items
             for identity in identities[i_type]:
                 ip = IdentityPrinter(out, f"{acct}: identity={i_type}:{identity.name}")
                 self.show_inline_policies(identity, ip)

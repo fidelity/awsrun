@@ -101,6 +101,6 @@ class CLICommand(Command):
         print(f"Success: {successful}, Failures: {unsuccessful}")
 
         if unsuccessful:
-            print(f"\nUnsuccessful attempts:")
+            print("\nUnsuccessful attempts:")
             for acct in self.no_access:
                 print(acct)

@@ -157,13 +157,14 @@ import re
 import shutil
 import subprocess
 import sys
-import yaml
+from collections import namedtuple
 from pathlib import Path
+
+import yaml
 
 from awsrun.argparse import AppendWithoutDefault
 from awsrun.config import List, Str, StrMatch
 from awsrun.runner import RegionalCommand
-from collections import namedtuple
 
 LOG = logging.getLogger(__name__)
 
@@ -287,7 +288,10 @@ class CLICommand(RegionalCommand):
 
         # Make sure user has both dependent binaries installed
         has_prereqs = True
-        if not shutil.which("kubectl"):
+        path = shutil.which("kubectl")
+        if path:
+            self.kubectlcli_path = path
+        else:
             print(
                 "'kubectl' not found in PATH, have you installed it?", file=sys.stderr
             )
@@ -340,7 +344,7 @@ class CLICommand(RegionalCommand):
 
                 # Invoke kubectl and return results being careful to ensure that
                 # we honor kubectl's stdout and stderr.
-                cmd = [shutil.which("kubectl")]
+                cmd = [self.kubectlcli_path]
                 if self.annotate and self.annotate != "text":
                     cmd += ["--output", self.annotate]
                 elif self.output:
@@ -388,7 +392,7 @@ class CLICommand(RegionalCommand):
                 d["Results"] = loader(result.stdout)
                 dumper(d, sys.stdout, indent=4)
                 print()
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 annotate_lines(result, f"cannot parse output: {e}", file=sys.stderr)
 
         try:
@@ -429,13 +433,9 @@ class CLICommand(RegionalCommand):
                     / f"{escaped}-{region}-{result.cluster}-{result.namespace}"
                 )
 
-                def save(suffix, text):
-                    with name.with_suffix(suffix).open("w") as out:
-                        out.write(text)
-
-                save(".stdout.log", result.stdout)
+                _save_output(name.with_suffix(".stdout.log"), result.stdout)
                 if result.stderr:
-                    save(".stderr.log", result.stderr)
+                    _save_output(name.with_suffix(".stderr.log"), result.stderr)
 
 
 _Result = namedtuple("Result", ["stdout", "stderr", "cluster", "namespace"])
@@ -480,6 +480,11 @@ users:
 """
 
 
+def _save_output(name, text):
+    with name.open("w") as out:
+        out.write(text)
+
+
 def _save_kubecfg(name, namespace, account_id, region, cluster, session):
     creds = session.get_credentials()
     substitions = {
@@ -498,9 +503,7 @@ def _save_kubecfg(name, namespace, account_id, region, cluster, session):
     kubedir.mkdir(parents=True, exist_ok=True)
 
     filename = kubedir / Path(f"awsrun-{account_id}-{region}-{name}-{namespace}")
-    with filename.open("w") as f:
-        f.write(_KUBECONFIG.format(**substitions))
-
+    _save_output(filename, _KUBECONFIG.format(**substitions))
     return filename
 
 

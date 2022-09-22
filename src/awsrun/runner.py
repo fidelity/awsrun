@@ -173,12 +173,13 @@ process. In addition, the other difference is the region parameter on the
     account_runner = AccountRunner(session_provider)
     account_runner.run(cmd, ['111222333444', '222333444111'])
 """
+import functools
 import logging
 import sys
-import time
-import functools
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Callable
 
 from awsrun.argparse import AppendWithoutDefault
 from awsrun.config import List, Str
@@ -752,7 +753,11 @@ def max_thread_limit(count):
 
 
 def get_paginated_resources(
-    client, paginator, page_key, predicate=lambda _: True, **kwargs
+    client,
+    paginator,
+    page_key,
+    predicate: Callable[[dict], bool] = lambda _: True,
+    **kwargs,
 ):
     """Return the full list of boto3 resources via a paginator.
 
@@ -961,7 +966,9 @@ def _valid_key_fn(fn):
         try:
             result = fn(*args, **kwargs)
         except Exception as e:
-            raise InvalidAccountIDError(f"The key function threw an exception: {e}")
+            raise InvalidAccountIDError(
+                f"The key function threw an exception: {e}"
+            ) from e
         if not isinstance(result, str):
             raise InvalidAccountIDError(f"Account ID is not a string: {result}")
         return result

@@ -32,12 +32,12 @@ your.own.module.PluginSubclass
 `awsrun.plugmgr.Plugin` that returns a `awsrun.session.SessionProvider`.
 """
 
-import os
 import getpass
+import os
 
 from awsrun.config import Str
 from awsrun.plugmgr import Plugin
-from awsrun.session.azure import CredsViaUsernamePassword, CredsViaAzureDefault
+from awsrun.session.azure import CredsViaAzureDefault, CredsViaUsernamePassword
 
 
 class Default(Plugin):

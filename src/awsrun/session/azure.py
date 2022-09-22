@@ -68,18 +68,12 @@ risk, this module guarantees that only one thread makes the first request for a
 token, to populate the token cache or refresh it, before allowing other threads
 to proceed concurrently.
 """
-import threading
 import functools
+import threading
+
+from azure.identity import DefaultAzureCredential, UsernamePasswordCredential
 
 from awsrun.session import SessionProvider
-
-# I think pylint has bug when the current file is named the same as an existing
-# module already installed. In this case, this file is called azure.py and there
-# is a external module called azure installed with the Azure SDK.
-# pylint: disable=no-name-in-module,import-error
-from azure.identity import DefaultAzureCredential
-from azure.identity import UsernamePasswordCredential
-
 
 # The UsernamePasswordCredenial requires a client ID, so we use the client used
 # by the Azure CLI.

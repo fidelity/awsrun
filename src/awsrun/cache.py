@@ -31,9 +31,9 @@ invocation of `value` took place, the original value expired after 10 seconds.
 """
 
 import json
-import time
 import logging
 import threading
+import time
 from pathlib import Path
 
 LOG = logging.getLogger(__name__)
@@ -165,7 +165,7 @@ class PersistentExpiringValue(ExpiringValue):
 
     def load(self):
         LOG.debug("Loading cached data from %s", self._path)
-        with self._path.open("r") as file:
+        with self._path.open("r", encoding="utf-8") as file:
             return json.load(file)
 
     def save(self, value):
@@ -175,7 +175,7 @@ class PersistentExpiringValue(ExpiringValue):
 
         LOG.debug("Saving data to cache file %s", self._path)
         tmp = self._path.with_suffix(".tmp")
-        with tmp.open("w") as file:
+        with tmp.open("w", encoding="utf-8") as file:
             json.dump(value, file)
 
         # Pathlib.replace uses os.replace which is atomic on POSIX systems

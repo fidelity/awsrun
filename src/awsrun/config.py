@@ -130,7 +130,7 @@ class Config:
         if path.suffix not in cls._filetypes:
             raise ValueError(f"Unregistered file type extension: {path.suffix}")
 
-        with path.open() as f:
+        with path.open(encoding="utf-8") as f:
             return cls._filetypes[path.suffix](f)
 
     def __init__(self, d):
@@ -171,10 +171,10 @@ class Config:
         # empty dict.
         try:
             value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
-        except AttributeError:
+        except AttributeError as e:
             raise ValueError(
                 f"Error in config: {'->'.join(keys[:-1])}: not a dictionary"
-            )
+            ) from e
 
         # If value is {} that means the key doesn't exist. If the must_exist
         # flag was passed, then we raise a descriptive ValueError, otherwise we

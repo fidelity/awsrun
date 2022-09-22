@@ -3,12 +3,10 @@
 #
 # SPDX-License-Identifier: MIT
 #
-import json
-from datetime import datetime, timedelta
-from pathlib import Path
+
+# pylint: disable=redefined-outer-name,missing-docstring
 
 import pytest
-from freezegun import freeze_time
 
 from awsrun import acctload
 
@@ -20,12 +18,19 @@ def test_identity_loader_acct_id(test_input):
 
 
 @pytest.mark.parametrize(
-    "test_input",
-    [[], ["100200300400"], ["100200300400", "200300400100", "300400100200"]],
+    "test_input, expected",
+    [
+        (None, []),
+        ([], []),
+        (
+            ["100200300400", "100200300400", "200300400100"],
+            ["100200300400", "200300400100"],
+        ),
+    ],
 )
-def test_identity_loader_accounts(test_input):
+def test_identity_loader_accounts(test_input, expected):
     loader = acctload.IdentityAccountLoader()
-    assert set(loader.accounts(acct_ids=test_input)) == set(test_input)
+    assert set(loader.accounts(acct_ids=test_input)) == set(expected)
 
 
 @pytest.mark.parametrize(
@@ -44,7 +49,7 @@ def test_identity_loader_accounts_with_filters(filter_kwargs):
 
 def test_identity_loader_attributes():
     loader = acctload.IdentityAccountLoader()
-    assert loader.attributes() == {}
+    assert not loader.attributes()
 
 
 @pytest.fixture()
@@ -107,7 +112,7 @@ def test_meta_account_loader_accounts(
 ):
     mal = acctload.MetaAccountLoader(many_acct_list)
     accts = mal.accounts(acct_ids=test_input, include=include, exclude=exclude)
-    acct_ids = set([a.id for a in accts])
+    acct_ids = {a.id for a in accts}
     assert acct_ids == expected
 
 
@@ -362,6 +367,7 @@ def test_load_with_invalid_path(path, test_input, expected):
     ],
 )
 def test_convert_keys_to_valid_attribute_names(test_input, expected):
+    # pylint: disable=protected-access
     acctload._convert_keys_to_valid_attribute_names(test_input)
     assert test_input == expected, "dict key names not rewritten"
 
@@ -390,4 +396,5 @@ def test_convert_keys_to_valid_attribute_names(test_input, expected):
     ],
 )
 def test_make_valid_attribute_name(test_input, expected):
+    # pylint: disable=protected-access
     assert acctload._make_valid_attribute_name(test_input) == expected

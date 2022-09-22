@@ -3,6 +3,9 @@
 #
 # SPDX-License-Identifier: MIT
 #
+
+# pylint: disable=redefined-outer-name,missing-docstring
+
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -71,8 +74,8 @@ def yaml_string():
 
 
 @pytest.fixture()
-def json_cache(tmpdir):
-    with open(tmpdir.join("awsrun.dat"), "w") as f:
+def _json_cache(tmpdir):
+    with open(tmpdir.join("awsrun.dat"), "w", encoding="utf-8") as f:
         f.write(
             """
     [
@@ -110,21 +113,22 @@ def test_json_loader_without_cache(tmpdir, mocker, expected_from_loader, max_age
 
     # requests.get should be called as no cache exists on the filesystem
     mock_get.assert_called_once()
-    (url_called,), kwargs = mock_get.call_args
+    (url_called,), _ = mock_get.call_args
     assert url == url_called
 
     # Make sure the accts were loaded and passed to the MetaAccountLoader
-    (accts,), kwargs = mock_mal.call_args
+    (accts,), _ = mock_mal.call_args
     assert accts == expected_from_loader
 
     if max_age == 0:
         # Make sure it did not cache data if max age was 0
         with pytest.raises(FileNotFoundError):
-            open(tmpdir.join("awsrun.dat"))
+            with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+                pass
 
     else:
         # Make sure the json loader cached the results if max age > 0
-        with open(tmpdir.join("awsrun.dat")) as f:
+        with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
             cached_accts = json.load(f)
         assert accts == cached_accts
 
@@ -145,21 +149,22 @@ def test_yaml_loader_without_cache(
 
     # requests.get should be called as no cache exists on the filesystem
     mock_get.assert_called_once()
-    (url_called,), kwargs = mock_get.call_args
+    (url_called,), _ = mock_get.call_args
     assert url == url_called
 
     # Make sure the accts were loaded and passed to the MetaAccountLoader
-    (accts,), kwargs = mock_mal.call_args
+    (accts,), _ = mock_mal.call_args
     assert accts == expected_from_loader
 
     if max_age == 0:
         # Make sure it did not cache data if max age was 0
         with pytest.raises(FileNotFoundError):
-            open(tmpdir.join("awsrun.dat"))
+            with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+                pass
 
     else:
         # Make sure the yaml loader cached the results if max age > 0
-        with open(tmpdir.join("awsrun.dat")) as f:
+        with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
             cached_accts = yaml.safe_load(f)
         assert accts == cached_accts
 
@@ -180,11 +185,11 @@ def test_csv_loader_without_cache(
 
     # requests.get should be called as no cache exists on the filesystem
     mock_get.assert_called_once()
-    (url_called,), kwargs = mock_get.call_args
+    (url_called,), _ = mock_get.call_args
     assert url == url_called
 
     # Make sure the accts were loaded and passed to the MetaAccountLoader
-    (accts,), kwargs = mock_mal.call_args
+    (accts,), _ = mock_mal.call_args
     # csv loader returns a list of OrderedDicts, but json loader returns a list
     # of dicts, so to share the fixture between tests, we convert the ordered
     # dicts to plain dicts.
@@ -194,16 +199,17 @@ def test_csv_loader_without_cache(
     if max_age == 0:
         # Make sure it did not cache data if max age was 0
         with pytest.raises(FileNotFoundError):
-            open(tmpdir.join("awsrun.dat"))
+            with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+                pass
 
     else:
         # Make sure the json loader cached the results if max age > 0
-        with open(tmpdir.join("awsrun.dat")) as f:
+        with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
             cached_accts = json.load(f)
         assert accts == cached_accts
 
 
-def test_json_loader_with_cache(tmpdir, mocker, json_cache, expected_from_loader):
+def test_json_loader_with_cache(tmpdir, mocker, _json_cache, expected_from_loader):
     mock_get = mocker.patch("requests.get")
     mock_mal = mocker.patch("awsrun.acctload.MetaAccountLoader.__init__")
     mocker.patch("tempfile.gettempdir", return_value=tmpdir)
@@ -214,11 +220,11 @@ def test_json_loader_with_cache(tmpdir, mocker, json_cache, expected_from_loader
     mock_get.assert_not_called()
 
     # Make sure the accts were loaded and passed to the MetaAccountLoader
-    (accts,), kwargs = mock_mal.call_args
+    (accts,), _ = mock_mal.call_args
     assert accts == expected_from_loader
 
 
-def test_yaml_loader_with_cache(tmpdir, mocker, json_cache, expected_from_loader):
+def test_yaml_loader_with_cache(tmpdir, mocker, _json_cache, expected_from_loader):
     mock_get = mocker.patch("requests.get")
     mock_mal = mocker.patch("awsrun.acctload.MetaAccountLoader.__init__")
     mocker.patch("tempfile.gettempdir", return_value=tmpdir)
@@ -229,12 +235,12 @@ def test_yaml_loader_with_cache(tmpdir, mocker, json_cache, expected_from_loader
     mock_get.assert_not_called()
 
     # Make sure the accts were loaded and passed to the MetaAccountLoader
-    (accts,), kwargs = mock_mal.call_args
+    (accts,), _ = mock_mal.call_args
     assert accts == expected_from_loader
 
 
 def test_json_loader_with_expired_cache(
-    tmpdir, mocker, json_cache, expected_from_loader
+    tmpdir, mocker, _json_cache, expected_from_loader
 ):
     mock_resp = mocker.Mock()
     mock_resp.status_code = 200
@@ -259,13 +265,13 @@ def test_json_loader_with_expired_cache(
     assert cache_date_before < cache_date_after
 
     # Make sure the json loader cached the results
-    with open(tmpdir.join("awsrun.dat")) as f:
+    with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
         cached_accts = json.load(f)
     assert cached_accts == expected_from_loader
 
 
 def test_yaml_loader_with_expired_cache(
-    tmpdir, mocker, json_cache, yaml_string, expected_from_loader
+    tmpdir, mocker, _json_cache, yaml_string, expected_from_loader
 ):
     mock_resp = mocker.Mock()
     mock_resp.status_code = 200
@@ -290,7 +296,7 @@ def test_yaml_loader_with_expired_cache(
     assert cache_date_before < cache_date_after
 
     # Make sure the json loader cached the results
-    with open(tmpdir.join("awsrun.dat")) as f:
+    with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
         cached_accts = yaml.safe_load(f)
     assert cached_accts == expected_from_loader
 
@@ -337,7 +343,7 @@ def test_csv_account_loader_with_file_url(
     else:
         acctload.CSVAccountLoader(url)
 
-    (accts,), kwargs = mock_mal.call_args
+    (accts,), _ = mock_mal.call_args
     # csv loader returns a list of OrderedDicts, but json loader returns a list
     # of dicts, so to share the fixture between tests, we convert the ordered
     # dicts to plain dicts.
@@ -357,7 +363,7 @@ def test_json_account_loader_with_file_url(
 
     acctload.JSONAccountLoader(url, max_age=0)
 
-    (accts,), kwargs = mock_mal.call_args
+    (accts,), _ = mock_mal.call_args
     assert accts == expected_from_loader
 
 
@@ -373,5 +379,5 @@ def test_yaml_account_loader_with_file_url(
 
     acctload.YAMLAccountLoader(url, max_age=0)
 
-    (accts,), kwargs = mock_mal.call_args
+    (accts,), _ = mock_mal.call_args
     assert accts == expected_from_loader

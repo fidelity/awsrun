@@ -60,8 +60,8 @@ via `CommandManager.instantiate_command`.  If the command cannot be found,
 all the discovered commands found in the configured paths.
 """
 
-import ast
 import argparse
+import ast
 import contextlib
 import importlib
 import logging
@@ -258,7 +258,7 @@ class DirectoryLoader(CommandLoader):
 
         except Exception as e:
             LOG.info("Invalid command at '%s': %s", fullpath, e)
-            raise CommandNotFoundError(command_name, {fullpath: e})
+            raise CommandNotFoundError(command_name, {fullpath: e}) from e
 
     def load_all(self):
         classes = {}
@@ -275,7 +275,7 @@ class DirectoryLoader(CommandLoader):
 
     @staticmethod
     def _contains_awsrun_command(filename):
-        with open(filename) as f:
+        with open(filename, encoding="utf-8") as f:
             node = ast.parse(f.read(), filename)
         return any(
             n.name == "CLICommand" for n in node.body if isinstance(n, ast.ClassDef)
@@ -304,7 +304,7 @@ class ModuleLoader(CommandLoader):
             return module.CLICommand
 
         except Exception as e:
-            raise CommandNotFoundError(command_name, {self.module_name: e})
+            raise CommandNotFoundError(command_name, {self.module_name: e}) from e
 
     def load_all(self):
         classes = {}
