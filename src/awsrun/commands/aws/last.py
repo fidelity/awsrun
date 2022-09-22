@@ -160,6 +160,7 @@ from functools import partial
 from itertools import chain, cycle
 
 import py_cui
+import py_cui.keys
 from colorama import Fore, Style, init
 
 from awsrun.argparse import AppendAttributeValuePair
@@ -273,10 +274,10 @@ class CLICommand(RegionalCommand):
             args.attributes["EventName"] = ["ConsoleLogin"]
 
         elif len(args.attributes) > 1:
-            parser.error(f"only one lookup attribute may be used per AWS")
+            parser.error("only one lookup attribute may be used per AWS")
 
         elif any(len(v) > 1 for v in args.attributes.values()):
-            parser.error(f"only one lookup value may be specified per AWS")
+            parser.error("only one lookup value may be specified per AWS")
 
         elif any(a not in LOOKUP_ATTRIBUTES for a in args.attributes):
             parser.error(
@@ -380,7 +381,7 @@ class CLICommand(RegionalCommand):
 
     def regional_collect_results(self, acct, region, get_result):
         if not self.interactive:
-            return super().regional_collect_results(acct, region, get_result)
+            super().regional_collect_results(acct, region, get_result)
 
         events, events_by_user = get_result()
         self.events.append(events)
@@ -411,7 +412,7 @@ class CLICommand(RegionalCommand):
         # vertically in the terminal for those with narrow terminals ...
         if self.vertical:
             root = py_cui.PyCUI(4, 1)
-            user_list = root.add_scroll_menu(f"Usernames", 0, 0)
+            user_list = root.add_scroll_menu("Usernames", 0, 0)
             event_list = root.add_scroll_menu("Events", 1, 0)
             event_detail = root.add_scroll_menu("Event Detail", 2, 0, row_span=2)
 
@@ -420,7 +421,7 @@ class CLICommand(RegionalCommand):
         # detail pane taking the full height on the right side.
         else:
             root = py_cui.PyCUI(3, 4)
-            user_list = root.add_scroll_menu(f"Usernames", 0, 0, column_span=2)
+            user_list = root.add_scroll_menu("Usernames", 0, 0, column_span=2)
             event_list = root.add_scroll_menu("Events", 1, 0, row_span=2, column_span=2)
             event_detail = root.add_scroll_menu(
                 "Event Detail", 0, 2, row_span=3, column_span=2
@@ -437,7 +438,7 @@ class CLICommand(RegionalCommand):
         # only until the user presses ESC to return to overview mode. I find
         # this non-intuitive, so let's provide a mappting for TAB to cycle
         # between widgets and place them in focus mode automatically.
-        focus = cycle(root.get_widgets().values())
+        focus = cycle(filter(None, root.get_widgets().values()))
 
         def select_next_widget():
             root.move_focus(next(focus))
@@ -471,6 +472,7 @@ class CLICommand(RegionalCommand):
         # dismissed. We save the widget that was in focus before the popup, so
         # we can refocus on it afterwards.
         def show_filter_popup():
+            # pylint: disable=protected-access
             original_widget = root.get_selected_widget()
 
             def popup_callback(s):
@@ -478,12 +480,13 @@ class CLICommand(RegionalCommand):
                 current_filter_expression = s
                 filter_event_lists(s)
                 update_user_list()
-                root.move_focus(original_widget)
+                if original_widget:
+                    root.move_focus(original_widget)
 
             root.show_text_box_popup("Filter expression:", popup_callback)
-            # TODO Workaround until upstream allows setting initial text.
+            # Workaround until upstream allows setting initial text.
             root._popup.set_text(current_filter_expression)
-            # TODO Workaround until upstream py_cui fixes bug
+            # Workaround until upstream py_cui fixes bug
             root._popup._initial_cursor = (
                 root._popup.get_start_position()[0] + root._popup.get_padding()[0] + 2
             )
@@ -505,8 +508,9 @@ class CLICommand(RegionalCommand):
 
         def update_event_detail():
             event_detail.clear()
-            if event_list.get():
-                event_detail.add_item_list(event_list.get().to_json().split("\n"))
+            event = event_list.get()
+            if event:
+                event_detail.add_item_list(event.to_json().split("\n"))
 
         def unfilter_event_list():
             event_list.clear()
@@ -523,7 +527,7 @@ class CLICommand(RegionalCommand):
         user_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_list)
         user_list.add_key_command(py_cui.keys.KEY_BACKSPACE, unfilter_event_list)
         user_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
         user_list.set_focus_text(
             "Press 'q' to exit. TAB to switch panes. RET for user events. BACKSPACE for all events. 'f' to filter."
         )
@@ -533,7 +537,7 @@ class CLICommand(RegionalCommand):
         event_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
         event_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_detail)
         event_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
         event_list.set_focus_text(
             "Press 'q' to exit. TAB to switch panes. RET for event detail. 'f' to filter."
         )
@@ -542,7 +546,7 @@ class CLICommand(RegionalCommand):
         event_detail.set_focus_border_color(self.color)
         event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
         event_detail.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, lambda: root.stop())
+        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
         event_detail.set_focus_text(
             "Press 'q' to exit. TAB to switch panes. 'f' to filter."
         )
@@ -572,6 +576,7 @@ class _UserIdentityType:
 
     @classmethod
     def new(cls, event):
+        """Return a concrete implementation of `_UserIdentityType`."""
         user_type = event["CloudTrailEvent"]["userIdentity"].get("type", "AWSService")
         klass = globals().get(f"_{user_type}Type", cls)
         return klass(event)
@@ -619,8 +624,10 @@ class _UserIdentityType:
         session_name = params.get("roleSessionName")
         if arn and session_name:
             return _strip_to("/", arn, greedy=True) + "/" + session_name
+        return None
 
     def to_json(self):
+        """Return event as JSON string."""
         return json.dumps(self.event, default=str, indent=4)
 
     def __str__(self):

@@ -80,16 +80,16 @@ value.
 
 """
 
+import itertools
+import logging
 import re
 import sys
-import logging
-import itertools
 from datetime import datetime, timedelta
 
 import colorama
 from colorama import Fore, Style
 
-from awsrun.config import Int, Str, List, Bool
+from awsrun.config import Bool, Int, List, Str
 from awsrun.runner import RegionalCommand, get_paginated_resources
 
 LOG = logging.getLogger(__name__)

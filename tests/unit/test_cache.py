@@ -3,6 +3,9 @@
 #
 # SPDX-License-Identifier: MIT
 #
+
+# pylint: disable=redefined-outer-name,missing-docstring
+
 import os
 import random
 import time
@@ -15,7 +18,7 @@ from awsrun import cache
 
 def test_expiring_value_caching():
     with freeze_time() as frozen_datetime:
-        ev = cache.ExpiringValue(lambda: random.random(), max_age=300)
+        ev = cache.ExpiringValue(random.random, max_age=300)
         initial_value = ev.value()
 
         frozen_datetime.tick(delta=timedelta(seconds=60))
@@ -36,11 +39,11 @@ def test_expiring_value_caching():
 
 
 def test_expiring_value_no_caching():
-    ev = cache.ExpiringValue(lambda: random.random(), max_age=0)
+    ev = cache.ExpiringValue(random.random, max_age=0)
     value1 = ev.value()
     value2 = ev.value()
     value3 = ev.value()
-    assert value1 != value2 and value2 != value3, "values should not be cached"
+    assert len({value1, value2, value3}) == 3, "values should not be cached"
 
 
 def test_persistent_expiring_value_caching(tmp_path):
@@ -48,9 +51,7 @@ def test_persistent_expiring_value_caching(tmp_path):
         cache_file = tmp_path / "test.dat"
         assert not cache_file.exists()
 
-        ev = cache.PersistentExpiringValue(
-            lambda: random.random(), cache_file, max_age=300
-        )
+        ev = cache.PersistentExpiringValue(random.random, cache_file, max_age=300)
         initial_value = ev.value()
         assert cache_file.exists()
 
@@ -80,7 +81,7 @@ def test_persistent_expiring_value_no_caching(tmp_path):
     cache_file = tmp_path / "test.dat"
     assert not cache_file.exists()
 
-    ev = cache.PersistentExpiringValue(lambda: random.random(), cache_file, max_age=0)
+    ev = cache.PersistentExpiringValue(random.random, cache_file, max_age=0)
     value1 = ev.value()
     assert not cache_file.exists()
 
@@ -90,4 +91,4 @@ def test_persistent_expiring_value_no_caching(tmp_path):
     value3 = ev.value()
     assert not cache_file.exists()
 
-    assert value1 != value2 and value2 != value3, "values should not be cached"
+    assert len({value1, value2, value3}) == 3, "values should not be cached"

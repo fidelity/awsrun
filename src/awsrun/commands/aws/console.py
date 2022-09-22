@@ -96,6 +96,7 @@ class CLICommand(Command):
         r = requests.get(
             "https://signin.aws.amazon.com/federation",
             params={"Action": "getSigninToken", "Session": json.dumps(session_creds)},
+            timeout=10.0,
         )
         r.raise_for_status()
         signin_token = r.json()["SigninToken"]

@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: MIT
 #
 
+# pylint: disable=redefined-outer-name,missing-docstring
+
 import argparse
 
 import pytest
@@ -12,7 +14,7 @@ from awsrun.argparse import AppendAttributeValuePair, AppendWithoutDefault, from
 
 
 @pytest.mark.parametrize(
-    "type, test, expected",
+    "type_, test, expected",
     [
         ("str", "value", "value"),
         ("int", "10", 10),
@@ -26,8 +28,8 @@ from awsrun.argparse import AppendAttributeValuePair, AppendWithoutDefault, from
         ("SomeType", "value", "value"),
     ],
 )
-def test_from_str_to(type, test, expected):
-    assert from_str_to(type)(test) == expected
+def test_from_str_to(type_, test, expected):
+    assert from_str_to(type_)(test) == expected
 
 
 @pytest.mark.parametrize(

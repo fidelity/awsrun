@@ -279,6 +279,7 @@ class CLICommand(RegionalCommand):
         # to load data. We load all data at once, instead of as we loop over
         # each connection, because CloudWatch has much more efficient APIs for
         # bulk data loads.
+        metrics = None
         if self.height > 0:
             metrics = self._load_dx_metrics(cw, conn_by_id.keys())
 
@@ -295,7 +296,7 @@ class CLICommand(RegionalCommand):
 
             print(f"{prefix} {_conn2str(conn, vifs)}", file=out)
 
-            if self.height > 0:
+            if metrics:
                 _print_conn_metrics(
                     conn,
                     metrics[c_id],
@@ -343,10 +344,9 @@ def invert(n):
     """Return 1 if n is 0, 0 if n is 1, otherwise n."""
     if n == 0:
         return 1
-    elif n == 1:
+    if n == 1:
         return 0
-    else:  # NaN case
-        return n
+    return n  # NaN case
 
 
 def bps(bandwidth):
@@ -439,7 +439,7 @@ def _print_conn_metrics(
             chart = sparkify(values, minimum=0, maximum=max_yaxis)
             print(prefix, end=" ", file=file)
 
-        elif height > 1:
+        else:
             opts = {
                 "min": 0,
                 "height": height,
@@ -463,6 +463,8 @@ def _format_metric(name, chart, color=Fore.BLACK):
 
 # Type definition for awsrun.config to validate positive numbers.
 class PositiveInt(Type):
+    """Type that represents a positive integer."""
+
     def type_check(self, obj):
         return isinstance(obj, int) and obj > 0
 

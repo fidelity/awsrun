@@ -726,7 +726,7 @@ from datetime import timedelta
 from functools import partial
 from pathlib import Path
 
-import awsrun.commands
+from awsrun import __version__
 from awsrun.acctload import AccountLoader
 from awsrun.argparse import (
     AppendAttributeValuePair,
@@ -926,7 +926,7 @@ def _cli(csp):
     )
 
     parser.add_argument(
-        "--version", action="version", version="%(prog)s " + awsrun.__version__
+        "--version", action="version", version="%(prog)s " + __version__
     )
 
     parser.add_argument(

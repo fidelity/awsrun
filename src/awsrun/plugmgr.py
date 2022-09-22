@@ -70,6 +70,7 @@ import importlib
 import logging
 from contextlib import suppress
 from functools import partial, reduce
+from inspect import isclass
 
 LOG = logging.getLogger(__name__)
 
@@ -275,9 +276,9 @@ class PluginManager:
             plugin_class = load_dotted_object(path)
 
         except ImportError as e:
-            raise ValueError(f"Error in config: {'->'.join(keys)}->plugin: {e}")
+            raise ValueError(f"Error in config: {'->'.join(keys)}->plugin: {e}") from e
 
-        if not issubclass(plugin_class, Plugin):
+        if not (isclass(plugin_class) and issubclass(plugin_class, Plugin)):
             raise TypeError(
                 f"Error in config: {'->'.join(keys)}->plugin: '{path}' is not a {Plugin}"
             )

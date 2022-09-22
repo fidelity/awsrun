@@ -3,6 +3,9 @@
 #
 # SPDX-License-Identifier: MIT
 #
+
+# pylint: disable=redefined-outer-name,missing-docstring
+
 import json
 
 import pytest
@@ -50,7 +53,7 @@ def yaml_config(tmp_path_factory, basic_config):
 
 
 @pytest.mark.parametrize(
-    "keys, default, type, expected",
+    "keys, default, type_, expected",
     [
         (["Options", "verbose"], None, None, True),
         (["Options", "debug"], None, None, False),
@@ -73,9 +76,9 @@ def yaml_config(tmp_path_factory, basic_config):
         ),
     ],
 )
-def test_get_with_valid_types(yaml_config, keys, default, type, expected):
+def test_get_with_valid_types(yaml_config, keys, default, type_, expected):
     c = config.Config.from_file(yaml_config)
-    assert c.get(*keys, default=default, type=type) == expected
+    assert c.get(*keys, default=default, type=type_) == expected
 
 
 @pytest.mark.parametrize(
@@ -96,7 +99,7 @@ def test_get_must_exist(yaml_config, keys):
 
 
 @pytest.mark.parametrize(
-    "keys, default, type",
+    "keys, default, type_",
     [
         (["Options", "verbose"], None, config.Str),
         (["Options", "does not exist"], 10, config.Bool),
@@ -110,10 +113,10 @@ def test_get_must_exist(yaml_config, keys):
         ),
     ],
 )
-def test_get_with_invalid_types(yaml_config, keys, default, type):
+def test_get_with_invalid_types(yaml_config, keys, default, type_):
     c = config.Config.from_file(yaml_config)
     with pytest.raises(TypeError):
-        c.get(*keys, default=default, type=type)
+        c.get(*keys, default=default, type=type_)
 
 
 def test_register_filetype(tmp_path):

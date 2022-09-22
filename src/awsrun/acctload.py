@@ -47,6 +47,7 @@ to attributes that are not present in the accounts being loaded.
 import csv
 import io
 import itertools
+import json
 import keyword
 import logging
 import re
@@ -58,7 +59,6 @@ from functools import reduce
 from pathlib import Path
 
 import requests
-import json
 import yaml
 from requests_file import FileAdapter
 
@@ -147,6 +147,9 @@ class IdentityAccountLoader(AccountLoader):
         """
         if include or exclude:
             raise AttributeError("Cannot use filters as no attributes are defined")
+
+        if acct_ids is None:
+            return []
 
         return list(set(acct_ids))
 
@@ -314,7 +317,7 @@ class MetaAccountLoader(AccountLoader):
         self.CustomAccount = type(
             "Account", (AbstractAccount,), {"__slots__": "_attrs"}
         )
-        self.CustomAccount._str_template = (
+        self.CustomAccount._str_template = (  # type: ignore
             self.str_template
         )  # pylint: disable=protected-access
 
@@ -510,8 +513,10 @@ class MetaAccountLoader(AccountLoader):
         """
         try:
             return reduce(lambda d, p: d[p], self.path, accts)
-        except Exception:
-            raise ValueError(f"Cannot find accounts, did you specify the correct path?")
+        except Exception as e:
+            raise ValueError(
+                "Cannot find accounts, did you specify the correct path?"
+            ) from e
 
     def _convert_dict_of_accts_to_list(self, accts):
         """Converts a dict of accounts to a list of accounts.
@@ -541,7 +546,7 @@ class MetaAccountLoader(AccountLoader):
         for key, acct in accts.items():
             if not isinstance(acct, dict):
                 raise TypeError(
-                    f"Accounts are not dicts, did you specify the correct path?"
+                    "Accounts are not dicts, did you specify the correct path?"
                 )
 
             if self.id_attr not in acct:
@@ -607,6 +612,7 @@ class MetaAccountLoader(AccountLoader):
 
         # Using the filtered attribute set, update the acct dicts in place
         for acct in accts:
+            insert_keys, delete_keys = [], []
             for key in acct:
                 delete_keys = [k for k in acct if k not in attrs]
                 insert_keys = [k for k in attrs if k not in acct]
