@@ -902,7 +902,6 @@ class AccountRunner:
         cmd.pre_hook()
 
         with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
-
             # The worker task processes a single account. The worker task takes
             # care to capture the result of the command's execute method. We
             # don't want a poorly written command that raises an exception to

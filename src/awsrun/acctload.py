@@ -893,7 +893,6 @@ class AzureCLIAccountLoader(MetaAccountLoader):
 
         accts = []
         for subscription in json.loads(result.stdout):
-
             # Remove non-scalar elements
             subscription.pop("user", None)
             subscription.pop("managedByTenants", None)
