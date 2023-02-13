@@ -57,7 +57,6 @@ class CLICommand(RegionalCommand):
         public_ips = defaultdict(list)
         for vpc in ec2.vpcs.all():
             for ni in vpc.network_interfaces.all():
-
                 # I've opened a bug report for boto3 as the following lines
                 # should, in my opinion, find all public IPs. For some reason
                 # the association reference is None in some cases when the

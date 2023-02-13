@@ -518,6 +518,7 @@ class CLICommand(Command):
 # ---------------------------------------------------------------------------
 # Helper Classes
 
+
 # This class is used so I don't have to pass around a bunch of args to each
 # method just for printing out the standard "acct:" lines. Instead, one instance
 # is instantiated with the prefix, and then this object is passed from method to
