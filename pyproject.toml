@@ -53,6 +53,7 @@ azure = [
 ]
 dev = [
   "black",
+  "flake8",
   "freezegun",
   "isort",
   "pdoc3",
