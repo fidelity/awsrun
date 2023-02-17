@@ -54,11 +54,11 @@ def test_append_without_default_action(default, args, expected):
 @pytest.mark.parametrize(
     "args, expected_exception",
     [
-        ("--region", argparse.ArgumentError),
+        ("--region", SystemExit),
     ],
 )
 def test_append_without_default_action_failure(args, expected_exception):
-    parser = argparse.ArgumentParser(exit_on_error=False)
+    parser = argparse.ArgumentParser()
     parser.add_argument("--region", action=AppendWithoutDefault, default=["east"])
     with pytest.raises(expected_exception):
         parser.parse_args(args.split())
@@ -89,12 +89,12 @@ def test_append_attribute_value_pair_action(args, expected):
 @pytest.mark.parametrize(
     "args, expected_exception",
     [
-        ("-f", argparse.ArgumentError),
+        ("-f", SystemExit),
         ("-f level=int:1,not_a_number,3", SystemExit),
     ],
 )
 def test_append_attribute_value_pair_action_failure(args, expected_exception):
-    parser = argparse.ArgumentParser(exit_on_error=False)
+    parser = argparse.ArgumentParser()
     parser.add_argument("--flag", "-f", action=AppendAttributeValuePair)
     with pytest.raises(expected_exception):
         parser.parse_args(args.split())

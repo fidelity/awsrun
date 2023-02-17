@@ -104,19 +104,24 @@ ASCII-based charts.
 
 Python 3.7 or higher is required.
 
-To install (suggest using a virtual env):
+To install:
 
-    $ python -m pip install awsrun
+    $ pip install awsrun[aws,azure]
 
-This will install both `awsrun` and `azurerun`.
+This will install dependencies for both `awsrun` and `azurerun`.
+If you don't want both, you can specify only one. For example,
+if you only want `awsrun`:
 
-To install from source, clone the repo and run pip install:
+    $ pip install awsrun[aws]
 
-    $ git clone https://github.com/fidelity/awsrun.git
-    $ cd awsrun
-    $ python -m pip install .
+If you only want `azurerun`:
 
-In order to use the built-in awsrun
+    $ pip install awsrun[azure]
+
+In all three cases, the console scripts `awsrun` and `azurerun` are
+installed, but only the dependencies for the specified CSP are installed.
+
+Note: In order to use the built-in awsrun
 [`aws`](https://fidelity.github.io/awsrun/commands/aws/aws.html) command, the AWS
 CLI tool must be
 [installed](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
@@ -125,16 +130,17 @@ AWS CLI tool was installed automatically as part of the installation. It is no
 longer installed to allow users the choice of installing v1 or v2 of the AWS CLI
 tool.
 
-If installing AWS CLI v1 on Windows via pip, users must make sure that the AWS
-CLI tool is included in their PATH. When pip installs the AWS CLI, it does not
-set the appropriate PATH variable on Windows, so it may be easier to install the
-AWS CLI via the MSIs provided by AWS.
-
-In order to use the built-in azurerun
+Note: In order to use the built-in azurerun
 [`az`](https://fidelity.github.io/awsrun/commands/azure/az.html) command, the Azure
 CLI tool must be
 [installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 and available in your operating system's PATH.
+
+To install from source, clone the repo and run pip install:
+
+    $ git clone https://github.com/fidelity/awsrun.git
+    $ cd awsrun
+    $ pip install .[aws,azure]
 
 ## AWS Quick Start
 

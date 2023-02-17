@@ -9,30 +9,30 @@ on:
       - master
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: ["3.8", "3.9", "3.10"]
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+          cache: "pip"
+          cache-dependency-path: pyproject.toml
 
-      - name: Check
-        shell: bash
-        run: |
-          python3 setup.py install
+      - name: Install (including dev dependencies)
+        run: pip install .[aws,azure,dev]
 
-  black:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-      - name: Install Black
-        run: pip install black
-      - name: Run black
+      - name: Lint with flake8
+        run: flake8 . --count --show-source --statistics
+
+      - name: Test with pytest
+        run: pytest
+
+      - name: Validate formatting with black
         run: black --check --diff .

@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "awsrun"
+authors = [{name = "Pete Kazmier", email = "opensource@fidelity.com"}]
+description = "CLI and library to execute commands over one or more AWS or Azure accounts concurrently."
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["aws", "azure", "cli", "command runner"]
+license = {file = "LICENSE"}
+dynamic = ["version"]
+
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: Unix",
+  "Operating System :: POSIX",
+  "Operating System :: Microsoft :: Windows",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Utilities",
+]
+
+dependencies = [
+  "PyYAML>=3.10",
+  "requests",
+  "requests_file",
+  "requests_ntlm",
+]
+
+[project.optional-dependencies]
+aws = [
+  "asciichartpy>=1.5.25",
+  "boto3>=1.12.39",
+  "bs4",
+  "colorama",
+  "py_cui==0.1.4",
+  "pysparklines>=1.0",
+]
+azure = [
+  "azure-identity",
+  "azure-mgmt-network",
+]
+dev = [
+  "black",
+  "flake8",
+  "freezegun",
+  "isort",
+  "pdoc3",
+  "pytest",
+  "pytest-mock",
+]
+
+[project.scripts]
+awsrun = "awsrun.cli:main"
+azurerun = "awsrun.cli:main"
+
+[project.urls]
+homepage = "https://github.com/fidelity/awsrun"
+
+[tool.setuptools.dynamic]
+version = {attr = "awsrun.__version__"}
