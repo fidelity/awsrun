@@ -483,12 +483,10 @@ class CLICommand(RegionalCommand):
                 if original_widget:
                     root.move_focus(original_widget)
 
-            root.show_text_box_popup("Filter expression:", popup_callback)
-            # Workaround until upstream allows setting initial text.
-            root._popup.set_text(current_filter_expression)
-            # Workaround until upstream py_cui fixes bug
-            root._popup._initial_cursor = (
-                root._popup.get_start_position()[0] + root._popup.get_padding()[0] + 2
+            root.show_text_box_popup(
+                "Filter expression:",
+                popup_callback,
+                initial_text=current_filter_expression,
             )
 
         def update_user_list():
