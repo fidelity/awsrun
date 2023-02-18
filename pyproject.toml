@@ -44,7 +44,7 @@ aws = [
   "boto3>=1.12.39",
   "bs4",
   "colorama",
-  "py_cui==0.1.4",
+  "py_cui==0.1.6",
   "pysparklines>=1.0",
 ]
 azure = [
