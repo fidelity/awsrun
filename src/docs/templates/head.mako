@@ -39,10 +39,17 @@ details {
     line-height: 1.35em;
 }
 
-/* Navbar code */
-ul li code a {
-    font-size: 14px;
+/* Navbar */
+#sidebar code {
+    font-size: 13px;
  }
+
+#sidebar .toc {
+    font-size: 15px;
+}
+
+#sidebar h1 { font-size: 1.4em; }
+#sidebar h3 { font-size: 1.10em; }
 
 /* Used in method names sections etc .. */
 code.name {
