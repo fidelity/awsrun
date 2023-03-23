@@ -152,7 +152,6 @@ from awsrun.runner import RegionalCommand
 
 try:
     import pyperclip
-    import textual
     from colorama import Fore, Style, init
     from rich.markdown import Markdown
     from rich.syntax import Syntax
@@ -162,17 +161,13 @@ try:
     from textual.reactive import reactive
     from textual.widgets import Button, DataTable, Footer, Header, Input, Static
 
-    if not textual.__version__.startswith("0.16."):
-        raise ImportError("Only textual==0.16 is supported.")
-
-except ImportError as e:
+except ImportError:
     sys.exit(
-        f"""{e}
+        """
+The 'last' command requires dependencies not installed by default with
+awsrun. Please install them with the following command:
 
-This command requires dependencies not installed by default with awsrun.
-Please install the following to use the this command:
-
-    pip install pyperclip colorama rich "textual==0.16"
+    pip install awsrun[last]
 """
     )
 
