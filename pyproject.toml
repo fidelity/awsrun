@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "awsrun"
-authors = [{name = "Pete Kazmier", email = "opensource@fidelity.com"}]
+authors = [{ name = "Pete Kazmier", email = "opensource@fidelity.com" }]
 description = "CLI and library to execute commands over one or more AWS or Azure accounts concurrently."
 readme = "README.md"
 requires-python = ">=3.7"
 keywords = ["aws", "azure", "cli", "command runner"]
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 dynamic = ["version"]
 
 classifiers = [
@@ -31,26 +31,23 @@ classifiers = [
   "Topic :: Utilities",
 ]
 
-dependencies = [
-  "PyYAML>=3.10",
-  "requests",
-  "requests_file",
-  "requests_ntlm",
-]
+# mandatory dependencies
+dependencies = ["PyYAML>=3.10", "requests", "requests_file", "requests_ntlm"]
 
 [project.optional-dependencies]
-aws = [
-  "asciichartpy>=1.5.25",
-  "boto3>=1.12.39",
-  "bs4",
-  "colorama",
-  "py_cui==0.1.6",
-  "pysparklines>=1.0",
-]
-azure = [
-  "azure-identity",
-  "azure-mgmt-network",
-]
+all = ["awsrun[aws,azure,cmds,dev]"]
+
+# dependencies for supported CSPs
+aws = ["boto3>=1.12.39", "bs4"]
+azure = ["azure-identity", "azure-mgmt-network"]
+
+# dependencies for bundled commands
+cmds = ["awsrun[last,dx-maint,dx-status]"]
+last = ["pyperclip", "colorama", "rich", "textual==0.16"]
+dx-maint = ["colorama"]
+dx-status = ["colorama", "asciichartpy>=1.5.25", "pysparklines>=1.0"]
+
+# dependencies for development
 dev = [
   "black",
   "flake8",
@@ -69,4 +66,4 @@ azurerun = "awsrun.cli:main"
 homepage = "https://github.com/fidelity/awsrun"
 
 [tool.setuptools.dynamic]
-version = {attr = "awsrun.__version__"}
+version = { attr = "awsrun.__version__" }

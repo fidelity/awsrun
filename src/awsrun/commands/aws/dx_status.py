@@ -170,14 +170,25 @@ import re
 import sys
 from collections import defaultdict
 
-import colorama
-from asciichartpy import plot
-from colorama import Fore, Style
-from sparkline import sparkify
-
 from awsrun.cloudwatch import CWMetrics
 from awsrun.config import Bool, Choice, Type
 from awsrun.runner import RegionalCommand
+
+try:
+    import colorama
+    from asciichartpy import plot
+    from colorama import Fore, Style
+    from sparkline import sparkify
+
+except ImportError:
+    sys.exit(
+        """
+The 'dx_status' command requires dependencies not installed by default with
+awsrun. Please install them with the following command:
+
+    pip install awsrun[dx-status]
+"""
+    )
 
 
 class CLICommand(RegionalCommand):

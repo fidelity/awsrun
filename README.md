@@ -106,17 +106,17 @@ Python 3.7 or higher is required.
 
 To install:
 
-    $ pip install awsrun[aws,azure]
+    $ pip install "awsrun[aws,azure]"
 
 This will install dependencies for both `awsrun` and `azurerun`.
 If you don't want both, you can specify only one. For example,
 if you only want `awsrun`:
 
-    $ pip install awsrun[aws]
+    $ pip install "awsrun[aws]"
 
 If you only want `azurerun`:
 
-    $ pip install awsrun[azure]
+    $ pip install "awsrun[azure]"
 
 In all three cases, the console scripts `awsrun` and `azurerun` are
 installed, but only the dependencies for the specified CSP are installed.
@@ -135,6 +135,18 @@ Note: In order to use the built-in azurerun
 CLI tool must be
 [installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 and available in your operating system's PATH.
+
+Some of the bundled sample commands have additional dependencies, which are
+not installed by default. You'll be prompted when attempting to run one of
+them if you need to install additional packages. If you'd prefer, you can install
+all of the additional command dependencies:
+
+    $ pip install "awsrun[cmds]"
+
+Or specific commands by choosing the appropriate optional dependency. For example,
+to install the packages needed by the `last` command:
+
+    $ pip install "awsrun[last]"
 
 To install from source, clone the repo and run pip install:
 

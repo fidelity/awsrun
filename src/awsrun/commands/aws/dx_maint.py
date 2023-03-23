@@ -86,11 +86,23 @@ import re
 import sys
 from datetime import datetime, timedelta
 
-import colorama
-from colorama import Fore, Style
-
 from awsrun.config import Bool, Int, List, Str
 from awsrun.runner import RegionalCommand, get_paginated_resources
+
+try:
+    import colorama
+    from colorama import Fore, Style
+
+except ImportError:
+    sys.exit(
+        """
+The 'dx_maint' command requires dependencies not installed by default with
+awsrun. Please install them with the following command:
+
+    pip install awsrun[dx-maint]
+"""
+    )
+
 
 LOG = logging.getLogger(__name__)
 
