@@ -129,10 +129,7 @@ events are pulled from an account/region pair. Use the <code>--max-events</code>
 override the value.</p>
 <p>Finally, for a TUI (terminal user interface) that lets you interactively
 explore events, specify the <code>--interactive</code> flag. Follow the on-screen
-instructions to interact with the TUI. By default, the TUI uses a horizontal
-layout. Specify the <code>--vertical</code> option to change to a vertical layout. The
-color used in the TUI can be changed via the <code>--color</code> option. Valid choices
-include blue, green, cyan, magenta, red, and white.</p>
+instructions to interact with the TUI.</p>
 <h2 id="reference">Reference</h2>
 <h3 id="synopsis">Synopsis</h3>
 <pre><code>$ awsrun [options] last [command options]
@@ -152,8 +149,6 @@ configuration file:</p>
       STRING:
         - STRING
     interactive: BOOLEAN
-    vertical: BOOLEAN
-    color: STRING
 </code></pre>
 <h3 id="command-options">Command Options</h3>
 <p>Some options can be overridden on the awsrun CLI via command line flags. In
@@ -184,14 +179,6 @@ option is mutually exclusive with the <code>all</code> and <code>console</code> 
 <dt><code>interactive</code>, <code>--interactive</code></dt>
 <dd>Open an interactive TUI (terminal user interface) instead of printing events
 to the console. The default value is False.</dd>
-<dt><code>vertical</code>, <code>--vertical</code></dt>
-<dd>When using the <code>interactive</code> mode in a taller but narrow terminal, place the
-event detail widget under the other for a single column grid layout. The default
-value is False.</dd>
-<dt><code>color</code>, <code>--color COLOR</code></dt>
-<dd>Specify a color scheme to use when in interactive mode. Possible values
-include: white, yellow, red, cyan, magenta, green, blue. The default value is
-cyan.</dd>
 </dl>
 <p>The following is a sample configuration to add a permanent filter in your
 configuration file for <code>DeleteStack</code> events using the <code>attributes</code> configuration
@@ -207,7 +194,7 @@ option:</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">#
-# Copyright 2019 FMR LLC &lt;opensource@fmr.com&gt;
+# Copyright 2023 FMR LLC &lt;opensource@fmr.com&gt;
 #
 # SPDX-License-Identifier: MIT
 #
@@ -271,10 +258,7 @@ override the value.
 
 Finally, for a TUI (terminal user interface) that lets you interactively
 explore events, specify the `--interactive` flag. Follow the on-screen
-instructions to interact with the TUI. By default, the TUI uses a horizontal
-layout. Specify the `--vertical` option to change to a vertical layout. The
-color used in the TUI can be changed via the `--color` option. Valid choices
-include blue, green, cyan, magenta, red, and white.
+instructions to interact with the TUI.
 
 ## Reference
 
@@ -299,8 +283,6 @@ configuration file:
           STRING:
             - STRING
         interactive: BOOLEAN
-        vertical: BOOLEAN
-        color: STRING
 
 ### Command Options
 Some options can be overridden on the awsrun CLI via command line flags. In
@@ -338,16 +320,6 @@ option is mutually exclusive with the `all` and `console` options.
 : Open an interactive TUI (terminal user interface) instead of printing events
 to the console. The default value is False.
 
-`vertical`, `--vertical`
-: When using the `interactive` mode in a taller but narrow terminal, place the
-event detail widget under the other for a single column grid layout. The default
-value is False.
-
-`color`, `--color COLOR`
-: Specify a color scheme to use when in interactive mode. Possible values
-include: white, yellow, red, cyan, magenta, green, blue. The default value is
-cyan.
-
 The following is a sample configuration to add a permanent filter in your
 configuration file for `DeleteStack` events using the `attributes` configuration
 option:
@@ -362,18 +334,49 @@ option:
 
 import json
 import sys
+import warnings
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from functools import partial
 from itertools import chain, cycle
-
-import py_cui
-import py_cui.keys
-from colorama import Fore, Style, init
+from typing import Optional
 
 from awsrun.argparse import AppendAttributeValuePair
-from awsrun.config import Bool, Choice, Dict, Int, List, Str
+from awsrun.config import Bool, Dict, Int, List, Str
 from awsrun.runner import RegionalCommand
+
+try:
+    import pyperclip
+    import textual
+    from colorama import Fore, Style, init
+    from rich.markdown import Markdown
+    from rich.syntax import Syntax
+    from textual.app import App, ComposeResult
+    from textual.containers import Container, Horizontal, Vertical
+    from textual.message import Message
+    from textual.reactive import reactive
+    from textual.widgets import Button, DataTable, Footer, Header, Input, Static
+
+    if not textual.__version__.startswith(&#34;0.16.&#34;):
+        raise ImportError(&#34;Only textual==0.16 is supported.&#34;)
+
+except ImportError as e:
+    sys.exit(
+        f&#34;&#34;&#34;{e}
+
+This command requires dependencies not installed by default with awsrun.
+Please install the following to use the this command:
+
+    pip install pyperclip colorama rich &#34;textual==0.16&#34;
+&#34;&#34;&#34;
+    )
+
+
+# Textual enables ResourceWarnings, which is not the python default,
+# so we disable them as we get warnings from boto library that we
+# cannot control.
+warnings.simplefilter(&#34;ignore&#34;, ResourceWarning)
+
 
 # Lookup attributes supported by AWS CloudTrail
 LOOKUP_ATTRIBUTES = [
@@ -451,18 +454,6 @@ class CLICommand(RegionalCommand):
             default=cfg(&#34;interactive&#34;, type=Bool, default=False),
             help=&#34;enter interactive mode to view results&#34;,
         )
-        tui.add_argument(
-            &#34;--vertical&#34;,
-            action=&#34;store_true&#34;,
-            default=cfg(&#34;vertical&#34;, type=Bool, default=False),
-            help=&#34;use vertical layout for TUI&#34;,
-        )
-        tui.add_argument(
-            &#34;--color&#34;,
-            choices=TUI_COLOR_THEMES,
-            default=cfg(&#34;color&#34;, type=Choice(*TUI_COLOR_THEMES), default=&#34;cyan&#34;),
-            help=f&#34;use color scheme: {&#39;, &#39;.join(TUI_COLOR_THEMES)}&#34;,
-        )
 
         args = parser.parse_args(argv)
 
@@ -508,10 +499,6 @@ class CLICommand(RegionalCommand):
         elif not (args.start and args.end):
             parser.error(&#34;must specify both --start and --end flags&#34;)
 
-        # Only allow use of TUI options with --interactive flag
-        if args.vertical and not args.interactive:
-            parser.error(&#34;can only use --vertical with --interactive mode&#34;)
-
         del args.all
         del args.hours
         del args.console
@@ -525,8 +512,6 @@ class CLICommand(RegionalCommand):
         attributes=None,
         max_events=1000,
         interactive=False,
-        vertical=False,
-        color=&#34;blue&#34;,
     ):
         super().__init__(regions)
 
@@ -538,12 +523,6 @@ class CLICommand(RegionalCommand):
 
         # TUI settings
         self.interactive = interactive
-        self.vertical = vertical
-        self.color = TUI_COLOR_THEMES.get(color, py_cui.WHITE_ON_BLACK)
-
-        # Dict of events by &#34;username&#34;, which we&#39;ll define as the unique
-        # identifier for a particular session.
-        self.events_by_user = defaultdict(list)
 
         # List of all events in reverse chronological order. We wouldn&#39;t have
         # to keep this list if event timestamps were more granular than a
@@ -565,204 +544,49 @@ class CLICommand(RegionalCommand):
         events = self._retrieve_events(ct)
 
         if self.interactive:
-            events_by_user = defaultdict(list)
-            for e in events:
-                events_by_user[e.username()].append(e)
-            return events, events_by_user
+            return events
 
         cf_map = defaultdict(lambda: next(COLOR_FUNCTIONS))
         return &#34;&#34;.join(cf_map[e.username()](f&#34;{acct}/{region}:  {e}\n&#34;) for e in events)
 
     def _retrieve_events(self, ct):
         events = []
+        event_ids = set()
         for page in _lookup_events(
             ct, start=self.start, end=self.end, attrs=self.attributes
         ):
             for event in page[&#34;Events&#34;]:
+                event_id = event[&#34;EventId&#34;]
+
+                # Check to make sure AWS is not returning duplicate events.
+                # I&#39;ve seen this happen sometimes, so let&#39;s ignore the dups.
+                if event_id in event_ids:
+                    continue
+                event_ids.add(event_id)
+
                 event[&#34;CloudTrailEvent&#34;] = json.loads(event[&#34;CloudTrailEvent&#34;])
                 events.append(_UserIdentityType.new(event))
                 if self.interactive:
                     print(&#34;.&#34;, end=&#34;&#34;, file=sys.stderr, flush=True)
                 if len(events) &gt;= self.max_events:
                     return events
+
         return events
 
     def regional_collect_results(self, acct, region, get_result):
         if not self.interactive:
             super().regional_collect_results(acct, region, get_result)
+            return
 
-        events, events_by_user = get_result()
-        self.events.append(events)
-        for username, events in events_by_user.items():
-            self.events_by_user[username].extend(events)
+        self.events.append(get_result())
 
     def post_hook(self):
         if not self.interactive:
             return
 
         # Let&#39;s fire up the TUI!
-
-        # These contain the list of events being displayed by the TUI widgets.
-        # By default, all events are shown for a specific unless the user
-        # applies a filter.
-        events = self.events
-        events_by_user = self.events_by_user
-
-        # This contains the current query expression to filter events. We only
-        # save a reference to this, so we can prepopulate the filter popup box
-        # with the last expression the user used. This makes it easy for a user
-        # to keep tweaking long exressions without having to type it over and
-        # over again.
-        current_filter_expression = &#34;&#34;
-
-        # Our layout consists of three panes: user list, event list, and event
-        # detail.  We support a vertical layout where all three are stacked
-        # vertically in the terminal for those with narrow terminals ...
-        if self.vertical:
-            root = py_cui.PyCUI(4, 1)
-            user_list = root.add_scroll_menu(&#34;Usernames&#34;, 0, 0)
-            event_list = root.add_scroll_menu(&#34;Events&#34;, 1, 0)
-            event_detail = root.add_scroll_menu(&#34;Event Detail&#34;, 2, 0, row_span=2)
-
-        # ... but the default layout consists of the user and event list
-        # stacked vertically on the left side of the screen with the event
-        # detail pane taking the full height on the right side.
-        else:
-            root = py_cui.PyCUI(3, 4)
-            user_list = root.add_scroll_menu(&#34;Usernames&#34;, 0, 0, column_span=2)
-            event_list = root.add_scroll_menu(&#34;Events&#34;, 1, 0, row_span=2, column_span=2)
-            event_detail = root.add_scroll_menu(
-                &#34;Event Detail&#34;, 0, 2, row_span=3, column_span=2
-            )
-
-        root.toggle_unicode_borders()
-        root.set_title(&#34;CloudTrail Events&#34;)
-        root.set_status_bar_text(&#34;Press &#39;q&#39; to exit. TAB to switch panes.&#34;)
-
-        # py_cui has an odd navigation mechanism where the TUI is either in
-        # overview mode or focus mode.  In overview mode, users navigate with
-        # arrow keys to navigate between widgets, and then press RETURN to
-        # enter focus mode. Focus mode allows users to interact with the widget
-        # only until the user presses ESC to return to overview mode. I find
-        # this non-intuitive, so let&#39;s provide a mappting for TAB to cycle
-        # between widgets and place them in focus mode automatically.
-        focus = cycle(filter(None, root.get_widgets().values()))
-
-        def select_next_widget():
-            root.move_focus(next(focus))
-
-        root.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-
-        # Filter the event list objects in the outer scope that are used by
-        # widgets to display content. This function is called as a result of
-        # the user entering a query expression in the filtering popup.
-        def filter_event_lists(expr):
-            nonlocal events
-            nonlocal events_by_user
-
-            if not expr.strip():
-                events = self.events
-                events_by_user = self.events_by_user
-                return
-
-            events_by_user = defaultdict(list)
-            for user, events in self.events_by_user.items():
-                events = _filter_events(events, expr)
-                if events:
-                    events_by_user[user] = events
-
-            events = []  # List of lists
-            for sublist in self.events:
-                events.append(_filter_events(sublist, expr))
-
-        # Callback used when user presses key to open filtering popup. By
-        # default, py_cui returns the user to overview mode after the popup is
-        # dismissed. We save the widget that was in focus before the popup, so
-        # we can refocus on it afterwards.
-        def show_filter_popup():
-            # pylint: disable=protected-access
-            original_widget = root.get_selected_widget()
-
-            def popup_callback(s):
-                nonlocal current_filter_expression
-                current_filter_expression = s
-                filter_event_lists(s)
-                update_user_list()
-                if original_widget:
-                    root.move_focus(original_widget)
-
-            root.show_text_box_popup(
-                &#34;Filter expression:&#34;,
-                popup_callback,
-                initial_text=current_filter_expression,
-            )
-
-        def update_user_list():
-            user_list.clear()
-            user_list.add_item_list(
-                sorted(events_by_user.keys(), key=lambda s: s.lower())
-            )
-            user_list.set_title(f&#34;Usernames ({len(events_by_user.keys())})&#34;)
-            update_event_list()
-
-        def update_event_list():
-            event_list.clear()
-            if user_list.get():
-                event_list.add_item_list(events_by_user[user_list.get()])
-            event_list.set_title(f&#34;Events ({len(event_list.get_item_list())})&#34;)
-            update_event_detail()
-
-        def update_event_detail():
-            event_detail.clear()
-            event = event_list.get()
-            if event:
-                event_detail.add_item_list(event.to_json().split(&#34;\n&#34;))
-
-        def unfilter_event_list():
-            event_list.clear()
-            all_events = sorted(
-                chain(*events), reverse=True, key=lambda e: e.event[&#34;EventTime&#34;]
-            )
-            event_list.add_item_list(all_events)
-            event_list.set_title(f&#34;Events ({len(all_events)})&#34;)
-            update_event_detail()
-
-        user_list.set_selected_color(self.color)
-        user_list.set_focus_border_color(self.color)
-        user_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-        user_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_list)
-        user_list.add_key_command(py_cui.keys.KEY_BACKSPACE, unfilter_event_list)
-        user_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
-        user_list.set_focus_text(
-            &#34;Press &#39;q&#39; to exit. TAB to switch panes. RET for user events. BACKSPACE for all events. &#39;f&#39; to filter.&#34;
-        )
-
-        event_list.set_selected_color(self.color)
-        event_list.set_focus_border_color(self.color)
-        event_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-        event_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_detail)
-        event_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
-        event_list.set_focus_text(
-            &#34;Press &#39;q&#39; to exit. TAB to switch panes. RET for event detail. &#39;f&#39; to filter.&#34;
-        )
-
-        event_detail.set_selected_color(self.color)
-        event_detail.set_focus_border_color(self.color)
-        event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-        event_detail.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
-        event_detail.set_focus_text(
-            &#34;Press &#39;q&#39; to exit. TAB to switch panes. &#39;f&#39; to filter.&#34;
-        )
-
-        # Load the widgets with data and select the user list.
-        update_user_list()
-        select_next_widget()
-
-        # Fire up the main event loop
-        root.start()
+        app = EventViewer(list(chain(*self.events)))
+        app.run()
 
 
 class _UserIdentityType:
@@ -805,13 +629,21 @@ class _UserIdentityType:
         return self._parse_username()
 
     def contains(self, s):
-        &#34;&#34;&#34;Return True if the event contains `s`.&#34;&#34;&#34;
+        &#34;&#34;&#34;Return True if the event contains `s` (case-insenstive).&#34;&#34;&#34;
 
+        s = s.lower()
         try:
-            next(_deep_finder(self.ct_event, lambda n: isinstance(n, str) and s in n))
+            next(
+                _deep_finder(
+                    self.event, lambda n: isinstance(n, str) and s in n.lower()
+                )
+            )
             return True
         except StopIteration:
             return False
+
+    def has_error(self):
+        return &#34;errorCode&#34; in self.ct_event
 
     def _parse_username(self):
         return self.event.get(
@@ -832,9 +664,20 @@ class _UserIdentityType:
             return _strip_to(&#34;/&#34;, arn, greedy=True) + &#34;/&#34; + session_name
         return None
 
+    def event_id(self):
+        return self.event[&#34;EventId&#34;]
+
     def to_json(self):
         &#34;&#34;&#34;Return event as JSON string.&#34;&#34;&#34;
         return json.dumps(self.event, default=str, indent=4)
+
+    def to_row(self):
+        return (
+            self.event.get(&#34;EventTime&#34;, &#34;&#34;),
+            self.event.get(&#34;EventSource&#34;, &#34;&#34;),
+            self.event.get(&#34;EventName&#34;, &#34;&#34;),
+            self.ct_event.get(&#34;errorCode&#34;, &#34;&#34;),
+        )
 
     def __str__(self):
         src = self.event.get(&#34;EventSource&#34;, &#34;&#34;)
@@ -853,7 +696,7 @@ class _UserIdentityType:
 #############################################################################
 
 
-class _RootType(_UserIdentityType):
+class _RootType(_UserIdentityType):  # pyright: ignore
     def _parse_username(self):
         # Docs state that Root does not have a username unless an alias has
         # been set for the account, so we try to print the username, if not,
@@ -861,19 +704,25 @@ class _RootType(_UserIdentityType):
         return self.user_identity.get(&#34;userName&#34;, &#34;ROOT&#34;)
 
 
-class _AWSAccountType(_UserIdentityType):
+class _AWSAccountType(_UserIdentityType):  # pyright: ignore
     def _parse_username(self):
         acct = self.user_identity.get(&#34;accountId&#34;, &#34;NO_ACCOUNT_ID&#34;)
         principal = self.user_identity.get(&#34;principalId&#34;, &#34;NO_PRINCIPAL_ID&#34;)
         return f&#34;{acct}/{_strip_to(&#39;:&#39;, principal)}&#34;
 
 
-class _AWSServiceType(_UserIdentityType):
+class _UnknownType(_UserIdentityType):  # pyright: ignore
+    def _parse_username(self):
+        acct = self.user_identity.get(&#34;accountId&#34;, &#34;NO_ACCOUNT_ID&#34;)
+        return f&#34;{acct}/unknown&#34;
+
+
+class _AWSServiceType(_UserIdentityType):  # pyright: ignore
     def _parse_username(self):
         return self.user_identity.get(&#34;invokedBy&#34;, &#34;NO_USERNAME&#34;)
 
 
-class _AssumedRoleType(_UserIdentityType):
+class _AssumedRoleType(_UserIdentityType):  # pyright: ignore
     def _parse_username(self):
         # For an assumed role type, we get username from the arn because it&#39;s
         # the only thing consistent throughout the other type of events, which
@@ -898,11 +747,6 @@ def _strip_to(char, string, greedy=False):
     return string[pos + 1 :]
 
 
-def _strip_after(char, string, greedy=False):
-    pos = string.rfind(char) if greedy else string.find(char)
-    return string if pos == -1 else string[:pos]
-
-
 def _lookup_events(ct, start, end, attrs=None):
     attrs = {} if attrs is None else attrs
     return ct.get_paginator(&#34;lookup_events&#34;).paginate(
@@ -920,17 +764,17 @@ def _filter_events(events, query):
     &#34;&#34;&#34;Return list of events filtered by query expression.
 
     Query expression may consist of one or more terms. Terms are matched using
-    logical OR. A term may be prefixed with an optional &#39;-&#39; to exclude events
-    containing the term. Terms are case sensitive and are matched as substrings
+    logical AND. A term may be prefixed with an optional &#39;-&#39; to exclude events
+    containing the term. Terms are case insensitive and are matched as substrings
     in a CloudTrail event including both keys and values.
 
     For example, to search for CloudTrail events that had errors:
 
-        errorCode
+        errorcode
 
     To search for errors excluding S3 issues:
 
-        errorCode -s3
+        errorcode -s3
 
     To search for errors excluding S3 that are due to rate limiting:
 
@@ -985,12 +829,523 @@ COLOR_FUNCTIONS = cycle(
     ]
 )
 
-# Make available any of the colors defined in py_cui
-TUI_COLOR_THEMES = {
-    _strip_after(&#34;_&#34;, k).lower(): v
-    for k, v in vars(py_cui).items()
-    if k.endswith(&#34;_ON_BLACK&#34;)
-}</code></pre>
+
+#############################################################################
+# Textual TUI
+#############################################################################
+
+
+class Events:
+    &#34;&#34;&#34;Internal representation of the list of filtered events in TUI.&#34;&#34;&#34;
+
+    def __init__(self, events):
+        self.unfiltered_events = events
+        self.filter_expr = &#34;&#34;
+        self._load_events(events)
+
+    def _load_events(self, events):
+        # Need to keep events as a list as we cannot recreate it
+        # from the values of the event_by_user or we lose the
+        # order of the events as the timestamp is not granular.
+        self.events = events
+        self.events_by_key = {e.event_id(): e for e in self.events}
+        self.events_by_user = defaultdict(list)
+        for e in self.events:
+            self.events_by_user[e.username()].append(e)
+
+    def all(self):
+        return self.events
+
+    def users(self):
+        return self.events_by_user.keys()
+
+    def by_user(self, user):
+        return self.events_by_user.get(user, [])
+
+    def by_id(self, event_id) -&gt; Optional[_UserIdentityType]:
+        return self.events_by_key.get(event_id)
+
+    def filter(self, expr):
+        if not expr:  # empty string?
+            events = self.unfiltered_events
+        else:
+            events = _filter_events(self.unfiltered_events, expr)
+
+        self.filter_expr = expr
+        self._load_events(events)
+        return len(self.events)
+
+
+class Popup(Container):
+    &#34;&#34;&#34;An offscreen popup for a single input box.&#34;&#34;&#34;
+
+    DEFAULT_CSS = &#34;&#34;&#34;
+Popup {
+    transition: offset 500ms in_out_cubic;
+    padding: 0 2 1 2;
+    width: 65;
+    height: auto;
+    background: $panel;
+    color: $text;
+}
+Popup:focus-within {
+    offset: 0 0;
+}
+Popup.offscreen {
+    offset-y: 100%;
+}
+Popup Static {
+    padding: 0 2 0 2;
+}
+Popup Horizontal {
+    padding: 1 2 0 2;
+    height: auto;
+}
+Popup Input {
+    width: 4fr;
+    margin-right: 1;
+}
+Popup Button {
+    width: 1fr;
+    min-width: 5;
+}
+    &#34;&#34;&#34;
+
+    class Changed(Message):
+        def __init__(self, value: str) -&gt; None:
+            super().__init__()
+            self.value = value
+
+    class Closed(Message):
+        pass
+
+    def __init__(self, prompt, help_md):
+        self.prompt = prompt
+        self.help_md = help_md
+        super().__init__(classes=&#34;offscreen&#34;)
+
+    def compose(self) -&gt; ComposeResult:
+        yield Static(Markdown(self.help_md))
+        with Horizontal():
+            yield Input(placeholder=self.prompt)
+            yield Button(&#34;Close&#34;, variant=&#34;primary&#34;)
+
+    def on_input_submitted(self, event: Input.Submitted) -&gt; None:
+        event.stop()
+        self.post_message(self.Changed(event.value))
+
+    def on_button_pressed(self, event: Button.Pressed) -&gt; None:
+        event.stop()
+        self.post_message(self.Closed())
+
+
+FILTER_MESSAGE = &#34;&#34;&#34;
+## Filter Evenets
+
+- Search terms are **case-insensitive**
+- Terms are matched using a logical **AND**
+- To **exclude** a term, prefix with a **hypen** (**-**)
+- **Substrings** in both keys and values are searched
+&#34;&#34;&#34;
+
+
+class FilterPopup(Popup):
+    # Class needed for the textual &#34;magic&#34; on_filter_popup_changed handler
+    class Changed(Popup.Changed):
+        pass
+
+    # Class needed for the textual &#34;magic&#34; on_filter_popup_closed handler
+    class Closed(Popup.Closed):
+        pass
+
+    def __init__(self):
+        super().__init__(&#34;Enter expression then press ENTER&#34;, FILTER_MESSAGE)
+
+
+EXPORT_MESSAGE = &#34;&#34;&#34;
+## Export Events
+
+- Events matching the current filter are exported
+- If no filter is specified, then all are exported
+- Events exported as JSON
+&#34;&#34;&#34;
+
+
+class ExportPopup(Popup):
+    # Class needed for the textual &#34;magic&#34; on_export_popup_changed handler
+    class Changed(Popup.Changed):
+        pass
+
+    # Class needed for the textual &#34;magic&#34; on_export_popup_closed handler
+    class Closed(Popup.Closed):
+        pass
+
+    def __init__(self):
+        super().__init__(&#34;Enter filename then press ENTER&#34;, EXPORT_MESSAGE)
+
+
+class RowTable(Container):
+    DEFAULT_CSS = &#34;&#34;&#34;
+RowTable &gt; DataTable {
+  border: solid $accent-lighten-2;
+  border-title-align: left;
+}
+RowTable &gt; DataTable:focus {
+  border: solid $secondary;
+}
+RowTable &gt; DataTable &gt; .datatable--header {
+  text-style: bold;
+  color: $accent-lighten-2;
+  background: black 0%;
+}
+RowTable &gt; DataTable &gt; .datatable--cursor {
+  color: $accent-lighten-2;
+  text-style: bold;
+  background: black 0%;
+}
+RowTable &gt; DataTable &gt; .datatable--hover {
+  background: black 0%;
+}
+RowTable &gt; DataTable &gt; .datatable--header-hover {
+  color: $accent-lighten-2;
+  background: black 0%;
+}
+    &#34;&#34;&#34;
+
+    contents = reactive([], always_update=True)
+
+    class SelectionChanged(Message):
+        def __init__(self, row_key):
+            self.row_key = row_key
+            super().__init__()
+
+    def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -&gt; None:
+        event.stop()
+        event.control.border_subtitle = (
+            f&#34;{event.cursor_row + 1} of {len(event.control.rows)}&#34;
+        )
+        self.post_message(self.SelectionChanged(event.row_key))
+
+    def __init__(self, *col_names):
+        self.col_names = col_names
+        super().__init__()
+
+    def compose(self) -&gt; ComposeResult:
+        yield DataTable()
+
+    def focus(self):
+        self.query_one(DataTable).focus()
+
+    def on_mount(self):
+        dt = self.query_one(DataTable)
+        dt.cursor_type = &#34;row&#34;
+        dt.add_columns(*self.col_names)
+
+
+class UserTable(RowTable):
+    DEFAULT_CSS = &#34;&#34;&#34;
+UserTable {
+  height: 1fr;
+}
+    &#34;&#34;&#34;
+
+    # Class needed for the textual &#34;magic&#34; on_user_table_selection_changed handler
+    class SelectionChanged(RowTable.SelectionChanged):
+        pass
+
+    def __init__(self):
+        super().__init__(&#34;Principal&#34;)
+
+    def on_mount(self):
+        dt = self.query_one(DataTable)
+        dt.show_header = False
+        dt.border_title = &#34;Users&#34;
+
+    def watch_contents(self, users):
+        dt = self.query_one(DataTable)
+        dt.clear()
+        for user in users:
+            dt.add_row(user, key=user)
+        dt.scroll_home()
+        dt.border_subtitle = f&#34;0 of {len(users)}&#34;
+
+
+class EventTable(RowTable):
+    DEFAULT_CSS = &#34;&#34;&#34;
+EventTable {
+  height: 2fr;
+}
+    &#34;&#34;&#34;
+
+    # Class needed for the textual &#34;magic&#34; on_event_table_selection_changed handler
+    class SelectionChanged(RowTable.SelectionChanged):
+        pass
+
+    def __init__(self):
+        super().__init__(&#34;Time&#34;, &#34;Source&#34;, &#34;Event&#34;, &#34;Error?&#34;)
+
+    def on_mount(self):
+        self.query_one(DataTable).border_title = &#34;Events&#34;
+
+    def watch_contents(self, events):
+        dt = self.query_one(DataTable)
+        dt.clear()
+        for event in events:
+            row = event.to_row()
+            if event.has_error():
+                error = dt.app.get_css_variables()[&#34;error&#34;]
+                row = [f&#34;[{error}]{c}[/]&#34; for c in row]
+            dt.add_row(*row, key=event.event_id())
+        dt.scroll_home()
+        dt.border_subtitle = f&#34;0 of {len(events)}&#34;
+
+
+class EventViewer(App):
+    CSS = &#34;&#34;&#34;
+Screen {
+  align: center bottom;
+  overflow: hidden;
+  layers: base filter export;
+}
+FilterPopup {
+    layer: filter;
+}
+ExportPopup {
+    layer: export;
+}
+#main {
+  layout: horizontal;
+}
+.vertical #main {
+  layout: vertical;
+}
+#left {
+  width: 1fr;
+}
+.vertical #left {
+  height: 2fr;
+}
+.hidden {
+  display: none;
+}
+    &#34;&#34;&#34;
+
+    TITLE = &#34;CloudTrail Viewer&#34;
+    BINDINGS = [
+        (&#34;q&#34;, &#34;quit&#34;, &#34;Quit&#34;),
+        (&#34;c&#34;, &#34;copy&#34;, &#34;Copy&#34;),
+        (&#34;e&#34;, &#34;export_popup&#34;, &#34;Export&#34;),
+        (&#34;f&#34;, &#34;filter_popup&#34;, &#34;Filter&#34;),
+        (&#34;l&#34;, &#34;toggle_layout&#34;, &#34;Layout&#34;),
+        (&#34;u&#34;, &#34;toggle_users&#34;, &#34;Users&#34;),
+        (&#34;d&#34;, &#34;toggle_dark&#34;, &#34;Toggle dark mode&#34;),
+    ]
+
+    total_count = reactive(0)
+    filtered_count = reactive(0)
+
+    theme = {
+        &#34;dark&#34;: Syntax.get_theme(&#34;dracula&#34;),
+        &#34;light&#34;: Syntax.get_theme(&#34;friendly&#34;),
+    }
+
+    def __init__(self, events):
+        super().__init__()
+        self.events = Events(events)
+
+    def compose(self) -&gt; ComposeResult:
+        yield FilterPopup()  # Hidden off-screen initially
+        yield ExportPopup()  # Hidden off-screen initially
+        yield Header()
+        yield Horizontal(
+            Vertical(UserTable(), EventTable(), id=&#34;left&#34;),
+            EventDetail(),
+            id=&#34;main&#34;,
+        )
+        yield Footer()
+
+    def on_mount(self):
+        self.query_one(Header).tall = True
+        self.query_one(FilterPopup).disabled = True
+        self.query_one(ExportPopup).disabled = True
+        self.total_count = self.filtered_count = len(self.events.all())
+        self.populate_data_tables()
+
+    def populate_data_tables(self, focus=True):
+        ut = self.query_one(UserTable)
+        et = self.query_one(EventTable)
+        ed = self.query_one(EventDetail)
+
+        if not self.events.all():
+            ut.contents = et.contents = []
+            ed.event = None
+
+        elif not ut.has_class(&#34;hidden&#34;):
+            ut.contents = sorted(self.events.users(), key=str.lower)
+            if focus:
+                ut.focus()
+
+        else:
+            et.contents = self.events.all()
+            if focus:
+                et.focus()
+
+    def action_toggle_dark(self):
+        self.dark = not self.dark
+
+        # In EventDetail we define &#34;event&#34; as reactive with always_update,
+        # so this will force watch_event to be called which redraws the JSON
+        # with the correct theme. We need to do this as the content of the
+        # Static widget with our JSON is colored by rich which does not know
+        # about dark mode. So when user toggles, we need to syntax highlight
+        # the JSON with an appropriate theme.
+        ed = self.query_one(EventDetail)
+        ed.event = ed.event
+
+    def action_toggle_layout(self):
+        self.toggle_class(&#34;vertical&#34;)
+
+    def action_copy(self):
+        ed = self.query_one(EventDetail)
+        if ed.event:
+            pyperclip.copy(ed.event.to_json())
+
+    def action_filter_popup(self):
+        self.show_popup(FilterPopup)
+
+    def action_export_popup(self):
+        self.show_popup(ExportPopup)
+
+    def action_toggle_users(self):
+        ut = self.query_one(UserTable)
+        ut.toggle_class(&#34;hidden&#34;)
+        self.populate_data_tables()
+
+    def dismiss_popup(self, name):
+        p = self.query_one(name)
+        p.disabled = True
+        p.add_class(&#34;offscreen&#34;)
+        self.set_focus(self.original_focus)
+        self.refresh(repaint=True, layout=True)
+
+    def show_popup(self, name):
+        self.original_focus = self.query_one(&#34;*:focus&#34;)
+        p = self.query_one(name)
+        p.disabled = False
+        p.remove_class(&#34;offscreen&#34;)
+        p.query_one(Input).focus()
+
+    def on_filter_popup_closed(self, _) -&gt; None:
+        self.dismiss_popup(FilterPopup)
+
+    def on_filter_popup_changed(self, event: FilterPopup.Changed) -&gt; None:
+        # Only update the UI if the expression is different
+        if event.value != self.events.filter_expr:
+            self.filtered_count = self.events.filter(event.value)
+            self.query_one(EventDetail).filter_expr = event.value
+            self.populate_data_tables(focus=False)
+        self.dismiss_popup(FilterPopup)
+
+    def on_export_popup_closed(self, _) -&gt; None:
+        self.dismiss_popup(ExportPopup)
+
+    def on_export_popup_changed(self, event: ExportPopup.Changed) -&gt; None:
+        try:
+            with open(event.value, &#34;w&#34;) as out:
+                json.dump(
+                    [e.event for e in self.events.all()],
+                    default=str,
+                    indent=4,
+                    fp=out,
+                )
+            self.dismiss_popup(ExportPopup)
+        except Exception:
+            self.bell()
+
+    def on_user_table_selection_changed(self, message: UserTable.SelectionChanged):
+        et = self.query_one(EventTable)
+        user = message.row_key
+        if user:
+            et.contents = self.events.by_user(user)
+
+    def on_event_table_selection_changed(self, message: EventTable.SelectionChanged):
+        ed = self.query_one(EventDetail)
+        event_key = message.row_key
+        if event_key:
+            event = self.events.by_id(event_key)
+            ed.event = event
+
+    def watch_total_count(self):
+        self.update_sub_title()
+
+    def watch_filtered_count(self):
+        self.update_sub_title()
+
+    def update_sub_title(self):
+        s = f&#34;{self.total_count} events loaded&#34;
+        if self.filtered_count != self.total_count:
+            s += f&#34;, {self.filtered_count} matched&#34;
+        self.sub_title = s
+
+
+class EventDetail(Container, can_focus=True):
+    DEFAULT_CSS = &#34;&#34;&#34;
+EventDetail {
+  width: 1fr;
+  overflow: auto scroll;
+  border: solid $accent-lighten-2;
+  border-title-align: left;
+}
+EventDetail:focus {
+  border: solid $secondary;
+}
+.vertical EventDetail {
+  height: 2fr;
+}
+EventDetail &gt; Static {
+  width: auto;
+  min-width: 1fr;
+}
+    &#34;&#34;&#34;
+
+    # We need always update for toggling of themes to work.
+    event: reactive[Optional[_UserIdentityType]] = reactive[
+        Optional[_UserIdentityType]
+    ](None, always_update=True)
+
+    def __init__(self):
+        super().__init__()
+        self.filter_expr = &#34;&#34;
+
+    def on_mount(self):
+        self.border_title = &#34;Event Detail&#34;
+
+    def compose(self) -&gt; ComposeResult:
+        yield Static()
+
+    def watch_event(self, event):
+        content = event.to_json() if event else &#34;&#34;
+        matching_lines = self._find_matching_lines(content)
+
+        self.query_one(Static).update(
+            Syntax(
+                content,
+                &#34;json&#34;,
+                theme=EventViewer.theme[&#34;dark&#34; if self.app.dark else &#34;light&#34;],
+                highlight_lines=matching_lines,
+                line_numbers=True,
+            )
+        )
+
+    def _find_matching_lines(self, content):
+        terms = [t.lower() for t in self.filter_expr.split() if not t.startswith(&#34;-&#34;)]
+        matching_lines = set()
+        for n, line in enumerate(content.split(&#34;\n&#34;), start=1):
+            for term in terms:
+                if term in line.lower():
+                    matching_lines.add(n)
+
+        return matching_lines</code></pre>
 </details>
 </section>
 <section>
@@ -1004,7 +1359,7 @@ TUI_COLOR_THEMES = {
 <dl>
 <dt id="awsrun.commands.aws.last.CLICommand"><code class="flex name class">
 <span>class <span class="ident">CLICommand</span></span>
-<span>(</span><span>regions, start=None, end=None, attributes=None, max_events=1000, interactive=False, vertical=False, color='blue')</span>
+<span>(</span><span>regions, start=None, end=None, attributes=None, max_events=1000, interactive=False)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Displays the last CloudTrail events in an account.</p></section>
@@ -1075,18 +1430,6 @@ TUI_COLOR_THEMES = {
             default=cfg(&#34;interactive&#34;, type=Bool, default=False),
             help=&#34;enter interactive mode to view results&#34;,
         )
-        tui.add_argument(
-            &#34;--vertical&#34;,
-            action=&#34;store_true&#34;,
-            default=cfg(&#34;vertical&#34;, type=Bool, default=False),
-            help=&#34;use vertical layout for TUI&#34;,
-        )
-        tui.add_argument(
-            &#34;--color&#34;,
-            choices=TUI_COLOR_THEMES,
-            default=cfg(&#34;color&#34;, type=Choice(*TUI_COLOR_THEMES), default=&#34;cyan&#34;),
-            help=f&#34;use color scheme: {&#39;, &#39;.join(TUI_COLOR_THEMES)}&#34;,
-        )
 
         args = parser.parse_args(argv)
 
@@ -1132,10 +1475,6 @@ TUI_COLOR_THEMES = {
         elif not (args.start and args.end):
             parser.error(&#34;must specify both --start and --end flags&#34;)
 
-        # Only allow use of TUI options with --interactive flag
-        if args.vertical and not args.interactive:
-            parser.error(&#34;can only use --vertical with --interactive mode&#34;)
-
         del args.all
         del args.hours
         del args.console
@@ -1149,8 +1488,6 @@ TUI_COLOR_THEMES = {
         attributes=None,
         max_events=1000,
         interactive=False,
-        vertical=False,
-        color=&#34;blue&#34;,
     ):
         super().__init__(regions)
 
@@ -1162,12 +1499,6 @@ TUI_COLOR_THEMES = {
 
         # TUI settings
         self.interactive = interactive
-        self.vertical = vertical
-        self.color = TUI_COLOR_THEMES.get(color, py_cui.WHITE_ON_BLACK)
-
-        # Dict of events by &#34;username&#34;, which we&#39;ll define as the unique
-        # identifier for a particular session.
-        self.events_by_user = defaultdict(list)
 
         # List of all events in reverse chronological order. We wouldn&#39;t have
         # to keep this list if event timestamps were more granular than a
@@ -1189,204 +1520,49 @@ TUI_COLOR_THEMES = {
         events = self._retrieve_events(ct)
 
         if self.interactive:
-            events_by_user = defaultdict(list)
-            for e in events:
-                events_by_user[e.username()].append(e)
-            return events, events_by_user
+            return events
 
         cf_map = defaultdict(lambda: next(COLOR_FUNCTIONS))
         return &#34;&#34;.join(cf_map[e.username()](f&#34;{acct}/{region}:  {e}\n&#34;) for e in events)
 
     def _retrieve_events(self, ct):
         events = []
+        event_ids = set()
         for page in _lookup_events(
             ct, start=self.start, end=self.end, attrs=self.attributes
         ):
             for event in page[&#34;Events&#34;]:
+                event_id = event[&#34;EventId&#34;]
+
+                # Check to make sure AWS is not returning duplicate events.
+                # I&#39;ve seen this happen sometimes, so let&#39;s ignore the dups.
+                if event_id in event_ids:
+                    continue
+                event_ids.add(event_id)
+
                 event[&#34;CloudTrailEvent&#34;] = json.loads(event[&#34;CloudTrailEvent&#34;])
                 events.append(_UserIdentityType.new(event))
                 if self.interactive:
                     print(&#34;.&#34;, end=&#34;&#34;, file=sys.stderr, flush=True)
                 if len(events) &gt;= self.max_events:
                     return events
+
         return events
 
     def regional_collect_results(self, acct, region, get_result):
         if not self.interactive:
             super().regional_collect_results(acct, region, get_result)
+            return
 
-        events, events_by_user = get_result()
-        self.events.append(events)
-        for username, events in events_by_user.items():
-            self.events_by_user[username].extend(events)
+        self.events.append(get_result())
 
     def post_hook(self):
         if not self.interactive:
             return
 
         # Let&#39;s fire up the TUI!
-
-        # These contain the list of events being displayed by the TUI widgets.
-        # By default, all events are shown for a specific unless the user
-        # applies a filter.
-        events = self.events
-        events_by_user = self.events_by_user
-
-        # This contains the current query expression to filter events. We only
-        # save a reference to this, so we can prepopulate the filter popup box
-        # with the last expression the user used. This makes it easy for a user
-        # to keep tweaking long exressions without having to type it over and
-        # over again.
-        current_filter_expression = &#34;&#34;
-
-        # Our layout consists of three panes: user list, event list, and event
-        # detail.  We support a vertical layout where all three are stacked
-        # vertically in the terminal for those with narrow terminals ...
-        if self.vertical:
-            root = py_cui.PyCUI(4, 1)
-            user_list = root.add_scroll_menu(&#34;Usernames&#34;, 0, 0)
-            event_list = root.add_scroll_menu(&#34;Events&#34;, 1, 0)
-            event_detail = root.add_scroll_menu(&#34;Event Detail&#34;, 2, 0, row_span=2)
-
-        # ... but the default layout consists of the user and event list
-        # stacked vertically on the left side of the screen with the event
-        # detail pane taking the full height on the right side.
-        else:
-            root = py_cui.PyCUI(3, 4)
-            user_list = root.add_scroll_menu(&#34;Usernames&#34;, 0, 0, column_span=2)
-            event_list = root.add_scroll_menu(&#34;Events&#34;, 1, 0, row_span=2, column_span=2)
-            event_detail = root.add_scroll_menu(
-                &#34;Event Detail&#34;, 0, 2, row_span=3, column_span=2
-            )
-
-        root.toggle_unicode_borders()
-        root.set_title(&#34;CloudTrail Events&#34;)
-        root.set_status_bar_text(&#34;Press &#39;q&#39; to exit. TAB to switch panes.&#34;)
-
-        # py_cui has an odd navigation mechanism where the TUI is either in
-        # overview mode or focus mode.  In overview mode, users navigate with
-        # arrow keys to navigate between widgets, and then press RETURN to
-        # enter focus mode. Focus mode allows users to interact with the widget
-        # only until the user presses ESC to return to overview mode. I find
-        # this non-intuitive, so let&#39;s provide a mappting for TAB to cycle
-        # between widgets and place them in focus mode automatically.
-        focus = cycle(filter(None, root.get_widgets().values()))
-
-        def select_next_widget():
-            root.move_focus(next(focus))
-
-        root.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-
-        # Filter the event list objects in the outer scope that are used by
-        # widgets to display content. This function is called as a result of
-        # the user entering a query expression in the filtering popup.
-        def filter_event_lists(expr):
-            nonlocal events
-            nonlocal events_by_user
-
-            if not expr.strip():
-                events = self.events
-                events_by_user = self.events_by_user
-                return
-
-            events_by_user = defaultdict(list)
-            for user, events in self.events_by_user.items():
-                events = _filter_events(events, expr)
-                if events:
-                    events_by_user[user] = events
-
-            events = []  # List of lists
-            for sublist in self.events:
-                events.append(_filter_events(sublist, expr))
-
-        # Callback used when user presses key to open filtering popup. By
-        # default, py_cui returns the user to overview mode after the popup is
-        # dismissed. We save the widget that was in focus before the popup, so
-        # we can refocus on it afterwards.
-        def show_filter_popup():
-            # pylint: disable=protected-access
-            original_widget = root.get_selected_widget()
-
-            def popup_callback(s):
-                nonlocal current_filter_expression
-                current_filter_expression = s
-                filter_event_lists(s)
-                update_user_list()
-                if original_widget:
-                    root.move_focus(original_widget)
-
-            root.show_text_box_popup(
-                &#34;Filter expression:&#34;,
-                popup_callback,
-                initial_text=current_filter_expression,
-            )
-
-        def update_user_list():
-            user_list.clear()
-            user_list.add_item_list(
-                sorted(events_by_user.keys(), key=lambda s: s.lower())
-            )
-            user_list.set_title(f&#34;Usernames ({len(events_by_user.keys())})&#34;)
-            update_event_list()
-
-        def update_event_list():
-            event_list.clear()
-            if user_list.get():
-                event_list.add_item_list(events_by_user[user_list.get()])
-            event_list.set_title(f&#34;Events ({len(event_list.get_item_list())})&#34;)
-            update_event_detail()
-
-        def update_event_detail():
-            event_detail.clear()
-            event = event_list.get()
-            if event:
-                event_detail.add_item_list(event.to_json().split(&#34;\n&#34;))
-
-        def unfilter_event_list():
-            event_list.clear()
-            all_events = sorted(
-                chain(*events), reverse=True, key=lambda e: e.event[&#34;EventTime&#34;]
-            )
-            event_list.add_item_list(all_events)
-            event_list.set_title(f&#34;Events ({len(all_events)})&#34;)
-            update_event_detail()
-
-        user_list.set_selected_color(self.color)
-        user_list.set_focus_border_color(self.color)
-        user_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-        user_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_list)
-        user_list.add_key_command(py_cui.keys.KEY_BACKSPACE, unfilter_event_list)
-        user_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
-        user_list.set_focus_text(
-            &#34;Press &#39;q&#39; to exit. TAB to switch panes. RET for user events. BACKSPACE for all events. &#39;f&#39; to filter.&#34;
-        )
-
-        event_list.set_selected_color(self.color)
-        event_list.set_focus_border_color(self.color)
-        event_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-        event_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_detail)
-        event_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
-        event_list.set_focus_text(
-            &#34;Press &#39;q&#39; to exit. TAB to switch panes. RET for event detail. &#39;f&#39; to filter.&#34;
-        )
-
-        event_detail.set_selected_color(self.color)
-        event_detail.set_focus_border_color(self.color)
-        event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-        event_detail.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
-        event_detail.set_focus_text(
-            &#34;Press &#39;q&#39; to exit. TAB to switch panes. &#39;f&#39; to filter.&#34;
-        )
-
-        # Load the widgets with data and select the user list.
-        update_user_list()
-        select_next_widget()
-
-        # Fire up the main event loop
-        root.start()</code></pre>
+        app = EventViewer(list(chain(*self.events)))
+        app.run()</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1408,6 +1584,1677 @@ TUI_COLOR_THEMES = {
 </ul>
 </li>
 </ul>
+</dd>
+<dt id="awsrun.commands.aws.last.Events"><code class="flex name class">
+<span>class <span class="ident">Events</span></span>
+<span>(</span><span>events)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Internal representation of the list of filtered events in TUI.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Events:
+    &#34;&#34;&#34;Internal representation of the list of filtered events in TUI.&#34;&#34;&#34;
+
+    def __init__(self, events):
+        self.unfiltered_events = events
+        self.filter_expr = &#34;&#34;
+        self._load_events(events)
+
+    def _load_events(self, events):
+        # Need to keep events as a list as we cannot recreate it
+        # from the values of the event_by_user or we lose the
+        # order of the events as the timestamp is not granular.
+        self.events = events
+        self.events_by_key = {e.event_id(): e for e in self.events}
+        self.events_by_user = defaultdict(list)
+        for e in self.events:
+            self.events_by_user[e.username()].append(e)
+
+    def all(self):
+        return self.events
+
+    def users(self):
+        return self.events_by_user.keys()
+
+    def by_user(self, user):
+        return self.events_by_user.get(user, [])
+
+    def by_id(self, event_id) -&gt; Optional[_UserIdentityType]:
+        return self.events_by_key.get(event_id)
+
+    def filter(self, expr):
+        if not expr:  # empty string?
+            events = self.unfiltered_events
+        else:
+            events = _filter_events(self.unfiltered_events, expr)
+
+        self.filter_expr = expr
+        self._load_events(events)
+        return len(self.events)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.Events.all"><code class="name flex">
+<span>def <span class="ident">all</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def all(self):
+    return self.events</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.Events.users"><code class="name flex">
+<span>def <span class="ident">users</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def users(self):
+    return self.events_by_user.keys()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.Events.by_user"><code class="name flex">
+<span>def <span class="ident">by_user</span></span>(<span>self, user)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def by_user(self, user):
+    return self.events_by_user.get(user, [])</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.Events.by_id"><code class="name flex">
+<span>def <span class="ident">by_id</span></span>(<span>self, event_id)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def by_id(self, event_id) -&gt; Optional[_UserIdentityType]:
+    return self.events_by_key.get(event_id)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.Events.filter"><code class="name flex">
+<span>def <span class="ident">filter</span></span>(<span>self, expr)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def filter(self, expr):
+    if not expr:  # empty string?
+        events = self.unfiltered_events
+    else:
+        events = _filter_events(self.unfiltered_events, expr)
+
+    self.filter_expr = expr
+    self._load_events(events)
+    return len(self.events)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.commands.aws.last.Popup"><code class="flex name class">
+<span>class <span class="ident">Popup</span></span>
+<span>(</span><span>prompt, help_md)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>An offscreen popup for a single input box.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Popup(Container):
+    &#34;&#34;&#34;An offscreen popup for a single input box.&#34;&#34;&#34;
+
+    DEFAULT_CSS = &#34;&#34;&#34;
+Popup {
+    transition: offset 500ms in_out_cubic;
+    padding: 0 2 1 2;
+    width: 65;
+    height: auto;
+    background: $panel;
+    color: $text;
+}
+Popup:focus-within {
+    offset: 0 0;
+}
+Popup.offscreen {
+    offset-y: 100%;
+}
+Popup Static {
+    padding: 0 2 0 2;
+}
+Popup Horizontal {
+    padding: 1 2 0 2;
+    height: auto;
+}
+Popup Input {
+    width: 4fr;
+    margin-right: 1;
+}
+Popup Button {
+    width: 1fr;
+    min-width: 5;
+}
+    &#34;&#34;&#34;
+
+    class Changed(Message):
+        def __init__(self, value: str) -&gt; None:
+            super().__init__()
+            self.value = value
+
+    class Closed(Message):
+        pass
+
+    def __init__(self, prompt, help_md):
+        self.prompt = prompt
+        self.help_md = help_md
+        super().__init__(classes=&#34;offscreen&#34;)
+
+    def compose(self) -&gt; ComposeResult:
+        yield Static(Markdown(self.help_md))
+        with Horizontal():
+            yield Input(placeholder=self.prompt)
+            yield Button(&#34;Close&#34;, variant=&#34;primary&#34;)
+
+    def on_input_submitted(self, event: Input.Submitted) -&gt; None:
+        event.stop()
+        self.post_message(self.Changed(event.value))
+
+    def on_button_pressed(self, event: Button.Pressed) -&gt; None:
+        event.stop()
+        self.post_message(self.Closed())</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<code><li>textual.containers.Container</li></code>
+<code><li>textual.widget.Widget</li></code>
+<code><li>textual.dom.DOMNode</li></code>
+<code><li>textual.message_pump.MessagePump</li></code>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<code><li><a title="awsrun.commands.aws.last.ExportPopup" href="#awsrun.commands.aws.last.ExportPopup">ExportPopup</a></li></code>
+<code><li><a title="awsrun.commands.aws.last.FilterPopup" href="#awsrun.commands.aws.last.FilterPopup">FilterPopup</a></li></code>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.Popup.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.Popup.Changed"><code class="name">var <span class="ident">Changed</span></code></dt>
+<dd>
+<section class="desc"><p>Base class for a message.</p></section>
+</dd>
+<dt id="awsrun.commands.aws.last.Popup.Closed"><code class="name">var <span class="ident">Closed</span></code></dt>
+<dd>
+<section class="desc"><p>Base class for a message.</p></section>
+</dd>
+<dt id="awsrun.commands.aws.last.Popup.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.Popup.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.Popup.compose"><code class="name flex">
+<span>def <span class="ident">compose</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called by Textual to create child widgets.</p>
+<p>Extend this to build a UI.</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python">def compose(self) -&gt; ComposeResult:
+    yield Header()
+    yield Container(
+        Tree(), Viewer()
+    )
+    yield Footer()
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compose(self) -&gt; ComposeResult:
+    yield Static(Markdown(self.help_md))
+    with Horizontal():
+        yield Input(placeholder=self.prompt)
+        yield Button(&#34;Close&#34;, variant=&#34;primary&#34;)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.Popup.on_input_submitted"><code class="name flex">
+<span>def <span class="ident">on_input_submitted</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_input_submitted(self, event: Input.Submitted) -&gt; None:
+    event.stop()
+    self.post_message(self.Changed(event.value))</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.Popup.on_button_pressed"><code class="name flex">
+<span>def <span class="ident">on_button_pressed</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_button_pressed(self, event: Button.Pressed) -&gt; None:
+    event.stop()
+    self.post_message(self.Closed())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.commands.aws.last.FilterPopup"><code class="flex name class">
+<span>class <span class="ident">FilterPopup</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>An offscreen popup for a single input box.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FilterPopup(Popup):
+    # Class needed for the textual &#34;magic&#34; on_filter_popup_changed handler
+    class Changed(Popup.Changed):
+        pass
+
+    # Class needed for the textual &#34;magic&#34; on_filter_popup_closed handler
+    class Closed(Popup.Closed):
+        pass
+
+    def __init__(self):
+        super().__init__(&#34;Enter expression then press ENTER&#34;, FILTER_MESSAGE)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<code><li><a title="awsrun.commands.aws.last.Popup" href="#awsrun.commands.aws.last.Popup">Popup</a></li></code>
+<code><li>textual.containers.Container</li></code>
+<code><li>textual.widget.Widget</li></code>
+<code><li>textual.dom.DOMNode</li></code>
+<code><li>textual.message_pump.MessagePump</li></code>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.FilterPopup.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.FilterPopup.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.commands.aws.last.Popup" href="#awsrun.commands.aws.last.Popup">Popup</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.commands.aws.last.Popup.Changed" href="#awsrun.commands.aws.last.Popup.Changed">Changed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.Closed" href="#awsrun.commands.aws.last.Popup.Closed">Closed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.compose" href="#awsrun.commands.aws.last.Popup.compose">compose</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.commands.aws.last.ExportPopup"><code class="flex name class">
+<span>class <span class="ident">ExportPopup</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>An offscreen popup for a single input box.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ExportPopup(Popup):
+    # Class needed for the textual &#34;magic&#34; on_export_popup_changed handler
+    class Changed(Popup.Changed):
+        pass
+
+    # Class needed for the textual &#34;magic&#34; on_export_popup_closed handler
+    class Closed(Popup.Closed):
+        pass
+
+    def __init__(self):
+        super().__init__(&#34;Enter filename then press ENTER&#34;, EXPORT_MESSAGE)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<code><li><a title="awsrun.commands.aws.last.Popup" href="#awsrun.commands.aws.last.Popup">Popup</a></li></code>
+<code><li>textual.containers.Container</li></code>
+<code><li>textual.widget.Widget</li></code>
+<code><li>textual.dom.DOMNode</li></code>
+<code><li>textual.message_pump.MessagePump</li></code>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.ExportPopup.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.ExportPopup.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.commands.aws.last.Popup" href="#awsrun.commands.aws.last.Popup">Popup</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.commands.aws.last.Popup.Changed" href="#awsrun.commands.aws.last.Popup.Changed">Changed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.Closed" href="#awsrun.commands.aws.last.Popup.Closed">Closed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.compose" href="#awsrun.commands.aws.last.Popup.compose">compose</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.commands.aws.last.RowTable"><code class="flex name class">
+<span>class <span class="ident">RowTable</span></span>
+<span>(</span><span>*col_names)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Simple container widget, with vertical layout.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RowTable(Container):
+    DEFAULT_CSS = &#34;&#34;&#34;
+RowTable &gt; DataTable {
+  border: solid $accent-lighten-2;
+  border-title-align: left;
+}
+RowTable &gt; DataTable:focus {
+  border: solid $secondary;
+}
+RowTable &gt; DataTable &gt; .datatable--header {
+  text-style: bold;
+  color: $accent-lighten-2;
+  background: black 0%;
+}
+RowTable &gt; DataTable &gt; .datatable--cursor {
+  color: $accent-lighten-2;
+  text-style: bold;
+  background: black 0%;
+}
+RowTable &gt; DataTable &gt; .datatable--hover {
+  background: black 0%;
+}
+RowTable &gt; DataTable &gt; .datatable--header-hover {
+  color: $accent-lighten-2;
+  background: black 0%;
+}
+    &#34;&#34;&#34;
+
+    contents = reactive([], always_update=True)
+
+    class SelectionChanged(Message):
+        def __init__(self, row_key):
+            self.row_key = row_key
+            super().__init__()
+
+    def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -&gt; None:
+        event.stop()
+        event.control.border_subtitle = (
+            f&#34;{event.cursor_row + 1} of {len(event.control.rows)}&#34;
+        )
+        self.post_message(self.SelectionChanged(event.row_key))
+
+    def __init__(self, *col_names):
+        self.col_names = col_names
+        super().__init__()
+
+    def compose(self) -&gt; ComposeResult:
+        yield DataTable()
+
+    def focus(self):
+        self.query_one(DataTable).focus()
+
+    def on_mount(self):
+        dt = self.query_one(DataTable)
+        dt.cursor_type = &#34;row&#34;
+        dt.add_columns(*self.col_names)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<code><li>textual.containers.Container</li></code>
+<code><li>textual.widget.Widget</li></code>
+<code><li>textual.dom.DOMNode</li></code>
+<code><li>textual.message_pump.MessagePump</li></code>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<code><li><a title="awsrun.commands.aws.last.EventTable" href="#awsrun.commands.aws.last.EventTable">EventTable</a></li></code>
+<code><li><a title="awsrun.commands.aws.last.UserTable" href="#awsrun.commands.aws.last.UserTable">UserTable</a></li></code>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.RowTable.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.RowTable.SelectionChanged"><code class="name">var <span class="ident">SelectionChanged</span></code></dt>
+<dd>
+<section class="desc"><p>Base class for a message.</p></section>
+</dd>
+<dt id="awsrun.commands.aws.last.RowTable.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.RowTable.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.RowTable.contents"><code class="name">var <span class="ident">contents</span></code></dt>
+<dd>
+<section class="desc"><p>Create a reactive attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>default</code></strong></dt>
+<dd>A default value or callable that returns a default.</dd>
+<dt><strong><code>layout</code></strong></dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong></dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong></dt>
+<dd>Call watchers on initialize (post mount). Defaults to True.</dd>
+<dt><strong><code>always_update</code></strong></dt>
+<dd>Call watchers even when the new value equals the old value. Defaults to False.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    internal_name = self.internal_name
+    if not hasattr(obj, internal_name):
+        self._initialize_reactive(obj, self.name)
+
+    if hasattr(obj, self.compute_name):
+        value: ReactiveType
+        old_value = getattr(obj, internal_name)
+        _rich_traceback_omit = True
+        value = getattr(obj, self.compute_name)()
+        setattr(obj, internal_name, value)
+        self._check_watchers(obj, self.name, old_value)
+        return value
+    else:
+        return getattr(obj, internal_name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.RowTable.on_data_table_row_highlighted"><code class="name flex">
+<span>def <span class="ident">on_data_table_row_highlighted</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -&gt; None:
+    event.stop()
+    event.control.border_subtitle = (
+        f&#34;{event.cursor_row + 1} of {len(event.control.rows)}&#34;
+    )
+    self.post_message(self.SelectionChanged(event.row_key))</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.RowTable.compose"><code class="name flex">
+<span>def <span class="ident">compose</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called by Textual to create child widgets.</p>
+<p>Extend this to build a UI.</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python">def compose(self) -&gt; ComposeResult:
+    yield Header()
+    yield Container(
+        Tree(), Viewer()
+    )
+    yield Footer()
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compose(self) -&gt; ComposeResult:
+    yield DataTable()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.RowTable.focus"><code class="name flex">
+<span>def <span class="ident">focus</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Give focus to this widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>scroll_visible</code></strong></dt>
+<dd>Scroll parent to make this widget
+visible. Defaults to True.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def focus(self):
+    self.query_one(DataTable).focus()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.RowTable.on_mount"><code class="name flex">
+<span>def <span class="ident">on_mount</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_mount(self):
+    dt = self.query_one(DataTable)
+    dt.cursor_type = &#34;row&#34;
+    dt.add_columns(*self.col_names)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.commands.aws.last.UserTable"><code class="flex name class">
+<span>class <span class="ident">UserTable</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Simple container widget, with vertical layout.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UserTable(RowTable):
+    DEFAULT_CSS = &#34;&#34;&#34;
+UserTable {
+  height: 1fr;
+}
+    &#34;&#34;&#34;
+
+    # Class needed for the textual &#34;magic&#34; on_user_table_selection_changed handler
+    class SelectionChanged(RowTable.SelectionChanged):
+        pass
+
+    def __init__(self):
+        super().__init__(&#34;Principal&#34;)
+
+    def on_mount(self):
+        dt = self.query_one(DataTable)
+        dt.show_header = False
+        dt.border_title = &#34;Users&#34;
+
+    def watch_contents(self, users):
+        dt = self.query_one(DataTable)
+        dt.clear()
+        for user in users:
+            dt.add_row(user, key=user)
+        dt.scroll_home()
+        dt.border_subtitle = f&#34;0 of {len(users)}&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<code><li><a title="awsrun.commands.aws.last.RowTable" href="#awsrun.commands.aws.last.RowTable">RowTable</a></li></code>
+<code><li>textual.containers.Container</li></code>
+<code><li>textual.widget.Widget</li></code>
+<code><li>textual.dom.DOMNode</li></code>
+<code><li>textual.message_pump.MessagePump</li></code>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.UserTable.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.UserTable.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.UserTable.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.UserTable.on_mount"><code class="name flex">
+<span>def <span class="ident">on_mount</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_mount(self):
+    dt = self.query_one(DataTable)
+    dt.show_header = False
+    dt.border_title = &#34;Users&#34;</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.UserTable.watch_contents"><code class="name flex">
+<span>def <span class="ident">watch_contents</span></span>(<span>self, users)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_contents(self, users):
+    dt = self.query_one(DataTable)
+    dt.clear()
+    for user in users:
+        dt.add_row(user, key=user)
+    dt.scroll_home()
+    dt.border_subtitle = f&#34;0 of {len(users)}&#34;</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.commands.aws.last.RowTable" href="#awsrun.commands.aws.last.RowTable">RowTable</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.commands.aws.last.RowTable.SelectionChanged" href="#awsrun.commands.aws.last.RowTable.SelectionChanged">SelectionChanged</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.compose" href="#awsrun.commands.aws.last.RowTable.compose">compose</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.contents" href="#awsrun.commands.aws.last.RowTable.contents">contents</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.focus" href="#awsrun.commands.aws.last.RowTable.focus">focus</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.commands.aws.last.EventTable"><code class="flex name class">
+<span>class <span class="ident">EventTable</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Simple container widget, with vertical layout.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EventTable(RowTable):
+    DEFAULT_CSS = &#34;&#34;&#34;
+EventTable {
+  height: 2fr;
+}
+    &#34;&#34;&#34;
+
+    # Class needed for the textual &#34;magic&#34; on_event_table_selection_changed handler
+    class SelectionChanged(RowTable.SelectionChanged):
+        pass
+
+    def __init__(self):
+        super().__init__(&#34;Time&#34;, &#34;Source&#34;, &#34;Event&#34;, &#34;Error?&#34;)
+
+    def on_mount(self):
+        self.query_one(DataTable).border_title = &#34;Events&#34;
+
+    def watch_contents(self, events):
+        dt = self.query_one(DataTable)
+        dt.clear()
+        for event in events:
+            row = event.to_row()
+            if event.has_error():
+                error = dt.app.get_css_variables()[&#34;error&#34;]
+                row = [f&#34;[{error}]{c}[/]&#34; for c in row]
+            dt.add_row(*row, key=event.event_id())
+        dt.scroll_home()
+        dt.border_subtitle = f&#34;0 of {len(events)}&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<code><li><a title="awsrun.commands.aws.last.RowTable" href="#awsrun.commands.aws.last.RowTable">RowTable</a></li></code>
+<code><li>textual.containers.Container</li></code>
+<code><li>textual.widget.Widget</li></code>
+<code><li>textual.dom.DOMNode</li></code>
+<code><li>textual.message_pump.MessagePump</li></code>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.EventTable.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.EventTable.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.EventTable.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.EventTable.on_mount"><code class="name flex">
+<span>def <span class="ident">on_mount</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_mount(self):
+    self.query_one(DataTable).border_title = &#34;Events&#34;</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventTable.watch_contents"><code class="name flex">
+<span>def <span class="ident">watch_contents</span></span>(<span>self, events)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_contents(self, events):
+    dt = self.query_one(DataTable)
+    dt.clear()
+    for event in events:
+        row = event.to_row()
+        if event.has_error():
+            error = dt.app.get_css_variables()[&#34;error&#34;]
+            row = [f&#34;[{error}]{c}[/]&#34; for c in row]
+        dt.add_row(*row, key=event.event_id())
+    dt.scroll_home()
+    dt.border_subtitle = f&#34;0 of {len(events)}&#34;</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.commands.aws.last.RowTable" href="#awsrun.commands.aws.last.RowTable">RowTable</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.commands.aws.last.RowTable.SelectionChanged" href="#awsrun.commands.aws.last.RowTable.SelectionChanged">SelectionChanged</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.compose" href="#awsrun.commands.aws.last.RowTable.compose">compose</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.contents" href="#awsrun.commands.aws.last.RowTable.contents">contents</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.focus" href="#awsrun.commands.aws.last.RowTable.focus">focus</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer"><code class="flex name class">
+<span>class <span class="ident">EventViewer</span></span>
+<span>(</span><span>events)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>The base class for Textual Applications.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>driver_class</code></strong></dt>
+<dd>Driver class or <code>None</code> to auto-detect. Defaults to None.</dd>
+<dt><strong><code>css_path</code></strong></dt>
+<dd>Path to CSS or <code>None</code> for no CSS file.
+Defaults to None. To load multiple CSS files, pass a list of strings or paths which will be loaded in order.</dd>
+<dt><strong><code>watch_css</code></strong></dt>
+<dd>Watch CSS for changes. Defaults to False.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>CssPathError</code></dt>
+<dd>When the supplied CSS path(s) are an unexpected type.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EventViewer(App):
+    CSS = &#34;&#34;&#34;
+Screen {
+  align: center bottom;
+  overflow: hidden;
+  layers: base filter export;
+}
+FilterPopup {
+    layer: filter;
+}
+ExportPopup {
+    layer: export;
+}
+#main {
+  layout: horizontal;
+}
+.vertical #main {
+  layout: vertical;
+}
+#left {
+  width: 1fr;
+}
+.vertical #left {
+  height: 2fr;
+}
+.hidden {
+  display: none;
+}
+    &#34;&#34;&#34;
+
+    TITLE = &#34;CloudTrail Viewer&#34;
+    BINDINGS = [
+        (&#34;q&#34;, &#34;quit&#34;, &#34;Quit&#34;),
+        (&#34;c&#34;, &#34;copy&#34;, &#34;Copy&#34;),
+        (&#34;e&#34;, &#34;export_popup&#34;, &#34;Export&#34;),
+        (&#34;f&#34;, &#34;filter_popup&#34;, &#34;Filter&#34;),
+        (&#34;l&#34;, &#34;toggle_layout&#34;, &#34;Layout&#34;),
+        (&#34;u&#34;, &#34;toggle_users&#34;, &#34;Users&#34;),
+        (&#34;d&#34;, &#34;toggle_dark&#34;, &#34;Toggle dark mode&#34;),
+    ]
+
+    total_count = reactive(0)
+    filtered_count = reactive(0)
+
+    theme = {
+        &#34;dark&#34;: Syntax.get_theme(&#34;dracula&#34;),
+        &#34;light&#34;: Syntax.get_theme(&#34;friendly&#34;),
+    }
+
+    def __init__(self, events):
+        super().__init__()
+        self.events = Events(events)
+
+    def compose(self) -&gt; ComposeResult:
+        yield FilterPopup()  # Hidden off-screen initially
+        yield ExportPopup()  # Hidden off-screen initially
+        yield Header()
+        yield Horizontal(
+            Vertical(UserTable(), EventTable(), id=&#34;left&#34;),
+            EventDetail(),
+            id=&#34;main&#34;,
+        )
+        yield Footer()
+
+    def on_mount(self):
+        self.query_one(Header).tall = True
+        self.query_one(FilterPopup).disabled = True
+        self.query_one(ExportPopup).disabled = True
+        self.total_count = self.filtered_count = len(self.events.all())
+        self.populate_data_tables()
+
+    def populate_data_tables(self, focus=True):
+        ut = self.query_one(UserTable)
+        et = self.query_one(EventTable)
+        ed = self.query_one(EventDetail)
+
+        if not self.events.all():
+            ut.contents = et.contents = []
+            ed.event = None
+
+        elif not ut.has_class(&#34;hidden&#34;):
+            ut.contents = sorted(self.events.users(), key=str.lower)
+            if focus:
+                ut.focus()
+
+        else:
+            et.contents = self.events.all()
+            if focus:
+                et.focus()
+
+    def action_toggle_dark(self):
+        self.dark = not self.dark
+
+        # In EventDetail we define &#34;event&#34; as reactive with always_update,
+        # so this will force watch_event to be called which redraws the JSON
+        # with the correct theme. We need to do this as the content of the
+        # Static widget with our JSON is colored by rich which does not know
+        # about dark mode. So when user toggles, we need to syntax highlight
+        # the JSON with an appropriate theme.
+        ed = self.query_one(EventDetail)
+        ed.event = ed.event
+
+    def action_toggle_layout(self):
+        self.toggle_class(&#34;vertical&#34;)
+
+    def action_copy(self):
+        ed = self.query_one(EventDetail)
+        if ed.event:
+            pyperclip.copy(ed.event.to_json())
+
+    def action_filter_popup(self):
+        self.show_popup(FilterPopup)
+
+    def action_export_popup(self):
+        self.show_popup(ExportPopup)
+
+    def action_toggle_users(self):
+        ut = self.query_one(UserTable)
+        ut.toggle_class(&#34;hidden&#34;)
+        self.populate_data_tables()
+
+    def dismiss_popup(self, name):
+        p = self.query_one(name)
+        p.disabled = True
+        p.add_class(&#34;offscreen&#34;)
+        self.set_focus(self.original_focus)
+        self.refresh(repaint=True, layout=True)
+
+    def show_popup(self, name):
+        self.original_focus = self.query_one(&#34;*:focus&#34;)
+        p = self.query_one(name)
+        p.disabled = False
+        p.remove_class(&#34;offscreen&#34;)
+        p.query_one(Input).focus()
+
+    def on_filter_popup_closed(self, _) -&gt; None:
+        self.dismiss_popup(FilterPopup)
+
+    def on_filter_popup_changed(self, event: FilterPopup.Changed) -&gt; None:
+        # Only update the UI if the expression is different
+        if event.value != self.events.filter_expr:
+            self.filtered_count = self.events.filter(event.value)
+            self.query_one(EventDetail).filter_expr = event.value
+            self.populate_data_tables(focus=False)
+        self.dismiss_popup(FilterPopup)
+
+    def on_export_popup_closed(self, _) -&gt; None:
+        self.dismiss_popup(ExportPopup)
+
+    def on_export_popup_changed(self, event: ExportPopup.Changed) -&gt; None:
+        try:
+            with open(event.value, &#34;w&#34;) as out:
+                json.dump(
+                    [e.event for e in self.events.all()],
+                    default=str,
+                    indent=4,
+                    fp=out,
+                )
+            self.dismiss_popup(ExportPopup)
+        except Exception:
+            self.bell()
+
+    def on_user_table_selection_changed(self, message: UserTable.SelectionChanged):
+        et = self.query_one(EventTable)
+        user = message.row_key
+        if user:
+            et.contents = self.events.by_user(user)
+
+    def on_event_table_selection_changed(self, message: EventTable.SelectionChanged):
+        ed = self.query_one(EventDetail)
+        event_key = message.row_key
+        if event_key:
+            event = self.events.by_id(event_key)
+            ed.event = event
+
+    def watch_total_count(self):
+        self.update_sub_title()
+
+    def watch_filtered_count(self):
+        self.update_sub_title()
+
+    def update_sub_title(self):
+        s = f&#34;{self.total_count} events loaded&#34;
+        if self.filtered_count != self.total_count:
+            s += f&#34;, {self.filtered_count} matched&#34;
+        self.sub_title = s</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<code><li>textual.app.App</li></code>
+<code><li>typing.Generic</li></code>
+<code><li>textual.dom.DOMNode</li></code>
+<code><li>textual.message_pump.MessagePump</li></code>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.EventViewer.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.TITLE"><code class="name">var <span class="ident">TITLE</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.BINDINGS"><code class="name">var <span class="ident">BINDINGS</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.theme"><code class="name">var <span class="ident">theme</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.EventViewer.total_count"><code class="name">var <span class="ident">total_count</span></code></dt>
+<dd>
+<section class="desc"><p>Create a reactive attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>default</code></strong></dt>
+<dd>A default value or callable that returns a default.</dd>
+<dt><strong><code>layout</code></strong></dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong></dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong></dt>
+<dd>Call watchers on initialize (post mount). Defaults to True.</dd>
+<dt><strong><code>always_update</code></strong></dt>
+<dd>Call watchers even when the new value equals the old value. Defaults to False.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    internal_name = self.internal_name
+    if not hasattr(obj, internal_name):
+        self._initialize_reactive(obj, self.name)
+
+    if hasattr(obj, self.compute_name):
+        value: ReactiveType
+        old_value = getattr(obj, internal_name)
+        _rich_traceback_omit = True
+        value = getattr(obj, self.compute_name)()
+        setattr(obj, internal_name, value)
+        self._check_watchers(obj, self.name, old_value)
+        return value
+    else:
+        return getattr(obj, internal_name)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.filtered_count"><code class="name">var <span class="ident">filtered_count</span></code></dt>
+<dd>
+<section class="desc"><p>Create a reactive attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>default</code></strong></dt>
+<dd>A default value or callable that returns a default.</dd>
+<dt><strong><code>layout</code></strong></dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong></dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong></dt>
+<dd>Call watchers on initialize (post mount). Defaults to True.</dd>
+<dt><strong><code>always_update</code></strong></dt>
+<dd>Call watchers even when the new value equals the old value. Defaults to False.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    internal_name = self.internal_name
+    if not hasattr(obj, internal_name):
+        self._initialize_reactive(obj, self.name)
+
+    if hasattr(obj, self.compute_name):
+        value: ReactiveType
+        old_value = getattr(obj, internal_name)
+        _rich_traceback_omit = True
+        value = getattr(obj, self.compute_name)()
+        setattr(obj, internal_name, value)
+        self._check_watchers(obj, self.name, old_value)
+        return value
+    else:
+        return getattr(obj, internal_name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.EventViewer.compose"><code class="name flex">
+<span>def <span class="ident">compose</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Yield child widgets for a container.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compose(self) -&gt; ComposeResult:
+    yield FilterPopup()  # Hidden off-screen initially
+    yield ExportPopup()  # Hidden off-screen initially
+    yield Header()
+    yield Horizontal(
+        Vertical(UserTable(), EventTable(), id=&#34;left&#34;),
+        EventDetail(),
+        id=&#34;main&#34;,
+    )
+    yield Footer()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.on_mount"><code class="name flex">
+<span>def <span class="ident">on_mount</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_mount(self):
+    self.query_one(Header).tall = True
+    self.query_one(FilterPopup).disabled = True
+    self.query_one(ExportPopup).disabled = True
+    self.total_count = self.filtered_count = len(self.events.all())
+    self.populate_data_tables()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.populate_data_tables"><code class="name flex">
+<span>def <span class="ident">populate_data_tables</span></span>(<span>self, focus=True)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def populate_data_tables(self, focus=True):
+    ut = self.query_one(UserTable)
+    et = self.query_one(EventTable)
+    ed = self.query_one(EventDetail)
+
+    if not self.events.all():
+        ut.contents = et.contents = []
+        ed.event = None
+
+    elif not ut.has_class(&#34;hidden&#34;):
+        ut.contents = sorted(self.events.users(), key=str.lower)
+        if focus:
+            ut.focus()
+
+    else:
+        et.contents = self.events.all()
+        if focus:
+            et.focus()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.action_toggle_dark"><code class="name flex">
+<span>def <span class="ident">action_toggle_dark</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Action to toggle dark mode.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def action_toggle_dark(self):
+    self.dark = not self.dark
+
+    # In EventDetail we define &#34;event&#34; as reactive with always_update,
+    # so this will force watch_event to be called which redraws the JSON
+    # with the correct theme. We need to do this as the content of the
+    # Static widget with our JSON is colored by rich which does not know
+    # about dark mode. So when user toggles, we need to syntax highlight
+    # the JSON with an appropriate theme.
+    ed = self.query_one(EventDetail)
+    ed.event = ed.event</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.action_toggle_layout"><code class="name flex">
+<span>def <span class="ident">action_toggle_layout</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def action_toggle_layout(self):
+    self.toggle_class(&#34;vertical&#34;)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.action_copy"><code class="name flex">
+<span>def <span class="ident">action_copy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def action_copy(self):
+    ed = self.query_one(EventDetail)
+    if ed.event:
+        pyperclip.copy(ed.event.to_json())</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.action_filter_popup"><code class="name flex">
+<span>def <span class="ident">action_filter_popup</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def action_filter_popup(self):
+    self.show_popup(FilterPopup)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.action_export_popup"><code class="name flex">
+<span>def <span class="ident">action_export_popup</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def action_export_popup(self):
+    self.show_popup(ExportPopup)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.action_toggle_users"><code class="name flex">
+<span>def <span class="ident">action_toggle_users</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def action_toggle_users(self):
+    ut = self.query_one(UserTable)
+    ut.toggle_class(&#34;hidden&#34;)
+    self.populate_data_tables()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.dismiss_popup"><code class="name flex">
+<span>def <span class="ident">dismiss_popup</span></span>(<span>self, name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dismiss_popup(self, name):
+    p = self.query_one(name)
+    p.disabled = True
+    p.add_class(&#34;offscreen&#34;)
+    self.set_focus(self.original_focus)
+    self.refresh(repaint=True, layout=True)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.show_popup"><code class="name flex">
+<span>def <span class="ident">show_popup</span></span>(<span>self, name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_popup(self, name):
+    self.original_focus = self.query_one(&#34;*:focus&#34;)
+    p = self.query_one(name)
+    p.disabled = False
+    p.remove_class(&#34;offscreen&#34;)
+    p.query_one(Input).focus()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.on_filter_popup_closed"><code class="name flex">
+<span>def <span class="ident">on_filter_popup_closed</span></span>(<span>self, _)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_filter_popup_closed(self, _) -&gt; None:
+    self.dismiss_popup(FilterPopup)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.on_filter_popup_changed"><code class="name flex">
+<span>def <span class="ident">on_filter_popup_changed</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_filter_popup_changed(self, event: FilterPopup.Changed) -&gt; None:
+    # Only update the UI if the expression is different
+    if event.value != self.events.filter_expr:
+        self.filtered_count = self.events.filter(event.value)
+        self.query_one(EventDetail).filter_expr = event.value
+        self.populate_data_tables(focus=False)
+    self.dismiss_popup(FilterPopup)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.on_export_popup_closed"><code class="name flex">
+<span>def <span class="ident">on_export_popup_closed</span></span>(<span>self, _)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_export_popup_closed(self, _) -&gt; None:
+    self.dismiss_popup(ExportPopup)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.on_export_popup_changed"><code class="name flex">
+<span>def <span class="ident">on_export_popup_changed</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_export_popup_changed(self, event: ExportPopup.Changed) -&gt; None:
+    try:
+        with open(event.value, &#34;w&#34;) as out:
+            json.dump(
+                [e.event for e in self.events.all()],
+                default=str,
+                indent=4,
+                fp=out,
+            )
+        self.dismiss_popup(ExportPopup)
+    except Exception:
+        self.bell()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.on_user_table_selection_changed"><code class="name flex">
+<span>def <span class="ident">on_user_table_selection_changed</span></span>(<span>self, message)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_user_table_selection_changed(self, message: UserTable.SelectionChanged):
+    et = self.query_one(EventTable)
+    user = message.row_key
+    if user:
+        et.contents = self.events.by_user(user)</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.on_event_table_selection_changed"><code class="name flex">
+<span>def <span class="ident">on_event_table_selection_changed</span></span>(<span>self, message)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_event_table_selection_changed(self, message: EventTable.SelectionChanged):
+    ed = self.query_one(EventDetail)
+    event_key = message.row_key
+    if event_key:
+        event = self.events.by_id(event_key)
+        ed.event = event</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.watch_total_count"><code class="name flex">
+<span>def <span class="ident">watch_total_count</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_total_count(self):
+    self.update_sub_title()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.watch_filtered_count"><code class="name flex">
+<span>def <span class="ident">watch_filtered_count</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_filtered_count(self):
+    self.update_sub_title()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventViewer.update_sub_title"><code class="name flex">
+<span>def <span class="ident">update_sub_title</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_sub_title(self):
+    s = f&#34;{self.total_count} events loaded&#34;
+    if self.filtered_count != self.total_count:
+        s += f&#34;, {self.filtered_count} matched&#34;
+    self.sub_title = s</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="awsrun.commands.aws.last.EventDetail"><code class="flex name class">
+<span>class <span class="ident">EventDetail</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Simple container widget, with vertical layout.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EventDetail(Container, can_focus=True):
+    DEFAULT_CSS = &#34;&#34;&#34;
+EventDetail {
+  width: 1fr;
+  overflow: auto scroll;
+  border: solid $accent-lighten-2;
+  border-title-align: left;
+}
+EventDetail:focus {
+  border: solid $secondary;
+}
+.vertical EventDetail {
+  height: 2fr;
+}
+EventDetail &gt; Static {
+  width: auto;
+  min-width: 1fr;
+}
+    &#34;&#34;&#34;
+
+    # We need always update for toggling of themes to work.
+    event: reactive[Optional[_UserIdentityType]] = reactive[
+        Optional[_UserIdentityType]
+    ](None, always_update=True)
+
+    def __init__(self):
+        super().__init__()
+        self.filter_expr = &#34;&#34;
+
+    def on_mount(self):
+        self.border_title = &#34;Event Detail&#34;
+
+    def compose(self) -&gt; ComposeResult:
+        yield Static()
+
+    def watch_event(self, event):
+        content = event.to_json() if event else &#34;&#34;
+        matching_lines = self._find_matching_lines(content)
+
+        self.query_one(Static).update(
+            Syntax(
+                content,
+                &#34;json&#34;,
+                theme=EventViewer.theme[&#34;dark&#34; if self.app.dark else &#34;light&#34;],
+                highlight_lines=matching_lines,
+                line_numbers=True,
+            )
+        )
+
+    def _find_matching_lines(self, content):
+        terms = [t.lower() for t in self.filter_expr.split() if not t.startswith(&#34;-&#34;)]
+        matching_lines = set()
+        for n, line in enumerate(content.split(&#34;\n&#34;), start=1):
+            for term in terms:
+                if term in line.lower():
+                    matching_lines.add(n)
+
+        return matching_lines</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<code><li>textual.containers.Container</li></code>
+<code><li>textual.widget.Widget</li></code>
+<code><li>textual.dom.DOMNode</li></code>
+<code><li>textual.message_pump.MessagePump</li></code>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.EventDetail.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.EventDetail.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="awsrun.commands.aws.last.EventDetail.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.EventDetail.event"><code class="name">var <span class="ident">event</span></code></dt>
+<dd>
+<section class="desc"><p>Create a reactive attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>default</code></strong></dt>
+<dd>A default value or callable that returns a default.</dd>
+<dt><strong><code>layout</code></strong></dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong></dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong></dt>
+<dd>Call watchers on initialize (post mount). Defaults to True.</dd>
+<dt><strong><code>always_update</code></strong></dt>
+<dd>Call watchers even when the new value equals the old value. Defaults to False.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    internal_name = self.internal_name
+    if not hasattr(obj, internal_name):
+        self._initialize_reactive(obj, self.name)
+
+    if hasattr(obj, self.compute_name):
+        value: ReactiveType
+        old_value = getattr(obj, internal_name)
+        _rich_traceback_omit = True
+        value = getattr(obj, self.compute_name)()
+        setattr(obj, internal_name, value)
+        self._check_watchers(obj, self.name, old_value)
+        return value
+    else:
+        return getattr(obj, internal_name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="awsrun.commands.aws.last.EventDetail.on_mount"><code class="name flex">
+<span>def <span class="ident">on_mount</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_mount(self):
+    self.border_title = &#34;Event Detail&#34;</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventDetail.compose"><code class="name flex">
+<span>def <span class="ident">compose</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Called by Textual to create child widgets.</p>
+<p>Extend this to build a UI.</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python">def compose(self) -&gt; ComposeResult:
+    yield Header()
+    yield Container(
+        Tree(), Viewer()
+    )
+    yield Footer()
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compose(self) -&gt; ComposeResult:
+    yield Static()</code></pre>
+</details>
+</dd>
+<dt id="awsrun.commands.aws.last.EventDetail.watch_event"><code class="name flex">
+<span>def <span class="ident">watch_event</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_event(self, event):
+    content = event.to_json() if event else &#34;&#34;
+    matching_lines = self._find_matching_lines(content)
+
+    self.query_one(Static).update(
+        Syntax(
+            content,
+            &#34;json&#34;,
+            theme=EventViewer.theme[&#34;dark&#34; if self.app.dark else &#34;light&#34;],
+            highlight_lines=matching_lines,
+            line_numbers=True,
+        )
+    )</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -1435,6 +3282,120 @@ TUI_COLOR_THEMES = {
 <ul>
 <li>
 <h4><code><a title="awsrun.commands.aws.last.CLICommand" href="#awsrun.commands.aws.last.CLICommand">CLICommand</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.last.Events" href="#awsrun.commands.aws.last.Events">Events</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.last.Events.all" href="#awsrun.commands.aws.last.Events.all">all</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Events.users" href="#awsrun.commands.aws.last.Events.users">users</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Events.by_user" href="#awsrun.commands.aws.last.Events.by_user">by_user</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Events.by_id" href="#awsrun.commands.aws.last.Events.by_id">by_id</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Events.filter" href="#awsrun.commands.aws.last.Events.filter">filter</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.last.Popup" href="#awsrun.commands.aws.last.Popup">Popup</a></code></h4>
+<ul class="two-column">
+<li><code><a title="awsrun.commands.aws.last.Popup.compose" href="#awsrun.commands.aws.last.Popup.compose">compose</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.on_input_submitted" href="#awsrun.commands.aws.last.Popup.on_input_submitted">on_input_submitted</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.on_button_pressed" href="#awsrun.commands.aws.last.Popup.on_button_pressed">on_button_pressed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.DEFAULT_CSS" href="#awsrun.commands.aws.last.Popup.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.Changed" href="#awsrun.commands.aws.last.Popup.Changed">Changed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.Closed" href="#awsrun.commands.aws.last.Popup.Closed">Closed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.can_focus" href="#awsrun.commands.aws.last.Popup.can_focus">can_focus</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.Popup.can_focus_children" href="#awsrun.commands.aws.last.Popup.can_focus_children">can_focus_children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.last.FilterPopup" href="#awsrun.commands.aws.last.FilterPopup">FilterPopup</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.last.FilterPopup.can_focus" href="#awsrun.commands.aws.last.FilterPopup.can_focus">can_focus</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.FilterPopup.can_focus_children" href="#awsrun.commands.aws.last.FilterPopup.can_focus_children">can_focus_children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.last.ExportPopup" href="#awsrun.commands.aws.last.ExportPopup">ExportPopup</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.last.ExportPopup.can_focus" href="#awsrun.commands.aws.last.ExportPopup.can_focus">can_focus</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.ExportPopup.can_focus_children" href="#awsrun.commands.aws.last.ExportPopup.can_focus_children">can_focus_children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.last.RowTable" href="#awsrun.commands.aws.last.RowTable">RowTable</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.last.RowTable.on_data_table_row_highlighted" href="#awsrun.commands.aws.last.RowTable.on_data_table_row_highlighted">on_data_table_row_highlighted</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.compose" href="#awsrun.commands.aws.last.RowTable.compose">compose</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.focus" href="#awsrun.commands.aws.last.RowTable.focus">focus</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.on_mount" href="#awsrun.commands.aws.last.RowTable.on_mount">on_mount</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.contents" href="#awsrun.commands.aws.last.RowTable.contents">contents</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.DEFAULT_CSS" href="#awsrun.commands.aws.last.RowTable.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.SelectionChanged" href="#awsrun.commands.aws.last.RowTable.SelectionChanged">SelectionChanged</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.can_focus" href="#awsrun.commands.aws.last.RowTable.can_focus">can_focus</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.RowTable.can_focus_children" href="#awsrun.commands.aws.last.RowTable.can_focus_children">can_focus_children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.last.UserTable" href="#awsrun.commands.aws.last.UserTable">UserTable</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.last.UserTable.on_mount" href="#awsrun.commands.aws.last.UserTable.on_mount">on_mount</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.UserTable.watch_contents" href="#awsrun.commands.aws.last.UserTable.watch_contents">watch_contents</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.UserTable.DEFAULT_CSS" href="#awsrun.commands.aws.last.UserTable.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.UserTable.can_focus" href="#awsrun.commands.aws.last.UserTable.can_focus">can_focus</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.UserTable.can_focus_children" href="#awsrun.commands.aws.last.UserTable.can_focus_children">can_focus_children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.last.EventTable" href="#awsrun.commands.aws.last.EventTable">EventTable</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.last.EventTable.on_mount" href="#awsrun.commands.aws.last.EventTable.on_mount">on_mount</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventTable.watch_contents" href="#awsrun.commands.aws.last.EventTable.watch_contents">watch_contents</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventTable.DEFAULT_CSS" href="#awsrun.commands.aws.last.EventTable.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventTable.can_focus" href="#awsrun.commands.aws.last.EventTable.can_focus">can_focus</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventTable.can_focus_children" href="#awsrun.commands.aws.last.EventTable.can_focus_children">can_focus_children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.last.EventViewer" href="#awsrun.commands.aws.last.EventViewer">EventViewer</a></code></h4>
+<ul class="">
+<li><code><a title="awsrun.commands.aws.last.EventViewer.compose" href="#awsrun.commands.aws.last.EventViewer.compose">compose</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.on_mount" href="#awsrun.commands.aws.last.EventViewer.on_mount">on_mount</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.populate_data_tables" href="#awsrun.commands.aws.last.EventViewer.populate_data_tables">populate_data_tables</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.action_toggle_dark" href="#awsrun.commands.aws.last.EventViewer.action_toggle_dark">action_toggle_dark</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.action_toggle_layout" href="#awsrun.commands.aws.last.EventViewer.action_toggle_layout">action_toggle_layout</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.action_copy" href="#awsrun.commands.aws.last.EventViewer.action_copy">action_copy</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.action_filter_popup" href="#awsrun.commands.aws.last.EventViewer.action_filter_popup">action_filter_popup</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.action_export_popup" href="#awsrun.commands.aws.last.EventViewer.action_export_popup">action_export_popup</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.action_toggle_users" href="#awsrun.commands.aws.last.EventViewer.action_toggle_users">action_toggle_users</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.dismiss_popup" href="#awsrun.commands.aws.last.EventViewer.dismiss_popup">dismiss_popup</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.show_popup" href="#awsrun.commands.aws.last.EventViewer.show_popup">show_popup</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.on_filter_popup_closed" href="#awsrun.commands.aws.last.EventViewer.on_filter_popup_closed">on_filter_popup_closed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.on_filter_popup_changed" href="#awsrun.commands.aws.last.EventViewer.on_filter_popup_changed">on_filter_popup_changed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.on_export_popup_closed" href="#awsrun.commands.aws.last.EventViewer.on_export_popup_closed">on_export_popup_closed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.on_export_popup_changed" href="#awsrun.commands.aws.last.EventViewer.on_export_popup_changed">on_export_popup_changed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.on_user_table_selection_changed" href="#awsrun.commands.aws.last.EventViewer.on_user_table_selection_changed">on_user_table_selection_changed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.on_event_table_selection_changed" href="#awsrun.commands.aws.last.EventViewer.on_event_table_selection_changed">on_event_table_selection_changed</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.watch_total_count" href="#awsrun.commands.aws.last.EventViewer.watch_total_count">watch_total_count</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.watch_filtered_count" href="#awsrun.commands.aws.last.EventViewer.watch_filtered_count">watch_filtered_count</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.update_sub_title" href="#awsrun.commands.aws.last.EventViewer.update_sub_title">update_sub_title</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.total_count" href="#awsrun.commands.aws.last.EventViewer.total_count">total_count</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.filtered_count" href="#awsrun.commands.aws.last.EventViewer.filtered_count">filtered_count</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.CSS" href="#awsrun.commands.aws.last.EventViewer.CSS">CSS</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.TITLE" href="#awsrun.commands.aws.last.EventViewer.TITLE">TITLE</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.BINDINGS" href="#awsrun.commands.aws.last.EventViewer.BINDINGS">BINDINGS</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventViewer.theme" href="#awsrun.commands.aws.last.EventViewer.theme">theme</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="awsrun.commands.aws.last.EventDetail" href="#awsrun.commands.aws.last.EventDetail">EventDetail</a></code></h4>
+<ul class="two-column">
+<li><code><a title="awsrun.commands.aws.last.EventDetail.on_mount" href="#awsrun.commands.aws.last.EventDetail.on_mount">on_mount</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventDetail.compose" href="#awsrun.commands.aws.last.EventDetail.compose">compose</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventDetail.watch_event" href="#awsrun.commands.aws.last.EventDetail.watch_event">watch_event</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventDetail.event" href="#awsrun.commands.aws.last.EventDetail.event">event</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventDetail.DEFAULT_CSS" href="#awsrun.commands.aws.last.EventDetail.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventDetail.can_focus" href="#awsrun.commands.aws.last.EventDetail.can_focus">can_focus</a></code></li>
+<li><code><a title="awsrun.commands.aws.last.EventDetail.can_focus_children" href="#awsrun.commands.aws.last.EventDetail.can_focus_children">can_focus_children</a></code></li>
+</ul>
 </li>
 </ul>
 </li>
