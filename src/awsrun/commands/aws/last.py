@@ -1,5 +1,5 @@
 #
-# Copyright 2019 FMR LLC <opensource@fmr.com>
+# Copyright 2023 FMR LLC <opensource@fmr.com>
 #
 # SPDX-License-Identifier: MIT
 #
@@ -63,10 +63,7 @@ override the value.
 
 Finally, for a TUI (terminal user interface) that lets you interactively
 explore events, specify the `--interactive` flag. Follow the on-screen
-instructions to interact with the TUI. By default, the TUI uses a horizontal
-layout. Specify the `--vertical` option to change to a vertical layout. The
-color used in the TUI can be changed via the `--color` option. Valid choices
-include blue, green, cyan, magenta, red, and white.
+instructions to interact with the TUI.
 
 ## Reference
 
@@ -91,8 +88,6 @@ configuration file:
           STRING:
             - STRING
         interactive: BOOLEAN
-        vertical: BOOLEAN
-        color: STRING
 
 ### Command Options
 Some options can be overridden on the awsrun CLI via command line flags. In
@@ -130,16 +125,6 @@ option is mutually exclusive with the `all` and `console` options.
 : Open an interactive TUI (terminal user interface) instead of printing events
 to the console. The default value is False.
 
-`vertical`, `--vertical`
-: When using the `interactive` mode in a taller but narrow terminal, place the
-event detail widget under the other for a single column grid layout. The default
-value is False.
-
-`color`, `--color COLOR`
-: Specify a color scheme to use when in interactive mode. Possible values
-include: white, yellow, red, cyan, magenta, green, blue. The default value is
-cyan.
-
 The following is a sample configuration to add a permanent filter in your
 configuration file for `DeleteStack` events using the `attributes` configuration
 option:
@@ -154,18 +139,49 @@ option:
 
 import json
 import sys
+import warnings
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from functools import partial
 from itertools import chain, cycle
-
-import py_cui
-import py_cui.keys
-from colorama import Fore, Style, init
+from typing import Optional
 
 from awsrun.argparse import AppendAttributeValuePair
-from awsrun.config import Bool, Choice, Dict, Int, List, Str
+from awsrun.config import Bool, Dict, Int, List, Str
 from awsrun.runner import RegionalCommand
+
+try:
+    import pyperclip
+    import textual
+    from colorama import Fore, Style, init
+    from rich.markdown import Markdown
+    from rich.syntax import Syntax
+    from textual.app import App, ComposeResult
+    from textual.containers import Container, Horizontal, Vertical
+    from textual.message import Message
+    from textual.reactive import reactive
+    from textual.widgets import Button, DataTable, Footer, Header, Input, Static
+
+    if not textual.__version__.startswith("0.16."):
+        raise ImportError("Only textual==0.16 is supported.")
+
+except ImportError as e:
+    sys.exit(
+        f"""{e}
+
+This command requires dependencies not installed by default with awsrun.
+Please install the following to use the this command:
+
+    pip install pyperclip colorama rich "textual==0.16"
+"""
+    )
+
+
+# Textual enables ResourceWarnings, which is not the python default,
+# so we disable them as we get warnings from boto library that we
+# cannot control.
+warnings.simplefilter("ignore", ResourceWarning)
+
 
 # Lookup attributes supported by AWS CloudTrail
 LOOKUP_ATTRIBUTES = [
@@ -243,18 +259,6 @@ class CLICommand(RegionalCommand):
             default=cfg("interactive", type=Bool, default=False),
             help="enter interactive mode to view results",
         )
-        tui.add_argument(
-            "--vertical",
-            action="store_true",
-            default=cfg("vertical", type=Bool, default=False),
-            help="use vertical layout for TUI",
-        )
-        tui.add_argument(
-            "--color",
-            choices=TUI_COLOR_THEMES,
-            default=cfg("color", type=Choice(*TUI_COLOR_THEMES), default="cyan"),
-            help=f"use color scheme: {', '.join(TUI_COLOR_THEMES)}",
-        )
 
         args = parser.parse_args(argv)
 
@@ -300,10 +304,6 @@ class CLICommand(RegionalCommand):
         elif not (args.start and args.end):
             parser.error("must specify both --start and --end flags")
 
-        # Only allow use of TUI options with --interactive flag
-        if args.vertical and not args.interactive:
-            parser.error("can only use --vertical with --interactive mode")
-
         del args.all
         del args.hours
         del args.console
@@ -317,8 +317,6 @@ class CLICommand(RegionalCommand):
         attributes=None,
         max_events=1000,
         interactive=False,
-        vertical=False,
-        color="blue",
     ):
         super().__init__(regions)
 
@@ -330,12 +328,6 @@ class CLICommand(RegionalCommand):
 
         # TUI settings
         self.interactive = interactive
-        self.vertical = vertical
-        self.color = TUI_COLOR_THEMES.get(color, py_cui.WHITE_ON_BLACK)
-
-        # Dict of events by "username", which we'll define as the unique
-        # identifier for a particular session.
-        self.events_by_user = defaultdict(list)
 
         # List of all events in reverse chronological order. We wouldn't have
         # to keep this list if event timestamps were more granular than a
@@ -357,204 +349,49 @@ class CLICommand(RegionalCommand):
         events = self._retrieve_events(ct)
 
         if self.interactive:
-            events_by_user = defaultdict(list)
-            for e in events:
-                events_by_user[e.username()].append(e)
-            return events, events_by_user
+            return events
 
         cf_map = defaultdict(lambda: next(COLOR_FUNCTIONS))
         return "".join(cf_map[e.username()](f"{acct}/{region}:  {e}\n") for e in events)
 
     def _retrieve_events(self, ct):
         events = []
+        event_ids = set()
         for page in _lookup_events(
             ct, start=self.start, end=self.end, attrs=self.attributes
         ):
             for event in page["Events"]:
+                event_id = event["EventId"]
+
+                # Check to make sure AWS is not returning duplicate events.
+                # I've seen this happen sometimes, so let's ignore the dups.
+                if event_id in event_ids:
+                    continue
+                event_ids.add(event_id)
+
                 event["CloudTrailEvent"] = json.loads(event["CloudTrailEvent"])
                 events.append(_UserIdentityType.new(event))
                 if self.interactive:
                     print(".", end="", file=sys.stderr, flush=True)
                 if len(events) >= self.max_events:
                     return events
+
         return events
 
     def regional_collect_results(self, acct, region, get_result):
         if not self.interactive:
             super().regional_collect_results(acct, region, get_result)
+            return
 
-        events, events_by_user = get_result()
-        self.events.append(events)
-        for username, events in events_by_user.items():
-            self.events_by_user[username].extend(events)
+        self.events.append(get_result())
 
     def post_hook(self):
         if not self.interactive:
             return
 
         # Let's fire up the TUI!
-
-        # These contain the list of events being displayed by the TUI widgets.
-        # By default, all events are shown for a specific unless the user
-        # applies a filter.
-        events = self.events
-        events_by_user = self.events_by_user
-
-        # This contains the current query expression to filter events. We only
-        # save a reference to this, so we can prepopulate the filter popup box
-        # with the last expression the user used. This makes it easy for a user
-        # to keep tweaking long exressions without having to type it over and
-        # over again.
-        current_filter_expression = ""
-
-        # Our layout consists of three panes: user list, event list, and event
-        # detail.  We support a vertical layout where all three are stacked
-        # vertically in the terminal for those with narrow terminals ...
-        if self.vertical:
-            root = py_cui.PyCUI(4, 1)
-            user_list = root.add_scroll_menu("Usernames", 0, 0)
-            event_list = root.add_scroll_menu("Events", 1, 0)
-            event_detail = root.add_scroll_menu("Event Detail", 2, 0, row_span=2)
-
-        # ... but the default layout consists of the user and event list
-        # stacked vertically on the left side of the screen with the event
-        # detail pane taking the full height on the right side.
-        else:
-            root = py_cui.PyCUI(3, 4)
-            user_list = root.add_scroll_menu("Usernames", 0, 0, column_span=2)
-            event_list = root.add_scroll_menu("Events", 1, 0, row_span=2, column_span=2)
-            event_detail = root.add_scroll_menu(
-                "Event Detail", 0, 2, row_span=3, column_span=2
-            )
-
-        root.toggle_unicode_borders()
-        root.set_title("CloudTrail Events")
-        root.set_status_bar_text("Press 'q' to exit. TAB to switch panes.")
-
-        # py_cui has an odd navigation mechanism where the TUI is either in
-        # overview mode or focus mode.  In overview mode, users navigate with
-        # arrow keys to navigate between widgets, and then press RETURN to
-        # enter focus mode. Focus mode allows users to interact with the widget
-        # only until the user presses ESC to return to overview mode. I find
-        # this non-intuitive, so let's provide a mappting for TAB to cycle
-        # between widgets and place them in focus mode automatically.
-        focus = cycle(filter(None, root.get_widgets().values()))
-
-        def select_next_widget():
-            root.move_focus(next(focus))
-
-        root.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-
-        # Filter the event list objects in the outer scope that are used by
-        # widgets to display content. This function is called as a result of
-        # the user entering a query expression in the filtering popup.
-        def filter_event_lists(expr):
-            nonlocal events
-            nonlocal events_by_user
-
-            if not expr.strip():
-                events = self.events
-                events_by_user = self.events_by_user
-                return
-
-            events_by_user = defaultdict(list)
-            for user, events in self.events_by_user.items():
-                events = _filter_events(events, expr)
-                if events:
-                    events_by_user[user] = events
-
-            events = []  # List of lists
-            for sublist in self.events:
-                events.append(_filter_events(sublist, expr))
-
-        # Callback used when user presses key to open filtering popup. By
-        # default, py_cui returns the user to overview mode after the popup is
-        # dismissed. We save the widget that was in focus before the popup, so
-        # we can refocus on it afterwards.
-        def show_filter_popup():
-            # pylint: disable=protected-access
-            original_widget = root.get_selected_widget()
-
-            def popup_callback(s):
-                nonlocal current_filter_expression
-                current_filter_expression = s
-                filter_event_lists(s)
-                update_user_list()
-                if original_widget:
-                    root.move_focus(original_widget)
-
-            root.show_text_box_popup(
-                "Filter expression:",
-                popup_callback,
-                initial_text=current_filter_expression,
-            )
-
-        def update_user_list():
-            user_list.clear()
-            user_list.add_item_list(
-                sorted(events_by_user.keys(), key=lambda s: s.lower())
-            )
-            user_list.set_title(f"Usernames ({len(events_by_user.keys())})")
-            update_event_list()
-
-        def update_event_list():
-            event_list.clear()
-            if user_list.get():
-                event_list.add_item_list(events_by_user[user_list.get()])
-            event_list.set_title(f"Events ({len(event_list.get_item_list())})")
-            update_event_detail()
-
-        def update_event_detail():
-            event_detail.clear()
-            event = event_list.get()
-            if event:
-                event_detail.add_item_list(event.to_json().split("\n"))
-
-        def unfilter_event_list():
-            event_list.clear()
-            all_events = sorted(
-                chain(*events), reverse=True, key=lambda e: e.event["EventTime"]
-            )
-            event_list.add_item_list(all_events)
-            event_list.set_title(f"Events ({len(all_events)})")
-            update_event_detail()
-
-        user_list.set_selected_color(self.color)
-        user_list.set_focus_border_color(self.color)
-        user_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-        user_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_list)
-        user_list.add_key_command(py_cui.keys.KEY_BACKSPACE, unfilter_event_list)
-        user_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        user_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
-        user_list.set_focus_text(
-            "Press 'q' to exit. TAB to switch panes. RET for user events. BACKSPACE for all events. 'f' to filter."
-        )
-
-        event_list.set_selected_color(self.color)
-        event_list.set_focus_border_color(self.color)
-        event_list.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-        event_list.add_key_command(py_cui.keys.KEY_ENTER, update_event_detail)
-        event_list.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_list.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
-        event_list.set_focus_text(
-            "Press 'q' to exit. TAB to switch panes. RET for event detail. 'f' to filter."
-        )
-
-        event_detail.set_selected_color(self.color)
-        event_detail.set_focus_border_color(self.color)
-        event_detail.add_key_command(py_cui.keys.KEY_TAB, select_next_widget)
-        event_detail.add_key_command(py_cui.keys.KEY_F_LOWER, show_filter_popup)
-        event_detail.add_key_command(py_cui.keys.KEY_Q_LOWER, root.stop)
-        event_detail.set_focus_text(
-            "Press 'q' to exit. TAB to switch panes. 'f' to filter."
-        )
-
-        # Load the widgets with data and select the user list.
-        update_user_list()
-        select_next_widget()
-
-        # Fire up the main event loop
-        root.start()
+        app = EventViewer(list(chain(*self.events)))
+        app.run()
 
 
 class _UserIdentityType:
@@ -597,13 +434,21 @@ class _UserIdentityType:
         return self._parse_username()
 
     def contains(self, s):
-        """Return True if the event contains `s`."""
+        """Return True if the event contains `s` (case-insenstive)."""
 
+        s = s.lower()
         try:
-            next(_deep_finder(self.ct_event, lambda n: isinstance(n, str) and s in n))
+            next(
+                _deep_finder(
+                    self.event, lambda n: isinstance(n, str) and s in n.lower()
+                )
+            )
             return True
         except StopIteration:
             return False
+
+    def has_error(self):
+        return "errorCode" in self.ct_event
 
     def _parse_username(self):
         return self.event.get(
@@ -624,9 +469,20 @@ class _UserIdentityType:
             return _strip_to("/", arn, greedy=True) + "/" + session_name
         return None
 
+    def event_id(self):
+        return self.event["EventId"]
+
     def to_json(self):
         """Return event as JSON string."""
         return json.dumps(self.event, default=str, indent=4)
+
+    def to_row(self):
+        return (
+            self.event.get("EventTime", ""),
+            self.event.get("EventSource", ""),
+            self.event.get("EventName", ""),
+            self.ct_event.get("errorCode", ""),
+        )
 
     def __str__(self):
         src = self.event.get("EventSource", "")
@@ -645,7 +501,7 @@ class _UserIdentityType:
 #############################################################################
 
 
-class _RootType(_UserIdentityType):
+class _RootType(_UserIdentityType):  # pyright: ignore
     def _parse_username(self):
         # Docs state that Root does not have a username unless an alias has
         # been set for the account, so we try to print the username, if not,
@@ -653,19 +509,25 @@ class _RootType(_UserIdentityType):
         return self.user_identity.get("userName", "ROOT")
 
 
-class _AWSAccountType(_UserIdentityType):
+class _AWSAccountType(_UserIdentityType):  # pyright: ignore
     def _parse_username(self):
         acct = self.user_identity.get("accountId", "NO_ACCOUNT_ID")
         principal = self.user_identity.get("principalId", "NO_PRINCIPAL_ID")
         return f"{acct}/{_strip_to(':', principal)}"
 
 
-class _AWSServiceType(_UserIdentityType):
+class _UnknownType(_UserIdentityType):  # pyright: ignore
+    def _parse_username(self):
+        acct = self.user_identity.get("accountId", "NO_ACCOUNT_ID")
+        return f"{acct}/unknown"
+
+
+class _AWSServiceType(_UserIdentityType):  # pyright: ignore
     def _parse_username(self):
         return self.user_identity.get("invokedBy", "NO_USERNAME")
 
 
-class _AssumedRoleType(_UserIdentityType):
+class _AssumedRoleType(_UserIdentityType):  # pyright: ignore
     def _parse_username(self):
         # For an assumed role type, we get username from the arn because it's
         # the only thing consistent throughout the other type of events, which
@@ -690,11 +552,6 @@ def _strip_to(char, string, greedy=False):
     return string[pos + 1 :]
 
 
-def _strip_after(char, string, greedy=False):
-    pos = string.rfind(char) if greedy else string.find(char)
-    return string if pos == -1 else string[:pos]
-
-
 def _lookup_events(ct, start, end, attrs=None):
     attrs = {} if attrs is None else attrs
     return ct.get_paginator("lookup_events").paginate(
@@ -712,17 +569,17 @@ def _filter_events(events, query):
     """Return list of events filtered by query expression.
 
     Query expression may consist of one or more terms. Terms are matched using
-    logical OR. A term may be prefixed with an optional '-' to exclude events
-    containing the term. Terms are case sensitive and are matched as substrings
+    logical AND. A term may be prefixed with an optional '-' to exclude events
+    containing the term. Terms are case insensitive and are matched as substrings
     in a CloudTrail event including both keys and values.
 
     For example, to search for CloudTrail events that had errors:
 
-        errorCode
+        errorcode
 
     To search for errors excluding S3 issues:
 
-        errorCode -s3
+        errorcode -s3
 
     To search for errors excluding S3 that are due to rate limiting:
 
@@ -777,9 +634,520 @@ COLOR_FUNCTIONS = cycle(
     ]
 )
 
-# Make available any of the colors defined in py_cui
-TUI_COLOR_THEMES = {
-    _strip_after("_", k).lower(): v
-    for k, v in vars(py_cui).items()
-    if k.endswith("_ON_BLACK")
+
+#############################################################################
+# Textual TUI
+#############################################################################
+
+
+class Events:
+    """Internal representation of the list of filtered events in TUI."""
+
+    def __init__(self, events):
+        self.unfiltered_events = events
+        self.filter_expr = ""
+        self._load_events(events)
+
+    def _load_events(self, events):
+        # Need to keep events as a list as we cannot recreate it
+        # from the values of the event_by_user or we lose the
+        # order of the events as the timestamp is not granular.
+        self.events = events
+        self.events_by_key = {e.event_id(): e for e in self.events}
+        self.events_by_user = defaultdict(list)
+        for e in self.events:
+            self.events_by_user[e.username()].append(e)
+
+    def all(self):
+        return self.events
+
+    def users(self):
+        return self.events_by_user.keys()
+
+    def by_user(self, user):
+        return self.events_by_user.get(user, [])
+
+    def by_id(self, event_id) -> Optional[_UserIdentityType]:
+        return self.events_by_key.get(event_id)
+
+    def filter(self, expr):
+        if not expr:  # empty string?
+            events = self.unfiltered_events
+        else:
+            events = _filter_events(self.unfiltered_events, expr)
+
+        self.filter_expr = expr
+        self._load_events(events)
+        return len(self.events)
+
+
+class Popup(Container):
+    """An offscreen popup for a single input box."""
+
+    DEFAULT_CSS = """
+Popup {
+    transition: offset 500ms in_out_cubic;
+    padding: 0 2 1 2;
+    width: 65;
+    height: auto;
+    background: $panel;
+    color: $text;
 }
+Popup:focus-within {
+    offset: 0 0;
+}
+Popup.offscreen {
+    offset-y: 100%;
+}
+Popup Static {
+    padding: 0 2 0 2;
+}
+Popup Horizontal {
+    padding: 1 2 0 2;
+    height: auto;
+}
+Popup Input {
+    width: 4fr;
+    margin-right: 1;
+}
+Popup Button {
+    width: 1fr;
+    min-width: 5;
+}
+    """
+
+    class Changed(Message):
+        def __init__(self, value: str) -> None:
+            super().__init__()
+            self.value = value
+
+    class Closed(Message):
+        pass
+
+    def __init__(self, prompt, help_md):
+        self.prompt = prompt
+        self.help_md = help_md
+        super().__init__(classes="offscreen")
+
+    def compose(self) -> ComposeResult:
+        yield Static(Markdown(self.help_md))
+        with Horizontal():
+            yield Input(placeholder=self.prompt)
+            yield Button("Close", variant="primary")
+
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        event.stop()
+        self.post_message(self.Changed(event.value))
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        event.stop()
+        self.post_message(self.Closed())
+
+
+FILTER_MESSAGE = """
+## Filter Evenets
+
+- Search terms are **case-insensitive**
+- Terms are matched using a logical **AND**
+- To **exclude** a term, prefix with a **hypen** (**-**)
+- **Substrings** in both keys and values are searched
+"""
+
+
+class FilterPopup(Popup):
+    # Class needed for the textual "magic" on_filter_popup_changed handler
+    class Changed(Popup.Changed):
+        pass
+
+    # Class needed for the textual "magic" on_filter_popup_closed handler
+    class Closed(Popup.Closed):
+        pass
+
+    def __init__(self):
+        super().__init__("Enter expression then press ENTER", FILTER_MESSAGE)
+
+
+EXPORT_MESSAGE = """
+## Export Events
+
+- Events matching the current filter are exported
+- If no filter is specified, then all are exported
+- Events exported as JSON
+"""
+
+
+class ExportPopup(Popup):
+    # Class needed for the textual "magic" on_export_popup_changed handler
+    class Changed(Popup.Changed):
+        pass
+
+    # Class needed for the textual "magic" on_export_popup_closed handler
+    class Closed(Popup.Closed):
+        pass
+
+    def __init__(self):
+        super().__init__("Enter filename then press ENTER", EXPORT_MESSAGE)
+
+
+class RowTable(Container):
+    DEFAULT_CSS = """
+RowTable > DataTable {
+  border: solid $accent-lighten-2;
+  border-title-align: left;
+}
+RowTable > DataTable:focus {
+  border: solid $secondary;
+}
+RowTable > DataTable > .datatable--header {
+  text-style: bold;
+  color: $accent-lighten-2;
+  background: black 0%;
+}
+RowTable > DataTable > .datatable--cursor {
+  color: $accent-lighten-2;
+  text-style: bold;
+  background: black 0%;
+}
+RowTable > DataTable > .datatable--hover {
+  background: black 0%;
+}
+RowTable > DataTable > .datatable--header-hover {
+  color: $accent-lighten-2;
+  background: black 0%;
+}
+    """
+
+    contents = reactive([], always_update=True)
+
+    class SelectionChanged(Message):
+        def __init__(self, row_key):
+            self.row_key = row_key
+            super().__init__()
+
+    def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
+        event.stop()
+        event.control.border_subtitle = (
+            f"{event.cursor_row + 1} of {len(event.control.rows)}"
+        )
+        self.post_message(self.SelectionChanged(event.row_key))
+
+    def __init__(self, *col_names):
+        self.col_names = col_names
+        super().__init__()
+
+    def compose(self) -> ComposeResult:
+        yield DataTable()
+
+    def focus(self):
+        self.query_one(DataTable).focus()
+
+    def on_mount(self):
+        dt = self.query_one(DataTable)
+        dt.cursor_type = "row"
+        dt.add_columns(*self.col_names)
+
+
+class UserTable(RowTable):
+    DEFAULT_CSS = """
+UserTable {
+  height: 1fr;
+}
+    """
+
+    # Class needed for the textual "magic" on_user_table_selection_changed handler
+    class SelectionChanged(RowTable.SelectionChanged):
+        pass
+
+    def __init__(self):
+        super().__init__("Principal")
+
+    def on_mount(self):
+        dt = self.query_one(DataTable)
+        dt.show_header = False
+        dt.border_title = "Users"
+
+    def watch_contents(self, users):
+        dt = self.query_one(DataTable)
+        dt.clear()
+        for user in users:
+            dt.add_row(user, key=user)
+        dt.scroll_home()
+        dt.border_subtitle = f"0 of {len(users)}"
+
+
+class EventTable(RowTable):
+    DEFAULT_CSS = """
+EventTable {
+  height: 2fr;
+}
+    """
+
+    # Class needed for the textual "magic" on_event_table_selection_changed handler
+    class SelectionChanged(RowTable.SelectionChanged):
+        pass
+
+    def __init__(self):
+        super().__init__("Time", "Source", "Event", "Error?")
+
+    def on_mount(self):
+        self.query_one(DataTable).border_title = "Events"
+
+    def watch_contents(self, events):
+        dt = self.query_one(DataTable)
+        dt.clear()
+        for event in events:
+            row = event.to_row()
+            if event.has_error():
+                error = dt.app.get_css_variables()["error"]
+                row = [f"[{error}]{c}[/]" for c in row]
+            dt.add_row(*row, key=event.event_id())
+        dt.scroll_home()
+        dt.border_subtitle = f"0 of {len(events)}"
+
+
+class EventViewer(App):
+    CSS = """
+Screen {
+  align: center bottom;
+  overflow: hidden;
+  layers: base filter export;
+}
+FilterPopup {
+    layer: filter;
+}
+ExportPopup {
+    layer: export;
+}
+#main {
+  layout: horizontal;
+}
+.vertical #main {
+  layout: vertical;
+}
+#left {
+  width: 1fr;
+}
+.vertical #left {
+  height: 2fr;
+}
+.hidden {
+  display: none;
+}
+    """
+
+    TITLE = "CloudTrail Viewer"
+    BINDINGS = [
+        ("q", "quit", "Quit"),
+        ("c", "copy", "Copy"),
+        ("e", "export_popup", "Export"),
+        ("f", "filter_popup", "Filter"),
+        ("l", "toggle_layout", "Layout"),
+        ("u", "toggle_users", "Users"),
+        ("d", "toggle_dark", "Toggle dark mode"),
+    ]
+
+    total_count = reactive(0)
+    filtered_count = reactive(0)
+
+    theme = {
+        "dark": Syntax.get_theme("dracula"),
+        "light": Syntax.get_theme("friendly"),
+    }
+
+    def __init__(self, events):
+        super().__init__()
+        self.events = Events(events)
+
+    def compose(self) -> ComposeResult:
+        yield FilterPopup()  # Hidden off-screen initially
+        yield ExportPopup()  # Hidden off-screen initially
+        yield Header()
+        yield Horizontal(
+            Vertical(UserTable(), EventTable(), id="left"),
+            EventDetail(),
+            id="main",
+        )
+        yield Footer()
+
+    def on_mount(self):
+        self.query_one(Header).tall = True
+        self.query_one(FilterPopup).disabled = True
+        self.query_one(ExportPopup).disabled = True
+        self.total_count = self.filtered_count = len(self.events.all())
+        self.populate_data_tables()
+
+    def populate_data_tables(self, focus=True):
+        ut = self.query_one(UserTable)
+        et = self.query_one(EventTable)
+        ed = self.query_one(EventDetail)
+
+        if not self.events.all():
+            ut.contents = et.contents = []
+            ed.event = None
+
+        elif not ut.has_class("hidden"):
+            ut.contents = sorted(self.events.users(), key=str.lower)
+            if focus:
+                ut.focus()
+
+        else:
+            et.contents = self.events.all()
+            if focus:
+                et.focus()
+
+    def action_toggle_dark(self):
+        self.dark = not self.dark
+
+        # In EventDetail we define "event" as reactive with always_update,
+        # so this will force watch_event to be called which redraws the JSON
+        # with the correct theme. We need to do this as the content of the
+        # Static widget with our JSON is colored by rich which does not know
+        # about dark mode. So when user toggles, we need to syntax highlight
+        # the JSON with an appropriate theme.
+        ed = self.query_one(EventDetail)
+        ed.event = ed.event
+
+    def action_toggle_layout(self):
+        self.toggle_class("vertical")
+
+    def action_copy(self):
+        ed = self.query_one(EventDetail)
+        if ed.event:
+            pyperclip.copy(ed.event.to_json())
+
+    def action_filter_popup(self):
+        self.show_popup(FilterPopup)
+
+    def action_export_popup(self):
+        self.show_popup(ExportPopup)
+
+    def action_toggle_users(self):
+        ut = self.query_one(UserTable)
+        ut.toggle_class("hidden")
+        self.populate_data_tables()
+
+    def dismiss_popup(self, name):
+        p = self.query_one(name)
+        p.disabled = True
+        p.add_class("offscreen")
+        self.set_focus(self.original_focus)
+        self.refresh(repaint=True, layout=True)
+
+    def show_popup(self, name):
+        self.original_focus = self.query_one("*:focus")
+        p = self.query_one(name)
+        p.disabled = False
+        p.remove_class("offscreen")
+        p.query_one(Input).focus()
+
+    def on_filter_popup_closed(self, _) -> None:
+        self.dismiss_popup(FilterPopup)
+
+    def on_filter_popup_changed(self, event: FilterPopup.Changed) -> None:
+        # Only update the UI if the expression is different
+        if event.value != self.events.filter_expr:
+            self.filtered_count = self.events.filter(event.value)
+            self.query_one(EventDetail).filter_expr = event.value
+            self.populate_data_tables(focus=False)
+        self.dismiss_popup(FilterPopup)
+
+    def on_export_popup_closed(self, _) -> None:
+        self.dismiss_popup(ExportPopup)
+
+    def on_export_popup_changed(self, event: ExportPopup.Changed) -> None:
+        try:
+            with open(event.value, "w") as out:
+                json.dump(
+                    [e.event for e in self.events.all()],
+                    default=str,
+                    indent=4,
+                    fp=out,
+                )
+            self.dismiss_popup(ExportPopup)
+        except Exception:
+            self.bell()
+
+    def on_user_table_selection_changed(self, message: UserTable.SelectionChanged):
+        et = self.query_one(EventTable)
+        user = message.row_key
+        if user:
+            et.contents = self.events.by_user(user)
+
+    def on_event_table_selection_changed(self, message: EventTable.SelectionChanged):
+        ed = self.query_one(EventDetail)
+        event_key = message.row_key
+        if event_key:
+            event = self.events.by_id(event_key)
+            ed.event = event
+
+    def watch_total_count(self):
+        self.update_sub_title()
+
+    def watch_filtered_count(self):
+        self.update_sub_title()
+
+    def update_sub_title(self):
+        s = f"{self.total_count} events loaded"
+        if self.filtered_count != self.total_count:
+            s += f", {self.filtered_count} matched"
+        self.sub_title = s
+
+
+class EventDetail(Container, can_focus=True):
+    DEFAULT_CSS = """
+EventDetail {
+  width: 1fr;
+  overflow: auto scroll;
+  border: solid $accent-lighten-2;
+  border-title-align: left;
+}
+EventDetail:focus {
+  border: solid $secondary;
+}
+.vertical EventDetail {
+  height: 2fr;
+}
+EventDetail > Static {
+  width: auto;
+  min-width: 1fr;
+}
+    """
+
+    # We need always update for toggling of themes to work.
+    event: reactive[Optional[_UserIdentityType]] = reactive[
+        Optional[_UserIdentityType]
+    ](None, always_update=True)
+
+    def __init__(self):
+        super().__init__()
+        self.filter_expr = ""
+
+    def on_mount(self):
+        self.border_title = "Event Detail"
+
+    def compose(self) -> ComposeResult:
+        yield Static()
+
+    def watch_event(self, event):
+        content = event.to_json() if event else ""
+        matching_lines = self._find_matching_lines(content)
+
+        self.query_one(Static).update(
+            Syntax(
+                content,
+                "json",
+                theme=EventViewer.theme["dark" if self.app.dark else "light"],
+                highlight_lines=matching_lines,
+                line_numbers=True,
+            )
+        )
+
+    def _find_matching_lines(self, content):
+        terms = [t.lower() for t in self.filter_expr.split() if not t.startswith("-")]
+        matching_lines = set()
+        for n, line in enumerate(content.split("\n"), start=1):
+            for term in terms:
+                if term in line.lower():
+                    matching_lines.add(n)
+
+        return matching_lines
