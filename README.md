@@ -6,6 +6,13 @@
 CLI tool and library to concurrently execute user-defined commands across AWS
 accounts or Azure subscriptions.
 
+> **Note**
+> As of release 3.0.0, installation has changed with the introduction of
+> optional dependencies. Previously, `pip install awsrun` would install all
+> dependencies needed for `awsrun`, `azurerun`, and all of the bundled
+> commands. You **must** now specify the optional dependencies when installing:
+> `pip install "awsrun[aws,azure]"`. See Installation for more details.
+
 ## Overview
 
 Awsrun/azurerun is both a CLI tool and Python package that can be used to
@@ -104,55 +111,32 @@ ASCII-based charts.
 
 Python 3.7 or higher is required.
 
-To install:
-
-    $ pip install "awsrun[aws,azure]"
-
-This will install dependencies for both `awsrun` and `azurerun`.
-If you don't want both, you can specify only one. For example,
-if you only want `awsrun`:
+To install only `awsrun`:
 
     $ pip install "awsrun[aws]"
 
-If you only want `azurerun`:
+To install only `azurerun`:
 
     $ pip install "awsrun[azure]"
 
-In all three cases, the console scripts `awsrun` and `azurerun` are
-installed, but only the dependencies for the specified CSP are installed.
+To install both `awsrun` and `azurerun`:
 
-Note: In order to use the built-in awsrun
-[`aws`](https://fidelity.github.io/awsrun/commands/aws/aws.html) command, the AWS
-CLI tool must be
-[installed](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)
-and available in your operating system's PATH. In prior versions of awsrun, the
-AWS CLI tool was installed automatically as part of the installation. It is no
-longer installed to allow users the choice of installing v1 or v2 of the AWS CLI
-tool.
+    $ pip install "awsrun[aws,azure]"
 
-Note: In order to use the built-in azurerun
-[`az`](https://fidelity.github.io/awsrun/commands/azure/az.html) command, the Azure
-CLI tool must be
-[installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-and available in your operating system's PATH.
+In all cases, the console scripts `awsrun` and `azurerun` are installed, but
+only the dependencies for the specified CSPs are installed.
 
-Some of the bundled sample commands have additional dependencies, which are
-not installed by default. You'll be prompted when attempting to run one of
-them if you need to install additional packages. If you'd prefer, you can install
-all of the additional command dependencies:
+Some of the bundled commands have additional dependencies. You will be prompted
+to install those if you use one of them. Alternatively, you can install all of
+those ahead of time:
 
     $ pip install "awsrun[cmds]"
 
-Or specific commands by choosing the appropriate optional dependency. For example,
-to install the packages needed by the `last` command:
-
-    $ pip install "awsrun[last]"
-
-To install from source, clone the repo and run pip install:
+Finally, to install from source with the development dependencies:
 
     $ git clone https://github.com/fidelity/awsrun.git
     $ cd awsrun
-    $ pip install .[aws,azure]
+    $ pip install -e ".[aws,azure,cmds,dev]"
 
 ## AWS Quick Start
 
@@ -328,6 +312,32 @@ includes the following:
   your environment.
 
 ## Change Log
+
+### v3.0.0
+
+- **BREAKING CHANGE**: Installation via `pip install awsurn` no longer installs
+  all of the dependencies for `awsrun`, `azurerun`, and the bundled commands.
+  Instead, users must now specify which optional dependendencies to install.
+  See Installation section above for details. Note: while the major version
+  was bumped, there are no API changes to awsrun. This was bumped from "2"
+  to "3" solely to bring awareness to the different installation instructions.
+
+- The terminal-based UI for the `last` command, a CloudTrail event viewer,
+  was rewritten using the amazing Textual TUI framework. With this change,
+  several new features were added to the command: dark/light modes, mouse
+  support, filtering events, exporting events, OS clipboard integration,
+  highlighting of events with errors, ability to toggle layout, as well as
+  a brand new look and feel. See screenshot above.
+
+- Modernized the python packaging to use `pyproject.toml` instead of the
+  `setup.py` style of packgaing.
+
+- Thanks to Gábor Lipták for the GitHub actions contributions. This included
+  adding the new check for PR titles to ensure they adhere to the Conventional
+  Commits standard.
+
+- Added a CONTRIBUTING document thanks to Brian Warner, a member of our
+  open-source office at Fidelity.
 
 ### v2.5.2
 
