@@ -43,7 +43,7 @@ azure = ["azure-identity", "azure-mgmt-network"]
 
 # dependencies for bundled commands
 cmds = ["awsrun[last,dx-maint,dx-status]"]
-last = ["pyperclip", "colorama", "rich", "textual==0.16"]
+last = ["pyperclip", "colorama", "rich", "textual==0.20"]
 dx-maint = ["colorama"]
 dx-status = ["colorama", "asciichartpy>=1.5.25", "pysparklines>=1.0"]
 

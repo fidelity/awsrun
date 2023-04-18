@@ -789,6 +789,7 @@ class RowTable(Container):
 RowTable > DataTable {
   border: solid $accent-lighten-2;
   border-title-align: left;
+  height: 100%;
 }
 RowTable > DataTable:focus {
   border: solid $secondary;
