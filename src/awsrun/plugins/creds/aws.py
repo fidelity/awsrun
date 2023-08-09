@@ -465,6 +465,7 @@ class SAMLCrossAccount(AbstractCrossAccount):
             role: STRING*
             url: STRING*
             auth_type: ("basic" | "digest" | "ntlm")
+            http_method: ("GET"| "POST")
             http_headers:
               STRING: STRING
             no_verify: BOOLEAN
@@ -510,6 +511,11 @@ class SAMLCrossAccount(AbstractCrossAccount):
     specified, it must be one of `basic`, `digest`, or `ntlm`. The default value
     is `basic`. If using NTLM, username should be specified as `domain\\username`.
 
+    `http_method`
+    : The HTTP method to use when authenticating with the IdP. If
+    specified, it must be one of `GET`, `POST`. The default value
+    is `GET`. 
+    
     `http_headers`
     : Additional HTTP headers to send in the request to the IdP. If specified,
     it must be a dictionary of `key: value` pairs, where keys and values are
