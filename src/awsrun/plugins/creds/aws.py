@@ -179,8 +179,8 @@ class SAML(Plugin):
     `http_method`
     : The HTTP method to use when authenticating with the IdP. If
     specified, it must be one of `GET`, `POST`. The default value
-    is `GET`. 
-    
+    is `GET`.
+
     `http_headers`
     : Additional HTTP headers to send in the request to the IdP. If specified,
     it must be a dictionary of `key: value` pairs, where keys and values are
@@ -514,8 +514,8 @@ class SAMLCrossAccount(AbstractCrossAccount):
     `http_method`
     : The HTTP method to use when authenticating with the IdP. If
     specified, it must be one of `GET`, `POST`. The default value
-    is `GET`. 
-    
+    is `GET`.
+
     `http_headers`
     : Additional HTTP headers to send in the request to the IdP. If specified,
     it must be a dictionary of `key: value` pairs, where keys and values are

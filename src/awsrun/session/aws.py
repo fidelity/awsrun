@@ -416,10 +416,10 @@ class CredsViaSAML(CachingSessionProvider):
         with requests.Session() as s:
             s.auth = self._auth
             s.headers.update(self._headers)
-            if self._http_method == "GET" :
+            if self._http_method == "GET":
                 resp = s.get(self._url, verify=not self._no_verify)
-            else :
-                authData={
+            else:
+                authData = {
                     'UserName': s.auth.username,
                     'Password': s.auth.password,
                     'AuthMethod': 'FormsAuthentication'
