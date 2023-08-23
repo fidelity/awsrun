@@ -338,7 +338,7 @@ class Scalar(Type):
         self.type = type_
 
     def type_check(self, obj):
-        return type(obj) == self.type
+        return type(obj) == self.type  # noqa: E721
 
     def __str__(self):
         return self.type.__name__
@@ -354,7 +354,7 @@ class StrMatch(Type):
         self.pattern = pattern
 
     def type_check(self, obj):
-        if type(obj) != str:
+        if type(obj) != str:  # noqa: E721
             return False
         return bool(re.search(self.pattern, obj))
 
@@ -366,7 +366,7 @@ class IpAddress(Type):
     """Represents a string matching an IP address (v4 or v6)."""
 
     def type_check(self, obj):
-        if type(obj) != str:
+        if type(obj) != str:  # noqa: E721
             return False
         try:
             ipaddress.ip_address(obj)
@@ -382,7 +382,7 @@ class IpNetwork(Type):
     """Represents a string matching an IP network (v4 or v6)."""
 
     def type_check(self, obj):
-        if type(obj) != str:
+        if type(obj) != str:   # noqa: E721
             return False
         try:
             ipaddress.ip_network(obj)
@@ -398,7 +398,7 @@ class FileType(Type):
     """Represents a string pointing to an existing file."""
 
     def type_check(self, obj):
-        if type(obj) != str:
+        if type(obj) != str:   # noqa: E721
             return False
         return Path(obj).exists()
 
@@ -462,7 +462,7 @@ class List(Type):
         self.element_type = element_type
 
     def type_check(self, obj):
-        if type(obj) != list:
+        if type(obj) != list:  # noqa: E721
             return False
         return all(self.element_type.type_check(e) for e in obj)
 
@@ -485,7 +485,7 @@ class Dict(Type):
         self.value_type = value_type
 
     def type_check(self, obj):
-        if type(obj) != dict:
+        if type(obj) != dict:  # noqa: E721
             return False
         return all(self.key_type.type_check(k) for k in obj.keys()) and all(
             self.value_type.type_check(v) for v in obj.values()
