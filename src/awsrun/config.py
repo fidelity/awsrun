@@ -382,7 +382,7 @@ class IpNetwork(Type):
     """Represents a string matching an IP network (v4 or v6)."""
 
     def type_check(self, obj):
-        if type(obj) != str:   # noqa: E721
+        if type(obj) != str:  # noqa: E721
             return False
         try:
             ipaddress.ip_network(obj)
@@ -398,7 +398,7 @@ class FileType(Type):
     """Represents a string pointing to an existing file."""
 
     def type_check(self, obj):
-        if type(obj) != str:   # noqa: E721
+        if type(obj) != str:  # noqa: E721
             return False
         return Path(obj).exists()
 

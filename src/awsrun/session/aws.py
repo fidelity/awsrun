@@ -420,9 +420,9 @@ class CredsViaSAML(CachingSessionProvider):
                 resp = s.get(self._url, verify=not self._no_verify)
             else:
                 authData = {
-                    'UserName': s.auth.username,
-                    'Password': s.auth.password,
-                    'AuthMethod': 'FormsAuthentication'
+                    "UserName": s.auth.username,
+                    "Password": s.auth.password,
+                    "AuthMethod": "FormsAuthentication",
                 }
                 resp = s.post(self._url, data=authData, verify=not self._no_verify)
 
