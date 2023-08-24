@@ -384,6 +384,7 @@ class CredsViaSAML(CachingSessionProvider):
         role,
         url,
         auth,
+        http_method,
         headers=None,
         duration=3600,
         saml_duration=300,
@@ -392,6 +393,7 @@ class CredsViaSAML(CachingSessionProvider):
         super().__init__(role, duration)
         self._url = url
         self._auth = auth
+        self._http_method = http_method
         self._headers = {} if headers is None else headers
         self._cached_saml = ExpiringValue(self._request_assertion, saml_duration)
         self._no_verify = no_verify
@@ -414,7 +416,15 @@ class CredsViaSAML(CachingSessionProvider):
         with requests.Session() as s:
             s.auth = self._auth
             s.headers.update(self._headers)
-            resp = s.get(self._url, verify=not self._no_verify)
+            if self._http_method == "GET":
+                resp = s.get(self._url, verify=not self._no_verify)
+            else:
+                authData = {
+                    "UserName": s.auth.username,
+                    "Password": s.auth.password,
+                    "AuthMethod": "FormsAuthentication",
+                }
+                resp = s.post(self._url, data=authData, verify=not self._no_verify)
 
         if resp.status_code == 401:
             raise IDPAccessDeniedException("Could not authenticate")
