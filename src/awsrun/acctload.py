@@ -60,6 +60,7 @@ from pathlib import Path
 
 import requests
 import yaml
+from requests.auth import AuthBase
 from requests_file import FileAdapter
 
 from awsrun.cache import PersistentExpiringValue
@@ -914,6 +915,174 @@ class AzureCLIAccountLoader(MetaAccountLoader):
             accts.append(subscription)
 
         super().__init__(accts)
+
+
+class CSVParser:
+    """Returns a list of dicts from a buffer of CSV text.
+
+    To override options passed to `csv.DictReader`, specify them as keyword
+    arguments in the constructor. By default, the `delimiter` is `","` and
+    `skipinitialspace` is `True`.
+    """
+
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
+        self.kwargs.setdefault("delimiter", ",")
+        self.kwargs.setdefault("skipinitialspace", True)
+
+    def __call__(self, text):
+        buf = io.StringIO(text.strip())
+        return list(csv.DictReader(buf, **self.kwargs))
+
+
+class JSONParser:
+    """Returns a list or dict from a buffer of JSON-formatted text.
+
+    To override options passed to `json.loads`, specify them as keyword
+    arguments in the constructor.
+    """
+
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
+
+    def __call__(self, text):
+        return json.loads(text, **self.kwargs)
+
+
+class YAMLParser:
+    """Returns a list or dict from a buffer of YAML-formatted text.
+
+    To override options passed to `yaml.safe_load`, specify them as keyword
+    arguments in the constructor.
+    """
+
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
+
+    def __call__(self, text):
+        return yaml.safe_load(text, **self.kwargs)
+
+
+class HTTPOAuth2(AuthBase):
+    """Attaches an OAuth2 bearer token to the given `requests.Request` object.
+
+    Use `token_url` to specify the token provider's URL. The `client_id` and
+    `client_secret` specify the credentials used to authenticate with the
+    token provider. Three additional keyword parameters are accepted:
+
+    `scope`
+    : Default is "AppIdClaimsTrust".
+
+    `grant_type`
+    : Default is "client_credentials".
+
+    `intent`
+    : Default is "awsrun account loader plugin"
+    """
+
+    def __init__(
+        self,
+        token_url,
+        username,
+        password,
+        scope="AppIdClaimsTrust",
+        grant_type="client_credentials",
+        intent="awsrun account loader plugin",
+    ):
+        self.url = token_url
+        self.data = {}
+        self.data["client_id"] = username
+        self.data["client_secret"] = password
+        self.data["scope"] = scope
+        self.data["grant_type"] = grant_type
+        self.data["intent"] = intent
+
+    def _get_token(self):
+        resp = requests.post(self.url, data=self.data)
+        resp.raise_for_status()
+        return resp.json()["access_token"]
+
+    def __call__(self, req):
+        req.headers["Authorization"] = f"Bearer {self._get_token()}"
+        return req
+
+
+class URLAccountLoader(MetaAccountLoader):
+    """Returns an `AccountLoader` with accounts loaded from a URL.
+
+    Loaded accounts will include metadata associated with each account in the
+    document retrieved from the `url`. File based URLs can be used to load
+    data from a local file. This data will be parsed as JSON by default. To
+    override, use `parser` to specify a callable that accepts the text and
+    returns a list or dict of accounts (see `MetaAccountLoader`). To cache the
+    results, specify a non-zere number of seconds in `max_age`.  The default
+    location on disk is the system temp directory in a file called
+    `awsrun.dat`, which can be overrided via `cache_path`.
+
+    Given the following JSON:
+
+        {
+            "Accounts": [
+                {"id": "100200300400", "env": "prod", "status": "active"},
+                {"id": "200300400100", "env": "non-prod", "status": "active"},
+                {"id": "300400100200", "env": "non-prod", "status": "suspended"}
+            ]
+        }
+
+    The account loader will build account objects with the following attribute
+    names: `id`, `env`, `status`. Assume the above JSON is returned from
+    http://example.com/accts.json:
+
+        loader = URLAccountLoader('http://example.com/accts.json', path=['Accounts'])
+        accts = loader.accounts()
+
+        # Let's inspect the 1st account object and its metadata
+        assert accts[0].id == '100200300400'
+        assert accts[0].env == 'prod'
+        assert accts[0].status == 'active'
+
+    URLAccountLoader is a subclass of the `MetaAccountLoader`, which loads
+    accounts from a set of dicts. As such, the remainder of the parameters in
+    the constructor -- `id_attr`, `path`, `str_template`, `include_attrs`, and
+    `exclude_attrs` -- are defined in the constructor of `MetaAccountLoader`.
+    """
+
+    def __init__(
+        self,
+        url,
+        parser=JSONParser(),
+        auth=None,
+        max_age=0,
+        id_attr="id",
+        path=None,
+        str_template=None,
+        include_attrs=None,
+        exclude_attrs=None,
+        no_verify=False,
+        cache_path=None,
+    ):
+
+        session = requests.Session()
+        session.mount("file://", FileAdapter())
+
+        def load_cache():
+            r = session.get(url, auth=auth, verify=not no_verify)
+            r.raise_for_status()
+            return parser(r.text)
+
+        if not cache_path:
+            cache_path = Path(tempfile.gettempdir(), "awsrun.dat")
+
+        accts = PersistentExpiringValue(load_cache, cache_path, max_age=max_age)
+
+        super().__init__(
+            accts.value(),
+            id_attr=id_attr,
+            path=[] if path is None else path,
+            str_template=str_template,
+            include_attrs=[] if include_attrs is None else include_attrs,
+            exclude_attrs=[] if exclude_attrs is None else exclude_attrs,
+        )
 
 
 class AbstractAccount:
