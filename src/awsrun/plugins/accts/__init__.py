@@ -46,7 +46,7 @@ import getpass
 import os
 from pathlib import Path
 
-from requests.auth import HTTPBasicAuth, HTTPDigestAuth
+from requests.auth import AuthBase, HTTPBasicAuth, HTTPDigestAuth
 from requests_ntlm import HttpNtlmAuth
 
 from awsrun.acctload import (
@@ -903,11 +903,16 @@ class URLLoader(Plugin):
             if args.loader_password:
                 auth_options["password"] = args.loader_password
 
-            # If they don't exist in user config, then pick defaults
-            if "username" not in auth_options:
-                auth_options["username"] = _default_username()
-            if "password" not in auth_options:
-                auth_options["password"] = _default_password(auth_options["username"])
+            # If a username and password has not been provided via CLI flags
+            # or via the configuration file, we'll fallback to environment
+            # variables if they exist, or lastly we'll prompt the user
+            # interactively. BUT, we don't want to do that here because the
+            # URLAccountLoader caches data, so we might not need to make an
+            # HTTP call, and thus prompting the user would be unneeded (and
+            # annoying). So, instead, we use DeferPrompting to wrap the
+            # various requests HTTP*Auth classes. This will defer the
+            # instantiation of those classes until `requests` invokes the
+            # callable `auth` parameter to its various methods.
 
             if args.loader_auth == "oauth2" and "token_url" not in auth_options:
                 raise TypeError(
@@ -915,19 +920,13 @@ class URLLoader(Plugin):
                 )
 
         auth_types = {
-            "none": _HTTPNone,
-            "basic": HTTPBasicAuth,
-            "digest": HTTPDigestAuth,
-            "ntlm": HttpNtlmAuth,
-            "oauth2": HTTPOAuth2,
+            "none": _HTTPNone(),
+            "basic": _DeferPrompting(HTTPBasicAuth, auth_options),
+            "digest": _DeferPrompting(HTTPDigestAuth, auth_options),
+            "ntlm": _DeferPrompting(HttpNtlmAuth, auth_options),
+            "oauth2": _DeferPrompting(HTTPOAuth2, auth_options),
         }
-
-        try:
-            auth = auth_types[args.loader_auth](**auth_options)
-        except TypeError as e:
-            raise TypeError(
-                f"incompatible auth_options specified in config: Accounts->options->auth_options: {e}"
-            )
+        auth = auth_types[args.loader_auth]
 
         parsers = {
             "json": JSONParser,
@@ -968,6 +967,36 @@ def _default_password(user):
     return os.environ.get("AWSRUN_LOADER_PASSWORD", None) or getpass.getpass(
         f"Account loader password for {user}? "
     )
+
+
+# Helper class to wrap one of `requests` auth classes to defer instantiation
+# of those classes until `requests` actually needs to use the auth data. This
+# is used to avoid interactively prompting a user for their password if one
+# had not been specified via CLI args or their config file. The default will
+# come from the env variable if set, otherwise the user is prompted. But we
+# don't want to prompt when we instantiated the `requests` auth classes
+# because at that time, we do not know if the account loader data has been
+# cached and thus not require making an HTTP call. So, why bother prompting
+# the user in that case?
+class _DeferPrompting(AuthBase):
+    def __init__(self, auth_class, auth_options):
+        self.auth_class = auth_class
+        self.auth_options = auth_options
+
+    def __call__(self, req):
+        if "username" not in self.auth_options:
+            self.auth_options["username"] = _default_username()
+        if "password" not in self.auth_options:
+            self.auth_options["password"] = _default_password(
+                self.auth_options["username"]
+            )
+        try:
+            auth = self.auth_class(**self.auth_options)
+        except TypeError as e:
+            raise TypeError(
+                f"incompatible auth_options specified in config: Accounts->options->auth_options: {e}"
+            )
+        return auth(req)
 
 
 class _HTTPNone:
