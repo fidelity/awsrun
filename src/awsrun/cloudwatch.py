@@ -29,6 +29,7 @@ invoking the callable returned by `CWMetrics.add_metric`. For example:
         print(datetime, value)
 
 """
+
 import logging
 import math
 from collections import defaultdict
