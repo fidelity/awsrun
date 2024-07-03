@@ -984,6 +984,7 @@ class RowTable(Container):
 RowTable &gt; DataTable {
   border: solid $accent-lighten-2;
   border-title-align: left;
+  height: 100%;
 }
 RowTable &gt; DataTable:focus {
   border: solid $secondary;
@@ -1711,7 +1712,21 @@ EventDetail &gt; Static {
 <span>(</span><span>prompt, help_md)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>An offscreen popup for a single input box.</p></section>
+<section class="desc"><p>An offscreen popup for a single input box.</p>
+<p>Initialize a Widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*children</code></strong></dt>
+<dd>Child widgets.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the widget.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the widget in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes for the widget.</dd>
+<dt><strong><code>disabled</code></strong></dt>
+<dd>Whether the widget is disabled or not.</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1874,7 +1889,21 @@ Popup Button {
 <span>class <span class="ident">FilterPopup</span></span>
 </code></dt>
 <dd>
-<section class="desc"><p>An offscreen popup for a single input box.</p></section>
+<section class="desc"><p>An offscreen popup for a single input box.</p>
+<p>Initialize a Widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*children</code></strong></dt>
+<dd>Child widgets.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the widget.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the widget in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes for the widget.</dd>
+<dt><strong><code>disabled</code></strong></dt>
+<dd>Whether the widget is disabled or not.</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1925,7 +1954,21 @@ Popup Button {
 <span>class <span class="ident">ExportPopup</span></span>
 </code></dt>
 <dd>
-<section class="desc"><p>An offscreen popup for a single input box.</p></section>
+<section class="desc"><p>An offscreen popup for a single input box.</p>
+<p>Initialize a Widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*children</code></strong></dt>
+<dd>Child widgets.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the widget.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the widget in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes for the widget.</dd>
+<dt><strong><code>disabled</code></strong></dt>
+<dd>Whether the widget is disabled or not.</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1977,7 +2020,21 @@ Popup Button {
 <span>(</span><span>*col_names)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Simple container widget, with vertical layout.</p></section>
+<section class="desc"><p>Simple container widget, with vertical layout.</p>
+<p>Initialize a Widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*children</code></strong></dt>
+<dd>Child widgets.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the widget.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the widget in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes for the widget.</dd>
+<dt><strong><code>disabled</code></strong></dt>
+<dd>Whether the widget is disabled or not.</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1987,6 +2044,7 @@ Popup Button {
 RowTable &gt; DataTable {
   border: solid $accent-lighten-2;
   border-title-align: left;
+  height: 100%;
 }
 RowTable &gt; DataTable:focus {
   border: solid $secondary;
@@ -2080,13 +2138,13 @@ RowTable &gt; DataTable &gt; .datatable--header-hover {
 <dt><strong><code>default</code></strong></dt>
 <dd>A default value or callable that returns a default.</dd>
 <dt><strong><code>layout</code></strong></dt>
-<dd>Perform a layout on change. Defaults to False.</dd>
+<dd>Perform a layout on change.</dd>
 <dt><strong><code>repaint</code></strong></dt>
-<dd>Perform a repaint on change. Defaults to True.</dd>
+<dd>Perform a repaint on change.</dd>
 <dt><strong><code>init</code></strong></dt>
-<dd>Call watchers on initialize (post mount). Defaults to True.</dd>
+<dd>Call watchers on initialize (post mount).</dd>
 <dt><strong><code>always_update</code></strong></dt>
-<dd>Call watchers even when the new value equals the old value. Defaults to False.</dd>
+<dd>Call watchers even when the new value equals the old value.</dd>
 </dl></section>
 <details class="source">
 <summary>
@@ -2159,9 +2217,10 @@ RowTable &gt; DataTable &gt; .datatable--header-hover {
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>scroll_visible</code></strong></dt>
-<dd>Scroll parent to make this widget
-visible. Defaults to True.</dd>
-</dl></section>
+<dd>Scroll parent to make this widget visible.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The <code>Widget</code> instance.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2191,7 +2250,21 @@ visible. Defaults to True.</dd>
 <span>class <span class="ident">UserTable</span></span>
 </code></dt>
 <dd>
-<section class="desc"><p>Simple container widget, with vertical layout.</p></section>
+<section class="desc"><p>Simple container widget, with vertical layout.</p>
+<p>Initialize a Widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*children</code></strong></dt>
+<dd>Child widgets.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the widget.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the widget in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes for the widget.</dd>
+<dt><strong><code>disabled</code></strong></dt>
+<dd>Whether the widget is disabled or not.</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2298,7 +2371,21 @@ UserTable {
 <span>class <span class="ident">EventTable</span></span>
 </code></dt>
 <dd>
-<section class="desc"><p>Simple container widget, with vertical layout.</p></section>
+<section class="desc"><p>Simple container widget, with vertical layout.</p>
+<p>Initialize a Widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*children</code></strong></dt>
+<dd>Child widgets.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the widget.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the widget in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes for the widget.</dd>
+<dt><strong><code>disabled</code></strong></dt>
+<dd>Whether the widget is disabled or not.</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2414,12 +2501,12 @@ EventTable {
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>driver_class</code></strong></dt>
-<dd>Driver class or <code>None</code> to auto-detect. Defaults to None.</dd>
+<dd>Driver class or <code>None</code> to auto-detect. This will be used by some Textual tools.</dd>
 <dt><strong><code>css_path</code></strong></dt>
-<dd>Path to CSS or <code>None</code> for no CSS file.
-Defaults to None. To load multiple CSS files, pass a list of strings or paths which will be loaded in order.</dd>
+<dd>Path to CSS or <code>None</code> to use the <code>CSS_PATH</code> class variable.
+To load multiple CSS files, pass a list of strings or paths which will be loaded in order.</dd>
 <dt><strong><code>watch_css</code></strong></dt>
-<dd>Watch CSS for changes. Defaults to False.</dd>
+<dd>Reload CSS if the files changed. This is set automatically if you are using <code>textual run</code> with the <code>dev</code> switch.</dd>
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
@@ -2653,13 +2740,13 @@ ExportPopup {
 <dt><strong><code>default</code></strong></dt>
 <dd>A default value or callable that returns a default.</dd>
 <dt><strong><code>layout</code></strong></dt>
-<dd>Perform a layout on change. Defaults to False.</dd>
+<dd>Perform a layout on change.</dd>
 <dt><strong><code>repaint</code></strong></dt>
-<dd>Perform a repaint on change. Defaults to True.</dd>
+<dd>Perform a repaint on change.</dd>
 <dt><strong><code>init</code></strong></dt>
-<dd>Call watchers on initialize (post mount). Defaults to True.</dd>
+<dd>Call watchers on initialize (post mount).</dd>
 <dt><strong><code>always_update</code></strong></dt>
-<dd>Call watchers even when the new value equals the old value. Defaults to False.</dd>
+<dd>Call watchers even when the new value equals the old value.</dd>
 </dl></section>
 <details class="source">
 <summary>
@@ -2690,13 +2777,13 @@ ExportPopup {
 <dt><strong><code>default</code></strong></dt>
 <dd>A default value or callable that returns a default.</dd>
 <dt><strong><code>layout</code></strong></dt>
-<dd>Perform a layout on change. Defaults to False.</dd>
+<dd>Perform a layout on change.</dd>
 <dt><strong><code>repaint</code></strong></dt>
-<dd>Perform a repaint on change. Defaults to True.</dd>
+<dd>Perform a repaint on change.</dd>
 <dt><strong><code>init</code></strong></dt>
-<dd>Call watchers on initialize (post mount). Defaults to True.</dd>
+<dd>Call watchers on initialize (post mount).</dd>
 <dt><strong><code>always_update</code></strong></dt>
-<dd>Call watchers even when the new value equals the old value. Defaults to False.</dd>
+<dd>Call watchers even when the new value equals the old value.</dd>
 </dl></section>
 <details class="source">
 <summary>
@@ -2726,7 +2813,8 @@ ExportPopup {
 <span>def <span class="ident">compose</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Yield child widgets for a container.</p></section>
+<section class="desc"><p>Yield child widgets for a container.</p>
+<p>This method should be implemented in a subclass.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2793,7 +2881,7 @@ ExportPopup {
 <span>def <span class="ident">action_toggle_dark</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Action to toggle dark mode.</p></section>
+<section class="desc"><p>An <a href="/guide/actions">action</a> to toggle dark mode.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3062,7 +3150,21 @@ ExportPopup {
 <span>class <span class="ident">EventDetail</span></span>
 </code></dt>
 <dd>
-<section class="desc"><p>Simple container widget, with vertical layout.</p></section>
+<section class="desc"><p>Simple container widget, with vertical layout.</p>
+<p>Initialize a Widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*children</code></strong></dt>
+<dd>Child widgets.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the widget.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the widget in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes for the widget.</dd>
+<dt><strong><code>disabled</code></strong></dt>
+<dd>Whether the widget is disabled or not.</dd>
+</dl></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3158,13 +3260,13 @@ EventDetail &gt; Static {
 <dt><strong><code>default</code></strong></dt>
 <dd>A default value or callable that returns a default.</dd>
 <dt><strong><code>layout</code></strong></dt>
-<dd>Perform a layout on change. Defaults to False.</dd>
+<dd>Perform a layout on change.</dd>
 <dt><strong><code>repaint</code></strong></dt>
-<dd>Perform a repaint on change. Defaults to True.</dd>
+<dd>Perform a repaint on change.</dd>
 <dt><strong><code>init</code></strong></dt>
-<dd>Call watchers on initialize (post mount). Defaults to True.</dd>
+<dd>Call watchers on initialize (post mount).</dd>
 <dt><strong><code>always_update</code></strong></dt>
-<dd>Call watchers even when the new value equals the old value. Defaults to False.</dd>
+<dd>Call watchers even when the new value equals the old value.</dd>
 </dl></section>
 <details class="source">
 <summary>

@@ -222,7 +222,7 @@ class CLICommand(RegionalCommand):
                 total = len(by_role[role])
                 public = len([fn for fn in by_role[role] if _is_public(fn)])
                 print(
-                    f&#34;{acct}/{region}: role={role} total={total} private={total-public} public={public}&#34;,
+                    f&#34;{acct}/{region}: role={role} total={total} private={total - public} public={public}&#34;,
                     file=out,
                 )
 
@@ -296,7 +296,7 @@ def _is_public(fn):
                 total = len(by_role[role])
                 public = len([fn for fn in by_role[role] if _is_public(fn)])
                 print(
-                    f&#34;{acct}/{region}: role={role} total={total} private={total-public} public={public}&#34;,
+                    f&#34;{acct}/{region}: role={role} total={total} private={total - public} public={public}&#34;,
                     file=out,
                 )
 

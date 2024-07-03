@@ -313,6 +313,16 @@ includes the following:
 
 ## Change Log
 
+### v3.1.0
+
+- Add `URLAccountLoader` plug-in which supports HTTP authentication (basic,
+  digest, oauth2). This plug-in should be preferred over the existing
+  `JSONAccountLoader`, `YAMLAccountLoader`, and `CSVAccountLoader` plug-ins,
+  which will eventually be deprecated.
+
+- Add HTTP POST support to the SAML credential provider plug-in. Thanks to
+  @RobertShan2000 for the contribution.
+
 ### v3.0.0
 
 - **BREAKING CHANGE**: Installation via `pip install awsurn` no longer installs

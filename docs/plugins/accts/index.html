@@ -156,14 +156,25 @@ your.own.module.PluginSubclass
 `awsrun.plugmgr.Plugin` that returns a `awsrun.acctload.AccountLoader`.
 &#34;&#34;&#34;
 
+import getpass
+import os
+from pathlib import Path
+
+from requests.auth import AuthBase, HTTPBasicAuth, HTTPDigestAuth
+from requests_ntlm import HttpNtlmAuth
+
 from awsrun.acctload import (
     CSVAccountLoader,
+    CSVParser,
+    HTTPOAuth2,
     IdentityAccountLoader,
     JSONAccountLoader,
+    JSONParser,
+    URLAccountLoader,
     YAMLAccountLoader,
+    YAMLParser,
 )
-from awsrun.config import List, Str, Int, Bool, URL
-
+from awsrun.config import URL, Any, Bool, Choice, Dict, File, Int, List, Str
 from awsrun.plugmgr import Plugin
 
 
@@ -719,7 +730,397 @@ class CSV(_CachingLoaderPlugin):
             no_verify=args.loader_no_verify,
         )
 
-        return loader</code></pre>
+        return loader
+
+
+class URLLoader(Plugin):
+    &#34;&#34;&#34;CLI plug-in that loads accounts and metadata from a file/url.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or
+    `--account-file` will be validated against the list of accounts loaded
+    from this URL.  More importantly, loaded accounts will include metadata
+    associated with each account from the document. This metadata can be used
+    to select accounts using the `--include` and `--exclude` awsrun CLI flags.
+    Given the following JSON document:
+
+        [
+            {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        ]
+
+    Users could select only the &#34;active&#34; accounts via the `awsrun.cli` by using
+    the metadata filter options. The following would select account numbers
+    &#34;100200300400&#34; and &#34;200300400100&#34;:
+
+        $ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+
+    Additionally, this metadata is made available to command authors for use
+    within their commands. The account loader would build account objects with
+    the following attribute names: `id`, `env`, and `status`. Command authors
+    are provided access to these account objects in their user-defined commands
+    via a parameter to `awsrun.runner.Command.execute`:
+
+        class CLICommand(Command):
+            def execute(self, session, acct):
+                # The acct parameter contains the attributes from the JSON
+                return f&#39;{acct.env} account {acct.id} is {acct.status}\\n&#39;
+
+    In cases where the JSON key names are not valid Python identifiers, they are
+    munged. Leading digits are prefixed with underscores, non-alpha numeric
+    characters are replaced with underscores, and keywords are appended with an
+    underscore.
+
+    Instead of specifying accounts as a JSON array of objects as shown above,
+    the JSON can be specified as a single object with account IDs as keys and
+    metadata as values such as:
+
+        {
+            &#34;100200300400&#34;: {&#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;200300400100&#34;: {&#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;300400100200&#34;: {&#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        }
+
+    The above will create the same list account objects as the first version
+    because this loader assumes a top-level JSON object is the container of
+    accounts. The account objects created will contain the `id` attribute
+    because the default value for the ID attribute is `id`.
+
+    Similarly, the JSON can be specified as follows, where the account ID is
+    used in the top-level object key as well as the object value metadata:
+
+        {
+            &#34;100200300400&#34;: {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;200300400100&#34;: {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;300400100200&#34;: {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        }
+
+    If the account list is not at the top-level of the JSON, a path can be
+    specified to point the loader to the correct location in the JSON. For
+    example, a path list of &#34;aws&#34; and &#34;accounts&#34; is required to parse the
+    following JSON:
+
+        {
+            &#34;aws&#34;:
+            {
+                &#34;accounts&#34;:
+                [
+                    {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                    {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                    {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+                ]
+            }
+        }
+
+    The `URLLoader` can parse JSON, YAML, or CSV files loaded from a URL. Data
+    can be loaded from a local file via the &#34;file:///&#34; URL syntax. By default,
+    JSON is assumed. This can be overrided via the `parser` option. Parsing
+    options such as the CSV delimiter can be specified via `parser_options`.
+    When parsing CSV files, the header row is required as its names are the
+    key names for the metadata associated with each account.
+
+    If the URL requires authentication, specify one of the supported types:
+    &#34;none&#34;, &#34;basic&#34;, &#34;digest&#34;, &#34;ntlm&#34;, or &#34;oauth2&#34; via the `auth` option. By
+    default, no authentication is used. Authentication options for the URL
+    such as username and password can be specified via `auth_options`.
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Accounts:
+          plugin: awsrun.plugins.accts.URLLoader
+          options:
+            url: STRING*
+            auth: STRING (&#34;none&#34;, &#34;basic&#34;, &#34;digest&#34;, &#34;ntlm&#34;, &#34;oauth2&#34;)
+            auth_options:
+              username: STRING
+              password: STRING
+              token_url: URL (oauth2 only)
+              scope: STRING (oauth2 only, default &#34;AppIdClaimsTrust&#34;)
+              grant_type: STRING (oauth2 only, default &#34;client_credentials&#34;)
+            parser: STRING (&#34;json&#34;, &#34;yaml&#34;, &#34;csv&#34;)
+            parser_options:
+              delimiter: STRING (csv only, default &#34;,&#34;)
+            max_age: INTEGER
+            id_attr: STRING*
+            path:
+              - STRING
+            str_template: STRING
+            include_attrs:
+              - STRING
+            exclude_attrs:
+              - STRING
+            no_verify: BOOLEAN
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `url`, `--loader-url`
+    : Load the data from the specified URL. To load a local file, use
+    `file:///absolute/path/data.json`. This value **must** be provided via the
+    user configuration or as an awsrun command line argument.
+
+    `auth`
+    : Identifies the authentication type required by the URL. The default
+    value is &#34;none&#34;. Valid options include &#34;none&#34;, &#34;basic&#34;, &#34;digest&#34;, &#34;ntml&#34;,
+    and &#34;oauth2&#34;. All but &#34;none&#34; require that username` and `password` keys
+    in `auth_options`. In addition, &#34;oauth2&#34; requires `token_url` key.
+
+    `auth_options`
+    : Provides options required for the specified `auth` type chosen.  The use
+    of &#34;basic&#34;, &#34;digest&#34;, &#34;ntml&#34;, or &#34;oauth2&#34; require `username` and
+    `password` keys in `auth_options`. Use of &#34;oauth2&#34; also requires a
+    `token_url` that points to the token provider. Three optional keys can be
+    provided with &#34;oauth2&#34; to override defaults: `scope` (&#34;AppIdClaimsTrust&#34;),
+    `grant_type` (&#34;client_credentials&#34;), or `intent` (&#34;awsrun account loader
+    plugin&#34;).
+
+    `parser`
+    : Specifies the parser used to parse data from the URL. The default value
+    is &#34;json&#34;. Valid options include &#34;json&#34;, &#34;yaml&#34;, and &#34;csv&#34;.
+
+    `parser_options`
+    : Provides additional options to the parser method used to parse the data
+    from the URL: `json.loads`, `yaml.safe_load`, and `csv.DictReader`. Most
+    often this would be used to change the `delimiter` used with the CSV
+    parser.
+
+    `max_age`, `--loader-max-age`
+    : Cache the data retrieved from the URL for the specified number of seconds.
+    The default value is `0`, which disables caching. This can be useful for
+    servers that are slow to generate the account list.
+
+    `id_attr`
+    : Identifies the JSON/YAML key name that contains the AWS account ID. This
+    value **must** be provided so awsrun can identify the account number
+    associated with each account in the JSON/YAML.
+
+    `path`
+    : Specifies the location within the JSON/YAML that contains the array of
+    accounts or object of accounts. If specified, this must be a list of key
+    names to traverse the JSON/YAML. The default assumes the accounts are at
+    the top-level.
+
+    `str_template`, `--loader-str-template`
+    : Controls how accounts are formatted as strings. This is a [Python format
+    string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
+    that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
+    or `&#34;{id}-{env}&#34;` assuming `id` and `env` are JSON/YAML/CSV key names.
+
+    `include_attrs`
+    : Include only the specified list of JSON/YAML/CSV key names from the
+    object metadata. If this option is not supplied, all JSON/YAML/CSV keys
+    are included as attributes on the account objects created by this loader.
+
+    `exclude_attrs`
+    : Exclude the specified list of JSON/YAML/CSV key names from the object
+    metadata. If this option is not supplied, no key names are excluded as
+    attributes on the account objects created by this loader.
+
+    `no_verify`, `--loader-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+    &#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
+        # chance of collision.
+        group = parser.add_argument_group(&#34;account loader options&#34;)
+        group.add_argument(
+            &#34;--loader-url&#34;,
+            metavar=&#34;URL&#34;,
+            default=cfg(&#34;url&#34;, type=URL, must_exist=True),
+            help=&#34;URL to account data (also supports file:///path/to/file)&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-auth&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(
+                &#34;auth&#34;,
+                type=Choice(&#34;none&#34;, &#34;basic&#34;, &#34;digest&#34;, &#34;ntml&#34;, &#34;oauth2&#34;),
+                default=&#34;none&#34;,
+            ),
+            help=&#34;Authentication type required by the URL&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-username&#34;,
+            metavar=&#34;USER&#34;,
+            help=&#34;username (or client_id) for account loader authentication&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-password&#34;,
+            metavar=&#34;PASS&#34;,
+            help=&#34;password (or client_secret) for account loader authentication&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-parser&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(&#34;parser&#34;, type=Choice(&#34;json&#34;, &#34;yaml&#34;, &#34;csv&#34;), default=&#34;json&#34;),
+            help=&#34;Parser used on data from URL&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-no-verify&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;no_verify&#34;, type=Bool, default=False),
+            help=&#34;disable cert verification for HTTP requests&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-cache-path&#34;,
+            metavar=&#34;PATH&#34;,
+            type=Path,
+            default=cfg(&#34;cache_path&#34;, type=File),
+            help=&#34;max age for cached URL data&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-max-age&#34;,
+            metavar=&#34;SECS&#34;,
+            type=int,
+            default=cfg(&#34;max_age&#34;, type=Int, default=0),
+            help=&#34;max age for cached URL data&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-str-template&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(&#34;str_template&#34;),
+            help=&#34;format string used to display an account&#34;,
+        )
+
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        auth_options = cfg(&#34;auth_options&#34;, type=Dict(Str, Any), default={})
+
+        # Check and set auth options if using authentication.
+        if args.loader_auth != &#34;none&#34;:
+
+            # Command line flags take priority
+            if args.loader_username:
+                auth_options[&#34;username&#34;] = args.loader_username
+            if args.loader_password:
+                auth_options[&#34;password&#34;] = args.loader_password
+
+            # If a username and password has not been provided via CLI flags
+            # or via the configuration file, we&#39;ll fallback to environment
+            # variables if they exist, or lastly we&#39;ll prompt the user
+            # interactively. BUT, we don&#39;t want to do that here because the
+            # URLAccountLoader caches data, so we might not need to make an
+            # HTTP call, and thus prompting the user would be unneeded (and
+            # annoying). So, instead, we use DeferPrompting to wrap the
+            # various requests HTTP*Auth classes. This will defer the
+            # instantiation of those classes until `requests` invokes the
+            # callable `auth` parameter to its various methods.
+
+            if args.loader_auth == &#34;oauth2&#34; and &#34;token_url&#34; not in auth_options:
+                raise TypeError(
+                    &#34;with oauth2 authentication token_url must be set in config: Accounts-&gt;options-&gt;auth_options-&gt;token_url&#34;
+                )
+
+        auth_types = {
+            &#34;none&#34;: _HTTPNone(),
+            &#34;basic&#34;: _DeferPrompting(HTTPBasicAuth, auth_options),
+            &#34;digest&#34;: _DeferPrompting(HTTPDigestAuth, auth_options),
+            &#34;ntlm&#34;: _DeferPrompting(HttpNtlmAuth, auth_options),
+            &#34;oauth2&#34;: _DeferPrompting(HTTPOAuth2, auth_options),
+        }
+        auth = auth_types[args.loader_auth]
+
+        parsers = {
+            &#34;json&#34;: JSONParser,
+            &#34;yaml&#34;: YAMLParser,
+            &#34;csv&#34;: CSVParser,
+        }
+        parser_options = cfg(&#34;parser_options&#34;, type=Dict(Str, Any), default={})
+
+        try:
+            parser = parsers[args.loader_parser](**parser_options)
+        except TypeError as e:
+            raise TypeError(
+                f&#34;incompatible parser_options specified in config: Accounts-&gt;options-&gt;parser_options: {e}&#34;
+            )
+
+        loader = URLAccountLoader(
+            url=args.loader_url,
+            parser=parser,
+            auth=auth,
+            max_age=args.loader_max_age,
+            id_attr=cfg(&#34;id_attr&#34;, must_exist=True),
+            path=cfg(&#34;path&#34;, type=List(Str), default=[]),
+            str_template=args.loader_str_template,
+            include_attrs=cfg(&#34;include_attrs&#34;, type=List(Str), default=[]),
+            exclude_attrs=cfg(&#34;exclude_attrs&#34;, type=List(Str), default=[]),
+            no_verify=args.loader_no_verify,
+            cache_path=args.loader_cache_path,
+        )
+
+        return loader
+
+
+def _default_username():
+    return os.environ.get(&#34;AWSRUN_LOADER_USERNAME&#34;, None) or getpass.getuser()
+
+
+def _default_password(user):
+    return os.environ.get(&#34;AWSRUN_LOADER_PASSWORD&#34;, None) or getpass.getpass(
+        f&#34;Account loader password for {user}? &#34;
+    )
+
+
+# Helper class to wrap one of `requests` auth classes to defer instantiation
+# of those classes until `requests` actually needs to use the auth data. This
+# is used to avoid interactively prompting a user for their password if one
+# had not been specified via CLI args or their config file. The default will
+# come from the env variable if set, otherwise the user is prompted. But we
+# don&#39;t want to prompt when we instantiated the `requests` auth classes
+# because at that time, we do not know if the account loader data has been
+# cached and thus not require making an HTTP call. So, why bother prompting
+# the user in that case?
+class _DeferPrompting(AuthBase):
+    def __init__(self, auth_class, auth_options):
+        self.auth_class = auth_class
+        self.auth_options = auth_options
+
+    def __call__(self, req):
+        if &#34;username&#34; not in self.auth_options:
+            self.auth_options[&#34;username&#34;] = _default_username()
+        if &#34;password&#34; not in self.auth_options:
+            self.auth_options[&#34;password&#34;] = _default_password(
+                self.auth_options[&#34;username&#34;]
+            )
+        try:
+            auth = self.auth_class(**self.auth_options)
+        except TypeError as e:
+            raise TypeError(
+                f&#34;incompatible auth_options specified in config: Accounts-&gt;options-&gt;auth_options: {e}&#34;
+            )
+        return auth(req)
+
+
+class _HTTPNone:
+    &#34;&#34;&#34;HTTPNone is a no-op auth type for requests library.&#34;&#34;&#34;
+
+    def __init__(self, *args, **kwargs):
+        return None
+
+    def __call__(self, req):
+        return req</code></pre>
 </details>
 </section>
 <section>
@@ -1707,6 +2108,536 @@ value is <code>false</code>.</dd>
 </li>
 </ul>
 </dd>
+<dt id="awsrun.plugins.accts.URLLoader"><code class="flex name class">
+<span>class <span class="ident">URLLoader</span></span>
+<span>(</span><span>parser, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CLI plug-in that loads accounts and metadata from a file/url.</p>
+<h2 id="overview">Overview</h2>
+<p>Accounts specified on the awsrun CLI via the <code>--account</code> or
+<code>--account-file</code> will be validated against the list of accounts loaded
+from this URL.
+More importantly, loaded accounts will include metadata
+associated with each account from the document. This metadata can be used
+to select accounts using the <code>--include</code> and <code>--exclude</code> awsrun CLI flags.
+Given the following JSON document:</p>
+<pre><code>[
+    {"id": "100200300400", "env": "prod", "status": "active"},
+    {"id": "200300400100", "env": "non-prod", "status": "active"},
+    {"id": "300400100200", "env": "non-prod", "status": "suspended"}
+]
+</code></pre>
+<p>Users could select only the "active" accounts via the <code><a title="awsrun.cli" href="../../cli.html">awsrun.cli</a></code> by using
+the metadata filter options. The following would select account numbers
+"100200300400" and "200300400100":</p>
+<pre><code>$ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+</code></pre>
+<p>Additionally, this metadata is made available to command authors for use
+within their commands. The account loader would build account objects with
+the following attribute names: <code>id</code>, <code>env</code>, and <code>status</code>. Command authors
+are provided access to these account objects in their user-defined commands
+via a parameter to <code><a title="awsrun.runner.Command.execute" href="../../runner.html#awsrun.runner.Command.execute">Command.execute()</a></code>:</p>
+<pre><code>class CLICommand(Command):
+    def execute(self, session, acct):
+        # The acct parameter contains the attributes from the JSON
+        return f'{acct.env} account {acct.id} is {acct.status}\n'
+</code></pre>
+<p>In cases where the JSON key names are not valid Python identifiers, they are
+munged. Leading digits are prefixed with underscores, non-alpha numeric
+characters are replaced with underscores, and keywords are appended with an
+underscore.</p>
+<p>Instead of specifying accounts as a JSON array of objects as shown above,
+the JSON can be specified as a single object with account IDs as keys and
+metadata as values such as:</p>
+<pre><code>{
+    "100200300400": {"env": "prod", "status": "active"},
+    "200300400100": {"env": "non-prod", "status": "active"},
+    "300400100200": {"env": "non-prod", "status": "suspended"}
+}
+</code></pre>
+<p>The above will create the same list account objects as the first version
+because this loader assumes a top-level JSON object is the container of
+accounts. The account objects created will contain the <code>id</code> attribute
+because the default value for the ID attribute is <code>id</code>.</p>
+<p>Similarly, the JSON can be specified as follows, where the account ID is
+used in the top-level object key as well as the object value metadata:</p>
+<pre><code>{
+    "100200300400": {"id": "100200300400", "env": "prod", "status": "active"},
+    "200300400100": {"id": "200300400100", "env": "non-prod", "status": "active"},
+    "300400100200": {"id": "300400100200", "env": "non-prod", "status": "suspended"}
+}
+</code></pre>
+<p>If the account list is not at the top-level of the JSON, a path can be
+specified to point the loader to the correct location in the JSON. For
+example, a path list of "aws" and "accounts" is required to parse the
+following JSON:</p>
+<pre><code>{
+    "aws":
+    {
+        "accounts":
+        [
+            {"id": "100200300400", "env": "prod", "status": "active"},
+            {"id": "200300400100", "env": "non-prod", "status": "active"},
+            {"id": "300400100200", "env": "non-prod", "status": "suspended"}
+        ]
+    }
+}
+</code></pre>
+<p>The <code><a title="awsrun.plugins.accts.URLLoader" href="#awsrun.plugins.accts.URLLoader">URLLoader</a></code> can parse JSON, YAML, or CSV files loaded from a URL. Data
+can be loaded from a local file via the "file:///" URL syntax. By default,
+JSON is assumed. This can be overrided via the <code>parser</code> option. Parsing
+options such as the CSV delimiter can be specified via <code>parser_options</code>.
+When parsing CSV files, the header row is required as its names are the
+key names for the metadata associated with each account.</p>
+<p>If the URL requires authentication, specify one of the supported types:
+"none", "basic", "digest", "ntlm", or "oauth2" via the <code>auth</code> option. By
+default, no authentication is used. Authentication options for the URL
+such as username and password can be specified via <code>auth_options</code>.</p>
+<h2 id="configuration">Configuration</h2>
+<p>Options with an asterisk are mandatory and must be provided:</p>
+<pre><code>Accounts:
+  plugin: awsrun.plugins.accts.URLLoader
+  options:
+    url: STRING*
+    auth: STRING ("none", "basic", "digest", "ntlm", "oauth2")
+    auth_options:
+      username: STRING
+      password: STRING
+      token_url: URL (oauth2 only)
+      scope: STRING (oauth2 only, default "AppIdClaimsTrust")
+      grant_type: STRING (oauth2 only, default "client_credentials")
+    parser: STRING ("json", "yaml", "csv")
+    parser_options:
+      delimiter: STRING (csv only, default ",")
+    max_age: INTEGER
+    id_attr: STRING*
+    path:
+      - STRING
+    str_template: STRING
+    include_attrs:
+      - STRING
+    exclude_attrs:
+      - STRING
+    no_verify: BOOLEAN
+</code></pre>
+<h2 id="plug-in-options">Plug-in Options</h2>
+<p>Some options can be overridden on the awsrun CLI via command line flags.
+In those cases, the CLI flags are specified next to the option name below:</p>
+<dl>
+<dt><code>url</code>, <code>--loader-url</code></dt>
+<dd>Load the data from the specified URL. To load a local file, use
+<code>file:///absolute/path/data.json</code>. This value <strong>must</strong> be provided via the
+user configuration or as an awsrun command line argument.</dd>
+<dt><code>auth</code></dt>
+<dd>Identifies the authentication type required by the URL. The default
+value is "none". Valid options include "none", "basic", "digest", "ntml",
+and "oauth2". All but "none" require that username<code> and </code>password` keys
+in <code>auth_options</code>. In addition, "oauth2" requires <code>token_url</code> key.</dd>
+<dt><code>auth_options</code></dt>
+<dd>Provides options required for the specified <code>auth</code> type chosen.
+The use
+of "basic", "digest", "ntml", or "oauth2" require <code>username</code> and
+<code>password</code> keys in <code>auth_options</code>. Use of "oauth2" also requires a
+<code>token_url</code> that points to the token provider. Three optional keys can be
+provided with "oauth2" to override defaults: <code>scope</code> ("AppIdClaimsTrust"),
+<code>grant_type</code> ("client_credentials"), or <code>intent</code> ("awsrun account loader
+plugin").</dd>
+<dt><code>parser</code></dt>
+<dd>Specifies the parser used to parse data from the URL. The default value
+is "json". Valid options include "json", "yaml", and "csv".</dd>
+<dt><code>parser_options</code></dt>
+<dd>Provides additional options to the parser method used to parse the data
+from the URL: <code>json.loads</code>, <code>yaml.safe_load</code>, and <code>csv.DictReader</code>. Most
+often this would be used to change the <code>delimiter</code> used with the CSV
+parser.</dd>
+<dt><code>max_age</code>, <code>--loader-max-age</code></dt>
+<dd>Cache the data retrieved from the URL for the specified number of seconds.
+The default value is <code>0</code>, which disables caching. This can be useful for
+servers that are slow to generate the account list.</dd>
+<dt><code>id_attr</code></dt>
+<dd>Identifies the JSON/YAML key name that contains the AWS account ID. This
+value <strong>must</strong> be provided so awsrun can identify the account number
+associated with each account in the JSON/YAML.</dd>
+<dt><code>path</code></dt>
+<dd>Specifies the location within the JSON/YAML that contains the array of
+accounts or object of accounts. If specified, this must be a list of key
+names to traverse the JSON/YAML. The default assumes the accounts are at
+the top-level.</dd>
+<dt><code>str_template</code>, <code>--loader-str-template</code></dt>
+<dd>Controls how accounts are formatted as strings. This is a <a href="https://docs.python.org/3.7/library/string.html#format-string-syntax">Python format
+string</a>
+that can include any of the included attributes. For example, <code>"{id}:{env}"</code>
+or <code>"{id}-{env}"</code> assuming <code>id</code> and <code>env</code> are JSON/YAML/CSV key names.</dd>
+<dt><code>include_attrs</code></dt>
+<dd>Include only the specified list of JSON/YAML/CSV key names from the
+object metadata. If this option is not supplied, all JSON/YAML/CSV keys
+are included as attributes on the account objects created by this loader.</dd>
+<dt><code>exclude_attrs</code></dt>
+<dd>Exclude the specified list of JSON/YAML/CSV key names from the object
+metadata. If this option is not supplied, no key names are excluded as
+attributes on the account objects created by this loader.</dd>
+<dt><code>no_verify</code>, <code>--loader-no-verify</code></dt>
+<dd>Disable HTTP certificate verification. This is not advisable and user will
+be warned on the command line if verification has been disabled. The default
+value is <code>false</code>.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class URLLoader(Plugin):
+    &#34;&#34;&#34;CLI plug-in that loads accounts and metadata from a file/url.
+
+    ## Overview
+
+    Accounts specified on the awsrun CLI via the `--account` or
+    `--account-file` will be validated against the list of accounts loaded
+    from this URL.  More importantly, loaded accounts will include metadata
+    associated with each account from the document. This metadata can be used
+    to select accounts using the `--include` and `--exclude` awsrun CLI flags.
+    Given the following JSON document:
+
+        [
+            {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        ]
+
+    Users could select only the &#34;active&#34; accounts via the `awsrun.cli` by using
+    the metadata filter options. The following would select account numbers
+    &#34;100200300400&#34; and &#34;200300400100&#34;:
+
+        $ awsrun --include status=active aws ec2 describe-vpcs --region us-east-1
+
+    Additionally, this metadata is made available to command authors for use
+    within their commands. The account loader would build account objects with
+    the following attribute names: `id`, `env`, and `status`. Command authors
+    are provided access to these account objects in their user-defined commands
+    via a parameter to `awsrun.runner.Command.execute`:
+
+        class CLICommand(Command):
+            def execute(self, session, acct):
+                # The acct parameter contains the attributes from the JSON
+                return f&#39;{acct.env} account {acct.id} is {acct.status}\\n&#39;
+
+    In cases where the JSON key names are not valid Python identifiers, they are
+    munged. Leading digits are prefixed with underscores, non-alpha numeric
+    characters are replaced with underscores, and keywords are appended with an
+    underscore.
+
+    Instead of specifying accounts as a JSON array of objects as shown above,
+    the JSON can be specified as a single object with account IDs as keys and
+    metadata as values such as:
+
+        {
+            &#34;100200300400&#34;: {&#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;200300400100&#34;: {&#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;300400100200&#34;: {&#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        }
+
+    The above will create the same list account objects as the first version
+    because this loader assumes a top-level JSON object is the container of
+    accounts. The account objects created will contain the `id` attribute
+    because the default value for the ID attribute is `id`.
+
+    Similarly, the JSON can be specified as follows, where the account ID is
+    used in the top-level object key as well as the object value metadata:
+
+        {
+            &#34;100200300400&#34;: {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;200300400100&#34;: {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+            &#34;300400100200&#34;: {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+        }
+
+    If the account list is not at the top-level of the JSON, a path can be
+    specified to point the loader to the correct location in the JSON. For
+    example, a path list of &#34;aws&#34; and &#34;accounts&#34; is required to parse the
+    following JSON:
+
+        {
+            &#34;aws&#34;:
+            {
+                &#34;accounts&#34;:
+                [
+                    {&#34;id&#34;: &#34;100200300400&#34;, &#34;env&#34;: &#34;prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                    {&#34;id&#34;: &#34;200300400100&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;active&#34;},
+                    {&#34;id&#34;: &#34;300400100200&#34;, &#34;env&#34;: &#34;non-prod&#34;, &#34;status&#34;: &#34;suspended&#34;}
+                ]
+            }
+        }
+
+    The `URLLoader` can parse JSON, YAML, or CSV files loaded from a URL. Data
+    can be loaded from a local file via the &#34;file:///&#34; URL syntax. By default,
+    JSON is assumed. This can be overrided via the `parser` option. Parsing
+    options such as the CSV delimiter can be specified via `parser_options`.
+    When parsing CSV files, the header row is required as its names are the
+    key names for the metadata associated with each account.
+
+    If the URL requires authentication, specify one of the supported types:
+    &#34;none&#34;, &#34;basic&#34;, &#34;digest&#34;, &#34;ntlm&#34;, or &#34;oauth2&#34; via the `auth` option. By
+    default, no authentication is used. Authentication options for the URL
+    such as username and password can be specified via `auth_options`.
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Accounts:
+          plugin: awsrun.plugins.accts.URLLoader
+          options:
+            url: STRING*
+            auth: STRING (&#34;none&#34;, &#34;basic&#34;, &#34;digest&#34;, &#34;ntlm&#34;, &#34;oauth2&#34;)
+            auth_options:
+              username: STRING
+              password: STRING
+              token_url: URL (oauth2 only)
+              scope: STRING (oauth2 only, default &#34;AppIdClaimsTrust&#34;)
+              grant_type: STRING (oauth2 only, default &#34;client_credentials&#34;)
+            parser: STRING (&#34;json&#34;, &#34;yaml&#34;, &#34;csv&#34;)
+            parser_options:
+              delimiter: STRING (csv only, default &#34;,&#34;)
+            max_age: INTEGER
+            id_attr: STRING*
+            path:
+              - STRING
+            str_template: STRING
+            include_attrs:
+              - STRING
+            exclude_attrs:
+              - STRING
+            no_verify: BOOLEAN
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below:
+
+    `url`, `--loader-url`
+    : Load the data from the specified URL. To load a local file, use
+    `file:///absolute/path/data.json`. This value **must** be provided via the
+    user configuration or as an awsrun command line argument.
+
+    `auth`
+    : Identifies the authentication type required by the URL. The default
+    value is &#34;none&#34;. Valid options include &#34;none&#34;, &#34;basic&#34;, &#34;digest&#34;, &#34;ntml&#34;,
+    and &#34;oauth2&#34;. All but &#34;none&#34; require that username` and `password` keys
+    in `auth_options`. In addition, &#34;oauth2&#34; requires `token_url` key.
+
+    `auth_options`
+    : Provides options required for the specified `auth` type chosen.  The use
+    of &#34;basic&#34;, &#34;digest&#34;, &#34;ntml&#34;, or &#34;oauth2&#34; require `username` and
+    `password` keys in `auth_options`. Use of &#34;oauth2&#34; also requires a
+    `token_url` that points to the token provider. Three optional keys can be
+    provided with &#34;oauth2&#34; to override defaults: `scope` (&#34;AppIdClaimsTrust&#34;),
+    `grant_type` (&#34;client_credentials&#34;), or `intent` (&#34;awsrun account loader
+    plugin&#34;).
+
+    `parser`
+    : Specifies the parser used to parse data from the URL. The default value
+    is &#34;json&#34;. Valid options include &#34;json&#34;, &#34;yaml&#34;, and &#34;csv&#34;.
+
+    `parser_options`
+    : Provides additional options to the parser method used to parse the data
+    from the URL: `json.loads`, `yaml.safe_load`, and `csv.DictReader`. Most
+    often this would be used to change the `delimiter` used with the CSV
+    parser.
+
+    `max_age`, `--loader-max-age`
+    : Cache the data retrieved from the URL for the specified number of seconds.
+    The default value is `0`, which disables caching. This can be useful for
+    servers that are slow to generate the account list.
+
+    `id_attr`
+    : Identifies the JSON/YAML key name that contains the AWS account ID. This
+    value **must** be provided so awsrun can identify the account number
+    associated with each account in the JSON/YAML.
+
+    `path`
+    : Specifies the location within the JSON/YAML that contains the array of
+    accounts or object of accounts. If specified, this must be a list of key
+    names to traverse the JSON/YAML. The default assumes the accounts are at
+    the top-level.
+
+    `str_template`, `--loader-str-template`
+    : Controls how accounts are formatted as strings. This is a [Python format
+    string](https://docs.python.org/3.7/library/string.html#format-string-syntax)
+    that can include any of the included attributes. For example, `&#34;{id}:{env}&#34;`
+    or `&#34;{id}-{env}&#34;` assuming `id` and `env` are JSON/YAML/CSV key names.
+
+    `include_attrs`
+    : Include only the specified list of JSON/YAML/CSV key names from the
+    object metadata. If this option is not supplied, all JSON/YAML/CSV keys
+    are included as attributes on the account objects created by this loader.
+
+    `exclude_attrs`
+    : Exclude the specified list of JSON/YAML/CSV key names from the object
+    metadata. If this option is not supplied, no key names are excluded as
+    attributes on the account objects created by this loader.
+
+    `no_verify`, `--loader-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+    &#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with &#39;--loader-&#39; to lessen
+        # chance of collision.
+        group = parser.add_argument_group(&#34;account loader options&#34;)
+        group.add_argument(
+            &#34;--loader-url&#34;,
+            metavar=&#34;URL&#34;,
+            default=cfg(&#34;url&#34;, type=URL, must_exist=True),
+            help=&#34;URL to account data (also supports file:///path/to/file)&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-auth&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(
+                &#34;auth&#34;,
+                type=Choice(&#34;none&#34;, &#34;basic&#34;, &#34;digest&#34;, &#34;ntml&#34;, &#34;oauth2&#34;),
+                default=&#34;none&#34;,
+            ),
+            help=&#34;Authentication type required by the URL&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-username&#34;,
+            metavar=&#34;USER&#34;,
+            help=&#34;username (or client_id) for account loader authentication&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-password&#34;,
+            metavar=&#34;PASS&#34;,
+            help=&#34;password (or client_secret) for account loader authentication&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-parser&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(&#34;parser&#34;, type=Choice(&#34;json&#34;, &#34;yaml&#34;, &#34;csv&#34;), default=&#34;json&#34;),
+            help=&#34;Parser used on data from URL&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-no-verify&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;no_verify&#34;, type=Bool, default=False),
+            help=&#34;disable cert verification for HTTP requests&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-cache-path&#34;,
+            metavar=&#34;PATH&#34;,
+            type=Path,
+            default=cfg(&#34;cache_path&#34;, type=File),
+            help=&#34;max age for cached URL data&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-max-age&#34;,
+            metavar=&#34;SECS&#34;,
+            type=int,
+            default=cfg(&#34;max_age&#34;, type=Int, default=0),
+            help=&#34;max age for cached URL data&#34;,
+        )
+
+        group.add_argument(
+            &#34;--loader-str-template&#34;,
+            metavar=&#34;STRING&#34;,
+            default=cfg(&#34;str_template&#34;),
+            help=&#34;format string used to display an account&#34;,
+        )
+
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        auth_options = cfg(&#34;auth_options&#34;, type=Dict(Str, Any), default={})
+
+        # Check and set auth options if using authentication.
+        if args.loader_auth != &#34;none&#34;:
+
+            # Command line flags take priority
+            if args.loader_username:
+                auth_options[&#34;username&#34;] = args.loader_username
+            if args.loader_password:
+                auth_options[&#34;password&#34;] = args.loader_password
+
+            # If a username and password has not been provided via CLI flags
+            # or via the configuration file, we&#39;ll fallback to environment
+            # variables if they exist, or lastly we&#39;ll prompt the user
+            # interactively. BUT, we don&#39;t want to do that here because the
+            # URLAccountLoader caches data, so we might not need to make an
+            # HTTP call, and thus prompting the user would be unneeded (and
+            # annoying). So, instead, we use DeferPrompting to wrap the
+            # various requests HTTP*Auth classes. This will defer the
+            # instantiation of those classes until `requests` invokes the
+            # callable `auth` parameter to its various methods.
+
+            if args.loader_auth == &#34;oauth2&#34; and &#34;token_url&#34; not in auth_options:
+                raise TypeError(
+                    &#34;with oauth2 authentication token_url must be set in config: Accounts-&gt;options-&gt;auth_options-&gt;token_url&#34;
+                )
+
+        auth_types = {
+            &#34;none&#34;: _HTTPNone(),
+            &#34;basic&#34;: _DeferPrompting(HTTPBasicAuth, auth_options),
+            &#34;digest&#34;: _DeferPrompting(HTTPDigestAuth, auth_options),
+            &#34;ntlm&#34;: _DeferPrompting(HttpNtlmAuth, auth_options),
+            &#34;oauth2&#34;: _DeferPrompting(HTTPOAuth2, auth_options),
+        }
+        auth = auth_types[args.loader_auth]
+
+        parsers = {
+            &#34;json&#34;: JSONParser,
+            &#34;yaml&#34;: YAMLParser,
+            &#34;csv&#34;: CSVParser,
+        }
+        parser_options = cfg(&#34;parser_options&#34;, type=Dict(Str, Any), default={})
+
+        try:
+            parser = parsers[args.loader_parser](**parser_options)
+        except TypeError as e:
+            raise TypeError(
+                f&#34;incompatible parser_options specified in config: Accounts-&gt;options-&gt;parser_options: {e}&#34;
+            )
+
+        loader = URLAccountLoader(
+            url=args.loader_url,
+            parser=parser,
+            auth=auth,
+            max_age=args.loader_max_age,
+            id_attr=cfg(&#34;id_attr&#34;, must_exist=True),
+            path=cfg(&#34;path&#34;, type=List(Str), default=[]),
+            str_template=args.loader_str_template,
+            include_attrs=cfg(&#34;include_attrs&#34;, type=List(Str), default=[]),
+            exclude_attrs=cfg(&#34;exclude_attrs&#34;, type=List(Str), default=[]),
+            no_verify=args.loader_no_verify,
+            cache_path=args.loader_cache_path,
+        )
+
+        return loader</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<code><li><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li></code>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.plugmgr.Plugin.instantiate" href="../../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 </dl>
 </section>
 </article>
@@ -1739,6 +2670,9 @@ value is <code>false</code>.</dd>
 </li>
 <li>
 <h4><code><a title="awsrun.plugins.accts.CSV" href="#awsrun.plugins.accts.CSV">CSV</a></code></h4>
+</li>
+<li>
+<h4><code><a title="awsrun.plugins.accts.URLLoader" href="#awsrun.plugins.accts.URLLoader">URLLoader</a></code></h4>
 </li>
 </ul>
 </li>

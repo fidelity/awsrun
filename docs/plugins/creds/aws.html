@@ -247,6 +247,7 @@ class SAML(Plugin):
             role: STRING*
             url: STRING*
             auth_type: (&#34;basic&#34; | &#34;digest&#34; | &#34;ntlm&#34;)
+            http_method: (&#34;GET&#34;| &#34;POST&#34;)
             http_headers:
               STRING: STRING
             no_verify: BOOLEAN
@@ -284,6 +285,11 @@ class SAML(Plugin):
     : The HTTP authentication method to use when authenticating with the IdP. If
     specified, it must be one of `basic`, `digest`, or `ntlm`. The default value
     is `basic`. If using NTLM, username should be specified as `domain\\username`.
+
+    `http_method`
+    : The HTTP method to use when authenticating with the IdP. If
+    specified, it must be one of `GET`, `POST`. The default value
+    is `GET`.
 
     `http_headers`
     : Additional HTTP headers to send in the request to the IdP. If specified,
@@ -385,6 +391,7 @@ class SAML(Plugin):
             role=args.saml_role,
             url=cfg(&#34;url&#34;, type=URL, must_exist=True),
             auth=auth(args.saml_username, args.saml_password),
+            http_method=cfg(&#34;http_method&#34;, type=Choice(&#34;GET&#34;, &#34;POST&#34;), default=&#34;GET&#34;),
             headers=cfg(&#34;http_headers&#34;, type=Dict(Str, Str), default={}),
             duration=args.saml_duration,
             saml_duration=args.saml_assertion_duration,
@@ -568,6 +575,7 @@ class SAMLCrossAccount(AbstractCrossAccount):
             role: STRING*
             url: STRING*
             auth_type: (&#34;basic&#34; | &#34;digest&#34; | &#34;ntlm&#34;)
+            http_method: (&#34;GET&#34;| &#34;POST&#34;)
             http_headers:
               STRING: STRING
             no_verify: BOOLEAN
@@ -612,6 +620,11 @@ class SAMLCrossAccount(AbstractCrossAccount):
     : The HTTP authentication method to use when authenticating with the IdP. If
     specified, it must be one of `basic`, `digest`, or `ntlm`. The default value
     is `basic`. If using NTLM, username should be specified as `domain\\username`.
+
+    `http_method`
+    : The HTTP method to use when authenticating with the IdP. If
+    specified, it must be one of `GET`, `POST`. The default value
+    is `GET`.
 
     `http_headers`
     : Additional HTTP headers to send in the request to the IdP. If specified,
@@ -810,6 +823,7 @@ for additional details on the use of federated SSO with SAML.</p>
     role: STRING*
     url: STRING*
     auth_type: ("basic" | "digest" | "ntlm")
+    http_method: ("GET"| "POST")
     http_headers:
       STRING: STRING
     no_verify: BOOLEAN
@@ -842,6 +856,10 @@ as <code>urn:amazon:webservices</code>.</dd>
 <dd>The HTTP authentication method to use when authenticating with the IdP. If
 specified, it must be one of <code>basic</code>, <code>digest</code>, or <code>ntlm</code>. The default value
 is <code>basic</code>. If using NTLM, username should be specified as <code>domain\username</code>.</dd>
+<dt><code>http_method</code></dt>
+<dd>The HTTP method to use when authenticating with the IdP. If
+specified, it must be one of <code>GET</code>, <code>POST</code>. The default value
+is <code>GET</code>.</dd>
 <dt><code>http_headers</code></dt>
 <dd>Additional HTTP headers to send in the request to the IdP. If specified,
 it must be a dictionary of <code>key: value</code> pairs, where keys and values are
@@ -893,6 +911,7 @@ Caching can be disabled by specifying <code>0</code> seconds.</dd>
             role: STRING*
             url: STRING*
             auth_type: (&#34;basic&#34; | &#34;digest&#34; | &#34;ntlm&#34;)
+            http_method: (&#34;GET&#34;| &#34;POST&#34;)
             http_headers:
               STRING: STRING
             no_verify: BOOLEAN
@@ -930,6 +949,11 @@ Caching can be disabled by specifying <code>0</code> seconds.</dd>
     : The HTTP authentication method to use when authenticating with the IdP. If
     specified, it must be one of `basic`, `digest`, or `ntlm`. The default value
     is `basic`. If using NTLM, username should be specified as `domain\\username`.
+
+    `http_method`
+    : The HTTP method to use when authenticating with the IdP. If
+    specified, it must be one of `GET`, `POST`. The default value
+    is `GET`.
 
     `http_headers`
     : Additional HTTP headers to send in the request to the IdP. If specified,
@@ -1031,6 +1055,7 @@ Caching can be disabled by specifying <code>0</code> seconds.</dd>
             role=args.saml_role,
             url=cfg(&#34;url&#34;, type=URL, must_exist=True),
             auth=auth(args.saml_username, args.saml_password),
+            http_method=cfg(&#34;http_method&#34;, type=Choice(&#34;GET&#34;, &#34;POST&#34;), default=&#34;GET&#34;),
             headers=cfg(&#34;http_headers&#34;, type=Dict(Str, Str), default={}),
             duration=args.saml_duration,
             saml_duration=args.saml_assertion_duration,
@@ -1225,6 +1250,7 @@ for additional details on cross-account access.</p>
     role: STRING*
     url: STRING*
     auth_type: ("basic" | "digest" | "ntlm")
+    http_method: ("GET"| "POST")
     http_headers:
       STRING: STRING
     no_verify: BOOLEAN
@@ -1264,6 +1290,10 @@ reference to AWS such as <code>urn:amazon:webservices</code>.</dd>
 <dd>The HTTP authentication method to use when authenticating with the IdP. If
 specified, it must be one of <code>basic</code>, <code>digest</code>, or <code>ntlm</code>. The default value
 is <code>basic</code>. If using NTLM, username should be specified as <code>domain\username</code>.</dd>
+<dt><code>http_method</code></dt>
+<dd>The HTTP method to use when authenticating with the IdP. If
+specified, it must be one of <code>GET</code>, <code>POST</code>. The default value
+is <code>GET</code>.</dd>
 <dt><code>http_headers</code></dt>
 <dd>Additional HTTP headers to send in the request to the IdP. If specified,
 it must be a dictionary of <code>key: value</code> pairs, where keys and values are
@@ -1339,6 +1369,7 @@ credentials are expired sooner by a local IAM policy, then lower the value.</dd>
             role: STRING*
             url: STRING*
             auth_type: (&#34;basic&#34; | &#34;digest&#34; | &#34;ntlm&#34;)
+            http_method: (&#34;GET&#34;| &#34;POST&#34;)
             http_headers:
               STRING: STRING
             no_verify: BOOLEAN
@@ -1383,6 +1414,11 @@ credentials are expired sooner by a local IAM policy, then lower the value.</dd>
     : The HTTP authentication method to use when authenticating with the IdP. If
     specified, it must be one of `basic`, `digest`, or `ntlm`. The default value
     is `basic`. If using NTLM, username should be specified as `domain\\username`.
+
+    `http_method`
+    : The HTTP method to use when authenticating with the IdP. If
+    specified, it must be one of `GET`, `POST`. The default value
+    is `GET`.
 
     `http_headers`
     : Additional HTTP headers to send in the request to the IdP. If specified,
