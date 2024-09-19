@@ -1,7 +1,7 @@
 #
 # Copyright 2019 FMR LLC <opensource@fmr.com>
 #
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 #
 """Display the status of Direct Connects and VIFs.
 

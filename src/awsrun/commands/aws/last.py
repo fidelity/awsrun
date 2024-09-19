@@ -1,7 +1,7 @@
 #
 # Copyright 2023 FMR LLC <opensource@fmr.com>
 #
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 #
 """Display the last CloudTrail events in an account.
 

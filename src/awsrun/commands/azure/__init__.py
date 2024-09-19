@@ -1,7 +1,7 @@
 #
 # Copyright 2019 FMR LLC <opensource@fmr.com>
 #
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 #
 """Contains the built-in commands for Azure.
 

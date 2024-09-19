@@ -1,7 +1,7 @@
 #
 # Copyright 2021 FMR LLC <opensource@fidelity.com>
 #
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 #
 """Display the route tables configured in a subscription.
 

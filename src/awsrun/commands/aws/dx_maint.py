@@ -1,7 +1,7 @@
 #
 # Copyright 2022 FMR LLC <opensource@fmr.com>
 #
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 #
 """Display Direct Connect maintenance events from AWS Health.
 
