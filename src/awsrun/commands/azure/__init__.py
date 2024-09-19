@@ -1,5 +1,5 @@
 #
-# Copyright 2019 FMR LLC <opensource@fmr.com>
+# Copyright 2019 FMR LLC <opensource@fidelity.com>
 #
 # SPDX-License-Identifier: Apache-2.0
 #
