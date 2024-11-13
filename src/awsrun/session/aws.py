@@ -1,7 +1,7 @@
 #
 # Copyright 2019 FMR LLC <opensource@fidelity.com>
 #
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 #
 """Obtain boto3 sessions and credentials via a variety of means.
 

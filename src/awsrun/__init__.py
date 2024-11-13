@@ -1,7 +1,7 @@
 #
-# Copyright 2019 FMR LLC <opensource@fmr.com>
+# Copyright 2019 FMR LLC <opensource@fidelity.com>
 #
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 #
 """CLI and library to concurrently execute user-defined commands across AWS accounts.
 

@@ -10,7 +10,7 @@ We welcome all types of contributions, including:
 - Documentation fixes
 - Feature requests and user stories (although we can't guarantee we'll get to all requests, it's helpful to know where we can improve)
 
-If you have any questions, please contact [opensource@fmr.com](mailto:opensource@fmr.com).
+If you have any questions, please contact [opensource@fidelity.com](mailto:opensource@fidelity.com).
 
 ## How to report a bug?
 
@@ -62,4 +62,4 @@ Anyone may open an issue and apply a `good first issue` or `help wanted` label f
 
 ## Getting help
 
-If you have other questions about this project, please [open an issue](https://github.com/fidelity/awsrun/issues). To reach the Fidelity OSPO directly, please email [opensource@fmr.com](mailto:opensource@fmr.com).
+If you have other questions about this project, please [open an issue](https://github.com/fidelity/awsrun/issues). To reach the Fidelity OSPO directly, please email [opensource@fidelity.com](mailto:opensource@fidelity.com).
