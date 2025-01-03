@@ -307,12 +307,28 @@ class Command:
         parser.parse_args(argv)
         return cls()
 
-    def pre_hook(self):
+    def pre_hook_with_context(self, context):
         """Invoked by `AccountRunner.run` before any processing starts.
 
         This method is invoked only once per invocation of `AccountRunner.run`.
-        It is not executed before each account is processed, but rather once
+        The `context` parameter is an AccounRunner.Context object and provides access
+        to additional information/awsrun-context for the command to leverage.
+        The method is not executed before each account is processed, but rather once
         before any accounts are processed.
+
+        To provide backwards compatibility, the default implementation invokes
+        `AccountRunner.pre_hook`.
+        """
+        self.pre_hook()
+
+    def pre_hook(self):
+        """Invoked in the default implementation of `AccountRunner.pre_hook_with_context`
+        before any account processing starts.
+
+        This method is invoked in the event a command does not override the default
+        implementation of `AccountRunner.pre_hook_with_context`. In that case, the method
+        is not executed before each account is processed, but rather once before any
+        accounts are processed.
 
         The default implementation does nothing.
         """
@@ -816,6 +832,20 @@ def get_paginated_resources(
     return resources
 
 
+class Context:
+    """Used when `Command.pre_hook_with_context` is invoked.
+     
+    The `Context` provides a `Command` access to awsrun information/context prior to any
+    accounts being processed by `Runner`.
+
+    """
+
+    def __init__(self, session_provider, account_loader, accounts):
+        self.session_provider = session_provider
+        self.account_loader = account_loader
+        self.accounts = accounts
+
+
 class AccountRunner:
     """Runs a `Command` across one or more accounts.
 
@@ -835,7 +865,7 @@ class AccountRunner:
     execute method, or exceptions raised, are made available to the command.
     """
 
-    def __init__(self, session_provider, max_workers=10):
+    def __init__(self, session_provider, max_workers=10, context=None):
         if not isinstance(session_provider, SessionProvider):
             raise TypeError(
                 f"'{session_provider}' must be a subclass of awsrun.session.SessionProvider"
@@ -843,16 +873,17 @@ class AccountRunner:
 
         self.session_provider = session_provider
         self.max_workers = max_workers
+        self.context = context
 
-    def run(self, cmd, accounts, key=lambda x: x):
+    def run(self, cmd, accounts, key=lambda x: x, context=None):
         """Execute a command concurrently on the specified accounts.
 
         This method will block until all accounts have been processed. The
         return value is the number of seconds it took to process the accounts.
 
         The `cmd` must be a subclass of `Command`. The runner will invoke the
-        `Command.pre_hook` once before it starts processing any accounts, then
-        accounts are processed concurrently and `Command.execute` is invoked by
+        `Command.pre_hook_with_context` once before it starts processing any accounts,
+        then accounts are processed concurrently and `Command.execute` is invoked by
         a worker for each account. As each execute method returns, the main
         thread will invoke `Command.collect_results`, which ensures results are
         collected sequentially. Finally, after all accounts have been processed,
@@ -899,7 +930,7 @@ class AccountRunner:
         key = _valid_key_fn(key)
 
         start = time.time()
-        cmd.pre_hook()
+        cmd.pre_hook_with_context(self.context)
 
         with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
             # The worker task processes a single account. The worker task takes

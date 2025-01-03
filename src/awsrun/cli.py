@@ -728,6 +728,7 @@ from pathlib import Path
 
 from awsrun import __version__
 from awsrun.acctload import AccountLoader
+from awsrun.runner import Context
 from awsrun.argparse import (
     AppendAttributeValuePair,
     AppendWithoutDefault,
@@ -1077,7 +1078,11 @@ def _cli(csp):
     # This is the main entry point into the awsrun library. Note: the entirety of
     # awsrun can be used without the need of the CLI. One only needs a list of
     # accounts, an awsrun.runner.Command, and an awsrun.session.SessionProvider.
-    runner = AccountRunner(session_provider, args.threads)
+    runner = AccountRunner(
+        session_provider,
+        args.threads,
+        context=Context(session_provider, account_loader, accounts),
+    )
     elapsed = runner.run(command, accounts, key=account_loader.acct_id)
 
     # Show a quick summary on how long the command took to run.
