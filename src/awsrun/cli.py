@@ -728,7 +728,6 @@ from pathlib import Path
 
 from awsrun import __version__
 from awsrun.acctload import AccountLoader
-from awsrun.runner import Context
 from awsrun.argparse import (
     AppendAttributeValuePair,
     AppendWithoutDefault,
@@ -757,6 +756,20 @@ displayed by omitting the command.  Each command can have its own set
 of command line arguments, which can be viewed by passing --help after
 the command.
     """.strip()
+
+
+class CLIContext:
+    """Used when `Command.pre_hook_with_context` is invoked.
+     
+    The `CLIContext` provides a `Command` access to awsrun information/context prior to any
+    accounts being processed by `Runner`.
+
+    """
+
+    def __init__(self, session_provider, account_loader, accounts):
+        self.session_provider = session_provider
+        self.account_loader = account_loader
+        self.accounts = accounts
 
 
 # setup.py establishes this as the entry point for the awsrun CLI.
@@ -1081,7 +1094,7 @@ def _cli(csp):
     runner = AccountRunner(
         session_provider,
         args.threads,
-        context=Context(session_provider, account_loader, accounts),
+        context=CLIContext(session_provider, account_loader, accounts),
     )
     elapsed = runner.run(command, accounts, key=account_loader.acct_id)
 

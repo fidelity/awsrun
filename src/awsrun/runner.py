@@ -326,7 +326,7 @@ class Command:
         before any account processing starts.
 
         This method is invoked in the event a command does not override the default
-        implementation of `AccountRunner.pre_hook_with_context`. In that case, the method
+        implementation of `AccountRunner.pre_hook_with_context`. The method
         is not executed before each account is processed, but rather once before any
         accounts are processed.
 
@@ -832,20 +832,6 @@ def get_paginated_resources(
     return resources
 
 
-class Context:
-    """Used when `Command.pre_hook_with_context` is invoked.
-     
-    The `Context` provides a `Command` access to awsrun information/context prior to any
-    accounts being processed by `Runner`.
-
-    """
-
-    def __init__(self, session_provider, account_loader, accounts):
-        self.session_provider = session_provider
-        self.account_loader = account_loader
-        self.accounts = accounts
-
-
 class AccountRunner:
     """Runs a `Command` across one or more accounts.
 
@@ -875,7 +861,7 @@ class AccountRunner:
         self.max_workers = max_workers
         self.context = context
 
-    def run(self, cmd, accounts, key=lambda x: x, context=None):
+    def run(self, cmd, accounts, key=lambda x: x):
         """Execute a command concurrently on the specified accounts.
 
         This method will block until all accounts have been processed. The
