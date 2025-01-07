@@ -97,6 +97,36 @@ default constructor:
     account_runner = AccountRunner(session_provider)
     account_runner.run(cmd, ['111222333444', '222333444111'])
 
+## Context With Pre-Hook
+
+In some cases users may wish to pass additional context to the `Command` that
+can be used during execution. This can be done via the `context` parameter of
+`AccountRunner.run`. That value is passed to `Command.pre_hook_with_context`,
+which command authors can then use. For example, to pass a trivial prefix to be
+used as part of the output:
+
+    from awsrun.runner import AccountRunner, RegionalCommand
+    from awsrun.session import CredsViaProfile
+
+    class VpcInfoCommand(RegionalCommand):
+        # Save our context, a simple string in this case, to self.prefix.
+        def pre_hook_with_context(self, context):
+            self.prefix = context
+
+        def regional_execute(self, session, acct, region):
+            ec2 = session.resource('ec2', region_name=region)
+            vpc_ids = ', '.join(vpc.id for vpc in ec2.vpcs.all())
+            # Prefix the output with the prefix passed via context
+            return f'{self.prefix}/{acct}/{region}: {vpc_ids}\\n'
+
+    cmd = VpcInfoCommand(['us-east-1', 'us-west-2'])
+    session_provider = CredsViaProfile()
+    account_runner = AccountRunner(session_provider)
+    # We pass a simple string prefix as the context in this trivial example
+    account_runner.run(cmd, ['111222333444', '222333444111'], context="Group-A")
+    account_runner.run(cmd, ['333444555666'], context="Group-B")
+    account_runner.run(cmd, ['444555666777', '555666777888'], context="Group-C")
+
 ## Collecting Results
 
 The final example demonstrates how to collect the results from all of the
@@ -319,18 +349,18 @@ class Command:
         rather once before any accounts are processed.
 
         To provide backwards compatibility, the default implementation invokes
-        `AccountRunner.pre_hook`.
+        `Command.pre_hook`.
         """
         self.pre_hook()
 
     def pre_hook(self):
-        """Invoked in the default implementation of `AccountRunner.pre_hook_with_context`
+        """Invoked in the default implementation of `pre_hook_with_context`
         before any account processing starts.
 
         This method is invoked in the event a command does not override the
-        default implementation of `Command.pre_hook_with_context`. The
-        method is not executed before each account is processed, but rather
-        once before any accounts are processed.
+        default implementation of `pre_hook_with_context`. The method is not
+        executed before each account is processed, but rather once before
+        any accounts are processed.
 
         The default implementation does nothing.
         """
@@ -868,12 +898,17 @@ class AccountRunner:
         This method will block until all accounts have been processed. The
         return value is the number of seconds it took to process the accounts.
 
-        The `cmd` must be a subclass of `Command`. The runner will invoke the
-        `Command.pre_hook_with_context` once before it starts processing any accounts,
-        then accounts are processed concurrently and `Command.execute` is invoked by
-        a worker for each account. As each execute method returns, the main
-        thread will invoke `Command.collect_results`, which ensures results are
-        collected sequentially. Finally, after all accounts have been processed,
+        The `cmd` must be a subclass of `Command`. The runner will invoke
+        `Command.pre_hook_with_context` once before it starts processing any
+        accounts passing it the `context` argument, which is simply passed
+        through as an opaque object. This can be used to pass a runtime context
+        to a `Command`.
+
+        After the pre-hook has been invoked, accounts are then processed
+        concurrently and `Command.execute` is invoked by a worker for each
+        account. As each execute method returns, the main thread will invoke
+        `Command.collect_results`, which ensures results are collected
+        sequentially. Finally, after all accounts have been processed,
         `Command.post_hook` is called.
 
         The specified list of `accounts` can be of any type as long as the
@@ -905,6 +940,12 @@ class AccountRunner:
         exception, then an `InvalidAccountIDError` is raised in the worker
         thread processing the account, which will then propagate to the
         `Command.collect_results`.
+
+        The optional `context` parameter can be any value. It is passed
+        as-is to `Command.pre_hook_with_context`. It provides a mechanism
+        for the caller to pass a runtime context to the command being
+        executed. See the [Context With Pre-Hook](#context-with-pre-hook)
+        section of the use guide for an example.
         """
         # This will ensure v1 users of awsrun aren't mixing v1 Command's with
         # the v2 framework.

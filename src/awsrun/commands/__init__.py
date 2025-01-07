@@ -487,6 +487,72 @@ to re-use the same command instance multiple times. And then we use the
 post-hook to print a summary of the data we collected during the processing of
 accounts.
 
+### Pre-Hook With Context
+
+We can use `awsrun.runner.Command.pre_hook_with_context` to obtain access to
+the CLI's `awsrun.cli.Context` object, which contains a reference to the
+`awsrun.acctload.AccountLoader`, the `awsrun.session.SessionProvider`, and
+the list of accounts being processed by the CLI. This allows command authors
+to use those plug-ins as part of their command. Let's use an example to
+illustrate. Assume that the account loader plug-in annotates the accounts
+with one metadata field called "BU" that represents the business unit that
+owns the account.
+
+    \"\"\"Identify shared VPCs from our main account 999999999999 that have
+    been shared with other accounts owned by a different Business Unit.\"\"\"
+
+    import io
+
+    from awsrun.cli import Context
+    from awsrun.runner import RegionalCommand
+
+
+    class CLICommand(RegionalCommand):
+        \"\"\"Display VPCs configured in accounts.\"\"\"
+
+        def pre_hook_with_context(self, context: Context):
+            acct_id = "999999999999"
+
+            # Let's get the account object for our main account. Assume the
+            # account loader plug-in used annotates that object with one
+            # metadata value called "BU" representing the business unit.
+            acct = context.account_loader.accounts(acct_ids=[acct_id])[0]
+
+            # Let's get a session object for our main account so we can get
+            # a list of VPCs from it.
+            session = context.session_provider.session(acct_id)
+            vpc_ids = []
+            for region in self.regions:
+                ec2 = session.resource("ec2", region_name=region)
+                vpc_ids.extend(vpc.id for vpc in ec2.vpcs.all())
+
+            # Save these for use later in regional_execute()
+            self.important_acct = acct
+            self.important_vpc_ids = vpc_ids
+
+        def regional_execute(self, session, acct, region):
+            out = io.StringIO()
+            ec2 = session.resource("ec2", region_name=region)
+
+            # Check each VPC in this current account to see if it is in the
+            # list of VPCs from our main account. And, then check if the BU
+            # for this current account is the same as the BU for our main
+            # account. Report when they differ.
+            for vpc in ec2.vpcs.all():
+                if vpc.id in self.important_vpc_ids and acct.BU != self.important_acct.BU:
+                    print(
+                        "{acct}/{region}: Shared VPC {vpc.id} owned by other Business Unit!",
+                        file=out,
+                    )
+
+            return out.getvalue()
+
+The above example demonstrates how you can use these plug-ins in your
+commands to inspect metadata of other accounts and to obtain sessions for
+any account. This can be useful if you need to access another account while
+processing the current account. For example, perhaps you want to accept a
+VPC peering request after initiating it.
+
 You should now have a good understanding of the do's and don'ts to keep in mind
 when authoring your own commands. In the next section, we will discuss how to
 install your commands.
