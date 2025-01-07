@@ -313,7 +313,7 @@ class Command:
 
         This method is invoked only once per invocation of `AccountRunner.run`.
         The `context` parameter is the opaque object passed as the context
-        parameter `AccountRunner.run`. It is intended to provide access to
+        parameter to `AccountRunner.run`. It is intended to provide access to
         additional runtime context information for the command to leverage.
         The method is not executed before each account is processed, but
         rather once before any accounts are processed.
