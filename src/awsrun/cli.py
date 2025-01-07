@@ -1078,7 +1078,12 @@ def _cli(csp):
     # awsrun can be used without the need of the CLI. One only needs a list of
     # accounts, an awsrun.runner.Command, and an awsrun.session.SessionProvider.
     runner = AccountRunner(session_provider, args.threads)
-    elapsed = runner.run(command, accounts, key=account_loader.acct_id)
+    elapsed = runner.run(
+        command,
+        accounts,
+        key=account_loader.acct_id,
+        context=Context(session_provider, account_loader, accounts),
+    )
 
     # Show a quick summary on how long the command took to run.
     pluralize = "s" if len(accounts) != 1 else ""
@@ -1177,6 +1182,20 @@ class _CSP:
     def default_session_provider(self):
         """Returns the module name of the builtin Profile session provider."""
         return "awsrun.plugins.creds." + self.name.lower() + ".Default"
+
+
+class Context:
+    """Used when `Command.pre_hook_with_context` is invoked.
+
+    The `Context` provides a `Command` access to awsrun information/context prior to any
+    accounts being processed by `Runner`.
+
+    """
+
+    def __init__(self, session_provider, account_loader, accounts):
+        self.session_provider = session_provider
+        self.account_loader = account_loader
+        self.accounts = accounts
 
 
 if __name__ == "__main__":
