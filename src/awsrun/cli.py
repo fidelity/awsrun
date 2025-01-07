@@ -758,20 +758,6 @@ the command.
     """.strip()
 
 
-class Context:
-    """Used when `Command.pre_hook_with_context` is invoked.
-
-    The `Context` provides a `Command` access to awsrun information/context prior to any
-    accounts being processed by `Runner`.
-
-    """
-
-    def __init__(self, session_provider, account_loader, accounts):
-        self.session_provider = session_provider
-        self.account_loader = account_loader
-        self.accounts = accounts
-
-
 # setup.py establishes this as the entry point for the awsrun CLI.
 def main():
     """The main entry point for the `*run` CLI tool installed with this package.
@@ -1196,6 +1182,20 @@ class _CSP:
     def default_session_provider(self):
         """Returns the module name of the builtin Profile session provider."""
         return "awsrun.plugins.creds." + self.name.lower() + ".Default"
+
+
+class Context:
+    """Used when `Command.pre_hook_with_context` is invoked.
+
+    The `Context` provides a `Command` access to awsrun information/context prior to any
+    accounts being processed by `Runner`.
+
+    """
+
+    def __init__(self, session_provider, account_loader, accounts):
+        self.session_provider = session_provider
+        self.account_loader = account_loader
+        self.accounts = accounts
 
 
 if __name__ == "__main__":
