@@ -313,7 +313,7 @@ includes the following:
 
 ## Change Log
 
-### v3.2.0
+### v3.2.1
 
 - Add optional `pre_hook_with_context` method to the `Command` base class,
   which takes a single parameter called `context`. The value of that parameter
