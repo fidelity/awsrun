@@ -173,6 +173,7 @@ process. In addition, the other difference is the region parameter on the
     account_runner = AccountRunner(session_provider)
     account_runner.run(cmd, ['111222333444', '222333444111'])
 """
+
 import functools
 import logging
 import sys
@@ -308,13 +309,14 @@ class Command:
         return cls()
 
     def pre_hook_with_context(self, context):
-        """Invoked by `AccountRunner.run` before any processing starts.
+        """Invoked by `AccountRunner.run` before any account processing starts.
 
         This method is invoked only once per invocation of `AccountRunner.run`.
-        The `context` parameter is an AccounRunner.Context object and provides access
-        to additional information/awsrun-context for the command to leverage.
-        The method is not executed before each account is processed, but rather once
-        before any accounts are processed.
+        The `context` parameter is the opaque object passed as the context
+        parameter `AccountRunner.run`. It is intended to provide access to
+        additional runtime context information for the command to leverage.
+        The method is not executed before each account is processed, but
+        rather once before any accounts are processed.
 
         To provide backwards compatibility, the default implementation invokes
         `AccountRunner.pre_hook`.
@@ -325,10 +327,10 @@ class Command:
         """Invoked in the default implementation of `AccountRunner.pre_hook_with_context`
         before any account processing starts.
 
-        This method is invoked in the event a command does not override the default
-        implementation of `AccountRunner.pre_hook_with_context`. The method
-        is not executed before each account is processed, but rather once before any
-        accounts are processed.
+        This method is invoked in the event a command does not override the
+        default implementation of `Command.pre_hook_with_context`. The
+        method is not executed before each account is processed, but rather
+        once before any accounts are processed.
 
         The default implementation does nothing.
         """
@@ -851,7 +853,7 @@ class AccountRunner:
     execute method, or exceptions raised, are made available to the command.
     """
 
-    def __init__(self, session_provider, max_workers=10, context=None):
+    def __init__(self, session_provider, max_workers=10):
         if not isinstance(session_provider, SessionProvider):
             raise TypeError(
                 f"'{session_provider}' must be a subclass of awsrun.session.SessionProvider"
@@ -859,9 +861,8 @@ class AccountRunner:
 
         self.session_provider = session_provider
         self.max_workers = max_workers
-        self.context = context
 
-    def run(self, cmd, accounts, key=lambda x: x):
+    def run(self, cmd, accounts, key=lambda x: x, context=None):
         """Execute a command concurrently on the specified accounts.
 
         This method will block until all accounts have been processed. The
@@ -916,7 +917,7 @@ class AccountRunner:
         key = _valid_key_fn(key)
 
         start = time.time()
-        cmd.pre_hook_with_context(self.context)
+        cmd.pre_hook_with_context(context)
 
         with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
             # The worker task processes a single account. The worker task takes

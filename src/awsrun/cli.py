@@ -758,10 +758,10 @@ the command.
     """.strip()
 
 
-class CLIContext:
+class Context:
     """Used when `Command.pre_hook_with_context` is invoked.
-     
-    The `CLIContext` provides a `Command` access to awsrun information/context prior to any
+
+    The `Context` provides a `Command` access to awsrun information/context prior to any
     accounts being processed by `Runner`.
 
     """
@@ -1091,12 +1091,13 @@ def _cli(csp):
     # This is the main entry point into the awsrun library. Note: the entirety of
     # awsrun can be used without the need of the CLI. One only needs a list of
     # accounts, an awsrun.runner.Command, and an awsrun.session.SessionProvider.
-    runner = AccountRunner(
-        session_provider,
-        args.threads,
-        context=CLIContext(session_provider, account_loader, accounts),
+    runner = AccountRunner(session_provider, args.threads)
+    elapsed = runner.run(
+        command,
+        accounts,
+        key=account_loader.acct_id,
+        context=Context(session_provider, account_loader, accounts),
     )
-    elapsed = runner.run(command, accounts, key=account_loader.acct_id)
 
     # Show a quick summary on how long the command took to run.
     pluralize = "s" if len(accounts) != 1 else ""
