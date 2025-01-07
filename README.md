@@ -113,15 +113,15 @@ Python 3.7 or higher is required.
 
 To install only `awsrun`:
 
-    $ pip install "awsrun[aws]"
+    pip install "awsrun[aws]"
 
 To install only `azurerun`:
 
-    $ pip install "awsrun[azure]"
+    pip install "awsrun[azure]"
 
 To install both `awsrun` and `azurerun`:
 
-    $ pip install "awsrun[aws,azure]"
+    pip install "awsrun[aws,azure]"
 
 In all cases, the console scripts `awsrun` and `azurerun` are installed, but
 only the dependencies for the specified CSPs are installed.
@@ -130,13 +130,13 @@ Some of the bundled commands have additional dependencies. You will be prompted
 to install those if you use one of them. Alternatively, you can install all of
 those ahead of time:
 
-    $ pip install "awsrun[cmds]"
+    pip install "awsrun[cmds]"
 
 Finally, to install from source with the development dependencies:
 
-    $ git clone https://github.com/fidelity/awsrun.git
-    $ cd awsrun
-    $ pip install -e ".[aws,azure,cmds,dev]"
+    git clone https://github.com/fidelity/awsrun.git
+    cd awsrun
+    pip install -e ".[aws,azure,cmds,dev]"
 
 ## AWS Quick Start
 
@@ -312,6 +312,21 @@ includes the following:
   your environment.
 
 ## Change Log
+
+### v3.2.0
+
+- Add optional `pre_hook_with_context` method to the `Command` base class,
+  which takes a single parameter called `context`. The value of that parameter
+  is provided by the caller of `AccountRunner.run`. In the case of the awsrun
+  CLI commands, that context is an instance of `awsrun.cli.Context`, which
+  provides command authors access to the account loader and session provider
+  plug-ins as well as the full list of accounts being processed. For example,
+  this would allow you to write a command that performs a VPC peering. While
+  processing the account from which the peering is initiated, you can now
+  obtain credentials for the other account to accept the request by using the
+  session provider.
+
+- Update the license to Apache 2.0.
 
 ### v3.1.0
 

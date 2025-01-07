@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="generator" content="pdoc 0.11.1" />
 <title>awsrun.commands.azure.az API documentation</title>
 <meta name="description" content="Adapter for the Azure Command Line Interface (CLI) …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -949,59 +949,6 @@ class CLICommand(Command):
 </code></dt>
 <dd>
 <section class="desc"><p>Parse command line arguments provided to this command.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_cli(cls, parser, argv, cfg):
-    &#34;&#34;&#34;Parse command line arguments provided to this command.&#34;&#34;&#34;
-
-    # Note: normally one would not prefix an azurerun command&#39;s arguments
-    # with &#39;--azurerun-&#39;, but this is a special exception because there
-    # could be valid az CLI args interspersed among the azurerun command
-    # flags. To avoid namespace collisions, the az command args are
-    # prefixed.
-    parser.add_argument(
-        &#34;--azurerun-output-dir&#34;,
-        metavar=&#34;DIR&#34;,
-        default=cfg(&#34;azurerun_output_dir&#34;),
-        help=&#34;output directory to write results to separate files&#34;,
-    )
-
-    parser.add_argument(
-        &#34;--azurerun-annotate&#34;,
-        choices=[&#34;yaml&#34;, &#34;json&#34;, &#34;tsv&#34;, &#34;table&#34;],
-        default=cfg(&#34;azurerun_annotate&#34;, type=StrMatch(&#34;^(yaml|json|tsv|table)$&#34;)),
-        help=&#34;annotate each result with subscription&#34;,
-    )
-
-    # Let&#39;s gobble up any --output flags passed to the az CLI command. The
-    # output flag is captured so we can make sure user does not try to
-    # specify a different output if they selected --azurerun-annotate. The
-    # types need to match.
-    parser.add_argument(&#34;--output&#34;, help=argparse.SUPPRESS)
-
-    # We parse the known args and then collect the rest as those will be
-    # passed to the az CLI command later.
-    args, remaining_args = parser.parse_known_args(argv)
-
-    if (
-        args.azurerun_annotate
-        and args.output
-        and args.azurerun_annotate != args.output
-    ):
-        parser.error(
-            &#34;When specifying --azurerun-annotate, you do not need the --output flag&#34;
-        )
-
-    return cls(
-        remaining_args,
-        output=args.output,
-        output_dir=args.azurerun_output_dir,
-        annotate=args.azurerun_annotate,
-    )</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1011,151 +958,12 @@ def from_cli(cls, parser, argv, cfg):
 </code></dt>
 <dd>
 <section class="desc"><p>Invoke an Azure CLI command for an account.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def execute(self, session, acct):
-    &#34;&#34;&#34;Invoke an Azure CLI command for an account.&#34;&#34;&#34;
-
-    # We need to assemble a valid Azure CLI command line that can be
-    # executed by the operating system. The instance variable azureCLI_args
-    # contains all arguments that follow &#39;az&#39;: azurerun az ... We will
-    # provide --output if the user has asked us to annotate an output type.
-    # This ensures we override any user settings that the Azure CLI tool may
-    # pick up from ~/.azure directory.
-    cmd = [self.azurecli_path]
-    cmd += self.azurecli_args
-    cmd += [&#34;--subscription&#34;, str(acct)]
-    if self.annotate:
-        cmd += [&#34;--output&#34;, self.annotate]
-    elif self.output:
-        cmd += [&#34;--output&#34;, self.output]
-    LOG.info(&#34;%s: Azure CLI command: %s&#34;, acct, cmd)
-
-    # Although the execute method receives a valid credential in the
-    # `session` argument, I&#39;ve not found a way to pass that to the az CLI
-    # command. It doesn&#39;t matter though as az CLI users will simply use `az
-    # login` before running this azurerun wrapper.
-
-    # We call run() and capture stdout and stderr from the command&#39;s output.
-    # Note: all the output is stored in memory, and then printed in
-    # collect_results. This means that if you run an az CLI command that
-    # generates huge amounts of data, it&#39;ll all be stored in memory. Why
-    # don&#39;t we stream tho output from a pipe? We could use Popen directly,
-    # but if we returned from execute() before reading all of the results,
-    # then the worker will start another account, so in essence, all of the
-    # accounts will be &#34;executed&#34; immediately resulting in potentially many
-    # many Azure CLI command processes running waiting for us to read the
-    # output.
-
-    result = subprocess.run(
-        cmd,
-        check=False,
-        universal_newlines=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-
-    # Lastly, we return the ProcessCompleted object from the run() method.
-    # Recall, an azurerun command can return anything if you provide your
-    # own collect_results method.
-    return result</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.azure.az.CLICommand.collect_results"><code class="name flex">
 <span>def <span class="ident">collect_results</span></span>(<span>self, acct, get_result)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Print the results to the console and files if specified.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def collect_results(self, acct, get_result):
-    &#34;&#34;&#34;Print the results to the console and files if specified.&#34;&#34;&#34;
-
-    def annotate_lines(text, delimiter=&#34;: &#34;, file=sys.stdout, separator=False):
-        for line in filter(None, text.split(&#34;\n&#34;)):
-            print(f&#34;{acct}{delimiter}{line}&#34;, file=file, flush=True)
-        if separator and not text == &#34;\n&#34;:
-            print()
-
-    def annotate_json(text):
-        try:
-            d = {
-                &#34;Subscription&#34;: str(acct),
-                &#34;Results&#34;: json.loads(text),
-            }
-            json.dump(d, sys.stdout, indent=4)
-            print()
-        except json.decoder.JSONDecodeError:
-            annotate_lines(
-                &#34;Result of Azure CLI command is not valid JSON&#34;, file=sys.stderr
-            )
-
-    def annotate_yaml(text):
-        try:
-            d = {
-                &#34;Subscription&#34;: str(acct),
-                &#34;Results&#34;: yaml.safe_load(text),
-            }
-            yaml.safe_dump(d, sys.stdout, indent=4)
-            print(&#34;...&#34;)  # end of yaml document separator
-        except yaml.representer.RepresenterError:
-            annotate_lines(
-                &#34;Result of Azure CLI command is not valid JSON&#34;, file=sys.stderr
-            )
-
-    try:
-        # Let&#39;s get the return value from the execute method, which is the
-        # ProcessCompleted object from the subprocess.run() method above ...
-        result = get_result()
-
-    except Exception as e:  # pylint: disable=broad-except
-        # ... unless there was an exception in which case it is raised by
-        # the call to get_result and we handle it here.
-        LOG.info(&#34;%s: error: %s&#34;, acct, e, exc_info=True)
-        annotate_lines(f&#34;error: {e}&#34;, file=sys.stderr)
-        return
-
-    # Print stderr from Azure CLI always annotating the lines
-    annotate_lines(result.stderr, file=sys.stderr)
-
-    # Print stdout from Azure CLI annotating when appropriate
-    if not self.annotate:
-        if result.stdout not in [&#34;&#34;, &#34;\n&#34;]:  # skip blank output
-            print(
-                result.stdout,
-                end=&#34;\n&#34; if self.output == &#34;table&#34; else &#34;&#34;,
-                flush=True,
-            )
-    elif self.annotate == &#34;json&#34;:
-        annotate_json(result.stdout)
-    elif self.annotate == &#34;yaml&#34;:
-        annotate_yaml(result.stdout)
-    elif self.annotate == &#34;table&#34;:
-        annotate_lines(result.stdout, separator=True)
-    elif self.annotate == &#34;tsv&#34;:
-        annotate_lines(result.stdout, delimiter=&#34;\t&#34;)
-
-    # Save stdout and stderr from Azure CLI to disk if requested
-    if self.output_dir:
-        # Recall, the acct object passed to execute() can be anything. The
-        # str() method should provide us a unique means of identifying the
-        # account, but we need to escape any slashes if we use this as part
-        # of a filename so pathlib doesn&#39;t interpret as directories.
-        escaped = re.sub(r&#34;[\\/]&#34;, &#34;_&#34;, str(acct))
-        name = self.output_dir / f&#34;{escaped}&#34;
-
-        def save(suffix, text):
-            with name.with_suffix(suffix).open(&#34;w&#34;) as out:
-                out.write(text)
-
-        save(&#34;.stdout.log&#34;, result.stdout)
-        if result.stderr:
-            save(&#34;.stderr.log&#34;, result.stderr)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1164,6 +972,7 @@ def from_cli(cls, parser, argv, cfg):
 <ul class="hlist">
 <li><code><a title="awsrun.runner.Command.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
 <li><code><a title="awsrun.runner.Command.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook_with_context" href="../../runner.html#awsrun.runner.Command.pre_hook_with_context">pre_hook_with_context</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1213,7 +1022,7 @@ def from_cli(cls, parser, argv, cfg):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

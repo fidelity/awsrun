@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="generator" content="pdoc 0.11.1" />
 <title>awsrun.commands.aws.last API documentation</title>
 <meta name="description" content="Display the last CloudTrail events in an account …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1574,6 +1574,7 @@ EventDetail &gt; Static {
 <li><code><a title="awsrun.runner.RegionalCommand.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.pre_hook_with_context" href="../../runner.html#awsrun.runner.Command.pre_hook_with_context">pre_hook_with_context</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="../../runner.html#awsrun.runner.RegionalCommand.regional_collect_results">regional_collect_results</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.regional_execute" href="../../runner.html#awsrun.runner.RegionalCommand.regional_execute">regional_execute</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.regional_from_cli" href="../../runner.html#awsrun.runner.RegionalCommand.regional_from_cli">regional_from_cli</a></code></li>
@@ -1638,72 +1639,30 @@ EventDetail &gt; Static {
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def all(self):
-    return self.events</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.Events.users"><code class="name flex">
 <span>def <span class="ident">users</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def users(self):
-    return self.events_by_user.keys()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.Events.by_user"><code class="name flex">
 <span>def <span class="ident">by_user</span></span>(<span>self, user)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def by_user(self, user):
-    return self.events_by_user.get(user, [])</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.Events.by_id"><code class="name flex">
 <span>def <span class="ident">by_id</span></span>(<span>self, event_id)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def by_id(self, event_id) -&gt; Optional[_UserIdentityType]:
-    return self.events_by_key.get(event_id)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.Events.filter"><code class="name flex">
 <span>def <span class="ident">filter</span></span>(<span>self, expr)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def filter(self, expr):
-    if not expr:  # empty string?
-        events = self.unfiltered_events
-    else:
-        events = _filter_events(self.unfiltered_events, expr)
-
-    self.filter_expr = expr
-    self._load_events(events)
-    return len(self.events)</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -1844,44 +1803,18 @@ Popup Button {
     )
     yield Footer()
 </code></pre></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def compose(self) -&gt; ComposeResult:
-    yield Static(Markdown(self.help_md))
-    with Horizontal():
-        yield Input(placeholder=self.prompt)
-        yield Button(&#34;Close&#34;, variant=&#34;primary&#34;)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.Popup.on_input_submitted"><code class="name flex">
 <span>def <span class="ident">on_input_submitted</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_input_submitted(self, event: Input.Submitted) -&gt; None:
-    event.stop()
-    self.post_message(self.Changed(event.value))</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.Popup.on_button_pressed"><code class="name flex">
 <span>def <span class="ident">on_button_pressed</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_button_pressed(self, event: Button.Pressed) -&gt; None:
-    event.stop()
-    self.post_message(self.Closed())</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -2175,17 +2108,6 @@ RowTable &gt; DataTable &gt; .datatable--header-hover {
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -&gt; None:
-    event.stop()
-    event.control.border_subtitle = (
-        f&#34;{event.cursor_row + 1} of {len(event.control.rows)}&#34;
-    )
-    self.post_message(self.SelectionChanged(event.row_key))</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.RowTable.compose"><code class="name flex">
 <span>def <span class="ident">compose</span></span>(<span>self)</span>
@@ -2201,13 +2123,6 @@ RowTable &gt; DataTable &gt; .datatable--header-hover {
     )
     yield Footer()
 </code></pre></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def compose(self) -&gt; ComposeResult:
-    yield DataTable()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.RowTable.focus"><code class="name flex">
 <span>def <span class="ident">focus</span></span>(<span>self)</span>
@@ -2221,28 +2136,12 @@ RowTable &gt; DataTable &gt; .datatable--header-hover {
 </dl>
 <h2 id="returns">Returns</h2>
 <p>The <code>Widget</code> instance.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def focus(self):
-    self.query_one(DataTable).focus()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.RowTable.on_mount"><code class="name flex">
 <span>def <span class="ident">on_mount</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_mount(self):
-    dt = self.query_one(DataTable)
-    dt.cursor_type = &#34;row&#34;
-    dt.add_columns(*self.col_names)</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -2326,33 +2225,12 @@ UserTable {
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_mount(self):
-    dt = self.query_one(DataTable)
-    dt.show_header = False
-    dt.border_title = &#34;Users&#34;</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.UserTable.watch_contents"><code class="name flex">
 <span>def <span class="ident">watch_contents</span></span>(<span>self, users)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch_contents(self, users):
-    dt = self.query_one(DataTable)
-    dt.clear()
-    for user in users:
-        dt.add_row(user, key=user)
-    dt.scroll_home()
-    dt.border_subtitle = f&#34;0 of {len(users)}&#34;</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2449,35 +2327,12 @@ EventTable {
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_mount(self):
-    self.query_one(DataTable).border_title = &#34;Events&#34;</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventTable.watch_contents"><code class="name flex">
 <span>def <span class="ident">watch_contents</span></span>(<span>self, events)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch_contents(self, events):
-    dt = self.query_one(DataTable)
-    dt.clear()
-    for event in events:
-        row = event.to_row()
-        if event.has_error():
-            error = dt.app.get_css_variables()[&#34;error&#34;]
-            row = [f&#34;[{error}]{c}[/]&#34; for c in row]
-        dt.add_row(*row, key=event.event_id())
-    dt.scroll_home()
-    dt.border_subtitle = f&#34;0 of {len(events)}&#34;</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2815,334 +2670,120 @@ ExportPopup {
 <dd>
 <section class="desc"><p>Yield child widgets for a container.</p>
 <p>This method should be implemented in a subclass.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def compose(self) -&gt; ComposeResult:
-    yield FilterPopup()  # Hidden off-screen initially
-    yield ExportPopup()  # Hidden off-screen initially
-    yield Header()
-    yield Horizontal(
-        Vertical(UserTable(), EventTable(), id=&#34;left&#34;),
-        EventDetail(),
-        id=&#34;main&#34;,
-    )
-    yield Footer()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.on_mount"><code class="name flex">
 <span>def <span class="ident">on_mount</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_mount(self):
-    self.query_one(Header).tall = True
-    self.query_one(FilterPopup).disabled = True
-    self.query_one(ExportPopup).disabled = True
-    self.total_count = self.filtered_count = len(self.events.all())
-    self.populate_data_tables()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.populate_data_tables"><code class="name flex">
 <span>def <span class="ident">populate_data_tables</span></span>(<span>self, focus=True)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def populate_data_tables(self, focus=True):
-    ut = self.query_one(UserTable)
-    et = self.query_one(EventTable)
-    ed = self.query_one(EventDetail)
-
-    if not self.events.all():
-        ut.contents = et.contents = []
-        ed.event = None
-
-    elif not ut.has_class(&#34;hidden&#34;):
-        ut.contents = sorted(self.events.users(), key=str.lower)
-        if focus:
-            ut.focus()
-
-    else:
-        et.contents = self.events.all()
-        if focus:
-            et.focus()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.action_toggle_dark"><code class="name flex">
 <span>def <span class="ident">action_toggle_dark</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>An <a href="/guide/actions">action</a> to toggle dark mode.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def action_toggle_dark(self):
-    self.dark = not self.dark
-
-    # In EventDetail we define &#34;event&#34; as reactive with always_update,
-    # so this will force watch_event to be called which redraws the JSON
-    # with the correct theme. We need to do this as the content of the
-    # Static widget with our JSON is colored by rich which does not know
-    # about dark mode. So when user toggles, we need to syntax highlight
-    # the JSON with an appropriate theme.
-    ed = self.query_one(EventDetail)
-    ed.event = ed.event</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.action_toggle_layout"><code class="name flex">
 <span>def <span class="ident">action_toggle_layout</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def action_toggle_layout(self):
-    self.toggle_class(&#34;vertical&#34;)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.action_copy"><code class="name flex">
 <span>def <span class="ident">action_copy</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def action_copy(self):
-    ed = self.query_one(EventDetail)
-    if ed.event:
-        pyperclip.copy(ed.event.to_json())</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.action_filter_popup"><code class="name flex">
 <span>def <span class="ident">action_filter_popup</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def action_filter_popup(self):
-    self.show_popup(FilterPopup)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.action_export_popup"><code class="name flex">
 <span>def <span class="ident">action_export_popup</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def action_export_popup(self):
-    self.show_popup(ExportPopup)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.action_toggle_users"><code class="name flex">
 <span>def <span class="ident">action_toggle_users</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def action_toggle_users(self):
-    ut = self.query_one(UserTable)
-    ut.toggle_class(&#34;hidden&#34;)
-    self.populate_data_tables()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.dismiss_popup"><code class="name flex">
 <span>def <span class="ident">dismiss_popup</span></span>(<span>self, name)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def dismiss_popup(self, name):
-    p = self.query_one(name)
-    p.disabled = True
-    p.add_class(&#34;offscreen&#34;)
-    self.set_focus(self.original_focus)
-    self.refresh(repaint=True, layout=True)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.show_popup"><code class="name flex">
 <span>def <span class="ident">show_popup</span></span>(<span>self, name)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def show_popup(self, name):
-    self.original_focus = self.query_one(&#34;*:focus&#34;)
-    p = self.query_one(name)
-    p.disabled = False
-    p.remove_class(&#34;offscreen&#34;)
-    p.query_one(Input).focus()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.on_filter_popup_closed"><code class="name flex">
 <span>def <span class="ident">on_filter_popup_closed</span></span>(<span>self, _)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_filter_popup_closed(self, _) -&gt; None:
-    self.dismiss_popup(FilterPopup)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.on_filter_popup_changed"><code class="name flex">
 <span>def <span class="ident">on_filter_popup_changed</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_filter_popup_changed(self, event: FilterPopup.Changed) -&gt; None:
-    # Only update the UI if the expression is different
-    if event.value != self.events.filter_expr:
-        self.filtered_count = self.events.filter(event.value)
-        self.query_one(EventDetail).filter_expr = event.value
-        self.populate_data_tables(focus=False)
-    self.dismiss_popup(FilterPopup)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.on_export_popup_closed"><code class="name flex">
 <span>def <span class="ident">on_export_popup_closed</span></span>(<span>self, _)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_export_popup_closed(self, _) -&gt; None:
-    self.dismiss_popup(ExportPopup)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.on_export_popup_changed"><code class="name flex">
 <span>def <span class="ident">on_export_popup_changed</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_export_popup_changed(self, event: ExportPopup.Changed) -&gt; None:
-    try:
-        with open(event.value, &#34;w&#34;) as out:
-            json.dump(
-                [e.event for e in self.events.all()],
-                default=str,
-                indent=4,
-                fp=out,
-            )
-        self.dismiss_popup(ExportPopup)
-    except Exception:
-        self.bell()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.on_user_table_selection_changed"><code class="name flex">
 <span>def <span class="ident">on_user_table_selection_changed</span></span>(<span>self, message)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_user_table_selection_changed(self, message: UserTable.SelectionChanged):
-    et = self.query_one(EventTable)
-    user = message.row_key
-    if user:
-        et.contents = self.events.by_user(user)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.on_event_table_selection_changed"><code class="name flex">
 <span>def <span class="ident">on_event_table_selection_changed</span></span>(<span>self, message)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_event_table_selection_changed(self, message: EventTable.SelectionChanged):
-    ed = self.query_one(EventDetail)
-    event_key = message.row_key
-    if event_key:
-        event = self.events.by_id(event_key)
-        ed.event = event</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.watch_total_count"><code class="name flex">
 <span>def <span class="ident">watch_total_count</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch_total_count(self):
-    self.update_sub_title()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.watch_filtered_count"><code class="name flex">
 <span>def <span class="ident">watch_filtered_count</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch_filtered_count(self):
-    self.update_sub_title()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventViewer.update_sub_title"><code class="name flex">
 <span>def <span class="ident">update_sub_title</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def update_sub_title(self):
-    s = f&#34;{self.total_count} events loaded&#34;
-    if self.filtered_count != self.total_count:
-        s += f&#34;, {self.filtered_count} matched&#34;
-    self.sub_title = s</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -3297,13 +2938,6 @@ EventDetail &gt; Static {
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_mount(self):
-    self.border_title = &#34;Event Detail&#34;</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventDetail.compose"><code class="name flex">
 <span>def <span class="ident">compose</span></span>(<span>self)</span>
@@ -3319,37 +2953,12 @@ EventDetail &gt; Static {
     )
     yield Footer()
 </code></pre></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def compose(self) -&gt; ComposeResult:
-    yield Static()</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.last.EventDetail.watch_event"><code class="name flex">
 <span>def <span class="ident">watch_event</span></span>(<span>self, event)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch_event(self, event):
-    content = event.to_json() if event else &#34;&#34;
-    matching_lines = self._find_matching_lines(content)
-
-    self.query_one(Static).update(
-        Syntax(
-            content,
-            &#34;json&#34;,
-            theme=EventViewer.theme[&#34;dark&#34; if self.app.dark else &#34;light&#34;],
-            highlight_lines=matching_lines,
-            line_numbers=True,
-        )
-    )</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -3500,7 +3109,7 @@ EventDetail &gt; Static {
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

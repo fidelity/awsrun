@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="generator" content="pdoc 0.11.1" />
 <title>awsrun.commands.aws.list_iam_policies API documentation</title>
 <meta name="description" content="Display the IAM policies (inline and attached) in an account …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -919,30 +919,6 @@ for any IAM actions that match the search_actions. Matching does take into
 account wildcards specified in the policy document. Returns true if the
 document contains any of the actions in search_actions. Note: this does not
 take into account whether an action is allowed or denied.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def has_actions(policy_doc, search_actions):
-    &#34;&#34;&#34;Search a policy document, specifically the Action and NotAction blocks
-    for any IAM actions that match the search_actions. Matching does take into
-    account wildcards specified in the policy document. Returns true if the
-    document contains any of the actions in search_actions. Note: this does not
-    take into account whether an action is allowed or denied.&#34;&#34;&#34;
-
-    for statement in make_list(policy_doc[&#34;Statement&#34;]):
-        if &#34;Action&#34; in statement:
-            action_block = statement[&#34;Action&#34;]
-        else:
-            action_block = statement[&#34;NotAction&#34;]
-
-        for action in make_list(action_block):
-            pattern = re.compile(&#34;^&#34; + re.escape(action).replace(&#34;\\*&#34;, &#34;.*&#34;) + &#34;$&#34;)
-            for search_action in search_actions:
-                if pattern.search(search_action):
-                    return True
-    return False</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.list_iam_policies.make_list"><code class="name flex">
 <span>def <span class="ident">make_list</span></span>(<span>obj)</span>
@@ -950,19 +926,6 @@ take into account whether an action is allowed or denied.</p></section>
 <dd>
 <section class="desc"><p>Returns obj if it is a list, otherwise returns a list of one element
 containing obj. This is due to AWS's inconsistent use of JSON arrays.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def make_list(obj):
-    &#34;&#34;&#34;Returns obj if it is a list, otherwise returns a list of one element
-    containing obj. This is due to AWS&#39;s inconsistent use of JSON arrays.&#34;&#34;&#34;
-
-    if isinstance(obj, list):
-        return obj
-
-    return [obj]</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.list_iam_policies.get_identities"><code class="name flex">
 <span>def <span class="ident">get_identities</span></span>(<span>collection, subresource, search_names)</span>
@@ -972,26 +935,6 @@ containing obj. This is due to AWS's inconsistent use of JSON arrays.</p></secti
 identities from collection are returned. If search_names contains a list of
 names, a resource is created by calling subresource. The resource is then
 loaded to ensure it exists. All valid resources are returned.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_identities(collection, subresource, search_names):
-    &#34;&#34;&#34;Return an iterable of IAM identities. If search_names is empty, then all
-    identities from collection are returned. If search_names contains a list of
-    names, a resource is created by calling subresource. The resource is then
-    loaded to ensure it exists. All valid resources are returned.&#34;&#34;&#34;
-
-    if not search_names:
-        return collection.all()
-
-    # For each name being searched, create a resource object
-    identities = [subresource(name) for name in search_names]
-
-    # Resource objects load lazily, so we don&#39;t know if the identities
-    # above are valid or not. Let&#39;s filter out only the valid ones.
-    return filter(identity_exists, identities)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.list_iam_policies.identity_exists"><code class="name flex">
 <span>def <span class="ident">identity_exists</span></span>(<span>identity)</span>
@@ -999,22 +942,6 @@ loaded to ensure it exists. All valid resources are returned.</p></section>
 <dd>
 <section class="desc"><p>Returns True if the identity exists, otherwise false. As a side
 effect, the identity's resources are loaded.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def identity_exists(identity):
-    &#34;&#34;&#34;Returns True if the identity exists, otherwise false. As a side
-    effect, the identity&#39;s resources are loaded.&#34;&#34;&#34;
-
-    try:
-        identity.load()
-        return True
-    except ClientError as e:
-        if e.response[&#34;Error&#34;][&#34;Code&#34;] == &#34;NoSuchEntity&#34;:
-            return False
-        raise e</code></pre>
-</details>
 </dd>
 </dl>
 </section>
@@ -1300,59 +1227,12 @@ effect, the identity's resources are loaded.</p></section>
 </code></dt>
 <dd>
 <section class="desc"><p>Prints the inline policies associated with identity.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def show_inline_policies(self, identity, ip):
-    &#34;&#34;&#34;Prints the inline policies associated with identity.&#34;&#34;&#34;
-    if not self.include_inline:
-        return
-
-    for inline in identity.policies.all():
-        # pylint: disable=cell-var-from-loop
-        # We wrap the policy_document in a lambda so boto3 resource is not
-        # fetched unless it is really needed. Although pylint complains
-        # about wrapping the looping var in a lambda, we use the lambda
-        # immediately if needed.
-        if self.should_skip(inline.policy_name, lambda: inline.policy_document):
-            continue
-
-        ip.print(f&#34;policy=inline:{inline.policy_name}&#34;)
-        if self.verbose:
-            ip.print(json.dumps(inline.policy_document, indent=4), prefix=False)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.list_iam_policies.CLICommand.show_attached_policies"><code class="name flex">
 <span>def <span class="ident">show_attached_policies</span></span>(<span>self, identity, ip)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Prints the attached policies associated with identity.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def show_attached_policies(self, identity, ip):
-    &#34;&#34;&#34;Prints the attached policies associated with identity.&#34;&#34;&#34;
-    if not self.include_attached:
-        return
-
-    for attached in identity.attached_policies.all():
-        # pylint: disable=cell-var-from-loop
-        # We wrap the default_version.document in a lambda so boto3 resource
-        # is not fetched unless it is really needed.
-        if self.should_skip(
-            attached.policy_name, lambda: attached.default_version.document
-        ):
-            continue
-
-        ip.print(f&#34;policy=attached:{attached.policy_name}&#34;)
-        if self.verbose:
-            ip.print(
-                json.dumps(attached.default_version.document, indent=4),
-                prefix=False,
-            )</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.list_iam_policies.CLICommand.should_skip"><code class="name flex">
 <span>def <span class="ident">should_skip</span></span>(<span>self, name, get_doc)</span>
@@ -1362,41 +1242,6 @@ effect, the identity's resources are loaded.</p></section>
 skipped.
 For efficiency, the get_doc argument should be a function
 that returns the policy document, so it is only called if needed.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def should_skip(self, name, get_doc):
-    &#34;&#34;&#34;Returns false if the policy with name and policy document should be
-    skipped.  For efficiency, the get_doc argument should be a function
-    that returns the policy document, so it is only called if needed.&#34;&#34;&#34;
-
-    if self.search_policies and not any(
-        name.startswith(n) for n in self.search_policies
-    ):
-        return True
-    if self.not_search_policies and any(
-        name.startswith(n) for n in self.not_search_policies
-    ):
-        return True
-
-    # Short-circuit us out of here if we don&#39;t need to search for actions,
-    # which would require downloading the policy document. Recall, boto
-    # loads these things lazily, so if we don&#39;t need to access it, then
-    # don&#39;t load it.
-    if not self.search_actions and not self.not_search_actions:
-        return False
-
-    # Since we now need to search through the actual policy for action
-    # statements, invoke the function passed to actually get the policy.
-    doc = get_doc()
-    if self.search_actions and not has_actions(doc, self.search_actions):
-        return True
-    if self.not_search_actions and has_actions(doc, self.not_search_actions):
-        return True
-
-    return False</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1408,6 +1253,7 @@ that returns the policy document, so it is only called if needed.</p></section>
 <li><code><a title="awsrun.runner.Command.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
 <li><code><a title="awsrun.runner.Command.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
 <li><code><a title="awsrun.runner.Command.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook_with_context" href="../../runner.html#awsrun.runner.Command.pre_hook_with_context">pre_hook_with_context</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1443,17 +1289,6 @@ that returns the policy document, so it is only called if needed.</p></section>
 </code></dt>
 <dd>
 <section class="desc"><p>Print msg to buffer, if prefix is True, prepend the prefix.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def print(self, msg, prefix=True):
-    &#34;&#34;&#34;Print msg to buffer, if prefix is True, prepend the prefix.&#34;&#34;&#34;
-    if prefix:
-        print(f&#34;{self.prefix} {msg}&#34;, file=self.out)
-    else:
-        print(msg, file=self.out)</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -1509,7 +1344,7 @@ that returns the policy document, so it is only called if needed.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

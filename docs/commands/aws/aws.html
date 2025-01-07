@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="generator" content="pdoc 0.11.1" />
 <title>awsrun.commands.aws.aws API documentation</title>
 <meta name="description" content="Adapter for the AWS Command Line Interface (CLI) …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1215,63 +1215,6 @@ class CLICommand(RegionalCommand):
 </code></dt>
 <dd>
 <section class="desc"><p>Parse command line arguments provided to this command.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def regional_from_cli(cls, parser, argv, cfg):
-    &#34;&#34;&#34;Parse command line arguments provided to this command.&#34;&#34;&#34;
-
-    # Note: normally one would not prefix an awsrun command&#39;s arguments with
-    # &#39;--awsrun-&#39;, but this is a special exception because there could be
-    # valid awscli args interspersed among the awsrun command flags. To
-    # avoid namespace collisions, the aws command args are prefixed.
-    parser.add_argument(
-        &#34;--awsrun-output-dir&#34;,
-        metavar=&#34;DIR&#34;,
-        default=cfg(&#34;awsrun_output_dir&#34;),
-        help=&#34;output directory to write results to separate files&#34;,
-    )
-
-    parser.add_argument(
-        &#34;--awsrun-annotate&#34;,
-        choices=[&#34;json&#34;, &#34;text&#34;, &#34;table&#34;],
-        default=cfg(&#34;awsrun_annotate&#34;, type=StrMatch(&#34;^(json|text|table)$&#34;)),
-        help=&#34;annotate each result with account / region&#34;,
-    )
-
-    # Let&#39;s gobble up any --profile or --output flags passed to the awscli
-    # command. We don&#39;t include these flags in the help message as they are
-    # really part of the awscli tool. We capture profile flags to remind
-    # users not to specify them. As for output flag, this is captured so we
-    # can make sure user does not try to specify a different output if they
-    # selected --awsrun-annotate. The types need to match.
-    parser.add_argument(&#34;--profile&#34;, help=argparse.SUPPRESS)
-    parser.add_argument(&#34;--output&#34;, help=argparse.SUPPRESS)
-
-    # We parse the known args and then collect the rest as those will be
-    # passed to the awscli command later.
-    args, remaining_args = parser.parse_known_args(argv)
-
-    if args.profile:
-        parser.error(
-            &#34;Do not specify --profile aws CLI flag, it is supplied by awsrun&#34;
-        )
-
-    if args.awsrun_annotate and args.output and args.awsrun_annotate != args.output:
-        parser.error(
-            &#34;When specifying --awsrun-annotate, you do not need the --output flag&#34;
-        )
-
-    return cls(
-        remaining_args,
-        regions=args.regions,
-        output=args.output,
-        output_dir=args.awsrun_output_dir,
-        annotate=args.awsrun_annotate,
-    )</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1281,137 +1224,12 @@ def regional_from_cli(cls, parser, argv, cfg):
 </code></dt>
 <dd>
 <section class="desc"><p>Invoke an AWS CLI command for an account and region.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def regional_execute(self, session, acct, region):
-    &#34;&#34;&#34;Invoke an AWS CLI command for an account and region.&#34;&#34;&#34;
-
-    # We need to assemble a valid AWS cli command line that can be executed
-    # by the operating system. The instance variable awscli_args contains
-    # all arguments that follow &#39;aws&#39;: awsrun -r us-east-1 aws ... We will
-    # provide the --region argument as we know the region we are processing.
-    # We will also provide --output if the user has asked us to annotate an
-    # output type. This ensures we override any user settings that the AWS
-    # cli tool may pick up from ~/.aws/config.
-    cmd = [self.awscli_path, &#34;--region&#34;, region]
-    if self.annotate:
-        cmd += [&#34;--output&#34;, self.annotate]
-    elif self.output:
-        cmd += [&#34;--output&#34;, self.output]
-    cmd += self.awscli_args
-    LOG.info(&#34;%s-%s: AWS CLI command: %s&#34;, acct, region, cmd)
-
-    # Before we can execute the AWS cli tool, we need to set a few env vars
-    # with our creds. Normally, the AWS cli expects this file to exist in
-    # the user&#39;s home directory at ~/.aws/credentials.
-    creds = session.get_credentials()
-
-    new_vars = {
-        &#34;AWS_ACCESS_KEY_ID&#34;: creds.access_key,
-        &#34;AWS_SECRET_ACCESS_KEY&#34;: creds.secret_key,
-        &#34;AWS_SESSION_TOKEN&#34;: creds.token if creds.token else &#34;&#34;,
-    }
-
-    env = ChainMap(new_vars, os.environ)
-
-    # We call run() and capture stdout and stderr from the command&#39;s
-    # output. Note: all the output is stored in memory, and then printed
-    # in collect_results. This means that if you run an AWS cli command
-    # that generates huge amounts of data, it&#39;ll all be stored in
-    # memory. Why don&#39;t we stream tho output from a pipe? We could use
-    # Popen directly, but if we returned from execute() before reading
-    # all of the results, then the worker will start another account, so
-    # in essence, all of the accounts will be &#34;executed&#34; immediately
-    # resulting in potentially many many AWS cli command processes
-    # running waiting for us to read the output.
-
-    result = subprocess.run(
-        cmd,
-        env=env,
-        check=False,
-        universal_newlines=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-
-    # Lastly, we return the ProcessCompleted object from the run() method.
-    # Recall, an awsrun command can return anything if you provide your own
-    # collect_results method.
-    return result</code></pre>
-</details>
 </dd>
 <dt id="awsrun.commands.aws.aws.CLICommand.regional_collect_results"><code class="name flex">
 <span>def <span class="ident">regional_collect_results</span></span>(<span>self, acct, region, get_result)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Print the results to the console and files if specified.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def regional_collect_results(self, acct, region, get_result):
-    &#34;&#34;&#34;Print the results to the console and files if specified.&#34;&#34;&#34;
-
-    def annotate_lines(text, file=sys.stdout):
-        for line in filter(None, text.split(&#34;\n&#34;)):
-            print(f&#34;{acct}/{region}: {line}&#34;, file=file, flush=True)
-
-    def annotate_json(text):
-        try:
-            d = {
-                &#34;Account&#34;: str(acct),
-                &#34;Region&#34;: region,
-                &#34;Results&#34;: json.loads(text),
-            }
-            json.dump(d, sys.stdout, indent=4)
-            print()
-        except json.decoder.JSONDecodeError:
-            annotate_lines(
-                &#34;Result of AWS CLI command is not valid JSON&#34;, file=sys.stderr
-            )
-
-    try:
-        # Let&#39;s get the return value from the execute method, which is the
-        # ProcessCompleted object from the subprocess.run() method above ...
-        result = get_result()
-
-    except Exception as e:  # pylint: disable=broad-except
-        # ... unless there was an exception in which case it is raised by
-        # the call to get_result and we handle it here.
-        LOG.info(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
-        annotate_lines(f&#34;error: {e}&#34;, file=sys.stderr)
-        return
-
-    # Print stderr from AWS CLI always annotating the lines
-    annotate_lines(result.stderr, file=sys.stderr)
-
-    # Print stdout from AWS CLI annotating when appropriate
-    if not self.annotate:
-        print(result.stdout, end=&#34;&#34;, flush=True)
-    elif self.annotate == &#34;json&#34;:
-        annotate_json(result.stdout)
-    elif self.annotate in [&#34;text&#34;, &#34;table&#34;]:
-        annotate_lines(result.stdout)
-
-    # Save stdout and stderr from AWS CLI to disk if requested
-    if self.output_dir:
-        # Recall, the acct object passed to execute() can be anything. The
-        # str() method should provide us a unique means of identifying the
-        # account, but we need to escape any slashes if we use this as part
-        # of a filename so pathlib doesn&#39;t interpret as directories.
-        escaped = re.sub(r&#34;[\\/]&#34;, &#34;_&#34;, str(acct))
-        name = self.output_dir / f&#34;{escaped}-{region}&#34;
-
-        def save(suffix, text):
-            with name.with_suffix(suffix).open(&#34;w&#34;) as out:
-                out.write(text)
-
-        save(&#34;.stdout.log&#34;, result.stdout)
-        if result.stderr:
-            save(&#34;.stderr.log&#34;, result.stderr)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1423,6 +1241,7 @@ def regional_from_cli(cls, parser, argv, cfg):
 <li><code><a title="awsrun.runner.RegionalCommand.from_cli" href="../../runner.html#awsrun.runner.Command.from_cli">from_cli</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.post_hook" href="../../runner.html#awsrun.runner.Command.post_hook">post_hook</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.pre_hook" href="../../runner.html#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.pre_hook_with_context" href="../../runner.html#awsrun.runner.Command.pre_hook_with_context">pre_hook_with_context</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1473,7 +1292,7 @@ def regional_from_cli(cls, parser, argv, cfg):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

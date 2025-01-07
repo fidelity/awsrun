@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="generator" content="pdoc 0.11.1" />
 <title>awsrun.acctload API documentation</title>
 <meta name="description" content="Loads account objects and metadata for those accounts …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1386,28 +1386,12 @@ mechanism to obtain the account ID from one of those objects.</p>
 </code></dt>
 <dd>
 <section class="desc"><p>Returns the account ID as a string associated with the <code>acct</code> object.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def acct_id(self, acct):
-    &#34;&#34;&#34;Returns the account ID as a string associated with the `acct` object.&#34;&#34;&#34;
-    raise NotImplementedError</code></pre>
-</details>
 </dd>
 <dt id="awsrun.acctload.AccountLoader.attributes"><code class="name flex">
 <span>def <span class="ident">attributes</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Returns a dict of all metadata attribute names and values.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def attributes(self):
-    &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.&#34;&#34;&#34;
-    raise NotImplementedError</code></pre>
-</details>
 </dd>
 <dt id="awsrun.acctload.AccountLoader.accounts"><code class="name flex">
 <span>def <span class="ident">accounts</span></span>(<span>self, acct_ids=None, include=None, exclude=None)</span>
@@ -1419,21 +1403,6 @@ may be provided to limit the list to accounts matching the account IDs.
 Duplicate account IDs do not result in duplicate account objects. To
 filter the list based on account metadata, <code>include</code> and <code>exclude</code> dicts
 can be specified identifying the keys and matching values.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def accounts(self, acct_ids=None, include=None, exclude=None):
-    &#34;&#34;&#34;Returns a list of account objects representing accounts and metadata.
-
-    Without any arguments, all accounts are returned. A list of `acct_ids`
-    may be provided to limit the list to accounts matching the account IDs.
-    Duplicate account IDs do not result in duplicate account objects. To
-    filter the list based on account metadata, `include` and `exclude` dicts
-    can be specified identifying the keys and matching values.
-    &#34;&#34;&#34;
-    raise NotImplementedError</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -1527,18 +1496,6 @@ the account ID.</p></section>
 <section class="desc"><p>Returns the account ID associated with the <code>acct</code> object.</p>
 <p>This is an identity function as the account ID of an account object
 loaded by this class is the account object itself, thus <code>acct</code> returned.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def acct_id(self, acct):
-    &#34;&#34;&#34;Returns the account ID associated with the `acct` object.
-
-    This is an identity function as the account ID of an account object
-    loaded by this class is the account object itself, thus `acct` returned.
-    &#34;&#34;&#34;
-    return acct</code></pre>
-</details>
 </dd>
 <dt id="awsrun.acctload.IdentityAccountLoader.attributes"><code class="name flex">
 <span>def <span class="ident">attributes</span></span>(<span>self)</span>
@@ -1548,19 +1505,6 @@ loaded by this class is the account object itself, thus <code>acct</code> return
 <p><code><a title="awsrun.acctload.IdentityAccountLoader" href="#awsrun.acctload.IdentityAccountLoader">IdentityAccountLoader</a></code> builds account objects that are simply strings
 representing the ID of an account. Because there is no other metadata
 associated with these objects, this method returns an empty dict.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def attributes(self):
-    &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.
-
-    `IdentityAccountLoader` builds account objects that are simply strings
-    representing the ID of an account. Because there is no other metadata
-    associated with these objects, this method returns an empty dict.
-    &#34;&#34;&#34;
-    return {}</code></pre>
-</details>
 </dd>
 <dt id="awsrun.acctload.IdentityAccountLoader.accounts"><code class="name flex">
 <span>def <span class="ident">accounts</span></span>(<span>self, acct_ids=None, include=None, exclude=None)</span>
@@ -1573,28 +1517,6 @@ method returns the same list of <code>acct_ids</code> as the list of account
 objects without duplicates. It is an identity function. Because there
 are no loaded accounts, use of <code>include</code> and <code>exclude</code> parameters will
 raise an AttributeError.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def accounts(self, acct_ids=None, include=None, exclude=None):
-    &#34;&#34;&#34;Returns a list of account objects.
-
-    Without any arguments, no accounts are returned because this class does
-    not load a list of accounts from an external data source. Instead, this
-    method returns the same list of `acct_ids` as the list of account
-    objects without duplicates. It is an identity function. Because there
-    are no loaded accounts, use of `include` and `exclude` parameters will
-    raise an AttributeError.
-    &#34;&#34;&#34;
-    if include or exclude:
-        raise AttributeError(&#34;Cannot use filters as no attributes are defined&#34;)
-
-    if acct_ids is None:
-        return []
-
-    return list(set(acct_ids))</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -2221,20 +2143,6 @@ names. In addition, all of the attributes referenced in <code>str_template</code
 instance of this <code><a title="awsrun.acctload.MetaAccountLoader" href="#awsrun.acctload.MetaAccountLoader">MetaAccountLoader</a></code> via <code><a title="awsrun.acctload.MetaAccountLoader.accounts" href="#awsrun.acctload.MetaAccountLoader.accounts">MetaAccountLoader.accounts()</a></code>.
 This method returns the string representing the account ID of the
 account object.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def acct_id(self, acct):
-    &#34;&#34;&#34;Returns the account ID associated with the `acct` object.
-
-    The `acct` parameter must be an account object that was created by an
-    instance of this `MetaAccountLoader` via `MetaAccountLoader.accounts`.
-    This method returns the string representing the account ID of the
-    account object.
-    &#34;&#34;&#34;
-    return getattr(acct, self.id_attr)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.acctload.MetaAccountLoader.attributes"><code class="name flex">
 <span>def <span class="ident">attributes</span></span>(<span>self)</span>
@@ -2257,36 +2165,6 @@ assert attrs['env'] == {'prod', 'dev'}
 assert attrs['status'] == {'active', 'suspended'}
 assert attrs['id'] == {'100200300400', '200300400100', '300400100200'}
 </code></pre></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def attributes(self):
-    &#34;&#34;&#34;Returns a dict of all metadata attribute names and values.
-
-    This method returns the metadata associated with the account objects
-    created by this instance of `MetaAccountLoader`. The keys of the
-    returned dict are the attribute names attached to the account objects.
-    The value of each key is a set representing all of the possible values
-    assigned to that attribute. For example:
-
-        accts = [
-            {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
-            {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
-            {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
-        ]
-        loader = acctload.MetaAccountLoader(accts)
-        attrs = loader.attributes()
-        assert attrs[&#39;env&#39;] == {&#39;prod&#39;, &#39;dev&#39;}
-        assert attrs[&#39;status&#39;] == {&#39;active&#39;, &#39;suspended&#39;}
-        assert attrs[&#39;id&#39;] == {&#39;100200300400&#39;, &#39;200300400100&#39;, &#39;300400100200&#39;}
-    &#34;&#34;&#34;
-    d = defaultdict(set)
-    for acct in self.accts:
-        for attr, value in acct.items():
-            d[attr].add(value)
-    return d</code></pre>
-</details>
 </dd>
 <dt id="awsrun.acctload.MetaAccountLoader.accounts"><code class="name flex">
 <span>def <span class="ident">accounts</span></span>(<span>self, acct_ids=None, include=None, exclude=None)</span>
@@ -2331,84 +2209,6 @@ values matches as illustrated in the examples above. If a filter refers
 to an invalid attribute name, <code>AttributeError</code> is raised. Finally, if
 <code>include</code> is not set, then all accounts are matched. Likewise, if
 <code>exclude</code> is not set, then no accounts are excluded.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def accounts(self, acct_ids=None, include=None, exclude=None):
-    &#34;&#34;&#34;Returns a list of account objects.
-
-    Without any arguments, account objects for all accounts are returned. A
-    list of `acct_ids` may be provided to limit the list to accounts
-    matching the account IDs. If one or more specified account IDs is
-    missing, `AccountsNotFoundError` is raised.
-
-    The returned list of accounts can be filtered further by providing dicts
-    for `include` and `exclude` parameters that specify attributes and a
-    list of values for those attributes that must match. For example,
-    assuming the following accounts:
-
-        accts = [
-            {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
-            {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;suspended&#39;},
-            {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
-        ]
-        loader = acctload.MetaAccountLoader(accts)
-
-    To filter active accounts, use the following:
-
-        include = {&#39;status&#39;: [&#39;active&#39;]}
-
-    To filter active *and* production accounts:
-
-        include = {&#39;status&#39;: [&#39;active&#39;], &#39;env&#39;: [&#39;prod&#39;]}
-
-    To filter production accounts, but not suspended:
-
-        include = {&#39;env&#39;: [&#39;prod&#39;]}
-        exclude = {&#39;status&#39;: [&#39;suspended&#39;]}
-
-    To filter active *or* suspended accounts, but not dev accounts:
-
-        include = {&#39;status&#39;: [&#39;active&#39;, &#39;suspended&#39;]}
-        exclude = {&#39;env&#39;: [&#39;dev&#39;]}
-
-    Both `include` and `exclude` filters are applied after the initial
-    account list has been determined, which is all accounts unless it was
-    first limited by `acct_ids`. Then, the `include` filter is applied,
-    followed by the `exclude` filter. If a filter dict has multiple keys,
-    then *each* key must match. A key matches if at least *one* of the
-    values matches as illustrated in the examples above. If a filter refers
-    to an invalid attribute name, `AttributeError` is raised. Finally, if
-    `include` is not set, then all accounts are matched. Likewise, if
-    `exclude` is not set, then no accounts are excluded.
-    &#34;&#34;&#34;
-    accts = self.accts
-    acct_ids = [] if acct_ids is None else acct_ids
-    include = {} if include is None else include
-    exclude = {} if exclude is None else exclude
-
-    # Limit our account list to the requested IDs
-    if acct_ids:
-        requested = set(acct_ids)
-        all_ids = (a[self.id_attr] for a in self.accts)
-
-        missing_acct_ids = requested.difference(all_ids)
-        if missing_acct_ids:
-            raise AccountsNotFoundError(list(missing_acct_ids))
-
-        accts = (a for a in self.accts if a[self.id_attr] in requested)
-
-    # Make sure the filters contain valid attribute names
-    for attr in itertools.chain(include.keys(), exclude.keys()):
-        if attr not in self.attrs:
-            raise AttributeError(f&#34;Invalid attribute &#39;{attr}&#39; in filter&#34;)
-
-    # Limit our account list by the user-supplied filters
-    return [
-        self.CustomAccount(a) for a in accts if self._filter(a, include, exclude)
-    ]</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -3438,7 +3238,7 @@ format string of the Account object.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

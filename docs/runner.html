@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="generator" content="pdoc 0.11.1" />
 <title>awsrun.runner API documentation</title>
 <meta name="description" content="Executes a `Command` across one or more accounts concurrently …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -159,6 +159,34 @@ cmd = VpcInfoCommand(['us-east-1', 'us-west-2'])
 session_provider = CredsViaProfile()
 account_runner = AccountRunner(session_provider)
 account_runner.run(cmd, ['111222333444', '222333444111'])
+</code></pre>
+<h2 id="context-with-pre-hook">Context With Pre-Hook</h2>
+<p>In some cases users may wish to pass additional context to the <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code> that
+can be used during execution. This can be done via the <code>context</code> parameter of
+<code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>. That value is passed to <code><a title="awsrun.runner.Command.pre_hook_with_context" href="#awsrun.runner.Command.pre_hook_with_context">Command.pre_hook_with_context()</a></code>,
+which command authors can then use. For example, to pass a trivial prefix to be
+used as part of the output:</p>
+<pre><code>from awsrun.runner import AccountRunner, RegionalCommand
+from awsrun.session import CredsViaProfile
+
+class VpcInfoCommand(RegionalCommand):
+    # Save our context, a simple string in this case, to self.prefix.
+    def pre_hook_with_context(self, context):
+        self.prefix = context
+
+    def regional_execute(self, session, acct, region):
+        ec2 = session.resource('ec2', region_name=region)
+        vpc_ids = ', '.join(vpc.id for vpc in ec2.vpcs.all())
+        # Prefix the output with the prefix passed via context
+        return f'{self.prefix}/{acct}/{region}: {vpc_ids}\n'
+
+cmd = VpcInfoCommand(['us-east-1', 'us-west-2'])
+session_provider = CredsViaProfile()
+account_runner = AccountRunner(session_provider)
+# We pass a simple string prefix as the context in this trivial example
+account_runner.run(cmd, ['111222333444', '222333444111'], context="Group-A")
+account_runner.run(cmd, ['333444555666'], context="Group-B")
+account_runner.run(cmd, ['444555666777', '555666777888'], context="Group-C")
 </code></pre>
 <h2 id="collecting-results">Collecting Results</h2>
 <p>The final example demonstrates how to collect the results from all of the
@@ -335,6 +363,36 @@ default constructor:
     account_runner = AccountRunner(session_provider)
     account_runner.run(cmd, [&#39;111222333444&#39;, &#39;222333444111&#39;])
 
+## Context With Pre-Hook
+
+In some cases users may wish to pass additional context to the `Command` that
+can be used during execution. This can be done via the `context` parameter of
+`AccountRunner.run`. That value is passed to `Command.pre_hook_with_context`,
+which command authors can then use. For example, to pass a trivial prefix to be
+used as part of the output:
+
+    from awsrun.runner import AccountRunner, RegionalCommand
+    from awsrun.session import CredsViaProfile
+
+    class VpcInfoCommand(RegionalCommand):
+        # Save our context, a simple string in this case, to self.prefix.
+        def pre_hook_with_context(self, context):
+            self.prefix = context
+
+        def regional_execute(self, session, acct, region):
+            ec2 = session.resource(&#39;ec2&#39;, region_name=region)
+            vpc_ids = &#39;, &#39;.join(vpc.id for vpc in ec2.vpcs.all())
+            # Prefix the output with the prefix passed via context
+            return f&#39;{self.prefix}/{acct}/{region}: {vpc_ids}\\n&#39;
+
+    cmd = VpcInfoCommand([&#39;us-east-1&#39;, &#39;us-west-2&#39;])
+    session_provider = CredsViaProfile()
+    account_runner = AccountRunner(session_provider)
+    # We pass a simple string prefix as the context in this trivial example
+    account_runner.run(cmd, [&#39;111222333444&#39;, &#39;222333444111&#39;], context=&#34;Group-A&#34;)
+    account_runner.run(cmd, [&#39;333444555666&#39;], context=&#34;Group-B&#34;)
+    account_runner.run(cmd, [&#39;444555666777&#39;, &#39;555666777888&#39;], context=&#34;Group-C&#34;)
+
 ## Collecting Results
 
 The final example demonstrates how to collect the results from all of the
@@ -411,6 +469,7 @@ process. In addition, the other difference is the region parameter on the
     account_runner = AccountRunner(session_provider)
     account_runner.run(cmd, [&#39;111222333444&#39;, &#39;222333444111&#39;])
 &#34;&#34;&#34;
+
 import functools
 import logging
 import sys
@@ -545,12 +604,29 @@ class Command:
         parser.parse_args(argv)
         return cls()
 
-    def pre_hook(self):
-        &#34;&#34;&#34;Invoked by `AccountRunner.run` before any processing starts.
+    def pre_hook_with_context(self, context):
+        &#34;&#34;&#34;Invoked by `AccountRunner.run` before any account processing starts.
 
         This method is invoked only once per invocation of `AccountRunner.run`.
-        It is not executed before each account is processed, but rather once
-        before any accounts are processed.
+        The `context` parameter is the opaque object passed as the context
+        parameter to `AccountRunner.run`. It is intended to provide access to
+        additional runtime context information for the command to leverage.
+        The method is not executed before each account is processed, but
+        rather once before any accounts are processed.
+
+        To provide backwards compatibility, the default implementation invokes
+        `Command.pre_hook`.
+        &#34;&#34;&#34;
+        self.pre_hook()
+
+    def pre_hook(self):
+        &#34;&#34;&#34;Invoked in the default implementation of `pre_hook_with_context`
+        before any account processing starts.
+
+        This method is invoked in the event a command does not override the
+        default implementation of `pre_hook_with_context`. The method is not
+        executed before each account is processed, but rather once before
+        any accounts are processed.
 
         The default implementation does nothing.
         &#34;&#34;&#34;
@@ -1082,18 +1158,23 @@ class AccountRunner:
         self.session_provider = session_provider
         self.max_workers = max_workers
 
-    def run(self, cmd, accounts, key=lambda x: x):
+    def run(self, cmd, accounts, key=lambda x: x, context=None):
         &#34;&#34;&#34;Execute a command concurrently on the specified accounts.
 
         This method will block until all accounts have been processed. The
         return value is the number of seconds it took to process the accounts.
 
-        The `cmd` must be a subclass of `Command`. The runner will invoke the
-        `Command.pre_hook` once before it starts processing any accounts, then
-        accounts are processed concurrently and `Command.execute` is invoked by
-        a worker for each account. As each execute method returns, the main
-        thread will invoke `Command.collect_results`, which ensures results are
-        collected sequentially. Finally, after all accounts have been processed,
+        The `cmd` must be a subclass of `Command`. The runner will invoke
+        `Command.pre_hook_with_context` once before it starts processing any
+        accounts passing it the `context` argument, which is simply passed
+        through as an opaque object. This can be used to pass a runtime context
+        to a `Command`.
+
+        After the pre-hook has been invoked, accounts are then processed
+        concurrently and `Command.execute` is invoked by a worker for each
+        account. As each execute method returns, the main thread will invoke
+        `Command.collect_results`, which ensures results are collected
+        sequentially. Finally, after all accounts have been processed,
         `Command.post_hook` is called.
 
         The specified list of `accounts` can be of any type as long as the
@@ -1125,6 +1206,12 @@ class AccountRunner:
         exception, then an `InvalidAccountIDError` is raised in the worker
         thread processing the account, which will then propagate to the
         `Command.collect_results`.
+
+        The optional `context` parameter can be any value. It is passed
+        as-is to `Command.pre_hook_with_context`. It provides a mechanism
+        for the caller to pass a runtime context to the command being
+        executed. See the [Context With Pre-Hook](#context-with-pre-hook)
+        section of the use guide for an example.
         &#34;&#34;&#34;
         # This will ensure v1 users of awsrun aren&#39;t mixing v1 Command&#39;s with
         # the v2 framework.
@@ -1137,7 +1224,7 @@ class AccountRunner:
         key = _valid_key_fn(key)
 
         start = time.time()
-        cmd.pre_hook()
+        cmd.pre_hook_with_context(context)
 
         with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
             # The worker task processes a single account. The worker task takes
@@ -1280,34 +1367,6 @@ using account objects, you must provide a <code>key</code> function that returns
 account ID as a string from the account object.</p>
 <p>Accounts are processed concurrently using a worker pool. The default number
 of workers is specified by the <code>max_workers</code> argument, which defaults to 10.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def execute_function(session_provider, accounts, func, key=lambda x: x, max_workers=10):
-    &#34;&#34;&#34;Executes a function across one or more accounts concurrently.
-
-    This is a convenience function that instantiates an `AccountRunner`, wraps a
-    `func` in a `CommandFunctionAdapter`, runs the command across a list of
-    `accounts`, and then returns a tuple of dicts representing the results and
-    errors after all accounts have been processed. The returned dicts are keyed
-    by the account.
-
-    The list of `accounts` can be a simple list of strings of account IDs or it
-    can be a list of objects that represent accounts. Passing objects can be
-    useful as each object is passed to `func` when processing an account. When
-    using account objects, you must provide a `key` function that returns the
-    account ID as a string from the account object.
-
-    Accounts are processed concurrently using a worker pool. The default number
-    of workers is specified by the `max_workers` argument, which defaults to 10.
-    &#34;&#34;&#34;
-    command = CommandFunctionAdapter(func)
-    AccountRunner(session_provider, max_workers=max_workers).run(
-        command, accounts, key=key
-    )
-    return (command.results, command.errors)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.runner.regional_execute_function"><code class="name flex">
 <span>def <span class="ident">regional_execute_function</span></span>(<span>session_provider, accounts, regions, func, key=&lt;function &lt;lambda&gt;&gt;, max_workers=10)</span>
@@ -1326,36 +1385,6 @@ using account objects, you must provide a <code>key</code> function that returns
 account ID as a string from the account object.</p>
 <p>Accounts are processed concurrently using a worker pool. The default number
 of workers is specified by the <code>max_workers</code> argument, which defaults to 10.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def regional_execute_function(
-    session_provider, accounts, regions, func, key=lambda x: x, max_workers=10
-):
-    &#34;&#34;&#34;Executes a function across one or more accounts and regions concurrently.
-
-    This is a convenience function that instantiates an `AccountRunner`, wraps a
-    `func` in a `RegionalCommandFunctionAdapter`, runs the command across a list
-    of `accounts` and `regions`, and then returns a tuple of dicts representing
-    the results and errors after all accounts have been processed. The returned
-    dicts are keyed by a tuple of account and region.
-
-    The list of `accounts` can be a simple list of strings of account IDs or it
-    can be a list of objects that represent accounts. Passing objects can be
-    useful as each object is passed to `func` when processing an account. When
-    using account objects, you must provide a `key` function that returns the
-    account ID as a string from the account object.
-
-    Accounts are processed concurrently using a worker pool. The default number
-    of workers is specified by the `max_workers` argument, which defaults to 10.
-    &#34;&#34;&#34;
-    command = RegionalCommandFunctionAdapter(regions, func)
-    AccountRunner(session_provider, max_workers=max_workers).run(
-        command, accounts, key=key
-    )
-    return (command.results, command.errors)</code></pre>
-</details>
 </dd>
 <dt id="awsrun.runner.max_thread_limit"><code class="name flex">
 <span>def <span class="ident">max_thread_limit</span></span>(<span>count)</span>
@@ -1378,45 +1407,6 @@ def regional_execute(self, session, acct, region):
 <p>Note: while this decorator can limit the number of concurrent executions, it
 will not increase the number of workers in the <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code> worker pool.
 This is a rate limiting decorator only.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def max_thread_limit(count):
-    &#34;&#34;&#34;Decorator to limit maximum number of concurrent executions.
-
-    In some cases, the author of a `Command` may wish to restrict the number of
-    concurrent executions of a command, regardless of the number of workers the
-    `AccountRunner` has been instantiated with. awsrun CLI users can specify the
-    number of workers via the `--threads` flag, which defaults to 10.
-
-    Use this with `Command.execute` or `RegionalCommand.regional_execute` to
-    guarantee concurrent executions do not exceed the specified `count`. When
-    the number of concurrent executions exceed the value, they will block until
-    an existing execution has completed. For example, the following will limit
-    concurrent executions to one:
-
-        @max_thread_limit(1)
-        def regional_execute(self, session, acct, region):
-           pass
-
-    Note: while this decorator can limit the number of concurrent executions, it
-    will not increase the number of workers in the `AccountRunner` worker pool.
-    This is a rate limiting decorator only.
-    &#34;&#34;&#34;
-
-    def decorator(func):
-        sem = threading.BoundedSemaphore(count)
-
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            with sem:
-                return func(*args, **kwargs)
-
-        return wrapper
-
-    return decorator</code></pre>
-</details>
 </dd>
 <dt id="awsrun.runner.get_paginated_resources"><code class="name flex">
 <span>def <span class="ident">get_paginated_resources</span></span>(<span>client, paginator, page_key, predicate=&lt;function &lt;lambda&gt;&gt;, **kwargs)</span>
@@ -1466,73 +1456,6 @@ balancer, one might write:</p>
     lambda l: l["Protocol"] in ["UDP", "TCP_UDP"],
     LoadBalancer=lb_arn)
 </code></pre></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_paginated_resources(
-    client,
-    paginator,
-    page_key,
-    predicate: Callable[[dict], bool] = lambda _: True,
-    **kwargs,
-):
-    &#34;&#34;&#34;Return the full list of boto3 resources via a paginator.
-
-    `client` is a boto3 client.  `paginator` is the name (string) of the
-    paginator.  `page_key` is the name (string) of the dictionary key used in
-    the paginated responses.
-
-    `predicate` is a function that determines which resources are included in
-    the list.  The function takes a single argument, the resource. If it returns
-    `True`, the resource is included, otherwise it is excluded.
-
-    The remaining `kwargs` are used to specify which resources to retrieve. Some
-    paginators do not require any additional arguments, but others do to
-    restrict the size of the response.
-
-    For example, to collect the list of load balancers, one might write:
-
-        def get_lbs(client):
-            lbs = []
-            paginator = client.get_paginator(&#34;describe_load_balancers&#34;)
-            for page in paginator.paginate():
-                for lb in page[&#34;LoadBalancers&#34;]:
-                    lbs.append(lb)
-            return lbs
-
-    This can be simplified by using `get_paginated_resources`:
-
-        lbs = get_paginated_resources(client, &#34;describe_load_balancers&#34;, &#34;LoadBalancers&#34;)
-
-    As another example, to collect the list of UDP listeners for a load
-    balancer, one might write:
-
-        def get_listeners(client, lb_arn):
-            listeners = []
-            paginator = client.get_paginator(&#34;describe_listeners&#34;)
-            for page in paginator.paginate(LoadBalancerArn=lb_arn):
-                for listener in page[&#34;Listeners&#34;]:
-                    if listener[&#34;Protocol&#34;] in [&#34;UDP&#34;, &#34;TCP_UDP&#34;]:
-                        listeners.append(listener)
-            return listeners
-
-    This, too, can be simplified using `get_paginated_resources`:
-
-        listeners = get_paginated_resources(
-            client,
-            &#34;describe_listeners&#34;,
-            &#34;Listeners&#34;,
-            lambda l: l[&#34;Protocol&#34;] in [&#34;UDP&#34;, &#34;TCP_UDP&#34;],
-            LoadBalancer=lb_arn)
-    &#34;&#34;&#34;
-    resources = []
-    for page in client.get_paginator(paginator).paginate(**kwargs):
-        for resource in page[page_key]:
-            if predicate(resource):
-                resources.append(resource)
-    return resources</code></pre>
-</details>
 </dd>
 </dl>
 </section>
@@ -1678,12 +1601,29 @@ built-in commands included in the <code><a title="awsrun.commands" href="command
         parser.parse_args(argv)
         return cls()
 
-    def pre_hook(self):
-        &#34;&#34;&#34;Invoked by `AccountRunner.run` before any processing starts.
+    def pre_hook_with_context(self, context):
+        &#34;&#34;&#34;Invoked by `AccountRunner.run` before any account processing starts.
 
         This method is invoked only once per invocation of `AccountRunner.run`.
-        It is not executed before each account is processed, but rather once
-        before any accounts are processed.
+        The `context` parameter is the opaque object passed as the context
+        parameter to `AccountRunner.run`. It is intended to provide access to
+        additional runtime context information for the command to leverage.
+        The method is not executed before each account is processed, but
+        rather once before any accounts are processed.
+
+        To provide backwards compatibility, the default implementation invokes
+        `Command.pre_hook`.
+        &#34;&#34;&#34;
+        self.pre_hook()
+
+    def pre_hook(self):
+        &#34;&#34;&#34;Invoked in the default implementation of `pre_hook_with_context`
+        before any account processing starts.
+
+        This method is invoked in the event a command does not override the
+        default implementation of `pre_hook_with_context`. The method is not
+        executed before each account is processed, but rather once before
+        any accounts are processed.
 
         The default implementation does nothing.
         &#34;&#34;&#34;
@@ -1874,139 +1814,35 @@ def from_cli(cls, parser, argv, cfg):
 added to the parser with defaults taken from the user configuration
 file, which allows a user to omit the flags on the command line to make
 a better user experience.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_cli(cls, parser, argv, cfg):  # pylint: disable=unused-argument
-    &#34;&#34;&#34;Factory to build the command from CLI args and user configuration.
-
-    *This method is only required if the command is intended for use with
-    the `awsrun.cli` command line. Non-CLI users will not instantiate
-    commands via this factory method.*
-
-    The CLI uses `awsrun.cmdmgr` to find, load, and instantiate commands.
-    This factory is called by the `awsrun.cmdmgr.CommandManager` and must
-    return an instance of the command. Commands can hook into the command
-    line argument processing of the main CLI. This allows command authors to
-    define their own flags and arguments for the CLI. In addition, authors
-    can pull values from the user configuration file via the
-    `awsrun.config.Config` API.
-
-    For reference, there are several types of awsrun CLI arguments as shown
-    below:
-
-        awsrun --account 100200300400 access_report --verbose
-               ^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^ ^^^^^^^^^
-                   main args            command     cmd args
-
-    The `parser` argument, an `argparse.ArgumentParser`, can be used to
-    define flags and arguments that follow the command name in the `cmd
-    args` section. After defining arguments, it is the responsibility of
-    this method to parse the `argv` argument, which contains a list of
-    unparsed CLI arguments. It is expected that this method will terminate
-    the program if incorrect arguments are passed to the command.  For
-    example, to define and parse the `--verbose` flag from the example
-    above:
-
-        @classmethod
-        def from_cli(cls, parser, argv, cfg):
-            parser.add_argument(
-                &#39;--verbose&#39;, &#39;-v&#39;,
-                action=&#39;store_true&#39;,
-                default=False,
-                help=&#39;enable verbose output&#39;)
-
-            args = parser.parse_args(argv)
-
-            # use args as needed, in most cases, these will be passed to
-            # constructor of the command as this example shows assuming
-            # this command&#39;s constructor accepts a verbose keyword arg.
-            return cls(**vars(args))
-
-    To avoid namespace collisions with flag names used by the main CLI, an
-    `argparse.ArgumentError` is raised if the same option name is added to
-    the `parser`. This is done to avoid unintended consequences when the
-    main CLI argument parser consumes a flag in the command because it
-    shares the same name.
-
-    The `cfg` argument is a callable that implements the
-    `awsrun.config.Config.get` interface allowing one to query for
-    type-checked key/value pairs defined in a user configuration file. The
-    keys passed to `cfg` are relative to the `Commands` section of the
-    configuration and the command name. Given the following user config and
-    assuming that the name of this command is `access_report`:
-
-        Commands:
-            access_report:
-                verbose: True
-
-    To obtain the value of the `verbose` option, the `cfg` callable can be
-    used as follows:
-
-        verbose = cfg(&#39;verbose&#39;, type=Bool, default=False)
-
-    By combining the use of `parser` and `cfg`, a command author can define
-    options in both the user configuration file as well as command line
-    flags to override those values. For example, the following defines the
-    CLI argument called `--verbose` that will default to the value of the
-    `verbose` key in the user configuration file if it exists, otherwise it
-    defaults to `False`:
-
-        @classmethod
-        def from_cli(cls, parser, argv, cfg):
-            parser.add_argument(
-                &#39;--verbose&#39;, &#39;-v&#39;,
-                action=&#39;store_true&#39;,
-                default=cfg(&#39;verbose&#39;, type=Bool, default=False),
-                help=&#39;enable verbose output&#39;)
-
-            args = parser.parse_args(argv)
-
-            # use args as needed, in most cases, these will be passed to
-            # constructor of the command as this example shows assuming
-            # this command&#39;s constructor accepts a verbose keyword arg.
-            return cls(**vars(args))
-
-    This is a common pattern when defining command arguments. Arguments are
-    added to the parser with defaults taken from the user configuration
-    file, which allows a user to omit the flags on the command line to make
-    a better user experience.
-    &#34;&#34;&#34;
-    # If the user does not provide their own from_cli method, we want to
-    # make sure that we invoke parse_args for them as it will catch any help
-    # flags passed to the command and print out the docstring of the module.
-    parser.parse_args(argv)
-    return cls()</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="awsrun.runner.Command.pre_hook_with_context"><code class="name flex">
+<span>def <span class="ident">pre_hook_with_context</span></span>(<span>self, context)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Invoked by <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> before any account processing starts.</p>
+<p>This method is invoked only once per invocation of <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>.
+The <code>context</code> parameter is the opaque object passed as the context
+parameter to <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>. It is intended to provide access to
+additional runtime context information for the command to leverage.
+The method is not executed before each account is processed, but
+rather once before any accounts are processed.</p>
+<p>To provide backwards compatibility, the default implementation invokes
+<code><a title="awsrun.runner.Command.pre_hook" href="#awsrun.runner.Command.pre_hook">Command.pre_hook()</a></code>.</p></section>
+</dd>
 <dt id="awsrun.runner.Command.pre_hook"><code class="name flex">
 <span>def <span class="ident">pre_hook</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Invoked by <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code> before any processing starts.</p>
-<p>This method is invoked only once per invocation of <code><a title="awsrun.runner.AccountRunner.run" href="#awsrun.runner.AccountRunner.run">AccountRunner.run()</a></code>.
-It is not executed before each account is processed, but rather once
-before any accounts are processed.</p>
+<section class="desc"><p>Invoked in the default implementation of <code>pre_hook_with_context</code>
+before any account processing starts.</p>
+<p>This method is invoked in the event a command does not override the
+default implementation of <code>pre_hook_with_context</code>. The method is not
+executed before each account is processed, but rather once before
+any accounts are processed.</p>
 <p>The default implementation does nothing.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def pre_hook(self):
-    &#34;&#34;&#34;Invoked by `AccountRunner.run` before any processing starts.
-
-    This method is invoked only once per invocation of `AccountRunner.run`.
-    It is not executed before each account is processed, but rather once
-    before any accounts are processed.
-
-    The default implementation does nothing.
-    &#34;&#34;&#34;</code></pre>
-</details>
 </dd>
 <dt id="awsrun.runner.Command.post_hook"><code class="name flex">
 <span>def <span class="ident">post_hook</span></span>(<span>self)</span>
@@ -2017,20 +1853,6 @@ before any accounts are processed.</p>
 It is not executed after each account is processed, but rather once
 after all accounts have been processed.</p>
 <p>The default implementation does nothing.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def post_hook(self):
-    &#34;&#34;&#34;Invoked by `AccountRunner.run` after all processing has completed.
-
-    This method is invoked only once per invocation of `AccountRunner.run`.
-    It is not executed after each account is processed, but rather once
-    after all accounts have been processed.
-
-    The default implementation does nothing.
-    &#34;&#34;&#34;</code></pre>
-</details>
 </dd>
 <dt id="awsrun.runner.Command.execute"><code class="name flex">
 <span>def <span class="ident">execute</span></span>(<span>self, session, acct)</span>
@@ -2079,54 +1901,6 @@ string buffer and return the buffer at the end of the method:</p>
 </code></pre>
 </li>
 </ol></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def execute(self, session, acct):
-    &#34;&#34;&#34;Invoked by `AccountRunner.run` to process an account.
-
-    This method is invoked once for each account. The `session` parameter is
-    a boto3 Session object, or similar cloud SDK session-like object, with
-    credentials for the account being processed. The `acct` will be the same
-    object that was passed in the list of accounts to `AccountRunner.run`.
-
-    The return value from this method can be of any type. By default, this
-    value will be printed to the console if a `Command.collect_results`
-    implementation is not provided. If an exception is raised during the
-    execution, it will be printed to the console on standard error.
-
-    Note the following items of importance:
-
-    1. Command authors must implement this method. There is no default
-       implementation.
-
-    2. Recognize that this method will be invoked concurrently, so
-       modification of instance variables from within this method requires
-       synchronization. If accumulating results, define a custom
-       `Command.collect_results` which is guaranteed to be invoked
-       sequentially.
-
-    3. Do not call `sys.exit` or the entire program will terminate. The
-       proper way to exit from this method is either by returning a value or
-       by raising an exception.
-
-    4. Do not print directly to the console as output will be interspersed
-       with other output from other concurrently running threads processing
-       other accounts. The best practice when printing is to accumulate a
-       string buffer and return the buffer at the end of the method:
-
-            def execute(self, session, acct):
-                out = io.StringIO()
-
-                # Do stuff
-                print(&#39;This will be printed to the console eventually&#39;, file=out)
-                # Do more stuff
-
-                return out.getvalue()
-    &#34;&#34;&#34;
-    raise NotImplementedError</code></pre>
-</details>
 </dd>
 <dt id="awsrun.runner.Command.collect_results"><code class="name flex">
 <span>def <span class="ident">collect_results</span></span>(<span>self, acct, get_result)</span>
@@ -2148,38 +1922,6 @@ variables without the need for synchronization.</p>
 to the console on standard output. If the command's execution raises an
 exception, it prints the exception to standard error and logs the stack
 trace at WARN log level.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def collect_results(self, acct, get_result):
-    &#34;&#34;&#34;Invoked by `AccountRunner.run` after processing an account.
-
-    This method is invoked by `AccountRunner.run` after each `acct` has been
-    processed by `Command.execute`. The results from execute are provided
-    via `get_result`, which is a callable that will either return the value
-    returned by execute or raise an exception if one was raised. The `acct`
-    parameter will be the same object that was passed in the list of
-    accounts to `AccountRunner.run`.
-
-    Note: `Command.collect_results` is guaranteed to be called sequentially
-    by the main thread, so it is safe to mutate instance variables attached
-    to the `Command` object from within this method. This allows command
-    authors to safely accumulate results of processing within instance
-    variables without the need for synchronization.
-
-    The default implementation prints the return value of `Command.execute`
-    to the console on standard output. If the command&#39;s execution raises an
-    exception, it prints the exception to standard error and logs the stack
-    trace at WARN log level.
-    &#34;&#34;&#34;
-    try:
-        print(get_result(), end=&#34;&#34;, flush=True)
-
-    except Exception as e:  # pylint: disable=broad-except
-        LOG.warning(&#34;%s: error: %s&#34;, acct, e, exc_info=True)
-        print(f&#34;{acct}: error: {e}&#34;, flush=True, file=sys.stderr)</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -2482,50 +2224,6 @@ terminates.</p>
 </li>
 </ol>
 <p>When overriding this method, do not invoke the superclass method.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def regional_from_cli(cls, parser, argv, cfg):  # pylint: disable=unused-argument
-    &#34;&#34;&#34;Factory to build a regional command from CLI args and user configuration.
-
-    *This method is only required if the command is intended for use with
-    the `awsrun.cli` command line. Non-CLI users will not instantiate
-    commands via this factory method.*
-
-    Refer to `Command.from_cli` for in-depth discussion on the use of this
-    factory method. This method only adds the following additional behavior
-    to simplify building a factory for a regional command:
-
-    1. The `parser` has already added the `--region` and `-r` arguments to
-       allow users to specify one or more regions to process via command
-       line arguments. In addition, a default value can be provided via the
-       user configuration under the &#34;region&#34; key in the specific command
-       section. The values chosen by the user will be available in the
-       namespace returned by the parser as `regions`. The following is used
-       to register the arguments on behalf of the regional command author:
-
-            parser.add_argument(
-                &#39;--region&#39;, &#39;-r&#39;,
-                action=AppendWithoutDefault,
-                default=cfg(&#39;region&#39;, type=List(Str), default=[]),
-                dest=&#39;regions&#39;,
-                metavar=&#39;REGION&#39;,
-                help=&#39;Region in which to run commands&#39;)
-
-    2. The chosen regions must be passed to the command&#39;s constructor
-       because subclasses of `RegionalCommand` must invoke its constructor,
-       which requires a list of regions to process. If the instance returned
-       from this factory method does not have a non-zero `regions` instance
-       variable, a usage error is displayed to the user and the program
-       terminates.
-
-    When overriding this method, do not invoke the superclass method.
-    &#34;&#34;&#34;
-    args = parser.parse_args(argv)
-    return cls(regions=args.regions)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2589,65 +2287,6 @@ string buffer and return the buffer at the end of the method:</p>
 </code></pre>
 </li>
 </ol></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def regional_execute(self, session, acct, region):
-    &#34;&#34;&#34;Invoked by `AccountRunner.run` to process an account / region pair.
-
-    This method is invoked for each account and region pair. The `session`
-    parameter is a boto3 Session object, or similar cloud SDK session-like
-    object, with credentials for the account being processed. The `acct`
-    will be the same object that was passed in the list of accounts to
-    `AccountRunner.run`. `region` is a string representing the region name
-    such as &#34;us-east-1&#34;.
-
-    The return value can be of any type. It will be, by default, printed to
-    the console if a `RegionalCommand.regional_collect_results`
-    implementation is not provided. If an exception is raised during the
-    execution, it will be printed to the console on standard error.
-
-    Note the following items of importance:
-
-    1. Command authors must implement this method. There is no default
-       implementation.
-
-    2. Recognize that this method will be invoked concurrently, so
-       modification of instance variables from within this method requires
-       synchronization. If accumulating results, define a custom
-       `RegionalCommand.regional_collect_results` which is guaranteed to be
-       invoked sequentially.
-
-    3. Although accounts are processed concurrently, the regions are
-       processed sequentially for each account. This ensures that multiple
-       regions for the same account are never executed at the same time. It
-       provides command authors a guarantee that an account and all its
-       regions will be processed sequentially. The same session object and
-       credentials are provided to this method for each region being
-       processed. Credentials could expire if processing of regions takes a
-       significant amount of time.
-
-    4. Do not call `sys.exit` or the entire program will terminate. The
-       proper way to exit from this method is either by returning a value or
-       by raising an exception.
-
-    5. Do not print directly to the console as output will be interspersed
-       with other output from other concurrently running threads processing
-       other accounts. The best practice when printing is to accumulate a
-       string buffer and return the buffer at the end of the method:
-
-            def regional_execute(self, session, acct, region):
-                out = io.StringIO()
-
-                # Do stuff
-                print(&#39;This will be printed to the console eventually&#39;, file=out)
-                # Do more stuff
-
-                return out.getvalue()
-    &#34;&#34;&#34;
-    raise NotImplementedError</code></pre>
-</details>
 </dd>
 <dt id="awsrun.runner.RegionalCommand.regional_collect_results"><code class="name flex">
 <span>def <span class="ident">regional_collect_results</span></span>(<span>self, acct, region, get_result)</span>
@@ -2671,40 +2310,6 @@ synchronization.</p>
 <code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">RegionalCommand.regional_execute()</a></code> to the console on standard output. If
 the command's execution raises an exception, it prints the exception to
 standard error and logs the stack trace at WARN log level.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def regional_collect_results(self, acct, region, get_result):
-    &#34;&#34;&#34;Invoked by `AccountRunner.run` after processing an account and region.
-
-    This method is invoked by `AccountRunner.run` after each `acct` /
-    `region` pair has been processed by `RegionalCommand.regional_execute`.
-    The results from execute are provided via `get_result`, which is a
-    callable that will either return the value returned by the regional
-    execute method or raise an exception if one was raised. The `acct`
-    parameter will be the same object that was passed in the list of
-    accounts to `AccountRunner.run`.
-
-    Note: `RegionalCommand.regional_collect_results` is guaranteed to be
-    called sequentially by the main thread, so it is safe to mutate instance
-    variables attached to the `RegionalCommand` object from within this
-    method. This allows command authors to safely accumulate results of
-    processing within instance variables without the need for
-    synchronization.
-
-    The default implementation prints the return value of
-    `RegionalCommand.regional_execute` to the console on standard output. If
-    the command&#39;s execution raises an exception, it prints the exception to
-    standard error and logs the stack trace at WARN log level.
-    &#34;&#34;&#34;
-    try:
-        print(get_result(), end=&#34;&#34;, flush=True)
-
-    except Exception as e:  # pylint: disable=broad-except
-        LOG.warning(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
-        print(f&#34;{acct}/{region}: error: {e}&#34;, flush=True, file=sys.stderr)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2716,6 +2321,7 @@ standard error and logs the stack trace at WARN log level.</p></section>
 <li><code><a title="awsrun.runner.Command.from_cli" href="#awsrun.runner.Command.from_cli">from_cli</a></code></li>
 <li><code><a title="awsrun.runner.Command.post_hook" href="#awsrun.runner.Command.post_hook">post_hook</a></code></li>
 <li><code><a title="awsrun.runner.Command.pre_hook" href="#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook_with_context" href="#awsrun.runner.Command.pre_hook_with_context">pre_hook_with_context</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2788,6 +2394,7 @@ parameter.</p></section>
 <li><code><a title="awsrun.runner.Command.from_cli" href="#awsrun.runner.Command.from_cli">from_cli</a></code></li>
 <li><code><a title="awsrun.runner.Command.post_hook" href="#awsrun.runner.Command.post_hook">post_hook</a></code></li>
 <li><code><a title="awsrun.runner.Command.pre_hook" href="#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook_with_context" href="#awsrun.runner.Command.pre_hook_with_context">pre_hook_with_context</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2861,6 +2468,7 @@ self parameter.</p></section>
 <li><code><a title="awsrun.runner.RegionalCommand.from_cli" href="#awsrun.runner.Command.from_cli">from_cli</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.post_hook" href="#awsrun.runner.Command.post_hook">post_hook</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.pre_hook" href="#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
+<li><code><a title="awsrun.runner.RegionalCommand.pre_hook_with_context" href="#awsrun.runner.Command.pre_hook_with_context">pre_hook_with_context</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.regional_collect_results" href="#awsrun.runner.RegionalCommand.regional_collect_results">regional_collect_results</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">regional_execute</a></code></li>
 <li><code><a title="awsrun.runner.RegionalCommand.regional_from_cli" href="#awsrun.runner.RegionalCommand.regional_from_cli">regional_from_cli</a></code></li>
@@ -2918,18 +2526,23 @@ execute method, or exceptions raised, are made available to the command.</p></se
         self.session_provider = session_provider
         self.max_workers = max_workers
 
-    def run(self, cmd, accounts, key=lambda x: x):
+    def run(self, cmd, accounts, key=lambda x: x, context=None):
         &#34;&#34;&#34;Execute a command concurrently on the specified accounts.
 
         This method will block until all accounts have been processed. The
         return value is the number of seconds it took to process the accounts.
 
-        The `cmd` must be a subclass of `Command`. The runner will invoke the
-        `Command.pre_hook` once before it starts processing any accounts, then
-        accounts are processed concurrently and `Command.execute` is invoked by
-        a worker for each account. As each execute method returns, the main
-        thread will invoke `Command.collect_results`, which ensures results are
-        collected sequentially. Finally, after all accounts have been processed,
+        The `cmd` must be a subclass of `Command`. The runner will invoke
+        `Command.pre_hook_with_context` once before it starts processing any
+        accounts passing it the `context` argument, which is simply passed
+        through as an opaque object. This can be used to pass a runtime context
+        to a `Command`.
+
+        After the pre-hook has been invoked, accounts are then processed
+        concurrently and `Command.execute` is invoked by a worker for each
+        account. As each execute method returns, the main thread will invoke
+        `Command.collect_results`, which ensures results are collected
+        sequentially. Finally, after all accounts have been processed,
         `Command.post_hook` is called.
 
         The specified list of `accounts` can be of any type as long as the
@@ -2961,6 +2574,12 @@ execute method, or exceptions raised, are made available to the command.</p></se
         exception, then an `InvalidAccountIDError` is raised in the worker
         thread processing the account, which will then propagate to the
         `Command.collect_results`.
+
+        The optional `context` parameter can be any value. It is passed
+        as-is to `Command.pre_hook_with_context`. It provides a mechanism
+        for the caller to pass a runtime context to the command being
+        executed. See the [Context With Pre-Hook](#context-with-pre-hook)
+        section of the use guide for an example.
         &#34;&#34;&#34;
         # This will ensure v1 users of awsrun aren&#39;t mixing v1 Command&#39;s with
         # the v2 framework.
@@ -2973,7 +2592,7 @@ execute method, or exceptions raised, are made available to the command.</p></se
         key = _valid_key_fn(key)
 
         start = time.time()
-        cmd.pre_hook()
+        cmd.pre_hook_with_context(context)
 
         with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
             # The worker task processes a single account. The worker task takes
@@ -3015,18 +2634,22 @@ execute method, or exceptions raised, are made available to the command.</p></se
 <h3>Methods</h3>
 <dl>
 <dt id="awsrun.runner.AccountRunner.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>self, cmd, accounts, key=&lt;function AccountRunner.&lt;lambda&gt;&gt;)</span>
+<span>def <span class="ident">run</span></span>(<span>self, cmd, accounts, key=&lt;function AccountRunner.&lt;lambda&gt;&gt;, context=None)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Execute a command concurrently on the specified accounts.</p>
 <p>This method will block until all accounts have been processed. The
 return value is the number of seconds it took to process the accounts.</p>
-<p>The <code>cmd</code> must be a subclass of <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code>. The runner will invoke the
-<code><a title="awsrun.runner.Command.pre_hook" href="#awsrun.runner.Command.pre_hook">Command.pre_hook()</a></code> once before it starts processing any accounts, then
-accounts are processed concurrently and <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code> is invoked by
-a worker for each account. As each execute method returns, the main
-thread will invoke <code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>, which ensures results are
-collected sequentially. Finally, after all accounts have been processed,
+<p>The <code>cmd</code> must be a subclass of <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code>. The runner will invoke
+<code><a title="awsrun.runner.Command.pre_hook_with_context" href="#awsrun.runner.Command.pre_hook_with_context">Command.pre_hook_with_context()</a></code> once before it starts processing any
+accounts passing it the <code>context</code> argument, which is simply passed
+through as an opaque object. This can be used to pass a runtime context
+to a <code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code>.</p>
+<p>After the pre-hook has been invoked, accounts are then processed
+concurrently and <code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">Command.execute()</a></code> is invoked by a worker for each
+account. As each execute method returns, the main thread will invoke
+<code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>, which ensures results are collected
+sequentially. Finally, after all accounts have been processed,
 <code><a title="awsrun.runner.Command.post_hook" href="#awsrun.runner.Command.post_hook">Command.post_hook()</a></code> is called.</p>
 <p>The specified list of <code>accounts</code> can be of any type as long as the
 function specified by the <code>key</code> parameter returns a string representing
@@ -3054,105 +2677,12 @@ attribute, <code>key</code> must be defined as <code>lambda x: x.acct_id</code> 
 contract. If the key function does not return a string or throws an
 exception, then an <code><a title="awsrun.runner.InvalidAccountIDError" href="#awsrun.runner.InvalidAccountIDError">InvalidAccountIDError</a></code> is raised in the worker
 thread processing the account, which will then propagate to the
-<code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def run(self, cmd, accounts, key=lambda x: x):
-    &#34;&#34;&#34;Execute a command concurrently on the specified accounts.
-
-    This method will block until all accounts have been processed. The
-    return value is the number of seconds it took to process the accounts.
-
-    The `cmd` must be a subclass of `Command`. The runner will invoke the
-    `Command.pre_hook` once before it starts processing any accounts, then
-    accounts are processed concurrently and `Command.execute` is invoked by
-    a worker for each account. As each execute method returns, the main
-    thread will invoke `Command.collect_results`, which ensures results are
-    collected sequentially. Finally, after all accounts have been processed,
-    `Command.post_hook` is called.
-
-    The specified list of `accounts` can be of any type as long as the
-    function specified by the `key` parameter returns a string representing
-    the cloud account ID when passed one of these accounts. This allows
-    users to pass any object representing an account all the way through to
-    `Command.execute`. The only contract is that a `key` function must be
-    provided, so workers can obtain the account ID, which is used to request
-    a session for the account.
-
-    For example, `accounts` could be a simple list of strings of AWS account
-    IDs. The default value of `key` is the identity function, which returns
-    the string itself satisfying the contract above. Alternatively,
-    `accounts` could be a list of dicts containing metadata for an account,
-    which would then be available for command authors in `Command.execute`.
-    If the list of accounts specified contained the following:
-
-        [
-            {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
-            {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
-            {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
-        ]
-
-    Then, the `key` argument must be specified as `lambda x: x[&#39;id&#39;]`, which
-    will return the account ID string satisfying the contract above.
-    Likewise, if accounts were a list of objects that contained an `acct_id`
-    attribute, `key` must be defined as `lambda x: x.acct_id` to satisfy the
-    contract. If the key function does not return a string or throws an
-    exception, then an `InvalidAccountIDError` is raised in the worker
-    thread processing the account, which will then propagate to the
-    `Command.collect_results`.
-    &#34;&#34;&#34;
-    # This will ensure v1 users of awsrun aren&#39;t mixing v1 Command&#39;s with
-    # the v2 framework.
-    if not isinstance(cmd, Command):
-        raise TypeError(f&#34;&#39;{cmd}&#39; must be a subclass of awsrun.runner.Command&#34;)
-
-    # Wrapper to ensure the user-supplied key function returns an string of
-    # digits (an AWS account id). It will throw an InvalidAccountIDError
-    # if there are any exceptions thrown from use of their key function.
-    key = _valid_key_fn(key)
-
-    start = time.time()
-    cmd.pre_hook()
-
-    with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
-        # The worker task processes a single account. The worker task takes
-        # care to capture the result of the command&#39;s execute method. We
-        # don&#39;t want a poorly written command that raises an exception to
-        # terminate the main program, so the return value of the command&#39;s
-        # execute method or any exception raised is wrapped in a callable
-        # that is provided back to the command via its collect_results
-        # method. When the callable is later invoked, it will return the
-        # return value from execute or it will raise the caught exception.
-        def worker_task(acct):
-            try:
-                acct_id = key(acct)  # Get the acct id from the account obj
-                session = self.session_provider.session(acct_id)
-                return _wrap_result(cmd.execute, session, acct)
-
-            except Exception as e:  # pylint: disable=broad-except
-                # NOTE: exceptions thrown by a Command&#39;s execute are not
-                # handled in this block, but in wrap_result above. This
-                # block handles exceptions that occur while obtaining a
-                # session for the account.
-                return _wrap_exception(e)
-
-        # Submit all of the jobs for execution to the thread pool.
-        f2a = {pool.submit(worker_task, a): a for a in accounts}
-
-        # NOTE: collect_results is called by the main thread sequentially
-        # after each worker completes their task. This is a guarantee for
-        # Command authors as it allows them to safely update instance vars
-        # in the Command because it is not safe to do so in the execute
-        # method which is invoked in a concurrently running worker thread.
-        for future in as_completed(f2a):
-            acct = f2a[future]
-            cmd.collect_results(acct, future.result())
-
-    cmd.post_hook()
-    return time.time() - start</code></pre>
-</details>
+<code><a title="awsrun.runner.Command.collect_results" href="#awsrun.runner.Command.collect_results">Command.collect_results()</a></code>.</p>
+<p>The optional <code>context</code> parameter can be any value. It is passed
+as-is to <code><a title="awsrun.runner.Command.pre_hook_with_context" href="#awsrun.runner.Command.pre_hook_with_context">Command.pre_hook_with_context()</a></code>. It provides a mechanism
+for the caller to pass a runtime context to the command being
+executed. See the <a href="#context-with-pre-hook">Context With Pre-Hook</a>
+section of the use guide for an example.</p></section>
 </dd>
 </dl>
 </dd>
@@ -3195,6 +2725,7 @@ object, so this account cannot be processed.</p></section>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#basic-usage">Basic Usage</a></li>
 <li><a href="#user-defined-commands">User-Defined Commands</a></li>
+<li><a href="#context-with-pre-hook">Context With Pre-Hook</a></li>
 <li><a href="#collecting-results">Collecting Results</a></li>
 </ul>
 </div>
@@ -3218,6 +2749,7 @@ object, so this account cannot be processed.</p></section>
 <h4><code><a title="awsrun.runner.Command" href="#awsrun.runner.Command">Command</a></code></h4>
 <ul class="">
 <li><code><a title="awsrun.runner.Command.from_cli" href="#awsrun.runner.Command.from_cli">from_cli</a></code></li>
+<li><code><a title="awsrun.runner.Command.pre_hook_with_context" href="#awsrun.runner.Command.pre_hook_with_context">pre_hook_with_context</a></code></li>
 <li><code><a title="awsrun.runner.Command.pre_hook" href="#awsrun.runner.Command.pre_hook">pre_hook</a></code></li>
 <li><code><a title="awsrun.runner.Command.post_hook" href="#awsrun.runner.Command.post_hook">post_hook</a></code></li>
 <li><code><a title="awsrun.runner.Command.execute" href="#awsrun.runner.Command.execute">execute</a></code></li>
@@ -3261,7 +2793,7 @@ object, so this account cannot be processed.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="generator" content="pdoc 0.11.1" />
 <title>awsrun.config API documentation</title>
 <meta name="description" content="Provides a YAML/JSON config file reader with type-checked values …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -838,22 +838,6 @@ load configs from files.</p></section>
 user invokes the <code><a title="awsrun.config.Config.from_file" href="#awsrun.config.Config.from_file">Config.from_file()</a></code> factory method. Extensions should be
 specified as '.ext'. Subsequent registrations for the same extension
 will override the prior registration.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def register_filetype(cls, config_class, *extensions):
-    &#34;&#34;&#34;Register a parser for files with one of the specified extensions.
-
-    The registry is used to find the appropriate config parser when a
-    user invokes the `Config.from_file` factory method. Extensions should be
-    specified as &#39;.ext&#39;. Subsequent registrations for the same extension
-    will override the prior registration.
-    &#34;&#34;&#34;
-    for ext in extensions:
-        cls._filetypes[ext] = config_class</code></pre>
-</details>
 </dd>
 <dt id="awsrun.config.Config.from_file"><code class="name flex">
 <span>def <span class="ident">from_file</span></span>(<span>filename, must_exist=False)</span>
@@ -864,32 +848,6 @@ def register_filetype(cls, config_class, *extensions):
 configuration parser that should be used to instantiate a <code><a title="awsrun.config.Config" href="#awsrun.config.Config">Config</a></code>
 object. If <code>must_exist</code> is true, a <code>FileNotFoundError</code> is raised if the
 filename does not exist, otherwise an empty <code><a title="awsrun.config.Config" href="#awsrun.config.Config">Config</a></code> is returned.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_file(cls, filename, must_exist=False):
-    &#34;&#34;&#34;Factory method to Load a `Config` from a filename.
-
-    This method uses the extension of the filename to determine the
-    configuration parser that should be used to instantiate a `Config`
-    object. If `must_exist` is true, a `FileNotFoundError` is raised if the
-    filename does not exist, otherwise an empty `Config` is returned.
-    &#34;&#34;&#34;
-    path = Path(filename)
-
-    if not path.is_file():
-        if must_exist:
-            raise FileNotFoundError(f&#34;Config file not found: {filename}&#34;)
-        return Config({})
-
-    if path.suffix not in cls._filetypes:
-        raise ValueError(f&#34;Unregistered file type extension: {path.suffix}&#34;)
-
-    with path.open(encoding=&#34;utf-8&#34;) as f:
-        return cls._filetypes[path.suffix](f)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -922,77 +880,6 @@ c.get('path', 'to', 'value', type=Or(Int, Float))
 c.get('path', 'to', 'value', type=And(StrMatch(r'\d+'), StrMatch(r'[A-Z]')))
 c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
 </code></pre></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get(self, *keys, default=None, type=None, must_exist=False):
-    &#34;&#34;&#34;Return the specified value from the `Config`.
-
-    Specify the value to read by providing the keys required to reach the
-    value in the configuration. If the value is not found at the specified
-    key path, `None` or the `default` value is returned unless the
-    `must_exist` flag is `True`, in which case a `ValueError` is raised.
-
-    Values can be optionally type-checked to ensure it matches the specified
-    type. If the `type` matches the value in the configuration, the value is
-    returned, otherwise a `TypeError` is raised. Types are specified by
-    passing a `Type` object. There are numerous type objects defined in this
-    module. For example:
-
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Int)
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Bool)
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Float)
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Str)
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=StrMatch(r&#39;^\\d+-\\d+$&#39;))
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=IP)
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(IP))
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(Str))
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=List(Dict(Int, Str)))
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Dict(Str, Int))
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Or(Int, Float))
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=And(StrMatch(r&#39;\\d+&#39;), StrMatch(r&#39;[A-Z]&#39;)))
-        c.get(&#39;path&#39;, &#39;to&#39;, &#39;value&#39;, type=Not(Or(Int, Float)))
-    &#34;&#34;&#34;
-    # pylint: disable=redefined-builtin
-
-    # This one-liner will recursively follow a list of keys into a
-    # dictionary and return the value. If a key does not exist, return an
-    # empty dict.
-    try:
-        value = reduce(lambda a, p: a.get(p, {}), keys, self.conf)
-    except AttributeError as e:
-        raise ValueError(
-            f&#34;Error in config: {&#39;-&gt;&#39;.join(keys[:-1])}: not a dictionary&#34;
-        ) from e
-
-    # If value is {} that means the key doesn&#39;t exist. If the must_exist
-    # flag was passed, then we raise a descriptive ValueError, otherwise we
-    # set it to the default.
-    if value == {}:
-        if must_exist:
-            raise ValueError(f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: must be set&#34;)
-        value = default
-
-    # If no value has been set in the config and none has been provided as a
-    # default, then return None.
-    if value is None:
-        return value
-
-    # If no type has been specified, then return the value in the config or
-    # the default without doing any type checking.
-    if not type:
-        return value
-
-    # Only return the value if it type checks correctly.
-    if type.type_check(value):
-        return value
-
-    # Finally, all other cases indicate a type error.
-    raise TypeError(
-        f&#34;Error in config: {&#39;-&gt;&#39;.join(keys)}: not a {type}: {repr(value)}&#34;
-    )</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -1101,14 +988,6 @@ c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
 </code></dt>
 <dd>
 <section class="desc"><p>Returns true if obj is a type matching this <code><a title="awsrun.config.Type" href="#awsrun.config.Type">Type</a></code>.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def type_check(self, obj):
-    &#34;&#34;&#34;Returns true if obj is a type matching this `Type`.&#34;&#34;&#34;
-    raise NotImplementedError</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -1757,7 +1636,7 @@ Dict(Str, List(Or(Int, Float)))
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
