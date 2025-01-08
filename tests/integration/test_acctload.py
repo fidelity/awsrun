@@ -7,7 +7,7 @@
 # pylint: disable=redefined-outer-name,missing-docstring
 
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -254,7 +254,7 @@ def test_json_loader_with_expired_cache(
 
     # Fast-forward the time to the future by a day and a few seconds beyond
     # when the cache is valid, which will force a fresh fetch of data.
-    with freeze_time(datetime.utcnow() + timedelta(days=1, seconds=5)):
+    with freeze_time(datetime.now(timezone.utc) + timedelta(days=1, seconds=5)):
         acctload.JSONAccountLoader("http://example.com/acct.json", max_age=86400)
 
     # requests.get should be called when cache is expired to refresh it
@@ -285,7 +285,7 @@ def test_yaml_loader_with_expired_cache(
 
     # Fast-forward the time to the future by a day and a few seconds beyond
     # when the cache is valid, which will force a fresh fetch of data.
-    with freeze_time(datetime.utcnow() + timedelta(days=1, seconds=5)):
+    with freeze_time(datetime.now(timezone.utc) + timedelta(days=1, seconds=5)):
         acctload.YAMLAccountLoader("http://example.com/acct.yaml", max_age=86400)
 
     # requests.get should be called when cache is expired to refresh it
