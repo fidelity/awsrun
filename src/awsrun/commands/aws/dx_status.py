@@ -165,6 +165,7 @@ the command line, use multiple flags for each value.
 
 
 """
+
 import io
 import re
 import sys
@@ -417,14 +418,14 @@ def _conn2str(conn, vifs):
             Style.RESET_ALL,
             Style.BRIGHT,
             Fore.YELLOW,
-            f"{c_name:22.22} ",
+            f"{c_name:25.25} ",
             Style.RESET_ALL,
             (Fore.GREEN if c_state == "AVAILABLE" else Fore.RED),
             f"{c_state:10} ",
             Fore.BLUE,
-            f"{c_bandwidth:7} ",
+            f"{c_bandwidth:>9} ",
             Fore.MAGENTA,
-            f"{len(vifs):3} VIFs ",
+            f"{len(vifs):5} VIFs ",
             (Fore.RED + f"({v_down} down)" if v_down > 0 else ""),
             Fore.RESET,
         ]
