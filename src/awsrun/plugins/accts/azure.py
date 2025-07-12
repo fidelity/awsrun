@@ -25,7 +25,6 @@ import logging
 from awsrun.acctload import AzureCLIAccountLoader
 from awsrun.plugmgr import Plugin
 
-
 LOG = logging.getLogger(__name__)
 
 

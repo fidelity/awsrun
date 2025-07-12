@@ -1125,7 +1125,7 @@ def _ask_for_confirmation(accts):
     _print_accounts(accts, out=sys.stderr)
     print("Proceed (y/n)? ", flush=True, end="", file=sys.stderr)
     answer = input()
-    if not answer.lower() in ["y", "yes"]:
+    if answer.lower() not in ["y", "yes"]:
         print("Exiting", file=sys.stderr)
         sys.exit(0)
 
