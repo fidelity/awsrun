@@ -22,9 +22,9 @@ def test_expiring_value_caching():
         initial_value = ev.value()
 
         frozen_datetime.tick(delta=timedelta(seconds=60))
-        assert (
-            ev.value() == initial_value
-        ), "value was different, should have been cached"
+        assert ev.value() == initial_value, (
+            "value was different, should have been cached"
+        )
 
         # Fast forward to 5 minutes after we first cached the value
         frozen_datetime.tick(delta=timedelta(seconds=241))
@@ -33,9 +33,9 @@ def test_expiring_value_caching():
 
         # Make sure the second value was cached
         frozen_datetime.tick(delta=timedelta(seconds=60))
-        assert (
-            ev.value() == second_value
-        ), "value was different, should have been cached"
+        assert ev.value() == second_value, (
+            "value was different, should have been cached"
+        )
 
 
 def test_expiring_value_no_caching():
@@ -56,9 +56,9 @@ def test_persistent_expiring_value_caching(tmp_path):
         assert cache_file.exists()
 
         frozen_datetime.tick(delta=timedelta(seconds=60))
-        assert (
-            ev.value() == initial_value
-        ), "value was different, should have been cached"
+        assert ev.value() == initial_value, (
+            "value was different, should have been cached"
+        )
 
         # Fast forward to 5 minutes after we first cached the value
         frozen_datetime.tick(delta=timedelta(seconds=241))
@@ -72,9 +72,9 @@ def test_persistent_expiring_value_caching(tmp_path):
 
         # Make sure the second value was cached
         frozen_datetime.tick(delta=timedelta(seconds=60))
-        assert (
-            ev.value() == second_value
-        ), "value was different, should have been cached"
+        assert ev.value() == second_value, (
+            "value was different, should have been cached"
+        )
 
 
 def test_persistent_expiring_value_no_caching(tmp_path):

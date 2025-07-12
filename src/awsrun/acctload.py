@@ -1061,7 +1061,6 @@ class URLAccountLoader(MetaAccountLoader):
         no_verify=False,
         cache_path=None,
     ):
-
         session = requests.Session()
         session.mount("file://", FileAdapter())
 
@@ -1132,7 +1131,7 @@ class AbstractAccount:
 
     def __repr__(self):
         pairs = (f"{k}={repr(v)}" for k, v in self._attrs.items())
-        return f'Account({", ".join(pairs)})'
+        return f"Account({', '.join(pairs)})"
 
     def __str__(self):
         if not self._str_template:
@@ -1151,7 +1150,7 @@ class AccountsNotFoundError(Exception):
 
     def __init__(self, missing_acct_ids):
         self.missing_acct_ids = missing_acct_ids
-        super().__init__(f'Account IDs not found: {", ".join(missing_acct_ids)}')
+        super().__init__(f"Account IDs not found: {', '.join(missing_acct_ids)}")
 
 
 class InvalidFormatTemplateError(Exception):

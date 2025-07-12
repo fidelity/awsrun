@@ -896,7 +896,6 @@ class URLLoader(Plugin):
 
         # Check and set auth options if using authentication.
         if args.loader_auth != "none":
-
             # Command line flags take priority
             if args.loader_username:
                 auth_options["username"] = args.loader_username

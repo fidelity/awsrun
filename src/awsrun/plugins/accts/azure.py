@@ -20,6 +20,7 @@ awsrun.plugins.accts.azure.AzureCLI
 :  `AzureCLI` loads subscriptions and metadata for those subscriptions via the
 Azure CLI `az account list --all`  command.
 """
+
 import logging
 
 from awsrun.acctload import AzureCLIAccountLoader

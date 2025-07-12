@@ -1116,7 +1116,7 @@ def _print_valid_commands(commands, out=sys.stdout):
 def _print_accounts(accts, out=sys.stdout):
     """Print the list of accounts."""
     count = len(accts)
-    print(f'{count} account{"s" if count != 1 else ""} selected:\n', file=out)
+    print(f"{count} account{'s' if count != 1 else ''} selected:\n", file=out)
     print(", ".join(str(a) for a in accts), file=out, end="\n\n")
 
 

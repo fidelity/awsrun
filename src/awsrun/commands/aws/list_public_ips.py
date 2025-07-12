@@ -76,7 +76,7 @@ class CLICommand(RegionalCommand):
         # are processing.
         for (vpc_id, owner_id), ips in public_ips.items():
             print(
-                f'{acct}/{region}: id={vpc_id} owner={owner_id} ips={", ".join(ips)}',
+                f"{acct}/{region}: id={vpc_id} owner={owner_id} ips={', '.join(ips)}",
                 file=out,
             )
 
