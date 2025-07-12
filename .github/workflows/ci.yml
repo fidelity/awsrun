@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: [ "3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
       - uses: actions/checkout@v3
@@ -26,13 +26,12 @@ jobs:
           cache-dependency-path: pyproject.toml
 
       - name: Install (including dev dependencies)
-        run: pip install .[aws,azure,dev]
+        run: pip install .[aws,azure,dev] ruff
 
-      - name: Lint with flake8
-        run: flake8 . --count --show-source --statistics
+      - name: Lint and check formatting with Ruff
+        run: |
+          ruff check --extend-select I .
+          ruff format --check .
 
       - name: Test with pytest
         run: pytest
-
-      - name: Validate formatting with black
-        run: black --check --diff .
