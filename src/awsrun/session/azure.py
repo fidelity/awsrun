@@ -68,6 +68,7 @@ risk, this module guarantees that only one thread makes the first request for a
 token, to populate the token cache or refresh it, before allowing other threads
 to proceed concurrently.
 """
+
 import functools
 import threading
 

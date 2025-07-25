@@ -7,6 +7,7 @@
 # pylint: disable=redefined-outer-name,missing-docstring
 
 import pytest
+
 from awsrun.runner import AccountRunner, Command
 from awsrun.session import SessionProvider
 

@@ -66,6 +66,7 @@ on the other hand, combine both into a single step by omitting the call to
 `PluginManager.parse_args` as it will be called by `PluginManager.instantiate`
 if it was not already.
 """
+
 import importlib
 import logging
 from contextlib import suppress

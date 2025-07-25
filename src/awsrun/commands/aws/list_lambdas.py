@@ -93,7 +93,7 @@ class CLICommand(RegionalCommand):
                     by_role[fn["Role"]].append(fn)
                     continue
                 print(
-                    f'{acct}/{region}: name={fn["FunctionName"]} runtime={fn["Runtime"]} role={fn["Role"]} public={_is_public(fn)}',
+                    f"{acct}/{region}: name={fn['FunctionName']} runtime={fn['Runtime']} role={fn['Role']} public={_is_public(fn)}",
                     file=out,
                 )
 

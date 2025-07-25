@@ -67,7 +67,7 @@ class CLICommand(RegionalCommand):
                 file=out,
             )
             if attachments:
-                print(f' vpcs={", ".join(attachments)}', end="", file=out)
+                print(f" vpcs={', '.join(attachments)}", end="", file=out)
 
             print(file=out)
 
