@@ -8,16 +8,18 @@
 ## Overview
 
 The dx_maint command displays a summary of Direct Connect maintenance events
-available from the AWS Health service sorted by the time AWS published the
-event, which is not necessarily the start of maintenance.  Only recent events
-(past 7 days) and upcoming events are displayed by default.
+available from the AWS Health service sorted by the start time of the event.
+Only recent events (past 7 days) and upcoming events are displayed by default.
+The output includes the time the event was published (first date column), the
+start time of the event (second date column), and the end time of the event
+(last date column).
 
     $ awsrun --account 111222333444 --account 222111444333 dx_maint --region us-east-1 --region us-west-2
     111222333444 us-east-1 2021-11-19 09:11 CST closed MAINTENANCE_CANCELLED 2021-11-23 02:11 CST -> 2021-11-23 06:11 CST dxcon-aaaaaaaa available
     111222333444 us-west-2 2021-12-07 05:12 CST closed MAINTENANCE_COMPLETE 2021-12-07 03:12 CST -> 2021-12-07 07:12 CST dxcon-bbbbbbbb available
     111222333444 us-east-1 2022-01-18 02:01 CST closed MAINTENANCE_COMPLETE 2022-01-17 22:01 CST -> 2022-01-18 02:01 CST dxcon-cccccccc available
-    222111444333 us-east-1 2022-01-31 21:01 CST upcoming MAINTENANCE_SCHEDULED 2022-02-14 22:02 CST -> 2022-02-15 02:02 CST dxcon-dddddddd available
     111222333444 us-east-1 2022-02-01 21:02 CST upcoming MAINTENANCE_SCHEDULED 2022-02-08 22:02 CST -> 2022-02-09 02:02 CST dxcon-eeeeeeee available
+    222111444333 us-east-1 2022-01-31 21:01 CST upcoming MAINTENANCE_SCHEDULED 2022-02-14 22:02 CST -> 2022-02-15 02:02 CST dxcon-dddddddd available
 
 For non-emergency maintenance events that occurred in the past, the default
 output only shows the COMPLETED or CANCELLED event to minimize on noise. For
@@ -268,12 +270,15 @@ class CLICommand(RegionalCommand):
     def post_hook(self):
         # The awsrun post hook is called once after all accounts have been
         # processed. At this point, we have collected everything we need in the
-        # all_results instance variable. We sort this list by the last update
-        # time as we want to display the maintenance events in the order they
-        # were published by AWS. You might ask why don't we sort by the
-        # maintenance start time?  Because AWS sometimes does not publish a
-        # start time for an event (I have no idea why).
-        self.all_results.sort(key=lambda r: r[3]["lastUpdatedTime"])
+        # all_results instance variable. We sort this list by start time when
+        # possible, but the AWS API doesn't always send a startTime, so we
+        # fallback to the lastUpdatedTime, which seems to always be present.
+        self.all_results.sort(
+            key=lambda r: (
+                r[3].get("startTime", r[3]["lastUpdatedTime"]),
+                r[3]["lastUpdatedTime"],
+            )
+        )
 
         for acct, region, dx, event in self.all_results:
             for color, field in (
