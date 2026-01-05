@@ -7,16 +7,16 @@
 
 ## Overview
 
-This module provides a `SessionProvider` interface to obtain AWS credentials via
-one of several mechanisms: the standard AWS CLI configuration files, Single Sign
-On (SSO) via federated SAML authentication, or cross-account access initiated
-from a base account. Regardless of the mechanism, the session provider is
-responsible for returning a boto3 Session that contains the credentials for a
-requested account. In some cases, those credentials are cached to limit the
-number of API calls to AWS and/or Identity Providers (IdP) should a session be
-requested for the same account again.
+This module provides a `SessionProvider` interface to obtain AWS credentials
+via one of several mechanisms: the standard AWS CLI configuration files,
+Single Sign On (SSO) via federated SAML or OAuth2 authentication, or
+cross-account access initiated from a base account. Regardless of the
+mechanism, the session provider is responsible for returning a boto3 Session
+that contains the credentials for a requested account. In some cases, those
+credentials are cached to limit the number of API calls to AWS and/or Identity
+Providers (IdP) should a session be requested for the same account again.
 
-There are three concrete session provider implementations included in this
+There are four concrete session provider implementations included in this
 module:
 
 `CredsViaProfile`
@@ -24,6 +24,9 @@ module:
 
 `CredsViaSAML`
 :  Credentials are obtained via a role assumed via SAML-based federation.
+
+`CredsViaOAuth2ROPC`
+:  Credentials are obtained via a role assumed via OAuth2 ROPC authentication.
 
 `CredsViaCrossAccount` respectively.
 :  Credentials are obtained via a role assumed from a base account.
@@ -119,6 +122,42 @@ Please refer to [Using SAML-Based Federation for API Access to
 AWS](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html)
 for additional details on the use of federated SSO with SAML.
 
+### OAuth2 ROPC
+
+AWS supports federated SSO access via OpenID Connect (OIDC). In this scenario,
+rather than defining AWS credentials in AWS configuration files (see first
+section), the user obtains an access token from an OAuth2 authorization server
+using the Resource Owner Password Credential (ROPC) flow. The access token is
+then sent to AWS to assume an AWS role within an account to obtain credentials
+for API usage.
+
+To create a `SessionProvider` that will obtain credentials via OAuth2
+ROPC-based federated access, create an instance of `CredsViaOAuth2ROPC`. In
+the example below, Microsoft Entra ID (formerly Azure AD) is used as the OAuth2
+authorization server:
+
+    # Instantiate a single session provider and reuse it
+    session_provider = CredsViaOAuth2ROPC(
+        role_arn='arn:aws:iam::111222333444:role/RoleName',
+        url='https://login.microsoftonline.com/TENANT_ID/oauth2/v2.0/token"',
+        username='example@example.com',
+        password='EXAMPLE_PASSWORD',
+        oauth2_params={
+            'client_id': 'CLIENT_ID',
+            'scope': 'api://CLIENT_ID/AssumeRoleWithWebIdentity'
+            })
+
+    # Obtain boto3 sessions for one or more accounts
+    session1 = session_provider.session('111111111111')
+    session2 = session_provider.session('222222222222')
+
+    # Use the sessions to interact with AWS
+    ec2 = session1.resource('ec2', region_name='us-east-1')
+    iam = session2.resource('iam', region_name='us-east-1')
+
+Please refer to AWS [OIDC federation guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html)
+for additional details on the use of federated access with OIDC.
+
 ### Cross Account
 
 In large companies with a significant number of AWS accounts, it is more common
@@ -152,8 +191,9 @@ files:
     ec2 = session1.resource('ec2', region_name='us-east-1')
     iam = session2.resource('iam', region_name='us-east-1')
 
-In large companies, it's likely more common that SAML is used for direct access
-to the base account, and then cross-account access to the remainder of accounts:
+In large companies, it's likely more common that SAML or OIDC is used for
+direct access to the base account, and then cross-account access to the
+remainder of accounts:
 
     # Instantiate a session provider for the base account
     session_provider = CredsViaSAML(
@@ -173,14 +213,14 @@ user/role will need the AssumeRole permission, and the cross-account roles will
 need to have an assume role policy document that permits access from the base
 account.
 
-Although, the `CredsViaProfile` session provider can support cross-account
-access, it does require that every account must be defined in the local AWS
-files. For a corporation with hundreds of accounts that change all the time,
-this may not be practical. `CredsViaCrossAccount` does not use the local AWS
-files. The only use of AWS files would be limited to the base account if
-`CredsViaProfile` is used. If, on the other hand, SAML authentication is used
-for the base account via `CredsViaSAML`, then the local AWS files aren't used at
-all.
+Although, the `CredsViaProfile` session provider could support direct access
+to multiple accounts, it would require that every account be defined in local
+AWS credential files. For a corporation with hundreds of accounts that change
+all the time, this may not be practical. `CredsViaCrossAccount` does not use
+the local AWS files. The only use of AWS files would be limited to the base
+account if `CredsViaProfile` is used. If, on the other hand, SAML or OIDC
+authentication is used for the base account via `CredsViaSAML` or
+`CredsViaOAuth2ROPC`, then the local AWS files aren't used at all.
 
 Please refer to [Providing Access to an IAM User in Another AWS Account That You
 Own](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_aws-accounts.html)
@@ -188,18 +228,23 @@ for additional details on cross-account access.
 
 ## Caching
 
-AWS credentials obtained via SAML-based federation (assume_role_with_saml) or
-cross account access (assume_role) are cached in memory by default for 1 hour
-(3600 seconds). This means subsequent calls to `SessionProvider.session` for the
-same account will return the cached set of credentials unless half of the cache
-duration has transpired, in which case a new set of credentials will be
-returned. If AWS credentials are expired sooner by a local policy, then lower
-the duration in the `CredsViaSAML` and `CredsViaCrossAccount` constructors.
+AWS credentials obtained via SAML (assume_role_with_saml), OIDC
+(assume_role_with_web_identity), or cross account access (assume_role) are
+cached in memory by default for 1 hour (3600 seconds). This means subsequent
+calls to `SessionProvider.session` for the same account will return the cached
+set of credentials unless half of the cache duration has transpired, in which
+case a new set of credentials will be returned. If AWS credentials are expired
+sooner by a local policy, then lower the duration in the `CredsViaSAML`,
+`CredsViaOAuth2ROPC` and `CredsViaCrossAccount` constructors.
 
 Likewise, the SAML assertion obtained via the IdP by `CredsViaSAML` is cached
 for 5 minutes (300 seconds). This, too, can be adjusted in the constructor. If
 the IdP expires SAML assertions sooner, then the `saml_duration` value must be
 set appropriately.
+
+If using `CredsViaOAuth2ROPC`, the access token obtained from the OAuth2
+server is cached based on the expiration provided in the token response. There
+is no need to adjust any caching parameters in this case.
 
 Finally, it is important to note that caching in this context has no relevance
 to refreshable credentials that boto3 can provide when assuming roles. This
@@ -216,10 +261,10 @@ something goes wrong.
 :  Raised if the user could not be authenticated with IdP.
 
 `IDPInvalidResponseException`
-:  Raised if the SAML response cannot be found from IdP.
+:  Raised if the SAML or OAuth2 response is not valid.
 
 `IDPInvalidRoleException`
-:  Raised if the user does not have access to the role.
+:  Raised if the user does not have access to the role in a SAML flow.
 
 `AWSAssumeRoleException`
 :  Raised if the assume_role* calls fail.
@@ -245,7 +290,7 @@ import botocore.exceptions
 import requests
 from bs4 import BeautifulSoup
 
-from awsrun.cache import ExpiringValue
+from awsrun.cache import ExpiringValue, ValueWithExpiry
 from awsrun.session import SessionProvider
 
 LOG = logging.getLogger(__name__)
@@ -287,6 +332,8 @@ class CachingSessionProvider(SessionProvider):
             # the lock may seem redundant, but it's safer to make this explicit.
             ev = self._creds.setdefault(
                 (acct_id, self._role),
+                # TODO: use new ValueWithExpiry to set expiration as its
+                # provided in the response from AWS rather than guessing half-life.
                 ExpiringValue(lambda: self.credentials(acct_id), self._duration / 2),
             )
 
@@ -351,6 +398,122 @@ class CredsViaProfile(SessionProvider):
             return boto3.Session()
 
 
+class CredsViaOAuth2ROPC(CachingSessionProvider):
+    """A session provider that uses OAuth2 ROPC authentication.
+
+    This class relies on an OAuth2 authorization server using the Resource
+    Owner Password Credential (ROPC) flow to provide an access token to an
+    authenticated user, which is then sent to AWS to obtain the credentials for
+    an AWS account.
+
+    The `role` is the IAM role name (not ARN) to assume in the AWS account.
+    This is used along with the account to construct the ARN when making the
+    underlying AWS `assume_role_with_web_identity` API call.
+
+    The `url` is the URL to the OAuth2 server that will provide a token to the
+    user once they have authenticated. The client will authenticate using the
+    `username` and `password` parameters. If additional OAuth2 parameters must
+    be provided to the server in the authentication request, specify a dict of
+    parameter/value pairs via the `oauth2_params` argument. If additional HTTP
+    headers must be provided, specify a dict of header/value pairs via the
+    `headers` argument. To disable certificate verification, which is strongly
+    discouraged, set `no_verify` to `True`.
+
+    The AWS credentials for the role and account are cached for `duration`
+    seconds, which defaults to 1 hour. Likewise, the token obtained from the
+    OAuth2 server is cached based on the expiration provided in the token.
+    """
+
+    def __init__(
+        self,
+        role,
+        url,
+        username,
+        password,
+        headers=None,
+        oauth2_params=None,
+        duration=3600,
+        no_verify=False,
+    ):
+        super().__init__(role, duration)
+        self._role = role
+        self._url = url
+        self._username = username
+        self._password = password
+        self._headers = {} if headers is None else headers
+        self._oauth2_params = {} if oauth2_params is None else oauth2_params
+        self._no_verify = no_verify
+
+        # `max_age` isn't used as we use the expiration that is provided in
+        # token response. While, `ExpriringValue` requires a max_age, it is
+        # only used if the return value from the `refresh_fn` isn't
+        # a `ValueWithExpiry`, which ours always is. For safety, we'll set
+        # it to 60 seconds just in case, so we never overload the server.
+        self._cached_token = ExpiringValue(self._request_token, max_age=60)
+
+    def token(self, refresh=False):
+        """Returns an OAuth2 access token from the OAuth2 server.
+
+        This value is cached by default. If refresh is True, the value is
+        refreshed first, then returned.  See the module documentation for the
+        exceptions that may be raised.
+        """
+        return self._cached_token.value(refresh)
+
+    def _request_token(self):
+        """Returns a non-cached OAuth2 access token from the OAuth2 server.
+
+        See the module documentation for the exceptions that may be raised.
+        """
+        LOG.info("Fetching OAuth2 access token")
+        with requests.Session() as s:
+            s.headers.update(self._headers)
+            form = {
+                "userName": self._username,
+                "password": self._password,
+                "grant_type": "password",
+            }
+            form.update(self._oauth2_params)
+            resp = s.post(self._url, data=form, verify=not self._no_verify)
+
+        if resp.status_code == 400:  # RFC6749 section 5.2
+            try:
+                desc = resp.json().get("error_description", "unknown error")
+            except ValueError:
+                desc = f"non-JSON response: {resp.text}"
+            raise IDPAccessDeniedException(f"Could not authenticate: {desc}")
+        if not 200 <= resp.status_code < 300:
+            raise IDPInvalidResponseException(
+                f"{resp.status_code} response from {self._url}"
+            )
+
+        token_data = resp.json()
+        access_token = token_data.get("access_token")
+        expires_in = token_data.get("expires_in")
+
+        if not access_token or not expires_in:
+            raise IDPInvalidResponseException(
+                "Cannot extract access token or expiration from response"
+            )
+
+        return ValueWithExpiry(access_token, ttl=expires_in)
+
+    def credentials(self, acct_id):
+        role_arn = f"arn:aws:iam::{acct_id}:role/{self._role}"
+        LOG.info("Assuming role with web identity for %s", role_arn)
+        assumed_role = boto3.client("sts").assume_role_with_web_identity(
+            RoleArn=role_arn,
+            RoleSessionName=f"AWSRunSession-{self._username}",
+            WebIdentityToken=self.token(),
+            DurationSeconds=self._duration,
+        )
+
+        if not assumed_role:
+            raise AWSAssumeRoleException(f"Cannot assume role: {role_arn}")
+
+        return assumed_role["Credentials"]
+
+
 class CredsViaSAML(CachingSessionProvider):
     """A session provider that uses federated SAML authentication.
 
@@ -359,7 +522,7 @@ class CredsViaSAML(CachingSessionProvider):
     credentials for an AWS account.
 
     The `role` is the name of the IAM role (not the ARN) to assume in the AWS
-    account. This is used when making the underlying AWS assume_role_with_saml
+    account. This is used when making the underlying AWS `assume_role_with_saml`
     API call.
 
     The `url` is the URL to the IdP web server that will provide a SAML
