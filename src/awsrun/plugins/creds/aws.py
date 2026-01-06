@@ -46,7 +46,12 @@ from requests_ntlm import HttpNtlmAuth
 
 from awsrun.config import URL, Bool, Choice, Dict, Int, Str
 from awsrun.plugmgr import Plugin
-from awsrun.session.aws import CredsViaCrossAccount, CredsViaProfile, CredsViaSAML
+from awsrun.session.aws import (
+    CredsViaCrossAccount,
+    CredsViaOAuth2ROPC,
+    CredsViaProfile,
+    CredsViaSAML,
+)
 
 # This is only used to prevent pdoc (the doc generator) from exposing
 # AbstractCrossAccount in the module's documentation, which is intended for CLI
@@ -293,6 +298,172 @@ class SAML(Plugin):
         # the user out as it will attempt to get SAML creds for each account. If
         # this fails, an exception will be thrown and caught in the main CLI.
         session_provider.assertion()
+
+        return session_provider
+
+
+class OAuth2(Plugin):
+    """CLI plug-in that uses federated authentication via OAuth2 for credentials.
+
+    AWS supports federated access via OpenID Connect (OIDC). With this
+    plug-in, the user authenticates to an OAuth2 server using the Resource
+    Owner Password Credential (ROPC) flow, such as Microsoft Entra, to obtain
+    an access token that is used to assume an AWS role within an account to
+    obtain STS credentials. Unlike the `Profile` plug-in, this plug-in does
+    not rely on the standard AWS credentials or configuration files, and thus
+    does not require defining all accounts ahead of time. This plug-in does,
+    however, require that the OAuth2 server is configured to grant a user
+    access to authorized AWS accounts.
+
+    Please refer to AWS [OIDC federation guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html)
+    for additional details on the use of federated access with OIDC.
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Credentials:
+          plugin: awsrun.plugins.creds.aws.OAuth2
+          options:
+            username: STRING
+            password: STRING
+            role: STRING*
+            url: STRING*
+            http_headers:
+              STRING: STRING
+            oauth2_params:
+              STRING: STRING
+            no_verify: BOOLEAN
+            duration: INTEGER
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below.
+
+    `username`, `--oauth2-username`
+    : The username to use when authenticating with the OAuth2 server for the base
+    account. If this value is not provided, the following environment variables
+    are checked in order: LOGNAME, USER, LNAME and USERNAME.
+
+    `password`, `--oauth2-password`
+    : The password to use when authenticating with the OAuth2 server for the base
+    account. The default is the value, if any, of the PASSWORD environment
+    variable. If none of these are set, the user will be prompted via the
+    console when awsrun is invoked.
+
+    `role`, `--oauth2-role`
+    : The AWS role (not ARN) to assume in the base or source account when
+    federating via OIDC. This value **must** be provided via the user
+    configuration or as an awsrun command line argument. Note: this is not the
+    IAM role name used when performing the cross-account assume role (see
+    `x_acct: role` below).
+
+    `url`
+    : The URL to the OAuth2 server that will provide an access token upon
+    successful authentication for the base account. This value **must** be
+    provided via the user configuration file.
+
+    `http_headers`
+    : Additional HTTP headers to send in the request to the OAuth2 server. If
+    specified, it must be a dictionary of `key: value` pairs, where keys and
+    values are strings.
+
+    `oauth2_params`
+    : Additional OAuth2 parameters to send in the request to the OAuth2 server. If
+    specified, it must be a dictionary of `key: value` pairs, where keys and
+    values are strings. For example, this can be used to specify `client_id`
+    and `scope` parameters if required by the OAuth2 server.
+
+    `no_verify`, `--oauth2-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+
+    `duration`, `--oauth2-duration`
+    : The amount of time, in seconds, that the AWS credentials for the role /
+    base account combination are cached in memory. The default value is `3600`
+    seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
+    credentials are expired sooner by a local IAM policy, then lower the value.
+    """
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with '--oauth2-' to lessen
+        # chance of a name collision.
+        group = parser.add_argument_group("OAuth2 options")
+        group.add_argument(
+            "--oauth2-username",
+            metavar="USER",
+            default=self.cfg("username", type=Str, default=getpass.getuser()),
+            help="username for OAuth2 authentication",
+        )
+
+        group.add_argument(
+            "--oauth2-password",
+            metavar="PASS",
+            default=self.cfg(
+                "password", type=Str, default=os.environ.get("PASSWORD", None)
+            ),
+            help="password for OAuth2 authentication",
+        )
+
+        group.add_argument(
+            "--oauth2-role",
+            metavar="ROLE",
+            default=self.cfg("role", type=Str, must_exist=True),
+            help="base role name (not ARN) to assume via OAuth2",
+        )
+
+        group.add_argument(
+            "--oauth2-duration",
+            metavar="SECS",
+            type=int,
+            default=cfg("duration", type=Int, default=3600),
+            help="duration when requesting aws credentials in assume_role*",
+        )
+
+        group.add_argument(
+            "--oauth2-no-verify",
+            action="store_true",
+            default=cfg("no_verify", type=Bool, default=False),
+            help="disable cert verification for HTTP requests",
+        )
+
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        # We don't prompt for this password above when checking the PASSWORD
+        # environment as we wouldn't have access to the username. which should
+        # be included in the prompt to the user to remind them of the username
+        # being used.
+        args.oauth2_password = args.oauth2_password or getpass.getpass(
+            f"Password for {args.oauth2_username}? "
+        )
+
+        # Build a session provider using the combination of options that have
+        # been specified in the user's configuration file or have been
+        # overridden on the command line.
+        session_provider = CredsViaOAuth2ROPC(
+            role=args.oauth2_role,
+            url=cfg("url", type=URL, must_exist=True),
+            username=args.oauth2_username,
+            password=args.oauth2_password,
+            headers=cfg("http_headers", type=Dict(Str, Str), default={}),
+            oauth2_params=cfg("oauth2_params", type=Dict(Str, Str), default={}),
+            duration=args.oauth2_duration,
+            no_verify=args.oauth2_no_verify,
+        )
+
+        # Test if password provided is correct. If the wrong password is used and
+        # one cannot be authenticated, then AccountRunner might inadvertently lock
+        # the user out as it will repeatedly attempt to get an OAuth2 token for
+        # each account. If this fails, an exception will be thrown and caught in
+        # the main CLI.
+        session_provider.token()
 
         return session_provider
 
@@ -567,6 +738,125 @@ class SAMLCrossAccount(AbstractCrossAccount):
 
     def __init__(self, parser, cfg):
         self._base_auth = SAML(parser, cfg)
+        super().__init__(parser, cfg)
+
+    def _get_base_auth(self):
+        return self._base_auth
+
+
+class OAuth2CrossAccount(AbstractCrossAccount):
+    """CLI plug-in that uses a OAuth2 base account for cross-account access.
+
+    AWS supports cross-account access from one "base" or "source" account to
+    another account. This plug-in obtains credentials for the base account via
+    the `OAuth2` plug-in, and then uses those credentials to assume role to the
+    other account provided the proper IAM permissions have been setup. Cross
+    account access is typically used in large enterprises with a significant
+    number of AWS accounts to simply management of credentials. The benefit is
+    that a user does not need direct access to every account. Only access to the
+    base account is required from which the user can "hop off" to other
+    accounts.
+
+    Please refer to [Providing Access to an IAM User in Another AWS Account That
+    You
+    Own](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_aws-accounts.html)
+    for additional details on cross-account access.
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Credentials:
+          plugin: awsrun.plugins.creds.aws.OAuth2CrossAccount
+          options:
+            username: STRING
+            password: STRING
+            role_arn: STRING*
+            url: STRING*
+            http_headers:
+              STRING: STRING
+            oauth2_params:
+              STRING: STRING
+            no_verify: BOOLEAN
+            duration: INTEGER
+            x_acct:
+              base: STRING*
+              role: STRING*
+              duration: INTEGER
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below.
+
+    `username`, `--oauth2-username`
+    : The username to use when authenticating with the OAuth2 server for the base
+    account. If this value is not provided, the following environment variables
+    are checked in order: LOGNAME, USER, LNAME and USERNAME.
+
+    `password`, `--oauth2-password`
+    : The password to use when authenticating with the OAuth2 server for the base
+    account. The default is the value, if any, of the PASSWORD environment
+    variable. If none of these are set, the user will be prompted via the
+    console when awsrun is invoked.
+
+    `role_arn`, `--oauth2-role-arn`
+    : The AWS role ARN to assume in the base or source account when
+    federating via OIDC. This value **must** be provided via the user
+    configuration or as an awsrun command line argument. Note: this is not the
+    IAM role name used when performing the cross-account assume role (see
+    `x_acct: role` below).
+
+    `url`
+    : The URL to the OAuth2 server that will provide an access token upon
+    successful authentication for the base account. This value **must** be
+    provided via the user configuration file.
+
+    `http_headers`
+    : Additional HTTP headers to send in the request to the OAuth2 server. If
+    specified, it must be a dictionary of `key: value` pairs, where keys and
+    values are strings.
+
+    `oauth2_params`
+    : Additional OAuth2 parameters to send in the request to the OAuth2 server. If
+    specified, it must be a dictionary of `key: value` pairs, where keys and
+    values are strings. For example, this can be used to specify `client_id`
+    and `scope` parameters if required by the OAuth2 server.
+
+    `no_verify`, `--oauth2-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+
+    `duration`, `--oauth2-duration`
+    : The amount of time, in seconds, that the AWS credentials for the role /
+    base account combination are cached in memory. The default value is `3600`
+    seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
+    credentials are expired sooner by a local IAM policy, then lower the value.
+
+    `x_acct: base`, `--x-acct-base`
+    : The base or source account from which to "hop off" to other accounts. This
+    value **must** be provided via the user configuration or as an awsrun
+    command line argument. OAuth2-based authentication will be used to obtain
+    credentials for this base account.
+
+    `x_acct: role`, `--x-acct-role`
+    : The IAM role name, not ARN, to assume from the base account to obtain
+    credentials for other accounts. It is not an ARN as the ARN is dynamically
+    created as each account is processed. This value **must** be provided via
+    the user configuration or as an awsrun command line argument. Note: this
+    value is not the role used for the OAuth2 authentication to the base
+    account (see the `role_arn` option above).
+
+    `x_acct: duration`, `--x-acct-duration`
+    : The amount of time, in seconds, that the AWS credentials for the role /
+    cross-account combination are cached in memory. The default value is `3600`
+    seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
+    credentials are expired sooner by a local IAM policy, then lower the value.
+    """
+
+    def __init__(self, parser, cfg):
+        self._base_auth = OAuth2(parser, cfg)
         super().__init__(parser, cfg)
 
     def _get_base_auth(self):
