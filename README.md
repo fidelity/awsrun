@@ -313,6 +313,24 @@ includes the following:
 
 ## Change Log
 
+### v3.3.0
+
+- Add new session provider `awsrun.session.aws.CredsViaOAuth2ROPC` and two
+  plug-ins for the CLI that use it: `awsrun.plugins.creds.aws.OAuth2` and
+  `awsrun.plugins.creds.aws.OAuth2CrossAccount`. These allow awsrun to obtain
+  STS credentials for AWS accounts using the OAuth2 Resource Owner Password
+  Credentials (ROPC) flow. This is in addition to the existing support for
+  SAML-based authentication.
+
+  As of July 2026, AWS offers a new IAM condition key for STS called
+  `sts:RoleAuthorizedByIdp`. It can be used in a trust policy to ensure that
+  the assumed role is in the list of roles included in the OIDC token provided
+  by the IdP. When passing an OIDC token to `AssumeRoleWithWebIdentity`, the
+  trust policy can be configured to require that the role being assumed is
+  explicitly authorized by the IdP. Please refer to the AWS
+  [documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_iam-condition-keys.html#condition-keys-sts)
+  for more information (search for `sts:RoleAuthorizedByIdp` on that page).
+
 ### v3.2.2
 
 - The `kubectl` command now creates the `kubeconfig` file with restricted

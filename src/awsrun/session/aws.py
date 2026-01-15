@@ -9,12 +9,12 @@
 
 This module provides a `SessionProvider` interface to obtain AWS credentials
 via one of several mechanisms: the standard AWS CLI configuration files,
-Single Sign On (SSO) via federated SAML or OAuth2 authentication, or
-cross-account access initiated from a base account. Regardless of the
-mechanism, the session provider is responsible for returning a boto3 Session
-that contains the credentials for a requested account. In some cases, those
-credentials are cached to limit the number of API calls to AWS and/or Identity
-Providers (IdP) should a session be requested for the same account again.
+Single Sign On (SSO) via federated SAML/OIDC, or cross-account access
+initiated from a base account. Regardless of the mechanism, the session
+provider is responsible for returning a boto3 Session that contains the
+credentials for a requested account. In some cases, those credentials are
+cached to limit the number of API calls to AWS and/or Identity Providers (IdP)
+should a session be requested for the same account again.
 
 There are four concrete session provider implementations included in this
 module:
@@ -122,7 +122,7 @@ Please refer to [Using SAML-Based Federation for API Access to
 AWS](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html)
 for additional details on the use of federated SSO with SAML.
 
-### OAuth2 ROPC
+### OIDC via OAuth2 ROPC
 
 AWS supports federated SSO access via OpenID Connect (OIDC). In this scenario,
 rather than defining AWS credentials in AWS configuration files (see first
