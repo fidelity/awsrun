@@ -33,7 +33,7 @@ Guide](#cli-reference).
 For the remainder of this guide, we'll be using the general purpose
 `awsrun.commands.aws.aws` command, which is an adapter for the AWS CLI tool.
 This allows users to concurrently run the AWS CLI across multiple accounts. When
-combined with other awsrun features such as SAML authentication, cross-account
+combined with other awsrun features such as SAML/OIDC federation, cross-account
 access, and metadata account filters, it makes the AWS CLI tool even more
 powerful than it already is as you'll see.
 
@@ -97,7 +97,8 @@ You may be wondering how awsrun obtains the credentials for each account. By
 default, awsrun will use the same profiles from your ~/.aws/credentials file. If
 a profile does not exist for an account, awsrun will fallback to the "default"
 profile if you have one configured. As you'll see later, we can use other
-plug-ins to obtain credentials for accounts via SAML and cross-account access.
+plug-ins to obtain credentials for accounts via SAML/OIDC federation and
+cross-account access.
 
 Using awsrun to run a command over two accounts may not seem that interesting
 yet, but when running the same AWS CLI command over more than a handful of
@@ -186,16 +187,16 @@ for account and credential loading.
 Up until this point, we have been using the default credential loader called
 `awsrun.plugins.creds.aws.Profile`, which looks for account profiles in your
 `$HOME/.aws/credentials` or `$HOME/.aws/config`. Let's look at some of the other
-mechanisms included with awsrun such as the SAML and cross-account access
+mechanisms included with awsrun such as the SAML, OIDC, and cross-account access
 plug-ins. If you are only seeking reference material, please refer to the
 `awsrun.plugins.creds` page instead.
 
-Within many enterprises, the use of single sign-on (SSO) is prevalent and allows
-for centralized account management. AWS supports federated users and SSO via the
-use of a SAML-compliant Identity Provider (IdP). Rather than define IAM users in
-each account, an IAM role can be created that allows for federated access via
-your IdP. To use SAML-based access with AWS, you need to obtain temporary tokens
-from the AWS STS service.
+Within many enterprises, the use of federated access is prevalent and allows for
+centralized account management. AWS supports federated users and SSO via the use
+of a SAML- or OIDC-compliant Identity Provider (IdP). Rather than define IAM
+users in each account, an IAM role can be created that allows for federated
+access via your IdP. To use SAML- or OIDC-based access with AWS, you need to
+obtain temporary tokens from the AWS STS service.
 
 The `awsrun.plugins.creds.aws.SAML` credential plug-in simplifies this process
 for you. At a minimum, you'll need the IAM role that has been setup for SAML as
