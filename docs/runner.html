@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.11.1" />
+<meta name="generator" content="pdoc 0.11.6" />
 <title>awsrun.runner API documentation</title>
 <meta name="description" content="Executes a `Command` across one or more accounts concurrently …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
@@ -1367,6 +1367,34 @@ using account objects, you must provide a <code>key</code> function that returns
 account ID as a string from the account object.</p>
 <p>Accounts are processed concurrently using a worker pool. The default number
 of workers is specified by the <code>max_workers</code> argument, which defaults to 10.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute_function(session_provider, accounts, func, key=lambda x: x, max_workers=10):
+    &#34;&#34;&#34;Executes a function across one or more accounts concurrently.
+
+    This is a convenience function that instantiates an `AccountRunner`, wraps a
+    `func` in a `CommandFunctionAdapter`, runs the command across a list of
+    `accounts`, and then returns a tuple of dicts representing the results and
+    errors after all accounts have been processed. The returned dicts are keyed
+    by the account.
+
+    The list of `accounts` can be a simple list of strings of account IDs or it
+    can be a list of objects that represent accounts. Passing objects can be
+    useful as each object is passed to `func` when processing an account. When
+    using account objects, you must provide a `key` function that returns the
+    account ID as a string from the account object.
+
+    Accounts are processed concurrently using a worker pool. The default number
+    of workers is specified by the `max_workers` argument, which defaults to 10.
+    &#34;&#34;&#34;
+    command = CommandFunctionAdapter(func)
+    AccountRunner(session_provider, max_workers=max_workers).run(
+        command, accounts, key=key
+    )
+    return (command.results, command.errors)</code></pre>
+</details>
 </dd>
 <dt id="awsrun.runner.regional_execute_function"><code class="name flex">
 <span>def <span class="ident">regional_execute_function</span></span>(<span>session_provider, accounts, regions, func, key=&lt;function &lt;lambda&gt;&gt;, max_workers=10)</span>
@@ -1385,6 +1413,36 @@ using account objects, you must provide a <code>key</code> function that returns
 account ID as a string from the account object.</p>
 <p>Accounts are processed concurrently using a worker pool. The default number
 of workers is specified by the <code>max_workers</code> argument, which defaults to 10.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def regional_execute_function(
+    session_provider, accounts, regions, func, key=lambda x: x, max_workers=10
+):
+    &#34;&#34;&#34;Executes a function across one or more accounts and regions concurrently.
+
+    This is a convenience function that instantiates an `AccountRunner`, wraps a
+    `func` in a `RegionalCommandFunctionAdapter`, runs the command across a list
+    of `accounts` and `regions`, and then returns a tuple of dicts representing
+    the results and errors after all accounts have been processed. The returned
+    dicts are keyed by a tuple of account and region.
+
+    The list of `accounts` can be a simple list of strings of account IDs or it
+    can be a list of objects that represent accounts. Passing objects can be
+    useful as each object is passed to `func` when processing an account. When
+    using account objects, you must provide a `key` function that returns the
+    account ID as a string from the account object.
+
+    Accounts are processed concurrently using a worker pool. The default number
+    of workers is specified by the `max_workers` argument, which defaults to 10.
+    &#34;&#34;&#34;
+    command = RegionalCommandFunctionAdapter(regions, func)
+    AccountRunner(session_provider, max_workers=max_workers).run(
+        command, accounts, key=key
+    )
+    return (command.results, command.errors)</code></pre>
+</details>
 </dd>
 <dt id="awsrun.runner.max_thread_limit"><code class="name flex">
 <span>def <span class="ident">max_thread_limit</span></span>(<span>count)</span>
@@ -1407,6 +1465,45 @@ def regional_execute(self, session, acct, region):
 <p>Note: while this decorator can limit the number of concurrent executions, it
 will not increase the number of workers in the <code><a title="awsrun.runner.AccountRunner" href="#awsrun.runner.AccountRunner">AccountRunner</a></code> worker pool.
 This is a rate limiting decorator only.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def max_thread_limit(count):
+    &#34;&#34;&#34;Decorator to limit maximum number of concurrent executions.
+
+    In some cases, the author of a `Command` may wish to restrict the number of
+    concurrent executions of a command, regardless of the number of workers the
+    `AccountRunner` has been instantiated with. awsrun CLI users can specify the
+    number of workers via the `--threads` flag, which defaults to 10.
+
+    Use this with `Command.execute` or `RegionalCommand.regional_execute` to
+    guarantee concurrent executions do not exceed the specified `count`. When
+    the number of concurrent executions exceed the value, they will block until
+    an existing execution has completed. For example, the following will limit
+    concurrent executions to one:
+
+        @max_thread_limit(1)
+        def regional_execute(self, session, acct, region):
+           pass
+
+    Note: while this decorator can limit the number of concurrent executions, it
+    will not increase the number of workers in the `AccountRunner` worker pool.
+    This is a rate limiting decorator only.
+    &#34;&#34;&#34;
+
+    def decorator(func):
+        sem = threading.BoundedSemaphore(count)
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            with sem:
+                return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator</code></pre>
+</details>
 </dd>
 <dt id="awsrun.runner.get_paginated_resources"><code class="name flex">
 <span>def <span class="ident">get_paginated_resources</span></span>(<span>client, paginator, page_key, predicate=&lt;function &lt;lambda&gt;&gt;, **kwargs)</span>
@@ -1456,6 +1553,73 @@ balancer, one might write:</p>
     lambda l: l["Protocol"] in ["UDP", "TCP_UDP"],
     LoadBalancer=lb_arn)
 </code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_paginated_resources(
+    client,
+    paginator,
+    page_key,
+    predicate: Callable[[dict], bool] = lambda _: True,
+    **kwargs,
+):
+    &#34;&#34;&#34;Return the full list of boto3 resources via a paginator.
+
+    `client` is a boto3 client.  `paginator` is the name (string) of the
+    paginator.  `page_key` is the name (string) of the dictionary key used in
+    the paginated responses.
+
+    `predicate` is a function that determines which resources are included in
+    the list.  The function takes a single argument, the resource. If it returns
+    `True`, the resource is included, otherwise it is excluded.
+
+    The remaining `kwargs` are used to specify which resources to retrieve. Some
+    paginators do not require any additional arguments, but others do to
+    restrict the size of the response.
+
+    For example, to collect the list of load balancers, one might write:
+
+        def get_lbs(client):
+            lbs = []
+            paginator = client.get_paginator(&#34;describe_load_balancers&#34;)
+            for page in paginator.paginate():
+                for lb in page[&#34;LoadBalancers&#34;]:
+                    lbs.append(lb)
+            return lbs
+
+    This can be simplified by using `get_paginated_resources`:
+
+        lbs = get_paginated_resources(client, &#34;describe_load_balancers&#34;, &#34;LoadBalancers&#34;)
+
+    As another example, to collect the list of UDP listeners for a load
+    balancer, one might write:
+
+        def get_listeners(client, lb_arn):
+            listeners = []
+            paginator = client.get_paginator(&#34;describe_listeners&#34;)
+            for page in paginator.paginate(LoadBalancerArn=lb_arn):
+                for listener in page[&#34;Listeners&#34;]:
+                    if listener[&#34;Protocol&#34;] in [&#34;UDP&#34;, &#34;TCP_UDP&#34;]:
+                        listeners.append(listener)
+            return listeners
+
+    This, too, can be simplified using `get_paginated_resources`:
+
+        listeners = get_paginated_resources(
+            client,
+            &#34;describe_listeners&#34;,
+            &#34;Listeners&#34;,
+            lambda l: l[&#34;Protocol&#34;] in [&#34;UDP&#34;, &#34;TCP_UDP&#34;],
+            LoadBalancer=lb_arn)
+    &#34;&#34;&#34;
+    resources = []
+    for page in client.get_paginator(paginator).paginate(**kwargs):
+        for resource in page[page_key]:
+            if predicate(resource):
+                resources.append(resource)
+    return resources</code></pre>
+</details>
 </dd>
 </dl>
 </section>
@@ -1831,6 +1995,25 @@ The method is not executed before each account is processed, but
 rather once before any accounts are processed.</p>
 <p>To provide backwards compatibility, the default implementation invokes
 <code><a title="awsrun.runner.Command.pre_hook" href="#awsrun.runner.Command.pre_hook">Command.pre_hook()</a></code>.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pre_hook_with_context(self, context):
+    &#34;&#34;&#34;Invoked by `AccountRunner.run` before any account processing starts.
+
+    This method is invoked only once per invocation of `AccountRunner.run`.
+    The `context` parameter is the opaque object passed as the context
+    parameter to `AccountRunner.run`. It is intended to provide access to
+    additional runtime context information for the command to leverage.
+    The method is not executed before each account is processed, but
+    rather once before any accounts are processed.
+
+    To provide backwards compatibility, the default implementation invokes
+    `Command.pre_hook`.
+    &#34;&#34;&#34;
+    self.pre_hook()</code></pre>
+</details>
 </dd>
 <dt id="awsrun.runner.Command.pre_hook"><code class="name flex">
 <span>def <span class="ident">pre_hook</span></span>(<span>self)</span>
@@ -1843,6 +2026,22 @@ default implementation of <code>pre_hook_with_context</code>. The method is not
 executed before each account is processed, but rather once before
 any accounts are processed.</p>
 <p>The default implementation does nothing.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pre_hook(self):
+    &#34;&#34;&#34;Invoked in the default implementation of `pre_hook_with_context`
+    before any account processing starts.
+
+    This method is invoked in the event a command does not override the
+    default implementation of `pre_hook_with_context`. The method is not
+    executed before each account is processed, but rather once before
+    any accounts are processed.
+
+    The default implementation does nothing.
+    &#34;&#34;&#34;</code></pre>
+</details>
 </dd>
 <dt id="awsrun.runner.Command.post_hook"><code class="name flex">
 <span>def <span class="ident">post_hook</span></span>(<span>self)</span>
@@ -1853,6 +2052,20 @@ any accounts are processed.</p>
 It is not executed after each account is processed, but rather once
 after all accounts have been processed.</p>
 <p>The default implementation does nothing.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def post_hook(self):
+    &#34;&#34;&#34;Invoked by `AccountRunner.run` after all processing has completed.
+
+    This method is invoked only once per invocation of `AccountRunner.run`.
+    It is not executed after each account is processed, but rather once
+    after all accounts have been processed.
+
+    The default implementation does nothing.
+    &#34;&#34;&#34;</code></pre>
+</details>
 </dd>
 <dt id="awsrun.runner.Command.execute"><code class="name flex">
 <span>def <span class="ident">execute</span></span>(<span>self, session, acct)</span>
@@ -1901,6 +2114,54 @@ string buffer and return the buffer at the end of the method:</p>
 </code></pre>
 </li>
 </ol></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def execute(self, session, acct):
+    &#34;&#34;&#34;Invoked by `AccountRunner.run` to process an account.
+
+    This method is invoked once for each account. The `session` parameter is
+    a boto3 Session object, or similar cloud SDK session-like object, with
+    credentials for the account being processed. The `acct` will be the same
+    object that was passed in the list of accounts to `AccountRunner.run`.
+
+    The return value from this method can be of any type. By default, this
+    value will be printed to the console if a `Command.collect_results`
+    implementation is not provided. If an exception is raised during the
+    execution, it will be printed to the console on standard error.
+
+    Note the following items of importance:
+
+    1. Command authors must implement this method. There is no default
+       implementation.
+
+    2. Recognize that this method will be invoked concurrently, so
+       modification of instance variables from within this method requires
+       synchronization. If accumulating results, define a custom
+       `Command.collect_results` which is guaranteed to be invoked
+       sequentially.
+
+    3. Do not call `sys.exit` or the entire program will terminate. The
+       proper way to exit from this method is either by returning a value or
+       by raising an exception.
+
+    4. Do not print directly to the console as output will be interspersed
+       with other output from other concurrently running threads processing
+       other accounts. The best practice when printing is to accumulate a
+       string buffer and return the buffer at the end of the method:
+
+            def execute(self, session, acct):
+                out = io.StringIO()
+
+                # Do stuff
+                print(&#39;This will be printed to the console eventually&#39;, file=out)
+                # Do more stuff
+
+                return out.getvalue()
+    &#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
 </dd>
 <dt id="awsrun.runner.Command.collect_results"><code class="name flex">
 <span>def <span class="ident">collect_results</span></span>(<span>self, acct, get_result)</span>
@@ -1922,6 +2183,38 @@ variables without the need for synchronization.</p>
 to the console on standard output. If the command's execution raises an
 exception, it prints the exception to standard error and logs the stack
 trace at WARN log level.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def collect_results(self, acct, get_result):
+    &#34;&#34;&#34;Invoked by `AccountRunner.run` after processing an account.
+
+    This method is invoked by `AccountRunner.run` after each `acct` has been
+    processed by `Command.execute`. The results from execute are provided
+    via `get_result`, which is a callable that will either return the value
+    returned by execute or raise an exception if one was raised. The `acct`
+    parameter will be the same object that was passed in the list of
+    accounts to `AccountRunner.run`.
+
+    Note: `Command.collect_results` is guaranteed to be called sequentially
+    by the main thread, so it is safe to mutate instance variables attached
+    to the `Command` object from within this method. This allows command
+    authors to safely accumulate results of processing within instance
+    variables without the need for synchronization.
+
+    The default implementation prints the return value of `Command.execute`
+    to the console on standard output. If the command&#39;s execution raises an
+    exception, it prints the exception to standard error and logs the stack
+    trace at WARN log level.
+    &#34;&#34;&#34;
+    try:
+        print(get_result(), end=&#34;&#34;, flush=True)
+
+    except Exception as e:  # pylint: disable=broad-except
+        LOG.warning(&#34;%s: error: %s&#34;, acct, e, exc_info=True)
+        print(f&#34;{acct}: error: {e}&#34;, flush=True, file=sys.stderr)</code></pre>
+</details>
 </dd>
 </dl>
 </dd>
@@ -2287,6 +2580,65 @@ string buffer and return the buffer at the end of the method:</p>
 </code></pre>
 </li>
 </ol></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def regional_execute(self, session, acct, region):
+    &#34;&#34;&#34;Invoked by `AccountRunner.run` to process an account / region pair.
+
+    This method is invoked for each account and region pair. The `session`
+    parameter is a boto3 Session object, or similar cloud SDK session-like
+    object, with credentials for the account being processed. The `acct`
+    will be the same object that was passed in the list of accounts to
+    `AccountRunner.run`. `region` is a string representing the region name
+    such as &#34;us-east-1&#34;.
+
+    The return value can be of any type. It will be, by default, printed to
+    the console if a `RegionalCommand.regional_collect_results`
+    implementation is not provided. If an exception is raised during the
+    execution, it will be printed to the console on standard error.
+
+    Note the following items of importance:
+
+    1. Command authors must implement this method. There is no default
+       implementation.
+
+    2. Recognize that this method will be invoked concurrently, so
+       modification of instance variables from within this method requires
+       synchronization. If accumulating results, define a custom
+       `RegionalCommand.regional_collect_results` which is guaranteed to be
+       invoked sequentially.
+
+    3. Although accounts are processed concurrently, the regions are
+       processed sequentially for each account. This ensures that multiple
+       regions for the same account are never executed at the same time. It
+       provides command authors a guarantee that an account and all its
+       regions will be processed sequentially. The same session object and
+       credentials are provided to this method for each region being
+       processed. Credentials could expire if processing of regions takes a
+       significant amount of time.
+
+    4. Do not call `sys.exit` or the entire program will terminate. The
+       proper way to exit from this method is either by returning a value or
+       by raising an exception.
+
+    5. Do not print directly to the console as output will be interspersed
+       with other output from other concurrently running threads processing
+       other accounts. The best practice when printing is to accumulate a
+       string buffer and return the buffer at the end of the method:
+
+            def regional_execute(self, session, acct, region):
+                out = io.StringIO()
+
+                # Do stuff
+                print(&#39;This will be printed to the console eventually&#39;, file=out)
+                # Do more stuff
+
+                return out.getvalue()
+    &#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
 </dd>
 <dt id="awsrun.runner.RegionalCommand.regional_collect_results"><code class="name flex">
 <span>def <span class="ident">regional_collect_results</span></span>(<span>self, acct, region, get_result)</span>
@@ -2310,6 +2662,40 @@ synchronization.</p>
 <code><a title="awsrun.runner.RegionalCommand.regional_execute" href="#awsrun.runner.RegionalCommand.regional_execute">RegionalCommand.regional_execute()</a></code> to the console on standard output. If
 the command's execution raises an exception, it prints the exception to
 standard error and logs the stack trace at WARN log level.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def regional_collect_results(self, acct, region, get_result):
+    &#34;&#34;&#34;Invoked by `AccountRunner.run` after processing an account and region.
+
+    This method is invoked by `AccountRunner.run` after each `acct` /
+    `region` pair has been processed by `RegionalCommand.regional_execute`.
+    The results from execute are provided via `get_result`, which is a
+    callable that will either return the value returned by the regional
+    execute method or raise an exception if one was raised. The `acct`
+    parameter will be the same object that was passed in the list of
+    accounts to `AccountRunner.run`.
+
+    Note: `RegionalCommand.regional_collect_results` is guaranteed to be
+    called sequentially by the main thread, so it is safe to mutate instance
+    variables attached to the `RegionalCommand` object from within this
+    method. This allows command authors to safely accumulate results of
+    processing within instance variables without the need for
+    synchronization.
+
+    The default implementation prints the return value of
+    `RegionalCommand.regional_execute` to the console on standard output. If
+    the command&#39;s execution raises an exception, it prints the exception to
+    standard error and logs the stack trace at WARN log level.
+    &#34;&#34;&#34;
+    try:
+        print(get_result(), end=&#34;&#34;, flush=True)
+
+    except Exception as e:  # pylint: disable=broad-except
+        LOG.warning(&#34;%s/%s: error: %s&#34;, acct, region, e, exc_info=True)
+        print(f&#34;{acct}/{region}: error: {e}&#34;, flush=True, file=sys.stderr)</code></pre>
+</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2683,6 +3069,115 @@ as-is to <code><a title="awsrun.runner.Command.pre_hook_with_context" href="#aws
 for the caller to pass a runtime context to the command being
 executed. See the <a href="#context-with-pre-hook">Context With Pre-Hook</a>
 section of the use guide for an example.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self, cmd, accounts, key=lambda x: x, context=None):
+    &#34;&#34;&#34;Execute a command concurrently on the specified accounts.
+
+    This method will block until all accounts have been processed. The
+    return value is the number of seconds it took to process the accounts.
+
+    The `cmd` must be a subclass of `Command`. The runner will invoke
+    `Command.pre_hook_with_context` once before it starts processing any
+    accounts passing it the `context` argument, which is simply passed
+    through as an opaque object. This can be used to pass a runtime context
+    to a `Command`.
+
+    After the pre-hook has been invoked, accounts are then processed
+    concurrently and `Command.execute` is invoked by a worker for each
+    account. As each execute method returns, the main thread will invoke
+    `Command.collect_results`, which ensures results are collected
+    sequentially. Finally, after all accounts have been processed,
+    `Command.post_hook` is called.
+
+    The specified list of `accounts` can be of any type as long as the
+    function specified by the `key` parameter returns a string representing
+    the cloud account ID when passed one of these accounts. This allows
+    users to pass any object representing an account all the way through to
+    `Command.execute`. The only contract is that a `key` function must be
+    provided, so workers can obtain the account ID, which is used to request
+    a session for the account.
+
+    For example, `accounts` could be a simple list of strings of AWS account
+    IDs. The default value of `key` is the identity function, which returns
+    the string itself satisfying the contract above. Alternatively,
+    `accounts` could be a list of dicts containing metadata for an account,
+    which would then be available for command authors in `Command.execute`.
+    If the list of accounts specified contained the following:
+
+        [
+            {&#39;id&#39;: &#39;100200300400&#39;, &#39;env&#39;: &#39;prod&#39;, &#39;status&#39;: &#39;active&#39;},
+            {&#39;id&#39;: &#39;200300400100&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+            {&#39;id&#39;: &#39;300400100200&#39;, &#39;env&#39;: &#39;dev&#39;, &#39;status&#39;: &#39;active&#39;},
+        ]
+
+    Then, the `key` argument must be specified as `lambda x: x[&#39;id&#39;]`, which
+    will return the account ID string satisfying the contract above.
+    Likewise, if accounts were a list of objects that contained an `acct_id`
+    attribute, `key` must be defined as `lambda x: x.acct_id` to satisfy the
+    contract. If the key function does not return a string or throws an
+    exception, then an `InvalidAccountIDError` is raised in the worker
+    thread processing the account, which will then propagate to the
+    `Command.collect_results`.
+
+    The optional `context` parameter can be any value. It is passed
+    as-is to `Command.pre_hook_with_context`. It provides a mechanism
+    for the caller to pass a runtime context to the command being
+    executed. See the [Context With Pre-Hook](#context-with-pre-hook)
+    section of the use guide for an example.
+    &#34;&#34;&#34;
+    # This will ensure v1 users of awsrun aren&#39;t mixing v1 Command&#39;s with
+    # the v2 framework.
+    if not isinstance(cmd, Command):
+        raise TypeError(f&#34;&#39;{cmd}&#39; must be a subclass of awsrun.runner.Command&#34;)
+
+    # Wrapper to ensure the user-supplied key function returns an string of
+    # digits (an AWS account id). It will throw an InvalidAccountIDError
+    # if there are any exceptions thrown from use of their key function.
+    key = _valid_key_fn(key)
+
+    start = time.time()
+    cmd.pre_hook_with_context(context)
+
+    with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
+        # The worker task processes a single account. The worker task takes
+        # care to capture the result of the command&#39;s execute method. We
+        # don&#39;t want a poorly written command that raises an exception to
+        # terminate the main program, so the return value of the command&#39;s
+        # execute method or any exception raised is wrapped in a callable
+        # that is provided back to the command via its collect_results
+        # method. When the callable is later invoked, it will return the
+        # return value from execute or it will raise the caught exception.
+        def worker_task(acct):
+            try:
+                acct_id = key(acct)  # Get the acct id from the account obj
+                session = self.session_provider.session(acct_id)
+                return _wrap_result(cmd.execute, session, acct)
+
+            except Exception as e:  # pylint: disable=broad-except
+                # NOTE: exceptions thrown by a Command&#39;s execute are not
+                # handled in this block, but in wrap_result above. This
+                # block handles exceptions that occur while obtaining a
+                # session for the account.
+                return _wrap_exception(e)
+
+        # Submit all of the jobs for execution to the thread pool.
+        f2a = {pool.submit(worker_task, a): a for a in accounts}
+
+        # NOTE: collect_results is called by the main thread sequentially
+        # after each worker completes their task. This is a guarantee for
+        # Command authors as it allows them to safely update instance vars
+        # in the Command because it is not safe to do so in the execute
+        # method which is invoked in a concurrently running worker thread.
+        for future in as_completed(f2a):
+            acct = f2a[future]
+            cmd.collect_results(acct, future.result())
+
+    cmd.post_hook()
+    return time.time() - start</code></pre>
+</details>
 </dd>
 </dl>
 </dd>
@@ -2793,7 +3288,7 @@ object, so this account cannot be processed.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
