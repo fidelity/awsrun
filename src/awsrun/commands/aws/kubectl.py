@@ -481,7 +481,8 @@ users:
 
 
 def _save_output(name, text):
-    with name.open("w") as out:
+    fd = os.open(name, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as out:
         out.write(text)
 
 
@@ -500,7 +501,7 @@ def _save_kubecfg(name, namespace, account_id, region, cluster, session):
     }
 
     kubedir = Path.home() / Path(".kube")
-    kubedir.mkdir(parents=True, exist_ok=True)
+    kubedir.mkdir(mode=0o700, parents=True, exist_ok=True)
 
     filename = kubedir / Path(f"awsrun-{account_id}-{region}-{name}-{namespace}")
     _save_output(filename, _KUBECONFIG.format(**substitions))
