@@ -302,7 +302,13 @@ class CachingSessionProvider(SessionProvider):
     This class cannot be instantiated directly. Users of this class must provide
     an implementation for `credentials` and must invoke its constructor. Caching
     is based on the IAM `role` being assumed and the the account ID. Credentials
-    are cached for `duration` seconds, which defaults to 1 hour.
+    are cached for the expiry returned from AWS assume_role calls.
+
+    For backwards compatibility, the `duration` parameter is provided to
+    specify the maximum cache duration. If the credentials returned from AWS
+    have an expiration, then that expiration is used to determine when to
+    refresh the credentials. If not, then the `duration` parameter is used to
+    determine when to refresh the credentials.
     """
 
     def __init__(self, role, duration=3600):
@@ -332,9 +338,10 @@ class CachingSessionProvider(SessionProvider):
             # the lock may seem redundant, but it's safer to make this explicit.
             ev = self._creds.setdefault(
                 (acct_id, self._role),
-                # TODO: use new ValueWithExpiry to set expiration as its
-                # provided in the response from AWS rather than guessing half-life.
-                ExpiringValue(lambda: self.credentials(acct_id), self._duration / 2),
+                ExpiringValue(
+                    lambda: self._expiry_value(self.credentials(acct_id)),
+                    self._duration,
+                ),
             )
 
         creds = ev.value()
@@ -344,6 +351,22 @@ class CachingSessionProvider(SessionProvider):
             aws_secret_access_key=creds["SecretAccessKey"],
             aws_session_token=creds["SessionToken"],
         )
+
+    # This function is used to wrap the credentials returned by the subclass's
+    # `credentials` method in a ValueWithExpiry object. If the credentials
+    # include an "Expiration" key, then the expiration time is used to set the
+    # expiration time of the ValueWithExpiry object. If not, then the
+    # credentials are returned as-is and the ExpiringValue will use the
+    # max_age specified in the constructor.
+    @staticmethod
+    def _expiry_value(creds):
+        if not creds.get("Expiration"):
+            return creds
+
+        # Subtract 5 mins from the expiration time to avoid edge cases where the
+        # credentials are expired by the time they are used.
+        expiration = creds["Expiration"].timestamp() - 300
+        return ValueWithExpiry(creds, expires_at=expiration)
 
     def credentials(self, acct_id):
         """Returns a dict containing AWS credentials for the requested account.
