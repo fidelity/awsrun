@@ -121,7 +121,7 @@ def _trusted_arns(policy):
 
     arns = []
     for statement in policy.get("Statement", []):
-        if not statement.get("Effect", "") == "Allow":
+        if statement.get("Effect", "") != "Allow":
             continue
         for arn in statement.get("Principal", {}).values():
             if isinstance(arn, list):

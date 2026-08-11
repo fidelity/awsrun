@@ -257,12 +257,15 @@ class CLICommand(RegionalCommand):
                 parser.error("Do not specify --{arg} with awsrun kubectl")
             delattr(args, attr)
 
-        if args.awsrun_annotate and args.output:
-            if args.awsrun_annotate != "text":
-                if args.awsrun_annotate != args.output:
-                    parser.error(
-                        "When specifying --awsrun-annotate, you do not need the --output flag"
-                    )
+        if (
+            args.awsrun_annotate
+            and args.output
+            and args.awsrun_annotate != "text"
+            and args.awsrun_annotate != args.output
+        ):
+            parser.error(
+                "When specifying --awsrun-annotate, you do not need the --output flag"
+            )
 
         return cls(**vars(args))
 
@@ -363,9 +366,8 @@ class CLICommand(RegionalCommand):
                     cmd,
                     env=os.environ,
                     check=False,
-                    universal_newlines=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
+                    text=True,
+                    capture_output=True,
                 )
                 results.append(_Result(result.stdout, result.stderr, name, namespace))
 
@@ -392,7 +394,7 @@ class CLICommand(RegionalCommand):
                 d["Results"] = loader(result.stdout)
                 dumper(d, sys.stdout, indent=4)
                 print()
-            except Exception as e:  # pylint: disable=broad-except
+            except Exception as e:
                 annotate_lines(result, f"cannot parse output: {e}", file=sys.stderr)
 
         try:
@@ -400,7 +402,7 @@ class CLICommand(RegionalCommand):
             # ProcessCompleted object from the subprocess.run() method above ...
             results = get_result()
 
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             # ... unless there was an exception in which case it is raised by
             # the call to get_result and we handle it here.
             LOG.info("%s/%s: error: %s", acct, region, e, exc_info=True)
@@ -509,8 +511,8 @@ def _save_kubecfg(name, namespace, account_id, region, cluster, session):
 
 
 def _list_clusters(eks):
-    clusters = []
-    for page in eks.get_paginator("list_clusters").paginate():
-        for name in page["clusters"]:
-            clusters.append(name)
-    return clusters
+    return [
+        name
+        for page in eks.get_paginator("list_clusters").paginate()
+        for name in page["clusters"]
+    ]

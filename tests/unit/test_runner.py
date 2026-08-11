@@ -4,8 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# pylint: disable=redefined-outer-name,missing-docstring
-
 import pytest
 
 from awsrun.runner import AccountRunner, Command

@@ -68,7 +68,7 @@ class CWMetrics:
         self._samples = samples
         self._ingestion_interval = ingestion_interval
         self._period = self._compute_period()
-        self._beg = self._end = datetime.now()
+        self._beg = self._end = datetime.now(timezone.utc)
 
         _LOG.info(
             "CWMetrics(client, last=%d, samples=%d, ingestion_interval=%d)",

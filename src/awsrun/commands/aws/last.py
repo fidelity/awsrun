@@ -144,7 +144,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from functools import partial
 from itertools import chain, cycle
-from typing import Optional
+from typing import ClassVar, Optional
 
 from awsrun.argparse import AppendAttributeValuePair
 from awsrun.config import Bool, Dict, Int, List, Str
@@ -932,7 +932,7 @@ ExportPopup {
     """
 
     TITLE = "CloudTrail Viewer"
-    BINDINGS = [
+    BINDINGS: ClassVar[list] = [
         ("q", "quit", "Quit"),
         ("c", "copy", "Copy"),
         ("e", "export_popup", "Export"),
@@ -945,7 +945,7 @@ ExportPopup {
     total_count = reactive(0)
     filtered_count = reactive(0)
 
-    theme = {
+    theme: ClassVar[dict] = {
         "dark": Syntax.get_theme("dracula"),
         "light": Syntax.get_theme("friendly"),
     }

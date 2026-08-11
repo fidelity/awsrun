@@ -507,9 +507,8 @@ class CLICommand(RegionalCommand):
             cmd,
             env=env,
             check=False,
-            universal_newlines=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            text=True,
+            capture_output=True,
         )
 
         # Lastly, we return the ProcessCompleted object from the run() method.
@@ -543,7 +542,7 @@ class CLICommand(RegionalCommand):
             # ProcessCompleted object from the subprocess.run() method above ...
             result = get_result()
 
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             # ... unless there was an exception in which case it is raised by
             # the call to get_result and we handle it here.
             LOG.info("%s/%s: error: %s", acct, region, e, exc_info=True)

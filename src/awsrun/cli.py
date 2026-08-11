@@ -778,7 +778,7 @@ def main():
         csp = _CSP.from_prog_name(sys.argv[0])
         _cli(csp)
 
-    except Exception as e:  # pylint: disable=broad-except
+    except Exception as e:
         # Don't print stack traces by default as it can be overwhelming (scary)
         # for those not familiar with Python development.
         if os.getenv("AWSRUN_TRACE"):
@@ -1105,8 +1105,8 @@ def _print_valid_commands(commands, out=sys.stdout):
         return
 
     print("The following are the available commands:\n", file=out)
-    max_cmd_len = max(len(name) for name in commands.keys())
-    for name in sorted(commands.keys()):
+    max_cmd_len = max(len(name) for name in commands)
+    for name in sorted(commands):
         # By convention, as documented in user documentation, class docstring
         # is used when printing a summary of commands.
         docstring = commands[name].__doc__ or ""

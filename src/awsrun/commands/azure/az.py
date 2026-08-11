@@ -348,9 +348,8 @@ class CLICommand(Command):
         result = subprocess.run(
             cmd,
             check=False,
-            universal_newlines=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            text=True,
+            capture_output=True,
         )
 
         # Lastly, we return the ProcessCompleted object from the run() method.
@@ -364,7 +363,7 @@ class CLICommand(Command):
         def annotate_lines(text, delimiter=": ", file=sys.stdout, separator=False):
             for line in filter(None, text.split("\n")):
                 print(f"{acct}{delimiter}{line}", file=file, flush=True)
-            if separator and not text == "\n":
+            if separator and text != "\n":
                 print()
 
         def annotate_json(text):
@@ -398,7 +397,7 @@ class CLICommand(Command):
             # ProcessCompleted object from the subprocess.run() method above ...
             result = get_result()
 
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             # ... unless there was an exception in which case it is raised by
             # the call to get_result and we handle it here.
             LOG.info("%s: error: %s", acct, e, exc_info=True)

@@ -4,8 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# pylint: disable=redefined-outer-name,missing-docstring
-
 import json
 import os
 import random
@@ -56,7 +54,7 @@ class TestValueWithExpiry:
     """Tests for the ValueWithExpiry wrapper class."""
 
     def test_ttl_sets_expires_at(self):
-        with freeze_time("2025-01-01 12:00:00") as frozen_datetime:
+        with freeze_time("2025-01-01 12:00:00"):
             wrapper = cache.ValueWithExpiry("test_value", ttl=3600)
             assert wrapper.value == "test_value"
             # expires_at should be current time + ttl

@@ -126,9 +126,6 @@ def _wait_once_per_scope(func):
     return wrapper
 
 
-# pylint: disable=too-few-public-methods
-
-
 class CredsViaAzureDefault(SessionProvider):
     """A session provider that obtains credentials from a variety of sources.
 

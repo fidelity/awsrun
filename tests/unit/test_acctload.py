@@ -4,8 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# pylint: disable=redefined-outer-name,missing-docstring
-
 import pytest
 
 from awsrun import acctload
@@ -69,41 +67,41 @@ def many_acct_list():
 @pytest.mark.parametrize(
     "test_input, include, exclude, expected",
     [
-        (["100200300400"], {}, {}, set(["100200300400"])),
+        (["100200300400"], {}, {}, {"100200300400"}),
         (["100200300400"], {"status": ["suspended"]}, {}, set()),
         (
             ["300400100200", "100200300400"],
             {},
             {},
-            set(["300400100200", "100200300400"]),
+            {"300400100200", "100200300400"},
         ),
         (
             ["300400100200", "100200300400"],
             {},
             {"status": ["suspended"]},
-            set(["100200300400"]),
+            {"100200300400"},
         ),
-        (["300400100200", "100200300400"], {"env": ["dev"]}, {}, set(["300400100200"])),
-        ([], {}, {}, set(["100200300400", "200300400100", "300400100200"])),
-        ([], {"env": ["prod", "nonprod"]}, {}, set(["100200300400", "200300400100"])),
+        (["300400100200", "100200300400"], {"env": ["dev"]}, {}, {"300400100200"}),
+        ([], {}, {}, {"100200300400", "200300400100", "300400100200"}),
+        ([], {"env": ["prod", "nonprod"]}, {}, {"100200300400", "200300400100"}),
         (
             [],
             {"status": ["active", "no_such_value"]},
             {},
-            set(["100200300400", "200300400100"]),
+            {"100200300400", "200300400100"},
         ),
         (
             [],
             {"status": ["active"]},
             {"env": ["nonprod", "dev"]},
-            set(["100200300400"]),
+            {"100200300400"},
         ),
         ([], {"status": ["active"]}, {"env": ["nonprod", "dev", "prod"]}, set()),
         (
             [],
             {"status": ["active", "suspended"]},
             {"status": ["active", "no_such_value"]},
-            set(["300400100200"]),
+            {"300400100200"},
         ),
     ],
 )
@@ -179,10 +177,6 @@ def test_load_basic_with_list_of_accts(test_input, expected):
     [
         ({"10": {"id": "10"}}, [{"id": "10"}]),
         ({"10": {"id": "10"}, "20": {"id": "20"}}, [{"id": "10"}, {"id": "20"}]),
-        (
-            {"10": {"bu": "a"}, "20": {"bu": "b"}},
-            [{"id": "10", "bu": "a"}, {"id": "20", "bu": "b"}],
-        ),
         (
             {"10": {"bu": "a"}, "20": {"bu": "b"}},
             [{"id": "10", "bu": "a"}, {"id": "20", "bu": "b"}],
@@ -367,7 +361,6 @@ def test_load_with_invalid_path(path, test_input, expected):
     ],
 )
 def test_convert_keys_to_valid_attribute_names(test_input, expected):
-    # pylint: disable=protected-access
     acctload._convert_keys_to_valid_attribute_names(test_input)
     assert test_input == expected, "dict key names not rewritten"
 
@@ -396,5 +389,4 @@ def test_convert_keys_to_valid_attribute_names(test_input, expected):
     ],
 )
 def test_make_valid_attribute_name(test_input, expected):
-    # pylint: disable=protected-access
     assert acctload._make_valid_attribute_name(test_input) == expected

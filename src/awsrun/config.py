@@ -73,13 +73,12 @@ import logging
 import re
 from functools import reduce
 from pathlib import Path
+from typing import ClassVar
 
 import yaml
 
 LOG = logging.getLogger(__name__)
 
-# pylint: disable=unidiomatic-typecheck
-#
 # Because isinstance(True, int) is true, we do not rely on isinstance for our
 # type checking in this module as we want to match exact types. We don't want to
 # consider subclasses and True should not type check successfully against an
@@ -97,7 +96,7 @@ class Config:
     load configs from files.
     """
 
-    _filetypes = {}
+    _filetypes: ClassVar[dict] = {}
 
     @classmethod
     def register_filetype(cls, config_class, *extensions):
@@ -164,8 +163,6 @@ class Config:
             c.get('path', 'to', 'value', type=And(StrMatch(r'\\d+'), StrMatch(r'[A-Z]')))
             c.get('path', 'to', 'value', type=Not(Or(Int, Float)))
         """
-        # pylint: disable=redefined-builtin
-
         # This one-liner will recursively follow a list of keys into a
         # dictionary and return the value. If a key does not exist, return an
         # empty dict.
@@ -200,7 +197,7 @@ class Config:
 
         # Finally, all other cases indicate a type error.
         raise TypeError(
-            f"Error in config: {'->'.join(keys)}: not a {type}: {repr(value)}"
+            f"Error in config: {'->'.join(keys)}: not a {type}: {value!r}"
         )
 
 
@@ -309,8 +306,7 @@ class Const(Type):
         # we did not check types, then this would report incorrect results.
         # Likewise, we cannot use isinstance here either as a bool is a subclass
         # of int, so it would also report incorrect results.
-        if type(obj) != type(self.const):  # noqa: E721
-            return False
+        if type(obj) != type(self.const):            return False
         return obj == self.const
 
     def __str__(self):
@@ -338,8 +334,7 @@ class Scalar(Type):
         self.type = type_
 
     def type_check(self, obj):
-        return type(obj) == self.type  # noqa: E721
-
+        return type(obj) == self.type
     def __str__(self):
         return self.type.__name__
 
@@ -354,8 +349,7 @@ class StrMatch(Type):
         self.pattern = pattern
 
     def type_check(self, obj):
-        if type(obj) != str:  # noqa: E721
-            return False
+        if type(obj) != str:            return False
         return bool(re.search(self.pattern, obj))
 
     def __str__(self):
@@ -366,8 +360,7 @@ class IpAddress(Type):
     """Represents a string matching an IP address (v4 or v6)."""
 
     def type_check(self, obj):
-        if type(obj) != str:  # noqa: E721
-            return False
+        if type(obj) != str:            return False
         try:
             ipaddress.ip_address(obj)
             return True
@@ -382,8 +375,7 @@ class IpNetwork(Type):
     """Represents a string matching an IP network (v4 or v6)."""
 
     def type_check(self, obj):
-        if type(obj) != str:  # noqa: E721
-            return False
+        if type(obj) != str:            return False
         try:
             ipaddress.ip_network(obj)
             return True
@@ -398,8 +390,7 @@ class FileType(Type):
     """Represents a string pointing to an existing file."""
 
     def type_check(self, obj):
-        if type(obj) != str:  # noqa: E721
-            return False
+        if type(obj) != str:            return False
         return Path(obj).exists()
 
     def __str__(self):
@@ -462,8 +453,7 @@ class List(Type):
         self.element_type = element_type
 
     def type_check(self, obj):
-        if type(obj) != list:  # noqa: E721
-            return False
+        if type(obj) != list:            return False
         return all(self.element_type.type_check(e) for e in obj)
 
     def __str__(self):
@@ -485,9 +475,8 @@ class Dict(Type):
         self.value_type = value_type
 
     def type_check(self, obj):
-        if type(obj) != dict:  # noqa: E721
-            return False
-        return all(self.key_type.type_check(k) for k in obj.keys()) and all(
+        if type(obj) != dict:            return False
+        return all(self.key_type.type_check(k) for k in obj) and all(
             self.value_type.type_check(v) for v in obj.values()
         )
 

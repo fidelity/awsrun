@@ -4,8 +4,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# pylint: disable=redefined-outer-name,missing-docstring
-
 import json
 
 import pytest
@@ -198,7 +196,6 @@ def test_const_type(const_value, test_input, expected):
         (["a", 10], "b", False),
         (["a", 10], "a", True),
         (["a", 10], 10, True),
-        ([], 30, False),
         ([], 30, False),
     ],
 )
