@@ -313,6 +313,11 @@ includes the following:
 
 ## Change Log
 
+### v3.2.2
+
+- The `kubectl` command now creates the `kubeconfig` file with restricted
+  permissions (600) to prevent potential security issues.
+
 ### v3.2.1
 
 - Add optional `pre_hook_with_context` method to the `Command` base class,
