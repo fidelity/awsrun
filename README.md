@@ -331,6 +331,10 @@ includes the following:
   [documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_iam-condition-keys.html#condition-keys-sts)
   for more information (search for `sts:RoleAuthorizedByIdp` on that page).
 
+- Remove flake8 and pylint from the development dependencies. These have been
+  replaced by ruff. Staring with ruff 0.16, the default rules have grown from
+  59 to 413, so this release also addresses many of those linting issues.
+
 ### v3.2.2
 
 - The `kubectl` command now creates the `kubeconfig` file with restricted

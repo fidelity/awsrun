@@ -50,7 +50,6 @@ dx-status = ["colorama", "asciichartpy>=1.5.25", "pysparklines>=1.0"]
 # dependencies for development
 dev = [
   "black",
-  "flake8",
   "freezegun",
   "isort",
   "pdoc3",
@@ -67,3 +66,6 @@ homepage = "https://github.com/fidelity/awsrun"
 
 [tool.setuptools.dynamic]
 version = { attr = "awsrun.__version__" }
+
+[tool.ruff.lint]
+ignore = ["SIM117", "BLE001", "SIM103", "FA100", "TRY002", "EXE002", "TRY004"]
