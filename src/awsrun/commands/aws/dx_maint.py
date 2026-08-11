@@ -263,7 +263,7 @@ class CLICommand(RegionalCommand):
             # in this method, but not the execute method above.
             self.all_results.extend(get_result())
 
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             LOG.warning("%s/%s: error: %s", acct, region, e, exc_info=True)
             print(f"{acct}/{region}: error: {e}", flush=True, file=sys.stderr)
 

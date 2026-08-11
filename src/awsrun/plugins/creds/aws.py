@@ -56,7 +56,7 @@ from awsrun.session.aws import (
 # This is only used to prevent pdoc (the doc generator) from exposing
 # AbstractCrossAccount in the module's documentation, which is intended for CLI
 # users and not programmers as this module deals with plugin configurations.
-__all__ = ["Profile", "SAML", "ProfileCrossAccount", "SAMLCrossAccount"]
+__all__ = ["SAML", "Profile", "ProfileCrossAccount", "SAMLCrossAccount"]
 
 _AUTH_CLASSES = {"basic": HTTPBasicAuth, "digest": HTTPDigestAuth, "ntlm": HttpNtlmAuth}
 

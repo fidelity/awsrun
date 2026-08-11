@@ -122,7 +122,7 @@ class CLICommand(Command):
     def post_hook(self):
         overlap = []
 
-        for i in range(0, len(self.cidrs)):  # pylint: disable=consider-using-enumerate
+        for i in range(len(self.cidrs)):
             c1 = self.cidrs[i]
             for j in range(i + 1, len(self.cidrs)):
                 c2 = self.cidrs[j]

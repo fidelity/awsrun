@@ -436,8 +436,8 @@ class CLICommand(Command):
         if self.include_roles:
             identities["role"] = get_identities(iam.roles, iam.Role, self.search_roles)
 
-        for i_type in identities:  # pylint: disable=consider-using-dict-items
-            for identity in identities[i_type]:
+        for i_type, identity_list in identities.items():
+            for identity in identity_list:
                 ip = IdentityPrinter(out, f"{acct}: identity={i_type}:{identity.name}")
                 self.show_inline_policies(identity, ip)
                 self.show_attached_policies(identity, ip)
@@ -450,12 +450,9 @@ class CLICommand(Command):
             return
 
         for inline in identity.policies.all():
-            # pylint: disable=cell-var-from-loop
             # We wrap the policy_document in a lambda so boto3 resource is not
-            # fetched unless it is really needed. Although pylint complains
-            # about wrapping the looping var in a lambda, we use the lambda
-            # immediately if needed.
-            if self.should_skip(inline.policy_name, lambda: inline.policy_document):
+            # fetched unless it is really needed.
+            if self.should_skip(inline.policy_name, lambda inline=inline: inline.policy_document):
                 continue
 
             ip.print(f"policy=inline:{inline.policy_name}")
@@ -468,11 +465,10 @@ class CLICommand(Command):
             return
 
         for attached in identity.attached_policies.all():
-            # pylint: disable=cell-var-from-loop
             # We wrap the default_version.document in a lambda so boto3 resource
             # is not fetched unless it is really needed.
             if self.should_skip(
-                attached.policy_name, lambda: attached.default_version.document
+                attached.policy_name, lambda attached=attached: attached.default_version.document
             ):
                 continue
 
@@ -604,4 +600,4 @@ def identity_exists(identity):
     except ClientError as e:
         if e.response["Error"]["Code"] == "NoSuchEntity":
             return False
-        raise e
+        raise

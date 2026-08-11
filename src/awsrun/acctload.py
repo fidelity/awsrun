@@ -320,7 +320,7 @@ class MetaAccountLoader(AccountLoader):
         )
         self.CustomAccount._str_template = (  # type: ignore
             self.str_template
-        )  # pylint: disable=protected-access
+        )
 
         self.accts, self.attrs = self._parse(accts)
         LOG.info(
@@ -949,6 +949,9 @@ class JSONParser:
         return json.loads(text, **self.kwargs)
 
 
+_DEFAULT_JSON_PARSER = JSONParser()
+
+
 class YAMLParser:
     """Returns a list or dict from a buffer of YAML-formatted text.
 
@@ -1050,7 +1053,7 @@ class URLAccountLoader(MetaAccountLoader):
     def __init__(
         self,
         url,
-        parser=JSONParser(),
+        parser=_DEFAULT_JSON_PARSER,
         auth=None,
         max_age=0,
         id_attr="id",
@@ -1127,10 +1130,10 @@ class AbstractAccount:
         return value
 
     def __eq__(self, other):
-        return self._attrs == other._attrs  # pylint: disable=protected-access
+        return self._attrs == other._attrs
 
     def __repr__(self):
-        pairs = (f"{k}={repr(v)}" for k, v in self._attrs.items())
+        pairs = (f"{k}={v!r}" for k, v in self._attrs.items())
         return f"Account({', '.join(pairs)})"
 
     def __str__(self):
@@ -1183,7 +1186,7 @@ def _convert_keys_to_valid_attribute_names(d):
     restrictions, this function munges any dict keys that are not valid
     attribute names. For efficiency, the dictionary is modified in place.
     """
-    invalid_keys = [k for k in d.keys() if not k.isidentifier() or keyword.iskeyword(k)]
+    invalid_keys = [k for k in d if not k.isidentifier() or keyword.iskeyword(k)]
     for key in invalid_keys:
         d[_make_valid_attribute_name(key)] = d.pop(key)
 

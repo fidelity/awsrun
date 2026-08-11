@@ -87,7 +87,7 @@ class CLICommand(Command):
         self.total += 1
         try:
             result = get_result()
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             self.no_access.append(acct)
             return
 
