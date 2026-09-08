@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.11.1" />
+<meta name="generator" content="pdoc 0.11.6" />
 <title>awsrun.cli API documentation</title>
 <meta name="description" content="The awsrun CLI concurrently executes commands across AWS accounts …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
@@ -100,7 +100,7 @@ Guide</a>.</p>
 <p>For the remainder of this guide, we'll be using the general purpose
 <code><a title="awsrun.commands.aws.aws" href="commands/aws/aws.html">awsrun.commands.aws.aws</a></code> command, which is an adapter for the AWS CLI tool.
 This allows users to concurrently run the AWS CLI across multiple accounts. When
-combined with other awsrun features such as SAML authentication, cross-account
+combined with other awsrun features such as SAML/OIDC federation, cross-account
 access, and metadata account filters, it makes the AWS CLI tool even more
 powerful than it already is as you'll see.</p>
 <h3 id="usage">Usage</h3>
@@ -156,7 +156,8 @@ allow us to select accounts via metadata filters.</p>
 default, awsrun will use the same profiles from your ~/.aws/credentials file. If
 a profile does not exist for an account, awsrun will fallback to the "default"
 profile if you have one configured. As you'll see later, we can use other
-plug-ins to obtain credentials for accounts via SAML and cross-account access.</p>
+plug-ins to obtain credentials for accounts via SAML/OIDC federation and
+cross-account access.</p>
 <p>Using awsrun to run a command over two accounts may not seem that interesting
 yet, but when running the same AWS CLI command over more than a handful of
 accounts, it becomes incredibly powerful especially when coupled with account
@@ -231,15 +232,15 @@ for account and credential loading.</p>
 <p>Up until this point, we have been using the default credential loader called
 <code><a title="awsrun.plugins.creds.aws.Profile" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.Profile">Profile</a></code>, which looks for account profiles in your
 <code>$HOME/.aws/credentials</code> or <code>$HOME/.aws/config</code>. Let's look at some of the other
-mechanisms included with awsrun such as the SAML and cross-account access
+mechanisms included with awsrun such as the SAML, OIDC, and cross-account access
 plug-ins. If you are only seeking reference material, please refer to the
 <code><a title="awsrun.plugins.creds" href="plugins/creds/index.html">awsrun.plugins.creds</a></code> page instead.</p>
-<p>Within many enterprises, the use of single sign-on (SSO) is prevalent and allows
-for centralized account management. AWS supports federated users and SSO via the
-use of a SAML-compliant Identity Provider (IdP). Rather than define IAM users in
-each account, an IAM role can be created that allows for federated access via
-your IdP. To use SAML-based access with AWS, you need to obtain temporary tokens
-from the AWS STS service.</p>
+<p>Within many enterprises, the use of federated access is prevalent and allows for
+centralized account management. AWS supports federated users and SSO via the use
+of a SAML- or OIDC-compliant Identity Provider (IdP). Rather than define IAM
+users in each account, an IAM role can be created that allows for federated
+access via your IdP. To use SAML- or OIDC-based access with AWS, you need to
+obtain temporary tokens from the AWS STS service.</p>
 <p>The <code><a title="awsrun.plugins.creds.aws.SAML" href="plugins/creds/aws.html#awsrun.plugins.creds.aws.SAML">SAML</a></code> credential plug-in simplifies this process
 for you. At a minimum, you'll need the IAM role that has been setup for SAML as
 well as the URL to your IdP. Let's assume you are using Microsoft's ADFS server
@@ -732,7 +733,7 @@ Guide](#cli-reference).
 For the remainder of this guide, we&#39;ll be using the general purpose
 `awsrun.commands.aws.aws` command, which is an adapter for the AWS CLI tool.
 This allows users to concurrently run the AWS CLI across multiple accounts. When
-combined with other awsrun features such as SAML authentication, cross-account
+combined with other awsrun features such as SAML/OIDC federation, cross-account
 access, and metadata account filters, it makes the AWS CLI tool even more
 powerful than it already is as you&#39;ll see.
 
@@ -796,7 +797,8 @@ You may be wondering how awsrun obtains the credentials for each account. By
 default, awsrun will use the same profiles from your ~/.aws/credentials file. If
 a profile does not exist for an account, awsrun will fallback to the &#34;default&#34;
 profile if you have one configured. As you&#39;ll see later, we can use other
-plug-ins to obtain credentials for accounts via SAML and cross-account access.
+plug-ins to obtain credentials for accounts via SAML/OIDC federation and
+cross-account access.
 
 Using awsrun to run a command over two accounts may not seem that interesting
 yet, but when running the same AWS CLI command over more than a handful of
@@ -885,16 +887,16 @@ for account and credential loading.
 Up until this point, we have been using the default credential loader called
 `awsrun.plugins.creds.aws.Profile`, which looks for account profiles in your
 `$HOME/.aws/credentials` or `$HOME/.aws/config`. Let&#39;s look at some of the other
-mechanisms included with awsrun such as the SAML and cross-account access
+mechanisms included with awsrun such as the SAML, OIDC, and cross-account access
 plug-ins. If you are only seeking reference material, please refer to the
 `awsrun.plugins.creds` page instead.
 
-Within many enterprises, the use of single sign-on (SSO) is prevalent and allows
-for centralized account management. AWS supports federated users and SSO via the
-use of a SAML-compliant Identity Provider (IdP). Rather than define IAM users in
-each account, an IAM role can be created that allows for federated access via
-your IdP. To use SAML-based access with AWS, you need to obtain temporary tokens
-from the AWS STS service.
+Within many enterprises, the use of federated access is prevalent and allows for
+centralized account management. AWS supports federated users and SSO via the use
+of a SAML- or OIDC-compliant Identity Provider (IdP). Rather than define IAM
+users in each account, an IAM role can be created that allows for federated
+access via your IdP. To use SAML- or OIDC-based access with AWS, you need to
+obtain temporary tokens from the AWS STS service.
 
 The `awsrun.plugins.creds.aws.SAML` credential plug-in simplifies this process
 for you. At a minimum, you&#39;ll need the IAM role that has been setup for SAML as
@@ -1476,7 +1478,7 @@ def main():
         csp = _CSP.from_prog_name(sys.argv[0])
         _cli(csp)
 
-    except Exception as e:  # pylint: disable=broad-except
+    except Exception as e:
         # Don&#39;t print stack traces by default as it can be overwhelming (scary)
         # for those not familiar with Python development.
         if os.getenv(&#34;AWSRUN_TRACE&#34;):
@@ -1803,8 +1805,8 @@ def _print_valid_commands(commands, out=sys.stdout):
         return
 
     print(&#34;The following are the available commands:\n&#34;, file=out)
-    max_cmd_len = max(len(name) for name in commands.keys())
-    for name in sorted(commands.keys()):
+    max_cmd_len = max(len(name) for name in commands)
+    for name in sorted(commands):
         # By convention, as documented in user documentation, class docstring
         # is used when printing a summary of commands.
         docstring = commands[name].__doc__ or &#34;&#34;
@@ -1815,7 +1817,7 @@ def _print_valid_commands(commands, out=sys.stdout):
 def _print_accounts(accts, out=sys.stdout):
     &#34;&#34;&#34;Print the list of accounts.&#34;&#34;&#34;
     count = len(accts)
-    print(f&#39;{count} account{&#34;s&#34; if count != 1 else &#34;&#34;} selected:\n&#39;, file=out)
+    print(f&#34;{count} account{&#39;s&#39; if count != 1 else &#39;&#39;} selected:\n&#34;, file=out)
     print(&#34;, &#34;.join(str(a) for a in accts), file=out, end=&#34;\n\n&#34;)
 
 
@@ -1824,7 +1826,7 @@ def _ask_for_confirmation(accts):
     _print_accounts(accts, out=sys.stderr)
     print(&#34;Proceed (y/n)? &#34;, flush=True, end=&#34;&#34;, file=sys.stderr)
     answer = input()
-    if not answer.lower() in [&#34;y&#34;, &#34;yes&#34;]:
+    if answer.lower() not in [&#34;y&#34;, &#34;yes&#34;]:
         print(&#34;Exiting&#34;, file=sys.stderr)
         sys.exit(0)
 
@@ -1922,6 +1924,37 @@ There can be many instances of this command installed on the system with
 different names. The CLI uses the name of the shell script installed to
 determine default path locations for commands as well as the default
 session manager.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main():
+    &#34;&#34;&#34;The main entry point for the `*run` CLI tool installed with this package.
+
+    Runs the CLI tool. Exits with a `0` status code upon success. Upon error,
+    prints the error message to standard error. By default, a stack trace is not
+    included to minimize output. If the trace is desired, set the `AWSRUN_TRACE`
+    environment variable to `1`.
+
+    The CLI tool is installed on the system via the setup.py entry_points key.
+    There can be many instances of this command installed on the system with
+    different names. The CLI uses the name of the shell script installed to
+    determine default path locations for commands as well as the default
+    session manager.
+    &#34;&#34;&#34;
+    try:
+        csp = _CSP.from_prog_name(sys.argv[0])
+        _cli(csp)
+
+    except Exception as e:
+        # Don&#39;t print stack traces by default as it can be overwhelming (scary)
+        # for those not familiar with Python development.
+        if os.getenv(&#34;AWSRUN_TRACE&#34;):
+            traceback.print_exc(file=sys.stderr)
+
+        print(e, file=sys.stderr)
+        sys.exit(1)</code></pre>
+</details>
 </dd>
 </dl>
 </section>
@@ -2006,7 +2039,7 @@ accounts being processed by <code>Runner</code>.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
