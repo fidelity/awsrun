@@ -332,7 +332,7 @@ includes the following:
   for more information (search for `sts:RoleAuthorizedByIdp` on that page).
 
 - Remove flake8 and pylint from the development dependencies. These have been
-  replaced by ruff. Staring with ruff 0.16, the default rules have grown from
+  replaced by ruff. Starting with ruff 0.16, the default rules have grown from
   59 to 413, so this release also addresses many of those linting issues.
 
 ### v3.2.2

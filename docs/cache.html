@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.11.1" />
+<meta name="generator" content="pdoc 0.11.6" />
 <title>awsrun.cache API documentation</title>
 <meta name="description" content="Provides the ability to cache single values …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
@@ -97,6 +97,24 @@ example demonstrates how to use this <code><a title="awsrun.cache.ExpiringValue"
 is before the value would have expired, and thus the cached result is returned.
 The third value, however, is ten seconds later because by the time the third
 invocation of <code>value</code> took place, the original value expired after 10 seconds.</p>
+<h2 id="dynamic-expiration">Dynamic Expiration</h2>
+<p>In some cases, the expiration time is only known after the value has been
+obtained (e.g., OAuth2 tokens include expiration in the response). Use
+<code><a title="awsrun.cache.ValueWithExpiry" href="#awsrun.cache.ValueWithExpiry">ValueWithExpiry</a></code> to wrap the value with a custom expiration. This overrides
+the <code>max_age</code> specified in the <code><a title="awsrun.cache.ExpiringValue" href="#awsrun.cache.ExpiringValue">ExpiringValue</a></code> constructor. For example:</p>
+<pre><code>&gt;&gt;&gt; def fetch_token():
+...     token = {'access_token': 'EXAMPLE_TOKEN', 'expires_in': 3600}
+...     return ValueWithExpiry(token, ttl=token['expires_in'])
+&gt;&gt;&gt; ev = ExpiringValue(refresh_fn=fetch_token, max_age=0)
+&gt;&gt;&gt; ev.value()
+{'access_token': 'EXAMPLE_TOKEN', 'expires_in': 3600}
+</code></pre>
+<p>The <code><a title="awsrun.cache.ValueWithExpiry" href="#awsrun.cache.ValueWithExpiry">ValueWithExpiry</a></code> wrapper supports both TTL (time-to-live in seconds) and
+absolute timestamps via the <code>expires_at</code> parameter.</p>
+<p>When using dynamic expiry, <code>max_age</code> becomes relevant if the refresh function
+can return a mix of both plain values and <code><a title="awsrun.cache.ValueWithExpiry" href="#awsrun.cache.ValueWithExpiry">ValueWithExpiry</a></code> instances. When
+a plain value is returned, it is cached for <code>max_age</code>. If only dynamic expiry
+is used, then <code>max_age</code> is not used.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -131,6 +149,28 @@ The first two timestamps are the same because `value` was 5 seconds apart, which
 is before the value would have expired, and thus the cached result is returned.
 The third value, however, is ten seconds later because by the time the third
 invocation of `value` took place, the original value expired after 10 seconds.
+
+## Dynamic Expiration
+
+In some cases, the expiration time is only known after the value has been
+obtained (e.g., OAuth2 tokens include expiration in the response). Use
+`ValueWithExpiry` to wrap the value with a custom expiration. This overrides
+the `max_age` specified in the `ExpiringValue` constructor. For example:
+
+    &gt;&gt;&gt; def fetch_token():
+    ...     token = {&#39;access_token&#39;: &#39;EXAMPLE_TOKEN&#39;, &#39;expires_in&#39;: 3600}
+    ...     return ValueWithExpiry(token, ttl=token[&#39;expires_in&#39;])
+    &gt;&gt;&gt; ev = ExpiringValue(refresh_fn=fetch_token, max_age=0)
+    &gt;&gt;&gt; ev.value()
+    {&#39;access_token&#39;: &#39;EXAMPLE_TOKEN&#39;, &#39;expires_in&#39;: 3600}
+
+The `ValueWithExpiry` wrapper supports both TTL (time-to-live in seconds) and
+absolute timestamps via the `expires_at` parameter.
+
+When using dynamic expiry, `max_age` becomes relevant if the refresh function
+can return a mix of both plain values and `ValueWithExpiry` instances. When
+a plain value is returned, it is cached for `max_age`. If only dynamic expiry
+is used, then `max_age` is not used.
 &#34;&#34;&#34;
 
 import json
@@ -142,17 +182,53 @@ from pathlib import Path
 LOG = logging.getLogger(__name__)
 
 
+class ValueWithExpiry:
+    &#34;&#34;&#34;Wrapper to return a value with a custom expiration time.
+
+    Use this when your refresh function needs to specify its own expiration
+    rather than using the default max_age. The expiry can be specified as
+    either a TTL in seconds or an absolute timestamp.
+
+    Example usage with TTL::
+
+        def refresh_oauth_token():
+            token = fetch_token()  # Returns {&#39;access_token&#39;: &#39;...&#39;, &#39;expires_in&#39;: 3600}
+            return ValueWithExpiry(token, ttl=token[&#39;expires_in&#39;])
+
+    Example usage with absolute timestamp::
+
+        def refresh_oauth_token():
+            token = fetch_token()  # Returns {&#39;access_token&#39;: &#39;...&#39;, &#39;expires_at&#39;: 1702915200}
+            return ValueWithExpiry(token, expires_at=token[&#39;expires_at&#39;])
+    &#34;&#34;&#34;
+
+    def __init__(self, value, *, ttl=None, expires_at=None):
+        if ttl is None and expires_at is None:
+            raise ValueError(&#34;Must specify either ttl or expires_at&#34;)
+        if ttl is not None and expires_at is not None:
+            raise ValueError(&#34;Cannot specify both ttl and expires_at&#34;)
+
+        self.value = value
+        self.expires_at = expires_at if expires_at else time.time() + ttl
+
+    def __repr__(self):
+        return f&#34;ValueWithExpiry(value={self.value!r}, expires_at={self.expires_at})&#34;
+
+
 class AbstractExpiringValue:
     &#34;&#34;&#34;Abstract base class to represent a value that expires.
 
     An `AbstractExpiringValue` represents a lazily loaded value that will expire
     over time. The constructor takes a `refresh_fn` function of zero arguments,
-    which is called to obtain the value to be cached for `max_age` seconds.
+    which is called to obtain the value to be cached. The value is cached for
+    `max_age` seconds unless the `refresh_fn` returns a `ValueWithExpiry` object
+    that specifies a custom expiration time. If so, the default `max_age` is
+    ignored.
 
     At the time of instantiation, the value is not retrieved, it is only
     retrieved the first time the value method is invoked. Likewise, the value is
     not refreshed at the time it expires, but only the next time the value
-    method is called. This class is thread-safe. Subclasses must provide
+    method is called. The `value` method is thread-safe. Subclasses must provide
     implementations for `is_expired`, `load`, and `save`.
     &#34;&#34;&#34;
 
@@ -169,18 +245,34 @@ class AbstractExpiringValue:
         invocations of this method will return the cached value until it
         expires. If you set `refresh` parameter to `True`, the value will be
         refreshed and the expiration will be reset before being returned.
+
+        This method is thread-safe.
         &#34;&#34;&#34;
         with self._lock:
             if not refresh and not self.is_expired():
                 return self.load()
 
-            value = self._refresh_fn()
-            self.save(value)
+            result = self._refresh_fn()
+
+            # Unwrap and extract expiry if ValueWithExpiry
+            if isinstance(result, ValueWithExpiry):
+                value = result.value
+                expiry = result.expires_at
+            else:
+                value = result
+                expiry = None
+
+            self.save(value, expiry)
             LOG.info(&#34;refreshed data and saved in cache&#34;)
             return value
 
     def is_expired(self):
         &#34;&#34;&#34;Returns `True` if the value needs to be refreshed, `False` otherwise.
+
+        A value needs to be refreshed when it has expired. This is determined
+        by the implementation of this method. By default, the value is cached for
+        `max_age` seconds or the dynamic expiry specified by the `refresh_fn`
+        return value (if it is a `ValueWithExpiry` instance).
 
         If this returns `True` during the invocation of
         `AbstractExpiringValue.value`, the `refresh_fn` will be called, followed
@@ -198,12 +290,14 @@ class AbstractExpiringValue:
         &#34;&#34;&#34;
         raise NotImplementedError
 
-    def save(self, value):
+    def save(self, value, expiry=None):
         &#34;&#34;&#34;Saves the value to the cache.
 
         If `is_expired` returns `True` during the invocation of
         `AbstractExpiringValue.value`, this method is invoked to save the new
-        value to the cache.
+        value to the cache. If `expiry` is provided, it specifies the absolute
+        timestamp when the value should expire. Otherwise, the default `max_age`
+        should be used.
         &#34;&#34;&#34;
         raise NotImplementedError
 
@@ -219,7 +313,7 @@ class ExpiringValue(AbstractExpiringValue):
     At the time of instantiation, the value is not retrieved, it is only
     retrieved the first time the value method is invoked. Likewise, the value is
     not refreshed at the time it expires, but only the next time the value
-    method is called. This class is thread-safe.
+    method is called. The `value` method is thread-safe.
     &#34;&#34;&#34;
 
     def __init__(self, refresh_fn, max_age):
@@ -234,10 +328,10 @@ class ExpiringValue(AbstractExpiringValue):
         LOG.debug(&#34;Loading data from cache&#34;)
         return self._value
 
-    def save(self, value):
-        LOG.debug(&#34;Saving value to cache&#34;)
+    def save(self, value, expiry=None):
         self._value = value
-        self._expiry = time.time() + self._max_age
+        self._expiry = expiry if expiry is not None else time.time() + self._max_age
+        LOG.debug(&#34;Saving value to cache, will expire at %s&#34;, time.ctime(self._expiry))
 
 
 class PersistentExpiringValue(ExpiringValue):
@@ -252,17 +346,24 @@ class PersistentExpiringValue(ExpiringValue):
     At the time of instantiation, the value is not retrieved, it is only
     retrieved the first time the value method is invoked. Likewise, the value is
     not refreshed at the time it expires, but only the next time the value
-    method is called. This class is thread-safe. If the value cannot be
+    method is called. The `value` method is thread-safe. If the value cannot be
     persisted as JSON, a TypeError is thrown.
     &#34;&#34;&#34;
 
     def __init__(self, refresh_fn, path, max_age):
         super().__init__(refresh_fn, max_age)
         self._path = path if isinstance(path, Path) else Path(path)
+        self._expiry_path = self._path.with_suffix(self._path.suffix + &#34;.expiry&#34;)
 
     def is_expired(self):
         if not self._path.exists():
             return True
+        # Check for explicit expiry file first
+        if self._expiry_path.exists():
+            expiry = float(self._expiry_path.read_text(encoding=&#34;utf-8&#34;).strip())
+            return time.time() &gt; expiry
+
+        # Otherwise fall back to file modification time + max_age
         last_modification = self._path.stat().st_mtime
         return time.time() &gt; last_modification + self._max_age
 
@@ -271,9 +372,9 @@ class PersistentExpiringValue(ExpiringValue):
         with self._path.open(&#34;r&#34;, encoding=&#34;utf-8&#34;) as file:
             return json.load(file)
 
-    def save(self, value):
-        # No need to persist the file if max_age is 0 seconds.
-        if self._max_age == 0:
+    def save(self, value, expiry=None):
+        # No need to persist the file if max_age is 0 seconds (and not dynamic).
+        if self._max_age == 0 and expiry is None:
             return
 
         LOG.debug(&#34;Saving data to cache file %s&#34;, self._path)
@@ -282,7 +383,13 @@ class PersistentExpiringValue(ExpiringValue):
             json.dump(value, file)
 
         # Pathlib.replace uses os.replace which is atomic on POSIX systems
-        tmp.replace(self._path)</code></pre>
+        tmp.replace(self._path)
+
+        # Write or remove expiry file
+        if expiry is not None:
+            self._expiry_path.write_text(str(expiry), encoding=&#34;utf-8&#34;)
+        elif self._expiry_path.exists():
+            self._expiry_path.unlink()</code></pre>
 </details>
 </section>
 <section>
@@ -294,6 +401,62 @@ class PersistentExpiringValue(ExpiringValue):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="awsrun.cache.ValueWithExpiry"><code class="flex name class">
+<span>class <span class="ident">ValueWithExpiry</span></span>
+<span>(</span><span>value, *, ttl=None, expires_at=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Wrapper to return a value with a custom expiration time.</p>
+<p>Use this when your refresh function needs to specify its own expiration
+rather than using the default max_age. The expiry can be specified as
+either a TTL in seconds or an absolute timestamp.</p>
+<p>Example usage with TTL::</p>
+<pre><code>def refresh_oauth_token():
+    token = fetch_token()  # Returns {'access_token': '...', 'expires_in': 3600}
+    return ValueWithExpiry(token, ttl=token['expires_in'])
+</code></pre>
+<p>Example usage with absolute timestamp::</p>
+<pre><code>def refresh_oauth_token():
+    token = fetch_token()  # Returns {'access_token': '...', 'expires_at': 1702915200}
+    return ValueWithExpiry(token, expires_at=token['expires_at'])
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ValueWithExpiry:
+    &#34;&#34;&#34;Wrapper to return a value with a custom expiration time.
+
+    Use this when your refresh function needs to specify its own expiration
+    rather than using the default max_age. The expiry can be specified as
+    either a TTL in seconds or an absolute timestamp.
+
+    Example usage with TTL::
+
+        def refresh_oauth_token():
+            token = fetch_token()  # Returns {&#39;access_token&#39;: &#39;...&#39;, &#39;expires_in&#39;: 3600}
+            return ValueWithExpiry(token, ttl=token[&#39;expires_in&#39;])
+
+    Example usage with absolute timestamp::
+
+        def refresh_oauth_token():
+            token = fetch_token()  # Returns {&#39;access_token&#39;: &#39;...&#39;, &#39;expires_at&#39;: 1702915200}
+            return ValueWithExpiry(token, expires_at=token[&#39;expires_at&#39;])
+    &#34;&#34;&#34;
+
+    def __init__(self, value, *, ttl=None, expires_at=None):
+        if ttl is None and expires_at is None:
+            raise ValueError(&#34;Must specify either ttl or expires_at&#34;)
+        if ttl is not None and expires_at is not None:
+            raise ValueError(&#34;Cannot specify both ttl and expires_at&#34;)
+
+        self.value = value
+        self.expires_at = expires_at if expires_at else time.time() + ttl
+
+    def __repr__(self):
+        return f&#34;ValueWithExpiry(value={self.value!r}, expires_at={self.expires_at})&#34;</code></pre>
+</details>
+</dd>
 <dt id="awsrun.cache.AbstractExpiringValue"><code class="flex name class">
 <span>class <span class="ident">AbstractExpiringValue</span></span>
 <span>(</span><span>refresh_fn, max_age)</span>
@@ -302,11 +465,14 @@ class PersistentExpiringValue(ExpiringValue):
 <section class="desc"><p>Abstract base class to represent a value that expires.</p>
 <p>An <code><a title="awsrun.cache.AbstractExpiringValue" href="#awsrun.cache.AbstractExpiringValue">AbstractExpiringValue</a></code> represents a lazily loaded value that will expire
 over time. The constructor takes a <code>refresh_fn</code> function of zero arguments,
-which is called to obtain the value to be cached for <code>max_age</code> seconds.</p>
+which is called to obtain the value to be cached. The value is cached for
+<code>max_age</code> seconds unless the <code>refresh_fn</code> returns a <code><a title="awsrun.cache.ValueWithExpiry" href="#awsrun.cache.ValueWithExpiry">ValueWithExpiry</a></code> object
+that specifies a custom expiration time. If so, the default <code>max_age</code> is
+ignored.</p>
 <p>At the time of instantiation, the value is not retrieved, it is only
 retrieved the first time the value method is invoked. Likewise, the value is
 not refreshed at the time it expires, but only the next time the value
-method is called. This class is thread-safe. Subclasses must provide
+method is called. The <code>value</code> method is thread-safe. Subclasses must provide
 implementations for <code>is_expired</code>, <code>load</code>, and <code>save</code>.</p></section>
 <details class="source">
 <summary>
@@ -317,12 +483,15 @@ implementations for <code>is_expired</code>, <code>load</code>, and <code>save</
 
     An `AbstractExpiringValue` represents a lazily loaded value that will expire
     over time. The constructor takes a `refresh_fn` function of zero arguments,
-    which is called to obtain the value to be cached for `max_age` seconds.
+    which is called to obtain the value to be cached. The value is cached for
+    `max_age` seconds unless the `refresh_fn` returns a `ValueWithExpiry` object
+    that specifies a custom expiration time. If so, the default `max_age` is
+    ignored.
 
     At the time of instantiation, the value is not retrieved, it is only
     retrieved the first time the value method is invoked. Likewise, the value is
     not refreshed at the time it expires, but only the next time the value
-    method is called. This class is thread-safe. Subclasses must provide
+    method is called. The `value` method is thread-safe. Subclasses must provide
     implementations for `is_expired`, `load`, and `save`.
     &#34;&#34;&#34;
 
@@ -339,18 +508,34 @@ implementations for <code>is_expired</code>, <code>load</code>, and <code>save</
         invocations of this method will return the cached value until it
         expires. If you set `refresh` parameter to `True`, the value will be
         refreshed and the expiration will be reset before being returned.
+
+        This method is thread-safe.
         &#34;&#34;&#34;
         with self._lock:
             if not refresh and not self.is_expired():
                 return self.load()
 
-            value = self._refresh_fn()
-            self.save(value)
+            result = self._refresh_fn()
+
+            # Unwrap and extract expiry if ValueWithExpiry
+            if isinstance(result, ValueWithExpiry):
+                value = result.value
+                expiry = result.expires_at
+            else:
+                value = result
+                expiry = None
+
+            self.save(value, expiry)
             LOG.info(&#34;refreshed data and saved in cache&#34;)
             return value
 
     def is_expired(self):
         &#34;&#34;&#34;Returns `True` if the value needs to be refreshed, `False` otherwise.
+
+        A value needs to be refreshed when it has expired. This is determined
+        by the implementation of this method. By default, the value is cached for
+        `max_age` seconds or the dynamic expiry specified by the `refresh_fn`
+        return value (if it is a `ValueWithExpiry` instance).
 
         If this returns `True` during the invocation of
         `AbstractExpiringValue.value`, the `refresh_fn` will be called, followed
@@ -368,12 +553,14 @@ implementations for <code>is_expired</code>, <code>load</code>, and <code>save</
         &#34;&#34;&#34;
         raise NotImplementedError
 
-    def save(self, value):
+    def save(self, value, expiry=None):
         &#34;&#34;&#34;Saves the value to the cache.
 
         If `is_expired` returns `True` during the invocation of
         `AbstractExpiringValue.value`, this method is invoked to save the new
-        value to the cache.
+        value to the cache. If `expiry` is provided, it specifies the absolute
+        timestamp when the value should expire. Otherwise, the default `max_age`
+        should be used.
         &#34;&#34;&#34;
         raise NotImplementedError</code></pre>
 </details>
@@ -392,17 +579,74 @@ implementations for <code>is_expired</code>, <code>load</code>, and <code>save</
 calling the <code>refresh_fn</code> supplied in the constructor. Subsequent
 invocations of this method will return the cached value until it
 expires. If you set <code>refresh</code> parameter to <code>True</code>, the value will be
-refreshed and the expiration will be reset before being returned.</p></section>
+refreshed and the expiration will be reset before being returned.</p>
+<p>This method is thread-safe.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def value(self, refresh=False):
+    &#34;&#34;&#34;Returns the value.
+
+    The first time this method is called, the value will be obtained by
+    calling the `refresh_fn` supplied in the constructor. Subsequent
+    invocations of this method will return the cached value until it
+    expires. If you set `refresh` parameter to `True`, the value will be
+    refreshed and the expiration will be reset before being returned.
+
+    This method is thread-safe.
+    &#34;&#34;&#34;
+    with self._lock:
+        if not refresh and not self.is_expired():
+            return self.load()
+
+        result = self._refresh_fn()
+
+        # Unwrap and extract expiry if ValueWithExpiry
+        if isinstance(result, ValueWithExpiry):
+            value = result.value
+            expiry = result.expires_at
+        else:
+            value = result
+            expiry = None
+
+        self.save(value, expiry)
+        LOG.info(&#34;refreshed data and saved in cache&#34;)
+        return value</code></pre>
+</details>
 </dd>
 <dt id="awsrun.cache.AbstractExpiringValue.is_expired"><code class="name flex">
 <span>def <span class="ident">is_expired</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Returns <code>True</code> if the value needs to be refreshed, <code>False</code> otherwise.</p>
+<p>A value needs to be refreshed when it has expired. This is determined
+by the implementation of this method. By default, the value is cached for
+<code>max_age</code> seconds or the dynamic expiry specified by the <code>refresh_fn</code>
+return value (if it is a <code><a title="awsrun.cache.ValueWithExpiry" href="#awsrun.cache.ValueWithExpiry">ValueWithExpiry</a></code> instance).</p>
 <p>If this returns <code>True</code> during the invocation of
 <code><a title="awsrun.cache.AbstractExpiringValue.value" href="#awsrun.cache.AbstractExpiringValue.value">AbstractExpiringValue.value()</a></code>, the <code>refresh_fn</code> will be called, followed
 by <code>save</code>, to renew the cached value. When this returns <code>False</code>, <code>load</code>
 is invoked instead to return the value from the cache.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_expired(self):
+    &#34;&#34;&#34;Returns `True` if the value needs to be refreshed, `False` otherwise.
+
+    A value needs to be refreshed when it has expired. This is determined
+    by the implementation of this method. By default, the value is cached for
+    `max_age` seconds or the dynamic expiry specified by the `refresh_fn`
+    return value (if it is a `ValueWithExpiry` instance).
+
+    If this returns `True` during the invocation of
+    `AbstractExpiringValue.value`, the `refresh_fn` will be called, followed
+    by `save`, to renew the cached value. When this returns `False`, `load`
+    is invoked instead to return the value from the cache.
+    &#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
 </dd>
 <dt id="awsrun.cache.AbstractExpiringValue.load"><code class="name flex">
 <span>def <span class="ident">load</span></span>(<span>self)</span>
@@ -412,15 +656,45 @@ is invoked instead to return the value from the cache.</p></section>
 <p>If <code>is_expired</code> returns <code>False</code> during the invocation of
 <code><a title="awsrun.cache.AbstractExpiringValue.value" href="#awsrun.cache.AbstractExpiringValue.value">AbstractExpiringValue.value()</a></code>, this method is invoked to return the
 value from the cache.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load(self):
+    &#34;&#34;&#34;Returns the value from the cache.
+
+    If `is_expired` returns `False` during the invocation of
+    `AbstractExpiringValue.value`, this method is invoked to return the
+    value from the cache.
+    &#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
 </dd>
 <dt id="awsrun.cache.AbstractExpiringValue.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>self, value)</span>
+<span>def <span class="ident">save</span></span>(<span>self, value, expiry=None)</span>
 </code></dt>
 <dd>
 <section class="desc"><p>Saves the value to the cache.</p>
 <p>If <code>is_expired</code> returns <code>True</code> during the invocation of
 <code><a title="awsrun.cache.AbstractExpiringValue.value" href="#awsrun.cache.AbstractExpiringValue.value">AbstractExpiringValue.value()</a></code>, this method is invoked to save the new
-value to the cache.</p></section>
+value to the cache. If <code>expiry</code> is provided, it specifies the absolute
+timestamp when the value should expire. Otherwise, the default <code>max_age</code>
+should be used.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save(self, value, expiry=None):
+    &#34;&#34;&#34;Saves the value to the cache.
+
+    If `is_expired` returns `True` during the invocation of
+    `AbstractExpiringValue.value`, this method is invoked to save the new
+    value to the cache. If `expiry` is provided, it specifies the absolute
+    timestamp when the value should expire. Otherwise, the default `max_age`
+    should be used.
+    &#34;&#34;&#34;
+    raise NotImplementedError</code></pre>
+</details>
 </dd>
 </dl>
 </dd>
@@ -437,7 +711,7 @@ of zero arguments, which is called to obtain the value to be cached for
 <p>At the time of instantiation, the value is not retrieved, it is only
 retrieved the first time the value method is invoked. Likewise, the value is
 not refreshed at the time it expires, but only the next time the value
-method is called. This class is thread-safe.</p></section>
+method is called. The <code>value</code> method is thread-safe.</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -453,7 +727,7 @@ method is called. This class is thread-safe.</p></section>
     At the time of instantiation, the value is not retrieved, it is only
     retrieved the first time the value method is invoked. Likewise, the value is
     not refreshed at the time it expires, but only the next time the value
-    method is called. This class is thread-safe.
+    method is called. The `value` method is thread-safe.
     &#34;&#34;&#34;
 
     def __init__(self, refresh_fn, max_age):
@@ -468,10 +742,10 @@ method is called. This class is thread-safe.</p></section>
         LOG.debug(&#34;Loading data from cache&#34;)
         return self._value
 
-    def save(self, value):
-        LOG.debug(&#34;Saving value to cache&#34;)
+    def save(self, value, expiry=None):
         self._value = value
-        self._expiry = time.time() + self._max_age</code></pre>
+        self._expiry = expiry if expiry is not None else time.time() + self._max_age
+        LOG.debug(&#34;Saving value to cache, will expire at %s&#34;, time.ctime(self._expiry))</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -507,7 +781,7 @@ either a string or a <code>pathlib.Path</code> object.</p>
 <p>At the time of instantiation, the value is not retrieved, it is only
 retrieved the first time the value method is invoked. Likewise, the value is
 not refreshed at the time it expires, but only the next time the value
-method is called. This class is thread-safe. If the value cannot be
+method is called. The <code>value</code> method is thread-safe. If the value cannot be
 persisted as JSON, a TypeError is thrown.</p></section>
 <details class="source">
 <summary>
@@ -525,17 +799,24 @@ persisted as JSON, a TypeError is thrown.</p></section>
     At the time of instantiation, the value is not retrieved, it is only
     retrieved the first time the value method is invoked. Likewise, the value is
     not refreshed at the time it expires, but only the next time the value
-    method is called. This class is thread-safe. If the value cannot be
+    method is called. The `value` method is thread-safe. If the value cannot be
     persisted as JSON, a TypeError is thrown.
     &#34;&#34;&#34;
 
     def __init__(self, refresh_fn, path, max_age):
         super().__init__(refresh_fn, max_age)
         self._path = path if isinstance(path, Path) else Path(path)
+        self._expiry_path = self._path.with_suffix(self._path.suffix + &#34;.expiry&#34;)
 
     def is_expired(self):
         if not self._path.exists():
             return True
+        # Check for explicit expiry file first
+        if self._expiry_path.exists():
+            expiry = float(self._expiry_path.read_text(encoding=&#34;utf-8&#34;).strip())
+            return time.time() &gt; expiry
+
+        # Otherwise fall back to file modification time + max_age
         last_modification = self._path.stat().st_mtime
         return time.time() &gt; last_modification + self._max_age
 
@@ -544,9 +825,9 @@ persisted as JSON, a TypeError is thrown.</p></section>
         with self._path.open(&#34;r&#34;, encoding=&#34;utf-8&#34;) as file:
             return json.load(file)
 
-    def save(self, value):
-        # No need to persist the file if max_age is 0 seconds.
-        if self._max_age == 0:
+    def save(self, value, expiry=None):
+        # No need to persist the file if max_age is 0 seconds (and not dynamic).
+        if self._max_age == 0 and expiry is None:
             return
 
         LOG.debug(&#34;Saving data to cache file %s&#34;, self._path)
@@ -555,7 +836,13 @@ persisted as JSON, a TypeError is thrown.</p></section>
             json.dump(value, file)
 
         # Pathlib.replace uses os.replace which is atomic on POSIX systems
-        tmp.replace(self._path)</code></pre>
+        tmp.replace(self._path)
+
+        # Write or remove expiry file
+        if expiry is not None:
+            self._expiry_path.write_text(str(expiry), encoding=&#34;utf-8&#34;)
+        elif self._expiry_path.exists():
+            self._expiry_path.unlink()</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -582,6 +869,7 @@ persisted as JSON, a TypeError is thrown.</p></section>
 <div class="toc">
 <ul>
 <li><a href="#overview">Overview</a></li>
+<li><a href="#dynamic-expiration">Dynamic Expiration</a></li>
 </ul>
 </div>
 <ul id="index">
@@ -592,6 +880,9 @@ persisted as JSON, a TypeError is thrown.</p></section>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
+<li>
+<h4><code><a title="awsrun.cache.ValueWithExpiry" href="#awsrun.cache.ValueWithExpiry">ValueWithExpiry</a></code></h4>
+</li>
 <li>
 <h4><code><a title="awsrun.cache.AbstractExpiringValue" href="#awsrun.cache.AbstractExpiringValue">AbstractExpiringValue</a></code></h4>
 <ul class="">
@@ -613,7 +904,7 @@ persisted as JSON, a TypeError is thrown.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.11.1" />
+<meta name="generator" content="pdoc 0.11.6" />
 <title>awsrun.plugins.creds.aws API documentation</title>
 <meta name="description" content="Plug-ins for AWS credential loading …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <!-- <link href="/awsrun/webfonts.css" rel="stylesheet"> -->
@@ -156,12 +156,17 @@ from requests_ntlm import HttpNtlmAuth
 
 from awsrun.config import URL, Bool, Choice, Dict, Int, Str
 from awsrun.plugmgr import Plugin
-from awsrun.session.aws import CredsViaCrossAccount, CredsViaProfile, CredsViaSAML
+from awsrun.session.aws import (
+    CredsViaCrossAccount,
+    CredsViaOAuth2ROPC,
+    CredsViaProfile,
+    CredsViaSAML,
+)
 
 # This is only used to prevent pdoc (the doc generator) from exposing
 # AbstractCrossAccount in the module&#39;s documentation, which is intended for CLI
 # users and not programmers as this module deals with plugin configurations.
-__all__ = [&#34;Profile&#34;, &#34;SAML&#34;, &#34;ProfileCrossAccount&#34;, &#34;SAMLCrossAccount&#34;]
+__all__ = [&#34;SAML&#34;, &#34;Profile&#34;, &#34;ProfileCrossAccount&#34;, &#34;SAMLCrossAccount&#34;]
 
 _AUTH_CLASSES = {&#34;basic&#34;: HTTPBasicAuth, &#34;digest&#34;: HTTPDigestAuth, &#34;ntlm&#34;: HttpNtlmAuth}
 
@@ -403,6 +408,172 @@ class SAML(Plugin):
         # the user out as it will attempt to get SAML creds for each account. If
         # this fails, an exception will be thrown and caught in the main CLI.
         session_provider.assertion()
+
+        return session_provider
+
+
+class OAuth2(Plugin):
+    &#34;&#34;&#34;CLI plug-in that uses federated authentication via OAuth2 for credentials.
+
+    AWS supports federated access via OpenID Connect (OIDC). With this
+    plug-in, the user authenticates to an OAuth2 server using the Resource
+    Owner Password Credential (ROPC) flow, such as Microsoft Entra, to obtain
+    an access token that is used to assume an AWS role within an account to
+    obtain STS credentials. Unlike the `Profile` plug-in, this plug-in does
+    not rely on the standard AWS credentials or configuration files, and thus
+    does not require defining all accounts ahead of time. This plug-in does,
+    however, require that the OAuth2 server is configured to grant a user
+    access to authorized AWS accounts.
+
+    Please refer to AWS [OIDC federation guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html)
+    for additional details on the use of federated access with OIDC.
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Credentials:
+          plugin: awsrun.plugins.creds.aws.OAuth2
+          options:
+            username: STRING
+            password: STRING
+            role: STRING*
+            url: STRING*
+            http_headers:
+              STRING: STRING
+            oauth2_params:
+              STRING: STRING
+            no_verify: BOOLEAN
+            duration: INTEGER
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below.
+
+    `username`, `--oauth2-username`
+    : The username to use when authenticating with the OAuth2 server for the base
+    account. If this value is not provided, the following environment variables
+    are checked in order: LOGNAME, USER, LNAME and USERNAME.
+
+    `password`, `--oauth2-password`
+    : The password to use when authenticating with the OAuth2 server for the base
+    account. The default is the value, if any, of the PASSWORD environment
+    variable. If none of these are set, the user will be prompted via the
+    console when awsrun is invoked.
+
+    `role`, `--oauth2-role`
+    : The AWS role (not ARN) to assume in the base or source account when
+    federating via OIDC. This value **must** be provided via the user
+    configuration or as an awsrun command line argument. Note: this is not the
+    IAM role name used when performing the cross-account assume role (see
+    `x_acct: role` below).
+
+    `url`
+    : The URL to the OAuth2 server that will provide an access token upon
+    successful authentication for the base account. This value **must** be
+    provided via the user configuration file.
+
+    `http_headers`
+    : Additional HTTP headers to send in the request to the OAuth2 server. If
+    specified, it must be a dictionary of `key: value` pairs, where keys and
+    values are strings.
+
+    `oauth2_params`
+    : Additional OAuth2 parameters to send in the request to the OAuth2 server. If
+    specified, it must be a dictionary of `key: value` pairs, where keys and
+    values are strings. For example, this can be used to specify `client_id`
+    and `scope` parameters if required by the OAuth2 server.
+
+    `no_verify`, `--oauth2-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+
+    `duration`, `--oauth2-duration`
+    : The amount of time, in seconds, that the AWS credentials for the role /
+    base account combination are cached in memory. The default value is `3600`
+    seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
+    credentials are expired sooner by a local IAM policy, then lower the value.
+    &#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        super().__init__(parser, cfg)
+
+        # Define the arguments that we want to allow a user to override via the
+        # main CLI. Any CLI args added via add_argument will be commingled with
+        # the main awsrun args, so they are prefixed with &#39;--oauth2-&#39; to lessen
+        # chance of a name collision.
+        group = parser.add_argument_group(&#34;OAuth2 options&#34;)
+        group.add_argument(
+            &#34;--oauth2-username&#34;,
+            metavar=&#34;USER&#34;,
+            default=self.cfg(&#34;username&#34;, type=Str, default=getpass.getuser()),
+            help=&#34;username for OAuth2 authentication&#34;,
+        )
+
+        group.add_argument(
+            &#34;--oauth2-password&#34;,
+            metavar=&#34;PASS&#34;,
+            default=self.cfg(
+                &#34;password&#34;, type=Str, default=os.environ.get(&#34;PASSWORD&#34;, None)
+            ),
+            help=&#34;password for OAuth2 authentication&#34;,
+        )
+
+        group.add_argument(
+            &#34;--oauth2-role&#34;,
+            metavar=&#34;ROLE&#34;,
+            default=self.cfg(&#34;role&#34;, type=Str, must_exist=True),
+            help=&#34;base role name (not ARN) to assume via OAuth2&#34;,
+        )
+
+        group.add_argument(
+            &#34;--oauth2-duration&#34;,
+            metavar=&#34;SECS&#34;,
+            type=int,
+            default=cfg(&#34;duration&#34;, type=Int, default=3600),
+            help=&#34;duration when requesting aws credentials in assume_role*&#34;,
+        )
+
+        group.add_argument(
+            &#34;--oauth2-no-verify&#34;,
+            action=&#34;store_true&#34;,
+            default=cfg(&#34;no_verify&#34;, type=Bool, default=False),
+            help=&#34;disable cert verification for HTTP requests&#34;,
+        )
+
+    def instantiate(self, args):
+        cfg = self.cfg
+
+        # We don&#39;t prompt for this password above when checking the PASSWORD
+        # environment as we wouldn&#39;t have access to the username. which should
+        # be included in the prompt to the user to remind them of the username
+        # being used.
+        args.oauth2_password = args.oauth2_password or getpass.getpass(
+            f&#34;Password for {args.oauth2_username}? &#34;
+        )
+
+        # Build a session provider using the combination of options that have
+        # been specified in the user&#39;s configuration file or have been
+        # overridden on the command line.
+        session_provider = CredsViaOAuth2ROPC(
+            role=args.oauth2_role,
+            url=cfg(&#34;url&#34;, type=URL, must_exist=True),
+            username=args.oauth2_username,
+            password=args.oauth2_password,
+            headers=cfg(&#34;http_headers&#34;, type=Dict(Str, Str), default={}),
+            oauth2_params=cfg(&#34;oauth2_params&#34;, type=Dict(Str, Str), default={}),
+            duration=args.oauth2_duration,
+            no_verify=args.oauth2_no_verify,
+        )
+
+        # Test if password provided is correct. If the wrong password is used and
+        # one cannot be authenticated, then AccountRunner might inadvertently lock
+        # the user out as it will repeatedly attempt to get an OAuth2 token for
+        # each account. If this fails, an exception will be thrown and caught in
+        # the main CLI.
+        session_provider.token()
 
         return session_provider
 
@@ -680,6 +851,125 @@ class SAMLCrossAccount(AbstractCrossAccount):
         super().__init__(parser, cfg)
 
     def _get_base_auth(self):
+        return self._base_auth
+
+
+class OAuth2CrossAccount(AbstractCrossAccount):
+    &#34;&#34;&#34;CLI plug-in that uses a OAuth2 base account for cross-account access.
+
+    AWS supports cross-account access from one &#34;base&#34; or &#34;source&#34; account to
+    another account. This plug-in obtains credentials for the base account via
+    the `OAuth2` plug-in, and then uses those credentials to assume role to the
+    other account provided the proper IAM permissions have been setup. Cross
+    account access is typically used in large enterprises with a significant
+    number of AWS accounts to simply management of credentials. The benefit is
+    that a user does not need direct access to every account. Only access to the
+    base account is required from which the user can &#34;hop off&#34; to other
+    accounts.
+
+    Please refer to [Providing Access to an IAM User in Another AWS Account That
+    You
+    Own](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_aws-accounts.html)
+    for additional details on cross-account access.
+
+    ## Configuration
+
+    Options with an asterisk are mandatory and must be provided:
+
+        Credentials:
+          plugin: awsrun.plugins.creds.aws.OAuth2CrossAccount
+          options:
+            username: STRING
+            password: STRING
+            role_arn: STRING*
+            url: STRING*
+            http_headers:
+              STRING: STRING
+            oauth2_params:
+              STRING: STRING
+            no_verify: BOOLEAN
+            duration: INTEGER
+            x_acct:
+              base: STRING*
+              role: STRING*
+              duration: INTEGER
+
+    ## Plug-in Options
+
+    Some options can be overridden on the awsrun CLI via command line flags.
+    In those cases, the CLI flags are specified next to the option name below.
+
+    `username`, `--oauth2-username`
+    : The username to use when authenticating with the OAuth2 server for the base
+    account. If this value is not provided, the following environment variables
+    are checked in order: LOGNAME, USER, LNAME and USERNAME.
+
+    `password`, `--oauth2-password`
+    : The password to use when authenticating with the OAuth2 server for the base
+    account. The default is the value, if any, of the PASSWORD environment
+    variable. If none of these are set, the user will be prompted via the
+    console when awsrun is invoked.
+
+    `role_arn`, `--oauth2-role-arn`
+    : The AWS role ARN to assume in the base or source account when
+    federating via OIDC. This value **must** be provided via the user
+    configuration or as an awsrun command line argument. Note: this is not the
+    IAM role name used when performing the cross-account assume role (see
+    `x_acct: role` below).
+
+    `url`
+    : The URL to the OAuth2 server that will provide an access token upon
+    successful authentication for the base account. This value **must** be
+    provided via the user configuration file.
+
+    `http_headers`
+    : Additional HTTP headers to send in the request to the OAuth2 server. If
+    specified, it must be a dictionary of `key: value` pairs, where keys and
+    values are strings.
+
+    `oauth2_params`
+    : Additional OAuth2 parameters to send in the request to the OAuth2 server. If
+    specified, it must be a dictionary of `key: value` pairs, where keys and
+    values are strings. For example, this can be used to specify `client_id`
+    and `scope` parameters if required by the OAuth2 server.
+
+    `no_verify`, `--oauth2-no-verify`
+    : Disable HTTP certificate verification. This is not advisable and user will
+    be warned on the command line if verification has been disabled. The default
+    value is `false`.
+
+    `duration`, `--oauth2-duration`
+    : The amount of time, in seconds, that the AWS credentials for the role /
+    base account combination are cached in memory. The default value is `3600`
+    seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
+    credentials are expired sooner by a local IAM policy, then lower the value.
+
+    `x_acct: base`, `--x-acct-base`
+    : The base or source account from which to &#34;hop off&#34; to other accounts. This
+    value **must** be provided via the user configuration or as an awsrun
+    command line argument. OAuth2-based authentication will be used to obtain
+    credentials for this base account.
+
+    `x_acct: role`, `--x-acct-role`
+    : The IAM role name, not ARN, to assume from the base account to obtain
+    credentials for other accounts. It is not an ARN as the ARN is dynamically
+    created as each account is processed. This value **must** be provided via
+    the user configuration or as an awsrun command line argument. Note: this
+    value is not the role used for the OAuth2 authentication to the base
+    account (see the `role_arn` option above).
+
+    `x_acct: duration`, `--x-acct-duration`
+    : The amount of time, in seconds, that the AWS credentials for the role /
+    cross-account combination are cached in memory. The default value is `3600`
+    seconds (1 hour). Caching can be disabled by specifying `0` seconds. If AWS
+    credentials are expired sooner by a local IAM policy, then lower the value.
+    &#34;&#34;&#34;
+
+    def __init__(self, parser, cfg):
+        self._base_auth = OAuth2(parser, cfg)
+        super().__init__(parser, cfg)
+
+    def _get_base_auth(self):
         return self._base_auth</code></pre>
 </details>
 </section>
@@ -692,110 +982,6 @@ class SAMLCrossAccount(AbstractCrossAccount):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="awsrun.plugins.creds.aws.Profile"><code class="flex name class">
-<span>class <span class="ident">Profile</span></span>
-<span>(</span><span>parser, cfg)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>CLI plug-in that uses standard AWS configuration files for credentials.</p>
-<h2 id="overview">Overview</h2>
-<p>The AWS CLI allows users to define "profiles" in their AWS credentials file
-(~/.aws/credentials) and their AWS configuration file (~/.aws/config). For
-example, if ~/.aws/credentials file defines the following two profiles, then
-awsrun can be used to access accounts 111222333444 and 222333444111:</p>
-<pre><code>[111222333444]
-aws_access_key_id=AKIAIOSFODNN7EXAMPLE
-aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-
-[222333444111]
-aws_access_key_id=BEOQODRDNEUDFEXAMPLE
-aws_secret_access_key=8weuou7etAUGZehZHoZeQHVBxogGRLEXAMPLEKEY
-</code></pre>
-<p>If a profile is not explicitly defined for an account, this plug-in will
-fallback to the "default" profile for account access. For example:</p>
-<pre><code>[default]
-aws_access_key_id=BEOQODRDNEUDFEXAMPLE
-aws_secret_access_key=8weuou7etAUGZehZHoZeQHVBxogGRLEXAMPLEKEY
-</code></pre>
-<p>By leveraging the standard AWS CLI credential and configuration files, users
-can specify credentials in a variety of ways including standard access and
-secret keys, pre-defined cross-account access, or even use an external
-process to obtain credentials.</p>
-<p>Please refer to the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html">AWS CLI Configuration and Credential
-Files</a>
-for additional details on the use of the standard AWS files and how to
-configure them.</p>
-<h2 id="configuration">Configuration</h2>
-<pre><code>Credentials:
-  plugin: awsrun.plugins.creds.aws.Profile
-</code></pre>
-<h2 id="plug-in-options">Plug-in Options</h2>
-<p>There are no options for this plug-in.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Profile(Plugin):
-    &#34;&#34;&#34;CLI plug-in that uses standard AWS configuration files for credentials.
-
-    ## Overview
-
-    The AWS CLI allows users to define &#34;profiles&#34; in their AWS credentials file
-    (~/.aws/credentials) and their AWS configuration file (~/.aws/config). For
-    example, if ~/.aws/credentials file defines the following two profiles, then
-    awsrun can be used to access accounts 111222333444 and 222333444111:
-
-        [111222333444]
-        aws_access_key_id=AKIAIOSFODNN7EXAMPLE
-        aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-
-        [222333444111]
-        aws_access_key_id=BEOQODRDNEUDFEXAMPLE
-        aws_secret_access_key=8weuou7etAUGZehZHoZeQHVBxogGRLEXAMPLEKEY
-
-    If a profile is not explicitly defined for an account, this plug-in will
-    fallback to the &#34;default&#34; profile for account access. For example:
-
-        [default]
-        aws_access_key_id=BEOQODRDNEUDFEXAMPLE
-        aws_secret_access_key=8weuou7etAUGZehZHoZeQHVBxogGRLEXAMPLEKEY
-
-    By leveraging the standard AWS CLI credential and configuration files, users
-    can specify credentials in a variety of ways including standard access and
-    secret keys, pre-defined cross-account access, or even use an external
-    process to obtain credentials.
-
-    Please refer to the [AWS CLI Configuration and Credential
-    Files](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
-    for additional details on the use of the standard AWS files and how to
-    configure them.
-
-    ## Configuration
-
-        Credentials:
-          plugin: awsrun.plugins.creds.aws.Profile
-
-    ## Plug-in Options
-
-    There are no options for this plug-in.
-    &#34;&#34;&#34;
-
-    def instantiate(self, args):
-        return CredsViaProfile()</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<code><li><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li></code>
-</ul>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></b></code>:
-<ul class="hlist">
-<li><code><a title="awsrun.plugmgr.Plugin.instantiate" href="../../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
 <dt id="awsrun.plugins.creds.aws.SAML"><code class="flex name class">
 <span>class <span class="ident">SAML</span></span>
 <span>(</span><span>parser, cfg)</span>
@@ -1069,6 +1255,110 @@ Caching can be disabled by specifying <code>0</code> seconds.</dd>
         session_provider.assertion()
 
         return session_provider</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<code><li><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></li></code>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="awsrun.plugmgr.Plugin" href="../../plugmgr.html#awsrun.plugmgr.Plugin">Plugin</a></b></code>:
+<ul class="hlist">
+<li><code><a title="awsrun.plugmgr.Plugin.instantiate" href="../../plugmgr.html#awsrun.plugmgr.Plugin.instantiate">instantiate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="awsrun.plugins.creds.aws.Profile"><code class="flex name class">
+<span>class <span class="ident">Profile</span></span>
+<span>(</span><span>parser, cfg)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>CLI plug-in that uses standard AWS configuration files for credentials.</p>
+<h2 id="overview">Overview</h2>
+<p>The AWS CLI allows users to define "profiles" in their AWS credentials file
+(~/.aws/credentials) and their AWS configuration file (~/.aws/config). For
+example, if ~/.aws/credentials file defines the following two profiles, then
+awsrun can be used to access accounts 111222333444 and 222333444111:</p>
+<pre><code>[111222333444]
+aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+[222333444111]
+aws_access_key_id=BEOQODRDNEUDFEXAMPLE
+aws_secret_access_key=8weuou7etAUGZehZHoZeQHVBxogGRLEXAMPLEKEY
+</code></pre>
+<p>If a profile is not explicitly defined for an account, this plug-in will
+fallback to the "default" profile for account access. For example:</p>
+<pre><code>[default]
+aws_access_key_id=BEOQODRDNEUDFEXAMPLE
+aws_secret_access_key=8weuou7etAUGZehZHoZeQHVBxogGRLEXAMPLEKEY
+</code></pre>
+<p>By leveraging the standard AWS CLI credential and configuration files, users
+can specify credentials in a variety of ways including standard access and
+secret keys, pre-defined cross-account access, or even use an external
+process to obtain credentials.</p>
+<p>Please refer to the <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html">AWS CLI Configuration and Credential
+Files</a>
+for additional details on the use of the standard AWS files and how to
+configure them.</p>
+<h2 id="configuration">Configuration</h2>
+<pre><code>Credentials:
+  plugin: awsrun.plugins.creds.aws.Profile
+</code></pre>
+<h2 id="plug-in-options">Plug-in Options</h2>
+<p>There are no options for this plug-in.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Profile(Plugin):
+    &#34;&#34;&#34;CLI plug-in that uses standard AWS configuration files for credentials.
+
+    ## Overview
+
+    The AWS CLI allows users to define &#34;profiles&#34; in their AWS credentials file
+    (~/.aws/credentials) and their AWS configuration file (~/.aws/config). For
+    example, if ~/.aws/credentials file defines the following two profiles, then
+    awsrun can be used to access accounts 111222333444 and 222333444111:
+
+        [111222333444]
+        aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+        aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+        [222333444111]
+        aws_access_key_id=BEOQODRDNEUDFEXAMPLE
+        aws_secret_access_key=8weuou7etAUGZehZHoZeQHVBxogGRLEXAMPLEKEY
+
+    If a profile is not explicitly defined for an account, this plug-in will
+    fallback to the &#34;default&#34; profile for account access. For example:
+
+        [default]
+        aws_access_key_id=BEOQODRDNEUDFEXAMPLE
+        aws_secret_access_key=8weuou7etAUGZehZHoZeQHVBxogGRLEXAMPLEKEY
+
+    By leveraging the standard AWS CLI credential and configuration files, users
+    can specify credentials in a variety of ways including standard access and
+    secret keys, pre-defined cross-account access, or even use an external
+    process to obtain credentials.
+
+    Please refer to the [AWS CLI Configuration and Credential
+    Files](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
+    for additional details on the use of the standard AWS files and how to
+    configure them.
+
+    ## Configuration
+
+        Credentials:
+          plugin: awsrun.plugins.creds.aws.Profile
+
+    ## Plug-in Options
+
+    There are no options for this plug-in.
+    &#34;&#34;&#34;
+
+    def instantiate(self, args):
+        return CredsViaProfile()</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1507,10 +1797,10 @@ credentials are expired sooner by a local IAM policy, then lower the value.</dd>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="awsrun.plugins.creds.aws.Profile" href="#awsrun.plugins.creds.aws.Profile">Profile</a></code></h4>
+<h4><code><a title="awsrun.plugins.creds.aws.SAML" href="#awsrun.plugins.creds.aws.SAML">SAML</a></code></h4>
 </li>
 <li>
-<h4><code><a title="awsrun.plugins.creds.aws.SAML" href="#awsrun.plugins.creds.aws.SAML">SAML</a></code></h4>
+<h4><code><a title="awsrun.plugins.creds.aws.Profile" href="#awsrun.plugins.creds.aws.Profile">Profile</a></code></h4>
 </li>
 <li>
 <h4><code><a title="awsrun.plugins.creds.aws.ProfileCrossAccount" href="#awsrun.plugins.creds.aws.ProfileCrossAccount">ProfileCrossAccount</a></code></h4>
@@ -1524,7 +1814,7 @@ credentials are expired sooner by a local IAM policy, then lower the value.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

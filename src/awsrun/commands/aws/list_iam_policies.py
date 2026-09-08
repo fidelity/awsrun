@@ -452,7 +452,9 @@ class CLICommand(Command):
         for inline in identity.policies.all():
             # We wrap the policy_document in a lambda so boto3 resource is not
             # fetched unless it is really needed.
-            if self.should_skip(inline.policy_name, lambda inline=inline: inline.policy_document):
+            if self.should_skip(
+                inline.policy_name, lambda inline=inline: inline.policy_document
+            ):
                 continue
 
             ip.print(f"policy=inline:{inline.policy_name}")
@@ -468,7 +470,8 @@ class CLICommand(Command):
             # We wrap the default_version.document in a lambda so boto3 resource
             # is not fetched unless it is really needed.
             if self.should_skip(
-                attached.policy_name, lambda attached=attached: attached.default_version.document
+                attached.policy_name,
+                lambda attached=attached: attached.default_version.document,
             ):
                 continue
 
