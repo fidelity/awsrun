@@ -787,6 +787,15 @@ def main():
         print(e, file=sys.stderr)
         sys.exit(1)
 
+    except KeyboardInterrupt:
+        # A user pressing Ctrl-C should not be shown a stack trace. The exit
+        # status follows the shell convention of 128 + SIGINT.
+        if os.getenv("AWSRUN_TRACE"):
+            traceback.print_exc(file=sys.stderr)
+
+        print("\nInterrupted", file=sys.stderr)
+        sys.exit(130)
+
 
 def _cli(csp):
     """Parses command line arguments and invokes the awsrun CLI.
@@ -1125,7 +1134,15 @@ def _ask_for_confirmation(accts):
     """Prompt user for confirmation and list accounts to be acted upon."""
     _print_accounts(accts, out=sys.stderr)
     print("Proceed (y/n)? ", flush=True, end="", file=sys.stderr)
-    answer = input()
+    try:
+        answer = input()
+    except EOFError:
+        # There is nobody to answer when stdin is closed or is not a terminal
+        # (e.g. in a script or a scheduled job), so explain what to do.
+        print(file=sys.stderr)
+        raise Exception(
+            "Cannot ask for confirmation as standard input is closed, use --force to proceed without it"
+        ) from None
     if answer.lower() not in ["y", "yes"]:
         print("Exiting", file=sys.stderr)
         sys.exit(0)

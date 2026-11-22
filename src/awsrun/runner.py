@@ -990,9 +990,19 @@ class AccountRunner:
             # Command authors as it allows them to safely update instance vars
             # in the Command because it is not safe to do so in the execute
             # method which is invoked in a concurrently running worker thread.
-            for future in as_completed(f2a):
-                acct = f2a[future]
-                cmd.collect_results(acct, future.result())
+            try:
+                for future in as_completed(f2a):
+                    acct = f2a[future]
+                    cmd.collect_results(acct, future.result())
+
+            except BaseException:
+                # If we are interrupted (e.g. the user pressed Ctrl-C), do not
+                # start processing the accounts that are still waiting for a
+                # worker. Without this, leaving the "with" block would process
+                # every remaining account before the program could exit.
+                for future in f2a:
+                    future.cancel()
+                raise
 
         cmd.post_hook()
         return time.time() - start
