@@ -8,6 +8,7 @@
 
 import json
 import os
+import time
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -145,7 +146,12 @@ def test_cached_accounts_are_reused_within_max_age(cache_home, tmp_path):
 
     write_accounts(source, "999999999999")
     assert ids(acctload.JSONAccountLoader(url, max_age=300)) == ["111111111111"]
-    assert ids(acctload.JSONAccountLoader(url, max_age=0)) == ["999999999999"]
+
+    # Once the cached copy is older than max_age, the source is read again.
+    (cached,) = (cache_home / "awsrun").glob("accts-*.json")
+    an_hour_ago = time.time() - 3600
+    os.utime(cached, (an_hour_ago, an_hour_ago))
+    assert ids(acctload.JSONAccountLoader(url, max_age=300)) == ["999999999999"]
 
 
 def test_nothing_is_written_when_caching_is_disabled(cache_home, tmp_path):
