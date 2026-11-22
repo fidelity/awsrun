@@ -36,27 +36,34 @@ configuration file:
     Commands:
       console:
         path: URL_PATH
-        region:
-          - STRING
+        region: STRING
+        issuer: STRING
 
 ### Command Options
 Some options can be overridden on the awsrun CLI via command line flags. In
 those cases, the CLI flags are specified next to the option name below:
 
 `region`, `--region REGION`
-: Run the command in the specified regions. When specifying multiple values on
-the command line, use multiple flags for each value. There is no default value.
+: Generate the sign-in URL for the specified region. The default value is
+`us-east-1`.
 
 `path`, `--path URL_PATH`
 : Specify the URL path within the AWS Console to embed within the sign-in URL.
 The default value is `/console/home`.
+
+`issuer`, `--issuer STRING`
+: Specify the `Issuer` embedded within the sign-in URL. AWS redirects the user
+to this value once the console session expires. The default value is `fmr.com`.
 """
 
 import json
 
 import requests
 
+from awsrun.config import Str
 from awsrun.runner import Command
+
+DEFAULT_ISSUER = "fmr.com"
 
 
 class CLICommand(Command):
@@ -74,12 +81,18 @@ class CLICommand(Command):
             default=cfg("path", default="/console/home"),
             help="Optional path to append to AWS url",
         )
+        parser.add_argument(
+            "--issuer",
+            default=cfg("issuer", type=Str, default=DEFAULT_ISSUER),
+            help="Issuer to embed in the sign-in URL",
+        )
         args = parser.parse_args(argv)
         return cls(**vars(args))
 
-    def __init__(self, region, path):
+    def __init__(self, region, path, issuer=DEFAULT_ISSUER):
         self.region = region
         self.path = path
+        self.issuer = issuer
 
     def execute(self, session, acct):
         creds = session.get_credentials()
@@ -107,7 +120,7 @@ class CLICommand(Command):
             "https://signin.aws.amazon.com/federation",
             params={
                 "Action": "login",
-                "Issuer": "fmr.com",
+                "Issuer": self.issuer,
                 "Destination": f"https://console.aws.amazon.com{self.path}?region={self.region}",
                 "SigninToken": signin_token,
             },
