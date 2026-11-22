@@ -110,7 +110,7 @@ class UsernamePassword(Plugin):
     Options with an asterisk are mandatory and must be provided:
 
         Credentials:
-          plugin: awsrun.plugins.creds.azure.Default
+          plugin: awsrun.plugins.creds.azure.UsernamePassword
           options:
             username: EMAIL
             password: STRING

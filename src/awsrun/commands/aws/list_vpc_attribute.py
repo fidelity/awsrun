@@ -34,7 +34,7 @@ The following is the syntax for the options that can be specified in the user
 configuration file:
 
     Commands:
-      list_public_ips:
+      list_vpc_attribute:
         attribute:
           - ("enableDnsSupport" | "enableDnsHostnames")
         region:
