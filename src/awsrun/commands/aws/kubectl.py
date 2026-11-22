@@ -197,7 +197,7 @@ class CLICommand(RegionalCommand):
         parser.add_argument(
             "--output",
             "-o",
-            default=cfg("namespace", type=Str),
+            default=cfg("output", type=Str),
             help="Specify output format of kubectl",
         )
 
@@ -254,7 +254,7 @@ class CLICommand(RegionalCommand):
         for arg in (a[0] if isinstance(a, tuple) else a for a in prohibited):
             attr = arg.replace("-", "_")
             if getattr(args, attr) is not None:
-                parser.error("Do not specify --{arg} with awsrun kubectl")
+                parser.error(f"Do not specify --{arg} with awsrun kubectl")
             delattr(args, attr)
 
         if (
