@@ -69,7 +69,7 @@ if it was not already.
 
 import importlib
 import logging
-from contextlib import suppress
+import re
 from functools import partial, reduce
 from inspect import isclass
 
@@ -294,7 +294,11 @@ class PluginManager:
         self.args, self.remaining_argv = self._parser.parse_known_args(
             self.remaining_argv, self.args
         )
-        LOG.info("parsed args=%s remaining args=%s", self.args, self.remaining_argv)
+        LOG.info(
+            "parsed args=%s remaining args=%s",
+            _redact_namespace(self.args),
+            _redact_argv(self.remaining_argv),
+        )
 
         self._plugins[keys] = plugin
 
@@ -328,7 +332,7 @@ class PluginManager:
         If `must_be` is not provided, the returned object can be of any type.
         """
         if keys not in self._plugins:
-            self.parse_args(*keys, default)
+            self.parse_args(*keys, default=default)
 
         instance = self._plugins[keys].instantiate(self.args)
 
@@ -338,6 +342,37 @@ class PluginManager:
             )
 
         return instance
+
+
+_SENSITIVE = re.compile(r"passw(or)?d|secret|token", re.IGNORECASE)
+_REDACTED = "********"
+
+
+def _redact_namespace(namespace):
+    """Returns a dict of the namespace with sensitive values masked."""
+    return {
+        k: _REDACTED if v is not None and _SENSITIVE.search(k) else v
+        for k, v in vars(namespace).items()
+    }
+
+
+def _redact_argv(argv):
+    """Returns a copy of argv with the values of sensitive flags masked."""
+    redacted = []
+    mask_next = False
+    for arg in argv:
+        if mask_next:
+            redacted.append(_REDACTED)
+            mask_next = False
+            continue
+
+        flag, sep, _ = arg.partition("=")
+        if flag.startswith("-") and _SENSITIVE.search(flag):
+            redacted.append(f"{flag}={_REDACTED}" if sep else arg)
+            mask_next = not sep
+        else:
+            redacted.append(arg)
+    return redacted
 
 
 def load_dotted_object(dotted_name):
@@ -356,8 +391,18 @@ def load_dotted_object(dotted_name):
             raise ImportError(f"cannot import '{dotted_name}'")
 
         mod = None
-        with suppress(ModuleNotFoundError):
+        try:
             mod = importlib.import_module(mod_name)
+        except ModuleNotFoundError as e:
+            # Only keep walking up the dotted name when the part that could
+            # not be found is the name itself (i.e. the tail is an attribute).
+            # Anything else is a missing dependency of the module being
+            # loaded (e.g. boto3), which the user needs to be told about.
+            missing = e.name or ""
+            if mod_name != missing and not mod_name.startswith(missing + "."):
+                raise ImportError(
+                    f"cannot import '{dotted_name}': {e} (is an optional dependency missing?)"
+                ) from e
 
         if not mod:
             mod_name, _, attr = mod_name.rpartition(".")

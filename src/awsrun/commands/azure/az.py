@@ -431,10 +431,12 @@ class CLICommand(Command):
             # account, but we need to escape any slashes if we use this as part
             # of a filename so pathlib doesn't interpret as directories.
             escaped = re.sub(r"[\\/]", "_", str(acct))
-            name = self.output_dir / f"{escaped}"
+            name = f"{escaped}"
 
+            # The suffix is appended rather than set via with_suffix() as the
+            # latter would replace anything after a dot in the name.
             def save(suffix, text):
-                with name.with_suffix(suffix).open("w") as out:
+                with (self.output_dir / f"{name}{suffix}").open("w") as out:
                     out.write(text)
 
             save(".stdout.log", result.stdout)

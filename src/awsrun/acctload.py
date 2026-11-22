@@ -45,11 +45,13 @@ to attributes that are not present in the accounts being loaded.
 """
 
 import csv
+import hashlib
 import io
 import itertools
 import json
 import keyword
 import logging
+import os
 import re
 import shutil
 import subprocess
@@ -66,6 +68,10 @@ from requests_file import FileAdapter
 from awsrun.cache import PersistentExpiringValue
 
 LOG = logging.getLogger(__name__)
+
+# Seconds to wait to connect to, and then for data from, an HTTP server. Without
+# a timeout, a server that stops responding hangs the CLI indefinitely.
+_HTTP_TIMEOUT = (10, 60)
 
 
 class AccountLoader:
@@ -681,12 +687,12 @@ class CSVAccountLoader(MetaAccountLoader):
         session.mount("file://", FileAdapter())
 
         def load_cache():
-            r = session.get(url, verify=not no_verify)
+            r = session.get(url, verify=not no_verify, timeout=_HTTP_TIMEOUT)
             r.raise_for_status()
             buf = io.StringIO(r.text.strip())
             return list(csv.DictReader(buf, delimiter=delimiter, skipinitialspace=True))
 
-        cache_file = Path(tempfile.gettempdir(), "awsrun.dat")
+        cache_file = _default_cache_file(max_age, "csv", url, delimiter)
         accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
 
         super().__init__(
@@ -752,11 +758,11 @@ class JSONAccountLoader(MetaAccountLoader):
         session.mount("file://", FileAdapter())
 
         def load_cache():
-            r = session.get(url, verify=not no_verify)
+            r = session.get(url, verify=not no_verify, timeout=_HTTP_TIMEOUT)
             r.raise_for_status()
             return r.json()
 
-        cache_file = Path(tempfile.gettempdir(), "awsrun.dat")
+        cache_file = _default_cache_file(max_age, "json", url)
         accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
 
         super().__init__(
@@ -826,11 +832,11 @@ class YAMLAccountLoader(MetaAccountLoader):
         session.mount("file://", FileAdapter())
 
         def load_cache():
-            r = session.get(url, verify=not no_verify)
+            r = session.get(url, verify=not no_verify, timeout=_HTTP_TIMEOUT)
             r.raise_for_status()
             return yaml.safe_load(r.text)
 
-        cache_file = Path(tempfile.gettempdir(), "awsrun.dat")
+        cache_file = _default_cache_file(max_age, "yaml", url)
         accts = PersistentExpiringValue(load_cache, cache_file, max_age=max_age)
 
         super().__init__(
@@ -865,7 +871,8 @@ class AzureCLIAccountLoader(MetaAccountLoader):
     """
 
     def __init__(self, name_regexp=None):
-        if not shutil.which("az"):
+        az_path = shutil.which("az")
+        if not az_path:
             raise FileNotFoundError(
                 "error: Please install the Azure CLI and ensure 'az' is in your path"
             )
@@ -884,7 +891,7 @@ class AzureCLIAccountLoader(MetaAccountLoader):
         # to. It is up to the user to run az login. If they don't we'll print
         # that error.
         result = subprocess.run(
-            ["az", "account", "list", "--all"], capture_output=True, check=True
+            [az_path, "account", "list", "--all"], capture_output=True, check=True
         )
 
         # The Azure CLI always returns 0, so we must check to see if anything
@@ -915,6 +922,37 @@ class AzureCLIAccountLoader(MetaAccountLoader):
             accts.append(subscription)
 
         super().__init__(accts)
+
+
+def _default_cache_file(max_age, *source):
+    """Returns the path of the file used to cache accounts loaded from `source`.
+
+    The `source` arguments identify where and how the accounts were loaded
+    (e.g. the loader type and URL). Each distinct source is given its own
+    file, so the accounts cached for one URL are never returned for another.
+
+    The file lives in a directory that only the current user can access. The
+    system temp directory is not used because, on a multi-user system, any
+    other user could plant a cache file there to control which accounts awsrun
+    selects, or read the list of accounts that was cached.
+    """
+    digest = hashlib.sha256(repr(source).encode("utf-8")).hexdigest()[:16]
+    cache_dir = Path(
+        os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache", "awsrun"
+    )
+
+    # Nothing is written to disk when caching is disabled, so there is no need
+    # to create the directory.
+    if max_age:
+        try:
+            cache_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+        except OSError as e:
+            # The home directory might not be writable (e.g. in a container).
+            # Fall back to a private directory that lasts for this run only.
+            cache_dir = Path(tempfile.mkdtemp(prefix="awsrun-"))
+            LOG.warning("using temporary cache directory %s: %s", cache_dir, e)
+
+    return cache_dir / f"accts-{digest}.json"
 
 
 class CSVParser:
@@ -1001,7 +1039,7 @@ class HTTPOAuth2(AuthBase):
         self.data["intent"] = intent
 
     def _get_token(self):
-        resp = requests.post(self.url, data=self.data)
+        resp = requests.post(self.url, data=self.data, timeout=_HTTP_TIMEOUT)
         resp.raise_for_status()
         return resp.json()["access_token"]
 
@@ -1019,8 +1057,9 @@ class URLAccountLoader(MetaAccountLoader):
     override, use `parser` to specify a callable that accepts the text and
     returns a list or dict of accounts (see `MetaAccountLoader`). To cache the
     results, specify a non-zere number of seconds in `max_age`.  The default
-    location on disk is the system temp directory in a file called
-    `awsrun.dat`, which can be overrided via `cache_path`.
+    location on disk is a file, named after the `url` and `parser`, in the
+    `awsrun` directory of the user's cache directory (`$XDG_CACHE_HOME` or
+    `~/.cache`), which can be overrided via `cache_path`.
 
     Given the following JSON:
 
@@ -1068,12 +1107,17 @@ class URLAccountLoader(MetaAccountLoader):
         session.mount("file://", FileAdapter())
 
         def load_cache():
-            r = session.get(url, auth=auth, verify=not no_verify)
+            r = session.get(url, auth=auth, verify=not no_verify, timeout=_HTTP_TIMEOUT)
             r.raise_for_status()
             return parser(r.text)
 
         if not cache_path:
-            cache_path = Path(tempfile.gettempdir(), "awsrun.dat")
+            cache_path = _default_cache_file(
+                max_age,
+                type(parser).__name__,
+                url,
+                sorted(getattr(parser, "kwargs", {}).items()),
+            )
 
         accts = PersistentExpiringValue(load_cache, cache_path, max_age=max_age)
 

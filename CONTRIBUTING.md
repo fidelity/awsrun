@@ -42,7 +42,7 @@ Code contributions are welcome in all of our projects as long as you follow a fe
 - Your contribution must be received under the project's open source license.
 - You must have permission to make the contribution. We strongly recommend including a Signed-off-by line to indicate your adherence to the [Developer Certificate of Origin](https://developercertificate.org/).
 - All code contributions must be made via PR, and all checks must pass before merging.
-- All code must be formatted using [black](https://github.com/psf/black).
+- All code must be formatted and linted using [ruff](https://docs.astral.sh/ruff/) (`ruff format` and `ruff check`).
 - PR titles and commit messages must follow [Conventional Commits Specification](https://www.conventionalcommits.org/): `<type>[optional scope]: <description>`
   - The following types can be used: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, or `revert`. Refer to the [Conventional Commit Cheatsheet](https://kapeli.com/cheat_sheets/Conventional_Commits.docset/Contents/Resources/Documents/index) for when to use each type. For example, `feat: add sso credential plugin`.
   - The optional scope should be used if the changes are limited to a single module or command. For example, if adding the ability to filter events in the awsrun `last` command: `feat(last): add event filtering`.

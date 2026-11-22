@@ -354,7 +354,7 @@ class TestPersistentExpiringValue:
 
             # Because freezegun cannot adjust the time of the OS and timestamps
             # of files, we'll have to update the mtime of the cache file ourself.
-            mtime = time.mktime(frozen_datetime().timetuple())
+            mtime = time.time()
             os.utime(str(cache_file), (mtime, mtime))
 
             # Make sure the second value was cached

@@ -9,7 +9,7 @@ description = "CLI and library to execute commands over one or more AWS or Azure
 readme = "README.md"
 requires-python = ">=3.7"
 keywords = ["aws", "azure", "cli", "command runner"]
-license = { file = "LICENSE" }
+license = { file = "LICENSE.md" }
 dynamic = ["version"]
 
 classifiers = [
@@ -27,6 +27,8 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
   "Topic :: Utilities",
 ]
@@ -38,7 +40,7 @@ dependencies = ["PyYAML>=3.10", "requests", "requests_file", "requests_ntlm"]
 all = ["awsrun[aws,azure,cmds,dev]"]
 
 # dependencies for supported CSPs
-aws = ["boto3>=1.12.39", "bs4"]
+aws = ["boto3>=1.12.39", "beautifulsoup4"]
 azure = ["azure-identity", "azure-mgmt-network"]
 
 # dependencies for bundled commands

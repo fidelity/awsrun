@@ -52,8 +52,11 @@ a plain value is returned, it is cached for `max_age`. If only dynamic expiry
 is used, then `max_age` is not used.
 """
 
+import contextlib
 import json
 import logging
+import os
+import tempfile
 import threading
 import time
 from pathlib import Path
@@ -257,12 +260,25 @@ class PersistentExpiringValue(ExpiringValue):
             return
 
         LOG.debug("Saving data to cache file %s", self._path)
-        tmp = self._path.with_suffix(".tmp")
-        with tmp.open("w", encoding="utf-8") as file:
-            json.dump(value, file)
 
-        # Pathlib.replace uses os.replace which is atomic on POSIX systems
-        tmp.replace(self._path)
+        # The data is written to a temporary file that only the current user
+        # can read (mkstemp creates it with mode 0600 and a name that cannot
+        # be predicted), which is then moved into place. A fixed temporary
+        # name would let another user of a shared directory pre-create it, or
+        # point it somewhere else with a symlink.
+        fd, tmp = tempfile.mkstemp(
+            dir=self._path.parent, prefix=self._path.name + ".", suffix=".tmp"
+        )
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as file:
+                json.dump(value, file)
+
+            # os.replace is atomic on POSIX systems
+            os.replace(tmp, self._path)
+        except BaseException:
+            with contextlib.suppress(OSError):
+                os.unlink(tmp)
+            raise
 
         # Write or remove expiry file
         if expiry is not None:

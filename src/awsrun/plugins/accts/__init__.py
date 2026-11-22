@@ -753,13 +753,13 @@ class URLLoader(Plugin):
 
     `auth`
     : Identifies the authentication type required by the URL. The default
-    value is "none". Valid options include "none", "basic", "digest", "ntml",
+    value is "none". Valid options include "none", "basic", "digest", "ntlm",
     and "oauth2". All but "none" require that username` and `password` keys
     in `auth_options`. In addition, "oauth2" requires `token_url` key.
 
     `auth_options`
     : Provides options required for the specified `auth` type chosen.  The use
-    of "basic", "digest", "ntml", or "oauth2" require `username` and
+    of "basic", "digest", "ntlm", or "oauth2" require `username` and
     `password` keys in `auth_options`. Use of "oauth2" also requires a
     `token_url` that points to the token provider. Three optional keys can be
     provided with "oauth2" to override defaults: `scope` ("AppIdClaimsTrust"),
@@ -832,9 +832,10 @@ class URLLoader(Plugin):
         group.add_argument(
             "--loader-auth",
             metavar="STRING",
+            choices=["none", "basic", "digest", "ntlm", "oauth2"],
             default=cfg(
                 "auth",
-                type=Choice("none", "basic", "digest", "ntml", "oauth2"),
+                type=Choice("none", "basic", "digest", "ntlm", "oauth2"),
                 default="none",
             ),
             help="Authentication type required by the URL",
@@ -855,6 +856,7 @@ class URLLoader(Plugin):
         group.add_argument(
             "--loader-parser",
             metavar="STRING",
+            choices=["json", "yaml", "csv"],
             default=cfg("parser", type=Choice("json", "yaml", "csv"), default="json"),
             help="Parser used on data from URL",
         )

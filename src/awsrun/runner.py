@@ -50,7 +50,7 @@ write a simple `Command` that will print a list of VPCs IDs to the console for
 the same accounts in two AWS regions:
 
     from awsrun.runner import AccountRunner, Command
-    from awsrun.session import CredsViaProfile
+    from awsrun.session.aws import CredsViaProfile
 
     class VpcInfoCommand(Command):
         def __init__(self, regions):
@@ -84,7 +84,7 @@ and the elimination of the constructor as the regional command provides a
 default constructor:
 
     from awsrun.runner import AccountRunner, RegionalCommand
-    from awsrun.session import CredsViaProfile
+    from awsrun.session.aws import CredsViaProfile
 
     class VpcInfoCommand(RegionalCommand):
         def regional_execute(self, session, acct, region):
@@ -106,7 +106,7 @@ which command authors can then use. For example, to pass a trivial prefix to be
 used as part of the output:
 
     from awsrun.runner import AccountRunner, RegionalCommand
-    from awsrun.session import CredsViaProfile
+    from awsrun.session.aws import CredsViaProfile
 
     class VpcInfoCommand(RegionalCommand):
         # Save our context, a simple string in this case, to self.prefix.
@@ -138,7 +138,7 @@ specified regions:
 
     from collections import defaultdict
     from awsrun.runner import AccountRunner, Command
-    from awsrun.session import CredsViaProfile
+    from awsrun.session.aws import CredsViaProfile
 
     class VpcInfoCommand(Command):
         def __init__(self, regions):
@@ -184,7 +184,7 @@ process. In addition, the other difference is the region parameter on the
 
     from collections import defaultdict
     from awsrun.runner import AccountRunner, RegionalCommand
-    from awsrun.session import CredsViaProfile
+    from awsrun.session.aws import CredsViaProfile
 
     class VpcInfoCommand(RegionalCommand):
         def __init__(self, regions):
@@ -854,7 +854,7 @@ def get_paginated_resources(
             "describe_listeners",
             "Listeners",
             lambda l: l["Protocol"] in ["UDP", "TCP_UDP"],
-            LoadBalancer=lb_arn)
+            LoadBalancerArn=lb_arn)
     """
     resources = []
     for page in client.get_paginator(paginator).paginate(**kwargs):
@@ -990,9 +990,19 @@ class AccountRunner:
             # Command authors as it allows them to safely update instance vars
             # in the Command because it is not safe to do so in the execute
             # method which is invoked in a concurrently running worker thread.
-            for future in as_completed(f2a):
-                acct = f2a[future]
-                cmd.collect_results(acct, future.result())
+            try:
+                for future in as_completed(f2a):
+                    acct = f2a[future]
+                    cmd.collect_results(acct, future.result())
+
+            except BaseException:
+                # If we are interrupted (e.g. the user pressed Ctrl-C), do not
+                # start processing the accounts that are still waiting for a
+                # worker. Without this, leaving the "with" block would process
+                # every remaining account before the program could exit.
+                for future in f2a:
+                    future.cancel()
+                raise
 
         cmd.post_hook()
         return time.time() - start

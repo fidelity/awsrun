@@ -6,13 +6,27 @@
 
 import json
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
 
 import pytest
 import yaml
 from freezegun import freeze_time
 
 from awsrun import acctload
+
+
+@pytest.fixture(autouse=True)
+def _cache_home(tmpdir, monkeypatch):
+    """Keep the account cache of each test in its own temporary directory."""
+    monkeypatch.setenv("XDG_CACHE_HOME", str(tmpdir))
+
+
+def cache_file(*source):
+    """Returns the path of the cache file for accounts loaded from a source."""
+    return acctload._default_cache_file(300, *source)
+
+
+JSON_URL = "http://example.com/acct.json"
+YAML_URL = "http://example.com/acct.yaml"
 
 
 @pytest.fixture()
@@ -72,10 +86,8 @@ def yaml_string():
 
 
 @pytest.fixture()
-def _json_cache(tmpdir):
-    with open(tmpdir.join("awsrun.dat"), "w", encoding="utf-8") as f:
-        f.write(
-            """
+def _json_cache(_cache_home):
+    content = """
     [
         {
             "id": "100200300400",
@@ -94,7 +106,8 @@ def _json_cache(tmpdir):
         }
     ]
     """
-        )
+    for path in (cache_file("json", JSON_URL), cache_file("yaml", YAML_URL)):
+        path.write_text(content, encoding="utf-8")
 
 
 @pytest.mark.parametrize("max_age", [0, 300])
@@ -104,7 +117,6 @@ def test_json_loader_without_cache(tmpdir, mocker, expected_from_loader, max_age
     mock_resp.json.return_value = expected_from_loader
     mock_get = mocker.patch("requests.Session.get", return_value=mock_resp)
     mock_mal = mocker.patch("awsrun.acctload.MetaAccountLoader.__init__")
-    mocker.patch("tempfile.gettempdir", return_value=tmpdir)
 
     url = "http://example.com/accts.json"
     acctload.JSONAccountLoader(url, max_age=max_age)
@@ -121,12 +133,12 @@ def test_json_loader_without_cache(tmpdir, mocker, expected_from_loader, max_age
     if max_age == 0:
         # Make sure it did not cache data if max age was 0
         with pytest.raises(FileNotFoundError):
-            with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+            with open(cache_file("json", url), encoding="utf-8") as f:
                 pass
 
     else:
         # Make sure the json loader cached the results if max age > 0
-        with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+        with open(cache_file("json", url), encoding="utf-8") as f:
             cached_accts = json.load(f)
         assert accts == cached_accts
 
@@ -140,7 +152,6 @@ def test_yaml_loader_without_cache(
     mock_resp.text = yaml_string
     mock_get = mocker.patch("requests.Session.get", return_value=mock_resp)
     mock_mal = mocker.patch("awsrun.acctload.MetaAccountLoader.__init__")
-    mocker.patch("tempfile.gettempdir", return_value=tmpdir)
 
     url = "http://example.com/accts.yaml"
     acctload.YAMLAccountLoader(url, max_age=max_age)
@@ -157,12 +168,12 @@ def test_yaml_loader_without_cache(
     if max_age == 0:
         # Make sure it did not cache data if max age was 0
         with pytest.raises(FileNotFoundError):
-            with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+            with open(cache_file("yaml", url), encoding="utf-8") as f:
                 pass
 
     else:
         # Make sure the yaml loader cached the results if max age > 0
-        with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+        with open(cache_file("yaml", url), encoding="utf-8") as f:
             cached_accts = yaml.safe_load(f)
         assert accts == cached_accts
 
@@ -176,7 +187,6 @@ def test_csv_loader_without_cache(
     mock_resp.text = csv_string
     mock_get = mocker.patch("requests.Session.get", return_value=mock_resp)
     mock_mal = mocker.patch("awsrun.acctload.MetaAccountLoader.__init__")
-    mocker.patch("tempfile.gettempdir", return_value=tmpdir)
 
     url = "http://example.com/accts.csv"
     acctload.CSVAccountLoader(url, max_age=max_age)
@@ -197,12 +207,12 @@ def test_csv_loader_without_cache(
     if max_age == 0:
         # Make sure it did not cache data if max age was 0
         with pytest.raises(FileNotFoundError):
-            with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+            with open(cache_file("csv", url, ","), encoding="utf-8") as f:
                 pass
 
     else:
         # Make sure the json loader cached the results if max age > 0
-        with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+        with open(cache_file("csv", url, ","), encoding="utf-8") as f:
             cached_accts = json.load(f)
         assert accts == cached_accts
 
@@ -210,9 +220,8 @@ def test_csv_loader_without_cache(
 def test_json_loader_with_cache(tmpdir, mocker, _json_cache, expected_from_loader):
     mock_get = mocker.patch("requests.get")
     mock_mal = mocker.patch("awsrun.acctload.MetaAccountLoader.__init__")
-    mocker.patch("tempfile.gettempdir", return_value=tmpdir)
 
-    acctload.JSONAccountLoader("http://example.com/acct.json", max_age=86400)
+    acctload.JSONAccountLoader(JSON_URL, max_age=86400)
 
     # requests.get should not be called as a cache exists on the filesystem
     mock_get.assert_not_called()
@@ -225,9 +234,8 @@ def test_json_loader_with_cache(tmpdir, mocker, _json_cache, expected_from_loade
 def test_yaml_loader_with_cache(tmpdir, mocker, _json_cache, expected_from_loader):
     mock_get = mocker.patch("requests.get")
     mock_mal = mocker.patch("awsrun.acctload.MetaAccountLoader.__init__")
-    mocker.patch("tempfile.gettempdir", return_value=tmpdir)
 
-    acctload.YAMLAccountLoader("http://example.com/acct.yaml", max_age=86400)
+    acctload.YAMLAccountLoader(YAML_URL, max_age=86400)
 
     # requests.get should not be called as a cache exists on the filesystem
     mock_get.assert_not_called()
@@ -244,26 +252,25 @@ def test_json_loader_with_expired_cache(
     mock_resp.status_code = 200
     mock_resp.json.return_value = expected_from_loader
     mock_get = mocker.patch("requests.Session.get", return_value=mock_resp)
-    mocker.patch("tempfile.gettempdir", return_value=tmpdir)
 
     # We'll compare the times of the date file before and after to ensure
     # the file was replaced with a newer version.
-    cache_date_before = Path(tmpdir.join("awsrun.dat")).stat().st_mtime
+    cache_date_before = cache_file("json", JSON_URL).stat().st_mtime
 
     # Fast-forward the time to the future by a day and a few seconds beyond
     # when the cache is valid, which will force a fresh fetch of data.
     with freeze_time(datetime.now(timezone.utc) + timedelta(days=1, seconds=5)):
-        acctload.JSONAccountLoader("http://example.com/acct.json", max_age=86400)
+        acctload.JSONAccountLoader(JSON_URL, max_age=86400)
 
     # requests.get should be called when cache is expired to refresh it
     mock_get.assert_called_once()
 
     # Compare the date of the cache file to make sure it was updated
-    cache_date_after = Path(tmpdir.join("awsrun.dat")).stat().st_mtime
+    cache_date_after = cache_file("json", JSON_URL).stat().st_mtime
     assert cache_date_before < cache_date_after
 
     # Make sure the json loader cached the results
-    with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+    with open(cache_file("json", JSON_URL), encoding="utf-8") as f:
         cached_accts = json.load(f)
     assert cached_accts == expected_from_loader
 
@@ -275,26 +282,25 @@ def test_yaml_loader_with_expired_cache(
     mock_resp.status_code = 200
     mock_resp.text = yaml_string
     mock_get = mocker.patch("requests.Session.get", return_value=mock_resp)
-    mocker.patch("tempfile.gettempdir", return_value=tmpdir)
 
     # We'll compare the times of the date file before and after to ensure
     # the file was replaced with a newer version.
-    cache_date_before = Path(tmpdir.join("awsrun.dat")).stat().st_mtime
+    cache_date_before = cache_file("yaml", YAML_URL).stat().st_mtime
 
     # Fast-forward the time to the future by a day and a few seconds beyond
     # when the cache is valid, which will force a fresh fetch of data.
     with freeze_time(datetime.now(timezone.utc) + timedelta(days=1, seconds=5)):
-        acctload.YAMLAccountLoader("http://example.com/acct.yaml", max_age=86400)
+        acctload.YAMLAccountLoader(YAML_URL, max_age=86400)
 
     # requests.get should be called when cache is expired to refresh it
     mock_get.assert_called_once()
 
     # Compare the date of the cache file to make sure it was updated
-    cache_date_after = Path(tmpdir.join("awsrun.dat")).stat().st_mtime
+    cache_date_after = cache_file("yaml", YAML_URL).stat().st_mtime
     assert cache_date_before < cache_date_after
 
     # Make sure the json loader cached the results
-    with open(tmpdir.join("awsrun.dat"), encoding="utf-8") as f:
+    with open(cache_file("yaml", YAML_URL), encoding="utf-8") as f:
         cached_accts = yaml.safe_load(f)
     assert cached_accts == expected_from_loader
 
@@ -334,7 +340,7 @@ def test_csv_account_loader_with_file_url(
         f.write(csv_content)
     mock_mal = mocker.patch("awsrun.acctload.MetaAccountLoader.__init__")
 
-    url = "file://" + csv_file.as_posix()
+    url = csv_file.as_uri()
 
     if delimiter:
         acctload.CSVAccountLoader(url, delimiter=delimiter)
@@ -357,7 +363,7 @@ def test_json_account_loader_with_file_url(
         f.write(json_string)
     mock_mal = mocker.patch("awsrun.acctload.MetaAccountLoader.__init__")
 
-    url = "file://" + json_file.as_posix()
+    url = json_file.as_uri()
 
     acctload.JSONAccountLoader(url, max_age=0)
 
@@ -373,7 +379,7 @@ def test_yaml_account_loader_with_file_url(
         f.write(yaml_string)
     mock_mal = mocker.patch("awsrun.acctload.MetaAccountLoader.__init__")
 
-    url = "file://" + yaml_file.as_posix()
+    url = yaml_file.as_uri()
 
     acctload.YAMLAccountLoader(url, max_age=0)
 

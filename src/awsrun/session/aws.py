@@ -295,6 +295,10 @@ from awsrun.session import SessionProvider
 
 LOG = logging.getLogger(__name__)
 
+# Seconds to wait to connect to, and then for data from, an identity provider.
+# Without a timeout, a server that stops responding hangs the CLI indefinitely.
+_HTTP_TIMEOUT = (10, 60)
+
 
 class CachingSessionProvider(SessionProvider):
     """Abstract base class for session providers that cache credentials by role.
@@ -497,7 +501,12 @@ class CredsViaOAuth2ROPC(CachingSessionProvider):
                 "grant_type": "password",
             }
             form.update(self._oauth2_params)
-            resp = s.post(self._url, data=form, verify=not self._no_verify)
+            resp = s.post(
+                self._url,
+                data=form,
+                verify=not self._no_verify,
+                timeout=_HTTP_TIMEOUT,
+            )
 
         if resp.status_code == 400:  # RFC6749 section 5.2
             try:
@@ -603,14 +612,21 @@ class CredsViaSAML(CachingSessionProvider):
             s.auth = self._auth
             s.headers.update(self._headers)
             if self._http_method == "GET":
-                resp = s.get(self._url, verify=not self._no_verify)
+                resp = s.get(
+                    self._url, verify=not self._no_verify, timeout=_HTTP_TIMEOUT
+                )
             else:
                 authData = {
                     "UserName": s.auth.username,
                     "Password": s.auth.password,
                     "AuthMethod": "FormsAuthentication",
                 }
-                resp = s.post(self._url, data=authData, verify=not self._no_verify)
+                resp = s.post(
+                    self._url,
+                    data=authData,
+                    verify=not self._no_verify,
+                    timeout=_HTTP_TIMEOUT,
+                )
 
         if resp.status_code == 401:
             raise IDPAccessDeniedException("Could not authenticate")
