@@ -69,7 +69,6 @@ if it was not already.
 
 import importlib
 import logging
-from contextlib import suppress
 from functools import partial, reduce
 from inspect import isclass
 
@@ -356,8 +355,18 @@ def load_dotted_object(dotted_name):
             raise ImportError(f"cannot import '{dotted_name}'")
 
         mod = None
-        with suppress(ModuleNotFoundError):
+        try:
             mod = importlib.import_module(mod_name)
+        except ModuleNotFoundError as e:
+            # Only keep walking up the dotted name when the part that could
+            # not be found is the name itself (i.e. the tail is an attribute).
+            # Anything else is a missing dependency of the module being
+            # loaded (e.g. boto3), which the user needs to be told about.
+            missing = e.name or ""
+            if mod_name != missing and not mod_name.startswith(missing + "."):
+                raise ImportError(
+                    f"cannot import '{dotted_name}': {e} (is an optional dependency missing?)"
+                ) from e
 
         if not mod:
             mod_name, _, attr = mod_name.rpartition(".")
