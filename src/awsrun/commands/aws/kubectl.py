@@ -286,7 +286,11 @@ class CLICommand(RegionalCommand):
         self.namespaces = namespaces
         self.kubectl_args = kubectl_args
         self.output = output
-        self.output_dir = awsrun_output_dir
+        # The directory is given as a string on the command line and in the
+        # configuration file, and it might not exist yet.
+        self.output_dir = Path(awsrun_output_dir) if awsrun_output_dir else None
+        if self.output_dir:
+            self.output_dir.mkdir(parents=True, exist_ok=True)
         self.annotate = awsrun_annotate
 
         # Make sure user has both dependent binaries installed

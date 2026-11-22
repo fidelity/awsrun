@@ -6,6 +6,7 @@
 
 """Tests for the files and subprocess environments of the pass-through commands."""
 
+import argparse
 import os
 import threading
 import time
@@ -114,6 +115,40 @@ def test_kubectl_output_files_keep_dotted_account_names_apart(tmp_path, capsys):
         "team.dev-us-east-1-cluster1-default.stdout.log",
         "team.prod-us-east-1-cluster1-default.stdout.log",
     ]
+
+
+def test_kubectl_output_dir_given_as_a_string_is_created(tmp_path, capsys):
+    """The command line and the config file supply the directory as a string."""
+    out_dir = tmp_path / "does" / "not" / "exist"
+    cmd = make_kubectl(awsrun_output_dir=str(out_dir))
+    result = kubectl._Result("out\n", "warn\n", "cluster1", "default")
+    cmd.regional_collect_results("100200300400", "us-east-1", lambda: [result])
+
+    assert filenames(out_dir) == [
+        "100200300400-us-east-1-cluster1-default.stderr.log",
+        "100200300400-us-east-1-cluster1-default.stdout.log",
+    ]
+    name = "100200300400-us-east-1-cluster1-default.stdout.log"
+    assert (out_dir / name).read_text() == "out\n"
+
+
+def test_kubectl_output_dir_from_the_command_line(tmp_path, capsys):
+    out_dir = tmp_path / "out"
+    parser = argparse.ArgumentParser()
+    argv = ["--region", "us-east-1", "--awsrun-output-dir", str(out_dir), "get", "pods"]
+    cmd = kubectl.CLICommand.from_cli(parser, argv, lambda *a, **kw: kw.get("default"))
+
+    result = kubectl._Result("out\n", None, "cluster1", "default")
+    cmd.regional_collect_results("100200300400", "us-east-1", lambda: [result])
+    assert filenames(out_dir) == ["100200300400-us-east-1-cluster1-default.stdout.log"]
+
+
+def test_kubectl_without_an_output_dir_writes_nothing(tmp_path, capsys, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    cmd = make_kubectl()
+    result = kubectl._Result("out\n", None, "cluster1", "default")
+    cmd.regional_collect_results("100200300400", "us-east-1", lambda: [result])
+    assert filenames(tmp_path) == []
 
 
 # -- kubeconfig ---------------------------------------------------------------
