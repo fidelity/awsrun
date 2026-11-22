@@ -357,14 +357,17 @@ class CLICommand(RegionalCommand):
                 # Set the KUBECONFIG env variable instead of using the
                 # --kubeconfig command line option because not all kubectl
                 # plugins support it. KUBECONFIG is more widely supported.
-                os.environ["KUBECONFIG"] = str(filename)
+                # The variable is set in a copy of the environment because
+                # commands execute concurrently in worker threads, and
+                # os.environ is shared by all of them.
+                env = {**os.environ, "KUBECONFIG": str(filename)}
 
                 LOG.info("setting KUBECONFIG to %s", filename)
                 LOG.info("running %s", cmd)
 
                 result = subprocess.run(
                     cmd,
-                    env=os.environ,
+                    env=env,
                     check=False,
                     text=True,
                     capture_output=True,
@@ -430,56 +433,16 @@ class CLICommand(RegionalCommand):
                 # account, but we need to escape any slashes if we use this as part
                 # of a filename so pathlib doesn't interpret as directories.
                 escaped = re.sub(r"[\\/]", "_", str(acct))
-                name = (
-                    self.output_dir
-                    / f"{escaped}-{region}-{result.cluster}-{result.namespace}"
-                )
+                name = f"{escaped}-{region}-{result.cluster}-{result.namespace}"
 
-                _save_output(name.with_suffix(".stdout.log"), result.stdout)
+                # The suffix is appended rather than set via with_suffix() as
+                # the latter would replace anything after a dot in the name.
+                _save_output(self.output_dir / f"{name}.stdout.log", result.stdout)
                 if result.stderr:
-                    _save_output(name.with_suffix(".stderr.log"), result.stderr)
+                    _save_output(self.output_dir / f"{name}.stderr.log", result.stderr)
 
 
 _Result = namedtuple("Result", ["stdout", "stderr", "cluster", "namespace"])
-
-
-_KUBECONFIG = """
-apiVersion: v1
-clusters:
-- cluster:
-    certificate-authority-data: {certificate}
-    server: {endpoint}
-  name: {cluster}
-contexts:
-- context:
-    cluster: {cluster}
-    namespace: {namespace}
-    user: aws
-  name: aws
-current-context: aws
-kind: Config
-preferences: {{}}
-users:
-- name: aws
-  user:
-    exec:
-      apiVersion: client.authentication.k8s.io/v1beta1
-      args:
-      - --region
-      - {region}
-      - eks
-      - get-token
-      - --cluster-name
-      - {cluster}
-      command: aws
-      env:
-      - name: AWS_ACCESS_KEY_ID
-        value: {access_key}
-      - name: AWS_SECRET_ACCESS_KEY
-        value: {secret_key}
-      - name: AWS_SESSION_TOKEN
-        value: {session_token}
-"""
 
 
 def _save_output(name, text):
@@ -488,25 +451,75 @@ def _save_output(name, text):
         out.write(text)
 
 
+def _kubeconfig(name, namespace, region, cluster, creds):
+    """Returns the kubeconfig, as a dict, for a cluster using the creds."""
+    env = [
+        {"name": "AWS_ACCESS_KEY_ID", "value": creds.access_key},
+        {"name": "AWS_SECRET_ACCESS_KEY", "value": creds.secret_key},
+    ]
+
+    # Long-term credentials do not have a session token. Setting the variable
+    # to "None" would make the AWS CLI send an invalid token.
+    if creds.token:
+        env.append({"name": "AWS_SESSION_TOKEN", "value": creds.token})
+
+    return {
+        "apiVersion": "v1",
+        "clusters": [
+            {
+                "cluster": {
+                    "certificate-authority-data": cluster["cluster"][
+                        "certificateAuthority"
+                    ]["data"],
+                    "server": cluster["cluster"]["endpoint"],
+                },
+                "name": name,
+            }
+        ],
+        "contexts": [
+            {
+                "context": {"cluster": name, "namespace": namespace, "user": "aws"},
+                "name": "aws",
+            }
+        ],
+        "current-context": "aws",
+        "kind": "Config",
+        "preferences": {},
+        "users": [
+            {
+                "name": "aws",
+                "user": {
+                    "exec": {
+                        "apiVersion": "client.authentication.k8s.io/v1beta1",
+                        "args": [
+                            "--region",
+                            region,
+                            "eks",
+                            "get-token",
+                            "--cluster-name",
+                            name,
+                        ],
+                        "command": "aws",
+                        "env": env,
+                    }
+                },
+            }
+        ],
+    }
+
+
 def _save_kubecfg(name, namespace, account_id, region, cluster, session):
     creds = session.get_credentials()
-    substitions = {
-        "cluster": name,
-        "namespace": namespace,
-        "account_id": account_id,
-        "region": region,
-        "endpoint": cluster["cluster"]["endpoint"],
-        "certificate": cluster["cluster"]["certificateAuthority"]["data"],
-        "access_key": creds.access_key,
-        "secret_key": creds.secret_key,
-        "session_token": creds.token,
-    }
+    config = _kubeconfig(name, namespace, region, cluster, creds)
 
     kubedir = Path.home() / Path(".kube")
     kubedir.mkdir(mode=0o700, parents=True, exist_ok=True)
 
-    filename = kubedir / Path(f"awsrun-{account_id}-{region}-{name}-{namespace}")
-    _save_output(filename, _KUBECONFIG.format(**substitions))
+    # The account can be any string, so escape any slashes to keep pathlib
+    # from interpreting them as directories.
+    escaped = re.sub(r"[\\/]", "_", account_id)
+    filename = kubedir / Path(f"awsrun-{escaped}-{region}-{name}-{namespace}")
+    _save_output(filename, yaml.safe_dump(config, sort_keys=False))
     return filename
 
 
