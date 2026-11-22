@@ -1162,7 +1162,18 @@ class _CSP:
 
         # Identify the CSP name from the name of the installed CLI tool. The
         # installed CLI will be called "awsrun" or "azurerun".
-        csp = Path(prog_name).name.replace("run", "")
+        name = Path(prog_name).name.lower()
+        for suffix in ("-script.py", ".exe", ".py"):
+            if name.endswith(suffix):
+                name = name[: -len(suffix)]
+                break
+
+        # When invoked as "python -m awsrun.cli" (or "python -m awsrun"), the
+        # program name is the module file, so default to the AWS variant.
+        if name in ("cli", "__main__"):
+            name = "awsrun"
+
+        csp = name.replace("run", "")
         if csp not in ["aws", "azure"]:
             raise Exception(f"unknown variant: {csp}")
         return cls(csp)
