@@ -328,7 +328,7 @@ class PluginManager:
         If `must_be` is not provided, the returned object can be of any type.
         """
         if keys not in self._plugins:
-            self.parse_args(*keys, default)
+            self.parse_args(*keys, default=default)
 
         instance = self._plugins[keys].instantiate(self.args)
 
