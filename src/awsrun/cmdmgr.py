@@ -268,7 +268,10 @@ class DirectoryLoader(CommandLoader):
                 continue
 
             name = fn.split(".py")[0]
-            with contextlib.suppress(Exception):
+            # SystemExit is suppressed too as a command might exit while it is
+            # being imported (e.g. to report that an optional dependency is
+            # missing), which must not prevent the other commands from loading.
+            with contextlib.suppress(Exception, SystemExit):
                 classes[name] = self.load(name)
 
         return classes
@@ -311,7 +314,10 @@ class ModuleLoader(CommandLoader):
         base = importlib.import_module(self.module_name)
 
         for m in pkgutil.iter_modules(base.__path__):
-            with contextlib.suppress(Exception):
+            # SystemExit is suppressed too as a command might exit while it is
+            # being imported (e.g. to report that an optional dependency is
+            # missing), which must not prevent the other commands from loading.
+            with contextlib.suppress(Exception, SystemExit):
                 classes[m.name] = self.load(m.name)
 
         return classes
