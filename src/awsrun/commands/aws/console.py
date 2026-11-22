@@ -97,13 +97,17 @@ class CLICommand(Command):
     def execute(self, session, acct):
         creds = session.get_credentials()
 
-        try:
-            session_creds = {}
-            session_creds["sessionId"] = creds.access_key
-            session_creds["sessionKey"] = creds.secret_key
-            session_creds["sessionToken"] = creds.token
-        except AttributeError:
+        # The federation endpoint only accepts temporary credentials. Check
+        # for the session token first, so that long-term access keys are never
+        # sent to it.
+        if not getattr(creds, "token", None):
             return f"{acct}: can only be used with federated auth types"
+
+        session_creds = {
+            "sessionId": creds.access_key,
+            "sessionKey": creds.secret_key,
+            "sessionToken": creds.token,
+        }
 
         # Retrieve a signin token from AWS federation service
         r = requests.get(
