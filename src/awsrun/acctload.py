@@ -865,7 +865,8 @@ class AzureCLIAccountLoader(MetaAccountLoader):
     """
 
     def __init__(self, name_regexp=None):
-        if not shutil.which("az"):
+        az_path = shutil.which("az")
+        if not az_path:
             raise FileNotFoundError(
                 "error: Please install the Azure CLI and ensure 'az' is in your path"
             )
@@ -884,7 +885,7 @@ class AzureCLIAccountLoader(MetaAccountLoader):
         # to. It is up to the user to run az login. If they don't we'll print
         # that error.
         result = subprocess.run(
-            ["az", "account", "list", "--all"], capture_output=True, check=True
+            [az_path, "account", "list", "--all"], capture_output=True, check=True
         )
 
         # The Azure CLI always returns 0, so we must check to see if anything
