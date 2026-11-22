@@ -231,12 +231,16 @@ class SAML(Plugin):
             help="username for SAML authentication",
         )
 
+        # The default for the password is deliberately not passed to argparse,
+        # otherwise it would be displayed in the --help output, which includes
+        # the default value of each flag.
+        self._default_password = self.cfg(
+            "password", type=Str, default=os.environ.get("PASSWORD", None)
+        )
+
         group.add_argument(
             "--saml-password",
             metavar="PASS",
-            default=self.cfg(
-                "password", type=Str, default=os.environ.get("PASSWORD", None)
-            ),
             help="password for SAML authentication",
         )
 
@@ -277,8 +281,10 @@ class SAML(Plugin):
         # environment as we wouldn't have access to the username. which should
         # be included in the prompt to the user to remind them of the username
         # being used.
-        args.saml_password = args.saml_password or getpass.getpass(
-            f"Password for {args.saml_username}? "
+        args.saml_password = (
+            args.saml_password
+            or self._default_password
+            or getpass.getpass(f"Password for {args.saml_username}? ")
         )
 
         # Look up the requests compatible HTTP Auth classes by type specified.
@@ -409,12 +415,16 @@ class OAuth2(Plugin):
             help="username for OAuth2 authentication",
         )
 
+        # The default for the password is deliberately not passed to argparse,
+        # otherwise it would be displayed in the --help output, which includes
+        # the default value of each flag.
+        self._default_password = self.cfg(
+            "password", type=Str, default=os.environ.get("PASSWORD", None)
+        )
+
         group.add_argument(
             "--oauth2-password",
             metavar="PASS",
-            default=self.cfg(
-                "password", type=Str, default=os.environ.get("PASSWORD", None)
-            ),
             help="password for OAuth2 authentication",
         )
 
@@ -447,8 +457,10 @@ class OAuth2(Plugin):
         # environment as we wouldn't have access to the username. which should
         # be included in the prompt to the user to remind them of the username
         # being used.
-        args.oauth2_password = args.oauth2_password or getpass.getpass(
-            f"Password for {args.oauth2_username}? "
+        args.oauth2_password = (
+            args.oauth2_password
+            or self._default_password
+            or getpass.getpass(f"Password for {args.oauth2_username}? ")
         )
 
         # Build a session provider using the combination of options that have

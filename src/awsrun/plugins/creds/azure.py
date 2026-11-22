@@ -156,12 +156,16 @@ class UsernamePassword(Plugin):
             help="username for Azure AD authentication",
         )
 
+        # The default for the password is deliberately not passed to argparse,
+        # otherwise it would be displayed in the --help output, which includes
+        # the default value of each flag.
+        self._default_password = self.cfg(
+            "password", type=Str, default=os.environ.get("PASSWORD", None)
+        )
+
         group.add_argument(
             "--ad-password",
             metavar="PASS",
-            default=self.cfg(
-                "password", type=Str, default=os.environ.get("PASSWORD", None)
-            ),
             help="password for Azure AD authentication",
         )
 
@@ -183,8 +187,10 @@ class UsernamePassword(Plugin):
 
     def instantiate(self, args):
         args.ad_username = args.ad_username or input("Username (email address)? ")
-        args.ad_password = args.ad_password or getpass.getpass(
-            f"Password for {args.ad_username}? "
+        args.ad_password = (
+            args.ad_password
+            or self._default_password
+            or getpass.getpass(f"Password for {args.ad_username}? ")
         )
 
         return CredsViaUsernamePassword(
