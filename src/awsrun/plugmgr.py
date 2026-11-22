@@ -69,6 +69,7 @@ if it was not already.
 
 import importlib
 import logging
+import re
 from functools import partial, reduce
 from inspect import isclass
 
@@ -293,7 +294,11 @@ class PluginManager:
         self.args, self.remaining_argv = self._parser.parse_known_args(
             self.remaining_argv, self.args
         )
-        LOG.info("parsed args=%s remaining args=%s", self.args, self.remaining_argv)
+        LOG.info(
+            "parsed args=%s remaining args=%s",
+            _redact_namespace(self.args),
+            _redact_argv(self.remaining_argv),
+        )
 
         self._plugins[keys] = plugin
 
@@ -337,6 +342,37 @@ class PluginManager:
             )
 
         return instance
+
+
+_SENSITIVE = re.compile(r"passw(or)?d|secret|token", re.IGNORECASE)
+_REDACTED = "********"
+
+
+def _redact_namespace(namespace):
+    """Returns a dict of the namespace with sensitive values masked."""
+    return {
+        k: _REDACTED if v is not None and _SENSITIVE.search(k) else v
+        for k, v in vars(namespace).items()
+    }
+
+
+def _redact_argv(argv):
+    """Returns a copy of argv with the values of sensitive flags masked."""
+    redacted = []
+    mask_next = False
+    for arg in argv:
+        if mask_next:
+            redacted.append(_REDACTED)
+            mask_next = False
+            continue
+
+        flag, sep, _ = arg.partition("=")
+        if flag.startswith("-") and _SENSITIVE.search(flag):
+            redacted.append(f"{flag}={_REDACTED}" if sep else arg)
+            mask_next = not sep
+        else:
+            redacted.append(arg)
+    return redacted
 
 
 def load_dotted_object(dotted_name):
